@@ -19,5 +19,6 @@
 @property (nonatomic, retain) UILabel *priceLabel2;
 
 - (void)setPrice:(NSString *)price1 price2:(NSString *)price2;
+- (void)setShowPrice:(BOOL)showPrice;
 
 @end

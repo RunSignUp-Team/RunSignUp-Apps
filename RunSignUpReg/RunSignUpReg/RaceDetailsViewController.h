@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 #import "SignInViewController.h"
+#import "RoundedLoadingIndicator.h"
 #import <EventKitUI/EventKitUI.h>
 
 @interface RaceDetailsViewController : UIViewController <EKEventEditViewDelegate, UIActionSheetDelegate, UIWebViewDelegate, UITableViewDelegate, UITableViewDataSource, SignInViewControllerDelegate>{
@@ -40,8 +41,12 @@
     
     UIWebView *descriptionView;
     BOOL loadedDescription;
+    BOOL hasLoadedDetails;
+    BOOL attemptedToSignUpWithoutDetails;
     
     EKEventStore *store;
+    
+    RoundedLoadingIndicator *rli;
     
     UIScrollView *scrollView;
 }
@@ -73,6 +78,7 @@
 @property (nonatomic, retain) IBOutlet UIButton *viewMapOtherButton;
 
 @property (nonatomic, retain) IBOutlet UIWebView *descriptionView;
+@property (nonatomic, retain) RoundedLoadingIndicator *rli;
 
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
 

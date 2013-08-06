@@ -81,7 +81,7 @@
     [super viewDidLoad];
     
     if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
-        [self setEdgesForExtendedLayout: UIExtendedEdgeNone];
+        [self setEdgesForExtendedLayout: UIRectEdgeNone];
     
     [scrollView setContentSize: CGSizeMake(320, 820)];
     
@@ -282,7 +282,7 @@
         [picker setDelegate: self];
         [picker setSourceType: UIImagePickerControllerSourceTypeCamera];
         [picker setAllowsEditing: YES];
-        [self presentModalViewController:picker animated:YES];
+        [self presentViewController:picker animated:YES completion:nil];
         [picker release];
     }
 }
@@ -293,19 +293,19 @@
         [picker setDelegate: self];
         [picker setSourceType: UIImagePickerControllerSourceTypePhotoLibrary];
         [picker setAllowsEditing: YES];
-        [self presentModalViewController:picker animated:YES];
+        [self presentViewController:picker animated:YES completion:nil];
         [picker release];
     }
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
-    [self dismissModalViewControllerAnimated: YES];
+    [self dismissViewControllerAnimated: YES completion:nil];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
     UIImage *chosenImage = [info objectForKey: UIImagePickerControllerEditedImage];
     [profileImageView setImage: chosenImage];
-    [self dismissModalViewControllerAnimated: YES];
+    [self dismissViewControllerAnimated: YES completion:nil];
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{

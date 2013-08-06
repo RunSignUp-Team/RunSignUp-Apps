@@ -7,10 +7,12 @@
 //
 
 #import "RSUModel.h"
+#import "RaceSignUpConfirmationViewController.h"
 
 static RSUModel *model = nil;
 
 @implementation RSUModel
+@synthesize paymentViewController;
 @synthesize apiKey;
 @synthesize apiSecret;
 @synthesize key;
@@ -19,6 +21,7 @@ static RSUModel *model = nil;
 @synthesize password;
 @synthesize signedIn;
 @synthesize lastParsedUser;
+@synthesize dataDict;
 
 - (id)init{
     self = [super init];
@@ -31,8 +34,38 @@ static RSUModel *model = nil;
         self.password = nil;
         self.signedIn = NO;
         self.lastParsedUser = nil;
+        self.dataDict = nil;
     }
     return self;
+}
+
+- (void)savePaymentInfoToServer:(NSDictionary *)paymentInfo{
+    NSString *customerId = [[UIDevice currentDevice] identifierForVendor].UUIDString;
+    [paymentInfo setValue:customerId forKey:@"CustomerID"];
+    
+    [paymentViewController prepareForDismissal];
+    RaceSignUpConfirmationViewController *rsucvc = [[RaceSignUpConfirmationViewController alloc] initWithNibName:@"RaceSignUpConfirmationViewController" bundle:nil data:dataDict];
+    UINavigationController *navController = paymentViewController.navigationController;
+    [navController popViewControllerAnimated: NO];
+    [navController pushViewController:rsucvc animated:YES];
+    [rsucvc release];
+}
+
+- (void)paymentViewController:(BTPaymentViewController *)paymentViewController didSubmitCardWithInfo:(NSDictionary *)cardInfo andCardInfoEncrypted:(NSDictionary *)cardInfoEncrypted{
+    NSLog(@"Info: %@", cardInfo);
+    NSLog(@"Encrypted: %@", cardInfoEncrypted);
+    [self savePaymentInfoToServer:cardInfoEncrypted];
+}
+
+- (void)paymentViewController:(BTPaymentViewController *)paymentViewController didAuthorizeCardWithPaymentMethodCode:(NSString *)paymentMethodCode{
+    NSLog(@"Payment method code: %@", paymentMethodCode);
+    NSMutableDictionary *paymentInfo = [NSMutableDictionary dictionaryWithObject:paymentMethodCode forKey:@"venmo_sdk_payment_method_code"];
+    [self savePaymentInfoToServer:paymentInfo];
+}
+
+- (void)retrieveRaceRegistrationInformation:(void (^)(RSUConnectionResponse, NSDictionary *))responseBlock{
+    dispatch_async(dispatch_get_main_queue(),^(){responseBlock(RSUSuccess, nil);});
+    return;
 }
 
 /* Attempt to log in with the given email and password. Multiple responses
@@ -47,7 +80,7 @@ static RSUModel *model = nil;
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
     
     NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
-    [request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@/rest/login", RUNSIGNUP_BASE_URL]]];
+    [request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/rest/login", RUNSIGNUP_BASE_URL]]];
     [request setHTTPMethod:@"POST"];
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
@@ -115,7 +148,7 @@ static RSUModel *model = nil;
         NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
         
-        NSString *url = [NSString stringWithFormat:@"https://%@/rest/user/%@/?tmp_key=%@&tmp_secret=%@", RUNSIGNUP_BASE_URL,  [lastParsedUser objectForKey:@"UserID"], key, secret];
+        NSString *url = [NSString stringWithFormat:@"%@/rest/user/%@/?tmp_key=%@&tmp_secret=%@", RUNSIGNUP_BASE_URL,  [lastParsedUser objectForKey:@"UserID"], key, secret];
         NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
         [request setURL:[NSURL URLWithString:url]];
         [request setHTTPMethod:@"POST"];
@@ -149,7 +182,7 @@ static RSUModel *model = nil;
     if(!signedIn){
         dispatch_async(dispatch_get_main_queue(),^(){responseBlock(nil);});
     }else{
-        NSString *url = [NSString stringWithFormat:@"https://%@/rest/races?tmp_key=%@&tmp_secret=%@&events=T", RUNSIGNUP_BASE_URL, key, secret];
+        NSString *url = [NSString stringWithFormat:@"%@/rest/races?tmp_key=%@&tmp_secret=%@&events=T", RUNSIGNUP_BASE_URL, key, secret];
         
         NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
         [request setURL:[NSURL URLWithString:url]];
@@ -213,7 +246,7 @@ static RSUModel *model = nil;
 
 - (void)retrieveRaceListWithParams:(NSDictionary *)params response:(void (^)(NSArray *))responseBlock{
     NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
-    NSString *urlString = [NSString stringWithFormat: @"https://test.%@/rest/races?events=T&race_headings=T&race_links=T&sort=date+ASC,name+ASC", RUNSIGNUP_BASE_URL];
+    NSString *urlString = [NSString stringWithFormat: @"%@/rest/races?events=T&sort=date+ASC,name+ASC", RUNSIGNUP_BASE_URL];
     if([params objectForKey:@"Page"])
         urlString = [urlString stringByAppendingFormat:@"&page=%i", [[params objectForKey:@"Page"] intValue]];
     if([params objectForKey:@"Name"])
@@ -249,7 +282,7 @@ static RSUModel *model = nil;
     if([params objectForKey:@"State"])
         urlString = [urlString stringByAppendingFormat:@"&state=%@", [params objectForKey:@"State"]];
 
-    [request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@&api_key=%@&api_secret=%@", urlString, apiKey, apiSecret]]];
+    [request setURL:[NSURL URLWithString:urlString]];//[NSString stringWithFormat:@"%@&api_key=%@&api_secret=%@", urlString, apiKey, apiSecret]]];
     [request setHTTPMethod:@"GET"];
     
     void (^completion)(NSURLResponse *,NSData *,NSError *) = ^(NSURLResponse *response,NSData *urlData,NSError *error){
@@ -363,10 +396,157 @@ static RSUModel *model = nil;
     [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:completion];
 }
 
+- (void)retrieveRaceDetailsWithRaceID:(NSString *)raceID response:(void (^)(NSMutableDictionary *))responseBlock{
+    NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
+    [request setURL:[NSURL URLWithString:[NSString stringWithFormat: @"%@/rest/race?race_id=%@&include_questions=T&race_headings=T&race_links=T&include_waiver=T", RUNSIGNUP_BASE_URL, raceID]]];
+    [request setHTTPMethod:@"GET"];
+    
+    void (^completion)(NSURLResponse *,NSData *,NSError *) = ^(NSURLResponse *response,NSData *urlData,NSError *error){
+        if(!urlData){
+            NSLog(@"URLData is nil");
+            dispatch_async(dispatch_get_main_queue(),^(){responseBlock(nil);});
+            return;
+        }
+        
+        NSString *string = [[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding];
+        NSLog(@"%@", string);
+        
+        RXMLElement *rootXML = [[RXMLElement alloc] initFromXMLData:urlData];
+        if([[rootXML tag] isEqualToString:@"race"]){
+            NSMutableDictionary *race = [[NSMutableDictionary alloc] init];
+            RXMLElement *raceID = [rootXML child: @"race_id"];
+            RXMLElement *raceName = [rootXML child: @"name"];
+            RXMLElement *raceDescription = [rootXML child: @"description"];
+            RXMLElement *raceWaiver = [rootXML child: @"waiver"];
+            RXMLElement *raceURL = [rootXML child: @"url"];
+            RXMLElement *raceNextDate = [rootXML child: @"next_date"];
+            RXMLElement *raceLastDate = [rootXML child: @"last_date"];
+            RXMLElement *raceAddress = [rootXML child: @"address"];
+            RXMLElement *raceRegistrationOpen = [rootXML child:@"is_registration_open"];
+            
+            BOOL registrationOpen = NO;
+            if(raceRegistrationOpen != nil && [[raceRegistrationOpen text] isEqualToString:@"T"])
+                registrationOpen = YES;
+            
+            [race setObject:[NSNumber numberWithBool: registrationOpen] forKey:@"RegistrationOpen"];
+            
+            if(raceID)
+                [race setObject:[raceID text] forKey:@"RaceID"];
+            if(raceName)
+                [race setObject:[raceName text] forKey:@"Name"];
+            if(raceDescription)
+                [race setObject:[raceDescription text] forKey:@"Description"];
+            if(raceWaiver)
+                [race setObject:[raceWaiver text] forKey:@"Waiver"];
+            if(raceURL)
+                [race setObject:[raceURL text] forKey:@"URL"];
+            if(raceNextDate && [[raceNextDate text] length])
+                [race setObject:[raceNextDate text] forKey:@"Date"];
+            else if(raceLastDate)
+                [race setObject:[raceLastDate text] forKey:@"Date"];
+            
+            if(raceAddress){
+                RXMLElement *street = [raceAddress child: @"street"];
+                RXMLElement *city = [raceAddress child: @"city"];
+                RXMLElement *state = [raceAddress child: @"state"];
+                RXMLElement *zipcode = [raceAddress child: @"zipcode"];
+                RXMLElement *country = [raceAddress child: @"country_code"];
+                if(street && [street text])
+                    [race setObject:[street text] forKey:@"AL1"];
+                if(city && state && zipcode && country)
+                    [race setObject:[NSString stringWithFormat:@"%@ %@ %@, %@", [city text], [state text], [country text], [zipcode text]] forKey:@"AL2"];
+            }
+            
+            NSMutableArray *eventsArray = [[NSMutableArray alloc] init];
+            RXMLElement *raceEvents = [rootXML child: @"events"];
+            if(raceEvents){
+                NSArray *events = [raceEvents children: @"event"];
+                for(int y = 0; y < [events count]; y++){
+                    NSMutableDictionary *event = [[NSMutableDictionary alloc] init];
+                    RXMLElement *eventID = [[events objectAtIndex: y] child: @"event_id"];
+                    RXMLElement *eventName = [[events objectAtIndex: y] child: @"name"];
+                    RXMLElement *eventStartTime = [[events objectAtIndex: y] child: @"start_time"];
+                    //RXMLElement *eventRegOpens = [[events objectAtIndex: y] child: @"registration_opens"];
+                    RXMLElement *eventRegPeriods = [[events objectAtIndex: y] child: @"registration_periods"];
+                    NSMutableArray *eventRegPeriodsArray = [[NSMutableArray alloc] init];
+                    
+                    for(RXMLElement *eventRegPeriod in [eventRegPeriods children:@"registration_period"]){
+                        RXMLElement *eventRegPeriodOpens = [eventRegPeriod child: @"registration_opens"];
+                        RXMLElement *eventRegPeriodCloses = [eventRegPeriod child: @"registration_closes"];
+                        RXMLElement *eventRegPeriodFee = [eventRegPeriod child: @"race_fee"];
+                        RXMLElement *eventRegPeriodProcessingFee = [eventRegPeriod child: @"processing_fee"];
+                        
+                        if(eventRegPeriodOpens && eventRegPeriodCloses && eventRegPeriodFee){
+                            NSDictionary *eventRegPeriodDict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                                                [eventRegPeriodOpens text], @"RegistrationOpens",
+                                                                [eventRegPeriodCloses text], @"RegistrationCloses",
+                                                                [eventRegPeriodFee text], @"RegistrationFee",
+                                                                [eventRegPeriodProcessingFee text], @"RegistrationProcessingFee",nil];
+                            [eventRegPeriodsArray addObject: eventRegPeriodDict];
+                        }
+                    }
+                    
+                    if(eventID)
+                        [event setObject:[eventID text] forKey:@"EventID"];
+                    if(eventName)
+                        [event setObject:[eventName text] forKey:@"Name"];
+                    if(eventStartTime)
+                        [event setObject:[eventStartTime text] forKey:@"StartTime"];
+                    
+                    [event setObject:eventRegPeriodsArray forKey:@"EventRegistrationPeriods"];
+                    [eventsArray addObject: event];
+                }
+            }
+            [race setObject:eventsArray forKey:@"Events"];
+            dispatch_async(dispatch_get_main_queue(),^(){responseBlock(race);});
+            return;
+        }
+        dispatch_async(dispatch_get_main_queue(),^(){responseBlock(nil);});
+    };
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:completion];
+}
+
+- (void)retrieveUserInfo:(void (^)(RSUConnectionResponse))responseBlock{
+    if(!signedIn){
+        dispatch_async(dispatch_get_main_queue(),^(){responseBlock(RSUNoConnection);});
+    }else{
+        NSString *url = [NSString stringWithFormat:@"%@/rest/user/%@/?tmp_key=%@&tmp_secret=%@", RUNSIGNUP_BASE_URL, [lastParsedUser objectForKey:@"UserID"], key, secret];
+        
+        NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
+        [request setURL:[NSURL URLWithString:url]];
+        [request setHTTPMethod:@"GET"];
+        
+        void (^completion)(NSURLResponse *,NSData *,NSError *) = ^(NSURLResponse *response,NSData *urlData,NSError *error){                        
+            if(urlData != nil){
+                NSString *string = [[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding];
+                NSLog(@"%@", string);
+
+                RXMLElement *rootXML = [[RXMLElement alloc] initFromXMLData:urlData];
+                if([[rootXML tag] isEqualToString:@"user"]){
+                    [self parseUser: rootXML];
+                    dispatch_async(dispatch_get_main_queue(),^(){responseBlock(RSUSuccess);});
+                    return;
+                }else{
+                    dispatch_async(dispatch_get_main_queue(),^(){responseBlock(RSUNoConnection);});
+                    return;
+                }
+            }
+            
+            NSLog(@"URLData is nil");
+            dispatch_async(dispatch_get_main_queue(),^(){responseBlock(RSUNoConnection);});
+
+        };
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:completion];
+
+    }
+}
+
 /* Renew credentials every X amount of time so the user does not get logged out due to
  inactivity. */
 - (int)renewCredentials{
-    NSString *url = [NSString stringWithFormat:@"https://%@/rest/user?tmp_key=%@&tmp_secret=%@", RUNSIGNUP_BASE_URL, key, secret];
+    NSString *url = [NSString stringWithFormat:@"%@/rest/user?tmp_key=%@&tmp_secret=%@", RUNSIGNUP_BASE_URL, key, secret];
     
     NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
     [request setURL:[NSURL URLWithString:url]];
@@ -393,7 +573,7 @@ static RSUModel *model = nil;
 /* Log out the current user in a synchronous manner to tie up any loose ends. Not completely
  necessary but good practice all the same */
 - (void)logout{
-    NSString *url = [NSString stringWithFormat:@"https://%@/rest/logout?tmp_key=%@&tmp_secret=%@", RUNSIGNUP_BASE_URL, key, secret];
+    NSString *url = [NSString stringWithFormat:@"%@/rest/logout?tmp_key=%@&tmp_secret=%@", RUNSIGNUP_BASE_URL, key, secret];
     
     NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
     [request setURL:[NSURL URLWithString:url]];
@@ -420,8 +600,10 @@ static RSUModel *model = nil;
         RXMLElement *emailAddress = [user child:@"email"];
         RXMLElement *gender = [user child:@"gender"];
         RXMLElement *phone = [user child:@"phone"];
+        RXMLElement *profileImage = [user child:@"profile_image_url"];
         RXMLElement *dob = [user child:@"dob"];
         RXMLElement *address = [user child:@"address"];
+        
         if(userID){
             [userDict setObject:[userID text] forKey:@"UserID"];
         }
@@ -440,6 +622,8 @@ static RSUModel *model = nil;
         if(phone){
             [userDict setObject:[phone text] forKey:@"Phone"];
         }
+        if(profileImage)
+            [userDict setObject:[profileImage text] forKey:@"ProfileImage"];
         if(dob){
             // Convert from yyyy-MM-dd to MM/dd/yyyy
             if([[dob text] length] == 10){

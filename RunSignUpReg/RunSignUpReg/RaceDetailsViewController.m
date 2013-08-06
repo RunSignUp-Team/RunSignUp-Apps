@@ -34,14 +34,26 @@
 @synthesize viewMapButton;
 @synthesize viewMapOtherButton;
 @synthesize descriptionView;
+@synthesize rli;
 @synthesize scrollView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil data:(NSDictionary *)data{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self){
         self.dataDict = data;
+        
+        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+            self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:100];
+        else
+            self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:432 YLocation:140];
+        [[rli label] setText: @"Retrieving Details..."];
+        [self.view addSubview: rli];
+        [rli release];
+        
         self.title = @"Details";
         loadedDescription = NO;
+        hasLoadedDetails = NO;
+        attemptedToSignUpWithoutDetails = NO;
         eventDateFormatter = [[NSDateFormatter alloc] init];
         
     }
@@ -50,9 +62,9 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    
+        
     if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
-        [self setEdgesForExtendedLayout: UIExtendedEdgeNone];
+        [self setEdgesForExtendedLayout: UIRectEdgeNone];
     
     UIImage *blueButtonImage = [UIImage imageNamed:@"BlueButton.png"];
     UIImage *stretchedBlueButton = [blueButtonImage stretchableImageWithLeftCapWidth:12 topCapHeight:12];
@@ -90,6 +102,20 @@
     [mapView setRegion: MKCoordinateRegionMake(addressLocation, MKCoordinateSpanMake(0.005, 0.003))]; // these two just trial and error
 
     [descriptionView loadHTMLString:htmlString baseURL:[NSURL URLWithString:@"http://www.runsignup.com/"]];
+    
+    void (^response)(NSMutableDictionary *) = ^(NSMutableDictionary *race){
+        self.dataDict = race;
+        hasLoadedDetails = YES;
+        [rli fadeOut];
+        if(attemptedToSignUpWithoutDetails)
+            [self signUp: nil];
+        
+        NSLog(@"%@", dataDict);
+        attemptedToSignUpWithoutDetails = NO;
+    };
+    
+    [[RSUModel sharedModel] retrieveRaceDetailsWithRaceID:[dataDict objectForKey: @"RaceID"] response:response];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -125,7 +151,6 @@
 }
 
 - (void)layoutContent{
-        
     if(YES){ // if results exist for race, show view results button
         [viewResultsButton setHidden: NO];
         [viewResultsButton setFrame: CGRectMake(4, viewResultsButton.frame.origin.y, 312, viewResultsButton.frame.size.height)];
@@ -157,16 +182,27 @@
 }
 
 - (IBAction)signUp:(id)sender{
-    //if([[RSUModel sharedModel] signedIn]){
-        NSDictionary *dataDictCopy = [[NSDictionary alloc] initWithDictionary:dataDict copyItems:YES];
-        RaceSignUpWaiverViewController *rswvc = [[RaceSignUpWaiverViewController alloc] initWithNibName:@"RaceSignUpWaiverViewController" bundle:nil data: dataDictCopy];
-        [self.navigationController pushViewController:rswvc animated:YES];
-    /*}else{
-        SignInViewController *sivc = [[SignInViewController alloc] initWithNibName:@"SignInViewController" bundle:nil];
-        [sivc setDelegate: self];
-        [self presentModalViewController:sivc animated:YES];
-        [sivc release];
-    }*/
+    if(hasLoadedDetails){
+        if(REGISTRATION_REQUIRES_LOGIN){
+            if([[RSUModel sharedModel] signedIn]){
+                NSMutableDictionary *dataDictCopy = [[NSMutableDictionary alloc] initWithDictionary:dataDict copyItems:YES];
+                RaceSignUpWaiverViewController *rswvc = [[RaceSignUpWaiverViewController alloc] initWithNibName:@"RaceSignUpWaiverViewController" bundle:nil data: dataDictCopy];
+                [self.navigationController pushViewController:rswvc animated:YES];
+            }else{
+                SignInViewController *sivc = [[SignInViewController alloc] initWithNibName:@"SignInViewController" bundle:nil];
+                [sivc setDelegate: self];
+                [self presentViewController:sivc animated:YES completion:nil];
+                [sivc release];
+            }
+        }else{
+            NSMutableDictionary *dataDictCopy = [[NSMutableDictionary alloc] initWithDictionary:dataDict copyItems:YES];
+            RaceSignUpWaiverViewController *rswvc = [[RaceSignUpWaiverViewController alloc] initWithNibName:@"RaceSignUpWaiverViewController" bundle:nil data: dataDictCopy];
+            [self.navigationController pushViewController:rswvc animated:YES];
+        }
+    }else{
+        attemptedToSignUpWithoutDetails = YES;
+        [rli fadeIn];
+    }
 }
 
 - (void)didSignInEmail:(NSString *)email{
@@ -232,12 +268,12 @@
     [evc setEventStore: store];
     [evc setEvent: event];
     
-    [self presentModalViewController:evc animated:YES];
+    [self presentViewController:evc animated:YES completion:nil];
     [event release];
 }
 
 - (void)eventEditViewController:(EKEventEditViewController *)controller didCompleteWithAction:(EKEventEditViewAction)action{
-    [self dismissModalViewControllerAnimated: YES];
+    [self dismissViewControllerAnimated: YES completion:nil];
 }
 
 - (EKCalendar *)eventEditViewControllerDefaultCalendarForNewEvents:(EKEventEditViewController *)controller{
@@ -259,8 +295,6 @@
         NSDate *formattedDate = [eventDateFormatter dateFromString: eventStartTime];
         [eventDateFormatter setDateFormat:@"h:mm a"];
         eventStartTime = [eventDateFormatter stringFromDate: formattedDate];
-        
-        NSLog(@"%@:%@", eventName, eventStartTime);
         
         [[cell nameLabel] setText: eventName];
         [[cell timeLabel] setText: [@": " stringByAppendingString:eventStartTime]];

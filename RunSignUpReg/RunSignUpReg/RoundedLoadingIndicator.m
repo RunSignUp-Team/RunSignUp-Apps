@@ -75,7 +75,7 @@
 }
 
 - (void)fadeOut{
-    [self setAlpha: 1.0f];
+    //[self setAlpha: 1.0f];
     [self setHidden: NO];
     [UIView beginAnimations:@"RLI Fade" context:nil];
     [UIView setAnimationDuration:0.25f];

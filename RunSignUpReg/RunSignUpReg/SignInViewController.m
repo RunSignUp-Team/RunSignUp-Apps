@@ -35,7 +35,7 @@
     [super viewDidLoad];
 
     if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0){
-        [self setEdgesForExtendedLayout: UIExtendedEdgeNone];
+        [self setEdgesForExtendedLayout: UIRectEdgeNone];
         for(UIView *subView in [self.view subviews]){
             CGRect frame = [subView frame];
             frame.origin.y += 20;
@@ -97,7 +97,7 @@
                         }
                     }
                     
-                    [self dismissModalViewControllerAnimated:YES];
+                    [self dismissViewControllerAnimated:YES completion:nil];
                 }else if(didSucceed == RSUInvalidEmail){
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No user exists with that email address. Please try again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
                     [alert show];
@@ -122,7 +122,7 @@
 }
 
 - (IBAction)cancel:(id)sender{
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{

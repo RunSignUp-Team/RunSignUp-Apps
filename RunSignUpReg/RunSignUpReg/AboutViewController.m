@@ -21,7 +21,7 @@
 
 - (void)viewDidLoad{
     if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0){
-        [self setEdgesForExtendedLayout: UIExtendedEdgeNone];
+        [self setEdgesForExtendedLayout: UIRectEdgeNone];
         for(UIView *subView in [self.view subviews]){
             CGRect frame = [subView frame];
             frame.origin.y += 20;
@@ -40,7 +40,7 @@
 }
 
 - (IBAction)cancel:(id)sender{
-    [self dismissModalViewControllerAnimated: YES];
+    [self dismissViewControllerAnimated: YES completion:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{

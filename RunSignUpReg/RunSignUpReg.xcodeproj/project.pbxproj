@@ -130,6 +130,8 @@
 		77A8632815FC0EBE004BAED8 /* DropDown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77A8632415FC0EBE004BAED8 /* DropDown@2x.png */; };
 		77A8632915FC0EBE004BAED8 /* DropDownTap.png in Resources */ = {isa = PBXBuildFile; fileRef = 77A8632515FC0EBE004BAED8 /* DropDownTap.png */; };
 		77A8632A15FC0EBE004BAED8 /* DropDownTap@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77A8632615FC0EBE004BAED8 /* DropDownTap@2x.png */; };
+		77AD105517B13E7A00723395 /* RaceSignUpConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77AD105317B13E7A00723395 /* RaceSignUpConfirmationViewController.m */; };
+		77AD105617B13E7A00723395 /* RaceSignUpConfirmationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77AD105417B13E7A00723395 /* RaceSignUpConfirmationViewController.xib */; };
 		77B0E5F7177A569C00C00E5B /* CancelSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B0E5F3177A537600C00E5B /* CancelSearch.png */; };
 		77B0E5F8177A569C00C00E5B /* CancelSearch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B0E5F4177A537600C00E5B /* CancelSearch@2x.png */; };
 		77B0E5F9177A569C00C00E5B /* Search.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B0E5F5177A537600C00E5B /* Search.png */; };
@@ -138,7 +140,6 @@
 		77B6E5191609FA1E009E1AA9 /* RaceSignUpTShirtViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77B6E5171609FA1E009E1AA9 /* RaceSignUpTShirtViewController.xib */; };
 		77B6E51F1609FE21009E1AA9 /* RaceSignUpPaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B6E51D1609FE21009E1AA9 /* RaceSignUpPaymentViewController.m */; };
 		77B6E5201609FE21009E1AA9 /* RaceSignUpPaymentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77B6E51E1609FE21009E1AA9 /* RaceSignUpPaymentViewController.xib */; };
-		77B6E523160A1FEA009E1AA9 /* RegistrantTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B6E522160A1FEA009E1AA9 /* RegistrantTableViewCell.m */; };
 		77CAD417178B0BCE00DEB73C /* RaceResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77CAD415178B091600DEB73C /* RaceResultsViewController.m */; };
 		77CAD41B178B0CBB00DEB73C /* RaceResultsEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77CAD419178B0CBB00DEB73C /* RaceResultsEventViewController.m */; };
 		77CAD41C178B0CBB00DEB73C /* RaceResultsEventViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77CAD41A178B0CBB00DEB73C /* RaceResultsEventViewController.xib */; };
@@ -149,6 +150,8 @@
 		77CE5C8F160804150049AF36 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77CE5C8E160804150049AF36 /* CoreLocation.framework */; };
 		77CE5C981608DD710049AF36 /* RaceSignUpWaiverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77CE5C961608DD700049AF36 /* RaceSignUpWaiverViewController.m */; };
 		77CE5C991608DD710049AF36 /* RaceSignUpWaiverViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77CE5C971608DD700049AF36 /* RaceSignUpWaiverViewController.xib */; };
+		77F0894C179DC74A00DAC692 /* RaceResultsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77CAD416178B091600DEB73C /* RaceResultsViewController.xib */; };
+		BBA28565BD824D6BB6F193CA /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2FDEA0CF074A01A613C2A0 /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -296,6 +299,9 @@
 		77A8632415FC0EBE004BAED8 /* DropDown@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DropDown@2x.png"; sourceTree = "<group>"; };
 		77A8632515FC0EBE004BAED8 /* DropDownTap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DropDownTap.png; sourceTree = "<group>"; };
 		77A8632615FC0EBE004BAED8 /* DropDownTap@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DropDownTap@2x.png"; sourceTree = "<group>"; };
+		77AD105217B13E7A00723395 /* RaceSignUpConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RaceSignUpConfirmationViewController.h; sourceTree = "<group>"; };
+		77AD105317B13E7A00723395 /* RaceSignUpConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RaceSignUpConfirmationViewController.m; sourceTree = "<group>"; };
+		77AD105417B13E7A00723395 /* RaceSignUpConfirmationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RaceSignUpConfirmationViewController.xib; sourceTree = "<group>"; };
 		77B0E5F3177A537600C00E5B /* CancelSearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CancelSearch.png; sourceTree = "<group>"; };
 		77B0E5F4177A537600C00E5B /* CancelSearch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CancelSearch@2x.png"; sourceTree = "<group>"; };
 		77B0E5F5177A537600C00E5B /* Search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Search.png; sourceTree = "<group>"; };
@@ -306,8 +312,6 @@
 		77B6E51C1609FE21009E1AA9 /* RaceSignUpPaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RaceSignUpPaymentViewController.h; sourceTree = "<group>"; };
 		77B6E51D1609FE21009E1AA9 /* RaceSignUpPaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RaceSignUpPaymentViewController.m; sourceTree = "<group>"; };
 		77B6E51E1609FE21009E1AA9 /* RaceSignUpPaymentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RaceSignUpPaymentViewController.xib; sourceTree = "<group>"; };
-		77B6E521160A1FEA009E1AA9 /* RegistrantTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistrantTableViewCell.h; sourceTree = "<group>"; };
-		77B6E522160A1FEA009E1AA9 /* RegistrantTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistrantTableViewCell.m; sourceTree = "<group>"; };
 		77BB0C481796F12900ADDBF7 /* RaceDetailsRegistrationTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RaceDetailsRegistrationTableViewCell.h; sourceTree = "<group>"; };
 		77BB0C491796F12900ADDBF7 /* RaceDetailsRegistrationTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RaceDetailsRegistrationTableViewCell.m; sourceTree = "<group>"; };
 		77CAD414178B091600DEB73C /* RaceResultsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RaceResultsViewController.h; sourceTree = "<group>"; };
@@ -326,6 +330,8 @@
 		77CE5C951608DD700049AF36 /* RaceSignUpWaiverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RaceSignUpWaiverViewController.h; sourceTree = "<group>"; };
 		77CE5C961608DD700049AF36 /* RaceSignUpWaiverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RaceSignUpWaiverViewController.m; sourceTree = "<group>"; };
 		77CE5C971608DD700049AF36 /* RaceSignUpWaiverViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RaceSignUpWaiverViewController.xib; sourceTree = "<group>"; };
+		7A2FDEA0CF074A01A613C2A0 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA6D4898218C41479B2FCB92 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -342,6 +348,7 @@
 				77A8626215FBA45A004BAED8 /* UIKit.framework in Frameworks */,
 				77A8626415FBA45A004BAED8 /* Foundation.framework in Frameworks */,
 				77A8626615FBA45A004BAED8 /* CoreGraphics.framework in Frameworks */,
+				BBA28565BD824D6BB6F193CA /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,6 +362,7 @@
 				77A8626815FBA45A004BAED8 /* Supporting Files */,
 				77A8626015FBA45A004BAED8 /* Frameworks */,
 				77A8625E15FBA45A004BAED8 /* Products */,
+				AA6D4898218C41479B2FCB92 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -378,6 +386,7 @@
 				77CE5C8E160804150049AF36 /* CoreLocation.framework */,
 				77A8626315FBA45A004BAED8 /* Foundation.framework */,
 				77A8626515FBA45A004BAED8 /* CoreGraphics.framework */,
+				7A2FDEA0CF074A01A613C2A0 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -537,8 +546,9 @@
 				77B6E51C1609FE21009E1AA9 /* RaceSignUpPaymentViewController.h */,
 				77B6E51D1609FE21009E1AA9 /* RaceSignUpPaymentViewController.m */,
 				77B6E51E1609FE21009E1AA9 /* RaceSignUpPaymentViewController.xib */,
-				77B6E521160A1FEA009E1AA9 /* RegistrantTableViewCell.h */,
-				77B6E522160A1FEA009E1AA9 /* RegistrantTableViewCell.m */,
+				77AD105217B13E7A00723395 /* RaceSignUpConfirmationViewController.h */,
+				77AD105317B13E7A00723395 /* RaceSignUpConfirmationViewController.m */,
+				77AD105417B13E7A00723395 /* RaceSignUpConfirmationViewController.xib */,
 				7723860B179739C70095D1EF /* RaceSignUpEventTableViewCell.h */,
 				7723860C179739C70095D1EF /* RaceSignUpEventTableViewCell.m */,
 			);
@@ -608,9 +618,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 77A8627515FBA45A004BAED8 /* Build configuration list for PBXNativeTarget "RunSignUpReg" */;
 			buildPhases = (
+				4989C200348C4D3FBA7376B6 /* Check Pods Manifest.lock */,
 				77A8625915FBA45A004BAED8 /* Sources */,
 				77A8625A15FBA45A004BAED8 /* Frameworks */,
 				77A8625B15FBA45A004BAED8 /* Resources */,
+				AC5B73E30F3346769C776ED2 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -651,6 +663,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77F0894C179DC74A00DAC692 /* RaceResultsViewController.xib in Resources */,
 				77188A2E177E3E60000A8D2F /* OtherIcon.png in Resources */,
 				77188A2F177E3E60000A8D2F /* OtherIcon@2x.png in Resources */,
 				77B0E5F7177A569C00C00E5B /* CancelSearch.png in Resources */,
@@ -732,6 +745,7 @@
 				77A8630D15FBAA72004BAED8 /* RedButtonTap@2x.png in Resources */,
 				77A8631615FBACB8004BAED8 /* GreenButton.png in Resources */,
 				77A8631715FBACB8004BAED8 /* GreenButton@2x.png in Resources */,
+				77AD105617B13E7A00723395 /* RaceSignUpConfirmationViewController.xib in Resources */,
 				77A8631815FBACB8004BAED8 /* GreenButtonTap.png in Resources */,
 				77A8631915FBACB8004BAED8 /* GreenButtonTap@2x.png in Resources */,
 				77A8631C15FBAFA3004BAED8 /* Title.png in Resources */,
@@ -762,6 +776,39 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		4989C200348C4D3FBA7376B6 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		AC5B73E30F3346769C776ED2 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		77A8625915FBA45A004BAED8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -787,10 +834,10 @@
 				77681792160539E500C5F29A /* RaceSearchViewController.m in Sources */,
 				77012F131606D9AA00E1627C /* RaceTableViewCell.m in Sources */,
 				77CE5C871607C6ED0049AF36 /* RaceDetailsViewController.m in Sources */,
+				77AD105517B13E7A00723395 /* RaceSignUpConfirmationViewController.m in Sources */,
 				77CE5C981608DD710049AF36 /* RaceSignUpWaiverViewController.m in Sources */,
 				77B6E5181609FA1E009E1AA9 /* RaceSignUpTShirtViewController.m in Sources */,
 				77B6E51F1609FE21009E1AA9 /* RaceSignUpPaymentViewController.m in Sources */,
-				77B6E523160A1FEA009E1AA9 /* RegistrantTableViewCell.m in Sources */,
 				7757C2CE163F68A300B8780A /* UserRaceListViewController.m in Sources */,
 				7757C2D616403B9700B8780A /* EGORefreshTableHeaderView.m in Sources */,
 				7781644E168687FD0033B6FE /* RaceDetailsEventTableViewCell.m in Sources */,
@@ -877,10 +924,18 @@
 		};
 		77A8627615FBA45A004BAED8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AA6D4898218C41479B2FCB92 /* Pods.xcconfig */;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Shaun Connolly (T2FZ84TP6H)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RunSignUpReg/RunSignUpReg-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"\"${PODS_ROOT}/Headers\"",
+					"\"${PODS_ROOT}/Headers/Braintree\"",
+					/usr/include/libxml2,
+				);
 				INFOPLIST_FILE = "RunSignUpReg/RunSignUpReg-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -888,10 +943,17 @@
 		};
 		77A8627715FBA45A004BAED8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AA6D4898218C41479B2FCB92 /* Pods.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RunSignUpReg/RunSignUpReg-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"\"${PODS_ROOT}/Headers\"",
+					"\"${PODS_ROOT}/Headers/Braintree\"",
+					/usr/include/libxml2,
+				);
 				INFOPLIST_FILE = "RunSignUpReg/RunSignUpReg-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

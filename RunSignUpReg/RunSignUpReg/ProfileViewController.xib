@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4457.9" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4457.9" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1296" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3682.9"/>
@@ -14,6 +14,7 @@
                 <outlet property="genderLabel" destination="16" id="33"/>
                 <outlet property="nameLabel" destination="6" id="20"/>
                 <outlet property="phoneLabel" destination="15" id="32"/>
+                <outlet property="profileImageView" destination="19" id="yFv-SU-3vI"/>
                 <outlet property="propicLabel" destination="18" id="21"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>

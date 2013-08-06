@@ -54,7 +54,7 @@
     [super viewDidLoad];
         
     if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
-        [self setEdgesForExtendedLayout: UIExtendedEdgeNone];
+        [self setEdgesForExtendedLayout: UIRectEdgeNone];
     
     UIImage *blueButtonImage = [UIImage imageNamed:@"BlueButton.png"];
     UIImage *stretchedBlueButton = [blueButtonImage stretchableImageWithLeftCapWidth:12 topCapHeight:12];
@@ -145,14 +145,13 @@
 // Sign in button also doubles as "view profile" button
 - (IBAction)signIn:(id)sender{
     if(signedIn){
-        ProfileViewController *pvc = [[ProfileViewController alloc] initWithNibName:@"ProfileViewController" bundle:nil];
-        [pvc setIsUserProfile: YES];
+        ProfileViewController *pvc = [[ProfileViewController alloc] initWithNibName:@"ProfileViewController" bundle:nil isUserProfile:YES];
         [self.navigationController pushViewController:pvc animated:YES];
         [pvc release];
     }else{
         SignInViewController *svc = [[SignInViewController alloc] initWithNibName:@"SignInViewController" bundle:nil];
         [svc setDelegate: self];
-        [self presentModalViewController:svc animated:YES];
+        [self presentViewController:svc animated:YES completion:nil];
         [svc release];
     }
 }
@@ -173,14 +172,14 @@
 }
 
 - (IBAction)signUp:(id)sender{
-    SignUpViewController *svc = [[SignUpViewController alloc] initWithNibName:@"SignUpViewController" bundle:nil];
+    SignUpViewController *svc = [[SignUpViewController alloc] initWithNibName:@"SignUpViewController" bundle:nil profileViewController:nil];
     [self.navigationController pushViewController:svc animated:YES];
     [svc release];
 }
 
 - (IBAction)about:(id)sender{
     AboutViewController *avc = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
-    [self presentModalViewController:avc animated:YES];
+    [self presentViewController:avc animated:YES completion:nil];
     [avc release];
 }
 

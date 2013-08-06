@@ -26,7 +26,7 @@
     [super viewDidLoad];
     
     if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
-        [self setEdgesForExtendedLayout: UIExtendedEdgeNone];
+        [self setEdgesForExtendedLayout: UIRectEdgeNone];
     
     self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:100];
     [[rli label] setText:@"Retrieving list..."];

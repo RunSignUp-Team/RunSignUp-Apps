@@ -1,0 +1,2 @@
+PODS_BRAINTREE_FRAMEWORK_SEARCH_PATHS = "$(PODS_ROOT)/Braintree/venmo-touch"
+PODS_BRAINTREE_OTHER_LDFLAGS = -framework CoreGraphics -framework Foundation -framework QuartzCore -framework Security -framework UIKit -framework VenmoTouch

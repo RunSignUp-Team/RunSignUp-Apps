@@ -45,7 +45,7 @@
     [super viewDidLoad];
     
     if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
-        [self setEdgesForExtendedLayout: UIExtendedEdgeNone];
+        [self setEdgesForExtendedLayout: UIRectEdgeNone];
     
     [table setSeparatorColor: [UIColor colorWithRed:0.0f green:0.5804f blue:0.8f alpha:1.0f]];
     

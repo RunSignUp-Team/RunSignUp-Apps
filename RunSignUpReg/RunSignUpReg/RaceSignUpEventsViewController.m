@@ -14,7 +14,7 @@
 @synthesize eventsTable;
 @synthesize selectButton;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil data:(NSDictionary *)data{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil data:(NSMutableDictionary *)data{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         dataDict = data;
@@ -38,6 +38,11 @@
     
     [selectButton setBackgroundImage:stretchedGreenButton forState:UIControlStateNormal];
     [selectButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
+    
+    if([eventsTable numberOfRowsInSection: 0] == 1){
+        [[eventsTable cellForRowAtIndexPath: [NSIndexPath indexPathForRow:0 inSection:0]] setAccessoryType:UITableViewCellAccessoryCheckmark];
+        [selectedArray replaceObjectAtIndex:0 withObject:[NSNumber numberWithBool: YES]];
+    }
 }
 
 - (IBAction)select:(id)sender{
@@ -52,9 +57,17 @@
         [alert release];
     }else{
         
-        // Pass on selection info >>
+        NSMutableDictionary *newDataDict = [[NSMutableDictionary alloc] initWithDictionary:dataDict copyItems:YES];
+        NSMutableArray *mutableEventsArray = [[newDataDict objectForKey: @"Events"] mutableCopy];
+        for(int x = [selectedArray count] - 1; x >= 0; x--){
+            if(![[selectedArray objectAtIndex: x] boolValue]){
+                [mutableEventsArray removeObjectAtIndex: x];
+            }
+        }
         
-        RaceSignUpTShirtViewController *rsutvc = [[RaceSignUpTShirtViewController alloc] initWithNibName:@"RaceSignUpTShirtViewController" bundle:nil data:dataDict];
+        [newDataDict setObject:mutableEventsArray forKey:@"Events"];
+        
+        RaceSignUpTShirtViewController *rsutvc = [[RaceSignUpTShirtViewController alloc] initWithNibName:@"RaceSignUpTShirtViewController" bundle:nil data:newDataDict];
         [self.navigationController pushViewController:rsutvc animated:YES];
         [rsutvc release];
     }
@@ -63,13 +76,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     BOOL oppositeBool = ![[selectedArray objectAtIndex: indexPath.row] boolValue];
     [selectedArray replaceObjectAtIndex:indexPath.row withObject:[NSNumber numberWithBool: oppositeBool]];
-    NSLog(@"%@", selectedArray);
     if(oppositeBool)
         [[tableView cellForRowAtIndexPath: indexPath] setAccessoryType: UITableViewCellAccessoryCheckmark];
     else
         [[tableView cellForRowAtIndexPath: indexPath] setAccessoryType: UITableViewCellAccessoryNone];
 
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

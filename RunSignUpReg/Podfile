@@ -1,0 +1,2 @@
+platform :ios
+pod 'Braintree', :git => 'https://github.com/braintree/braintree_ios.git'

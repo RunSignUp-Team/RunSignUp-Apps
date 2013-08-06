@@ -1,0 +1,558 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0B1472D2A5034B228EBB3440 /* VTCardView.h in Headers */ = {isa = PBXBuildFile; fileRef = 35A0D91C00B84A04869F0BDD /* VTCardView.h */; };
+		0FB0653857A549188D9EADA5 /* BTRandom.h in Headers */ = {isa = PBXBuildFile; fileRef = 08EAF76D827B46D1BE10F8EC /* BTRandom.h */; };
+		1BF723B129DD42F89011DA42 /* BTPaymentCardType.m in Sources */ = {isa = PBXBuildFile; fileRef = 58925754D6274FEC829EB7CE /* BTPaymentCardType.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		1E9D5940F79D44458738BC74 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3974D58551394E7F8BFE8695 /* Foundation.framework */; };
+		1F4093CC8E8541B3BF282BED /* BTPaymentActivityOverlayView.h in Headers */ = {isa = PBXBuildFile; fileRef = 08544F8D85FA4460AE3EF5D4 /* BTPaymentActivityOverlayView.h */; };
+		259CBA47FB5848449E3357C6 /* BTPaymentFormTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = B07FFDAEDB2F41D1922BF35C /* BTPaymentFormTextField.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		33EF599D123D48E18CE53D02 /* BTPaymentFormTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 3419085500744D4784270875 /* BTPaymentFormTextField.h */; };
+		3A8244AA4BBD4B7AA6DA6B74 /* BTPaymentViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 422676A541E048DEADBC58AD /* BTPaymentViewController.h */; };
+		47D21DFAF5DF4D71930A7E89 /* BTPaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 854AF1D398F6482CB935293C /* BTPaymentViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		4AC86A99CF6B4C0E91B6E2FD /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 14880E08DC2B4D628A55B83D /* NSData+Base64.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		4F3C9426FA4C433E8ED8FEF4 /* BTAES.m in Sources */ = {isa = PBXBuildFile; fileRef = 348278DE883A4FE7BDDBE5F7 /* BTAES.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		5D3D5FC4D2324CDCAE4F4FAC /* VenmoTouch.h in Headers */ = {isa = PBXBuildFile; fileRef = 61D184F914214472AA830EA4 /* VenmoTouch.h */; };
+		5FDED7E401274C1E9EC069D5 /* BTPaymentCardUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EBBFC8BEFBF48789EA161EE /* BTPaymentCardUtils.h */; };
+		6211D81F215D43AA936FD5F2 /* BTRandom.m in Sources */ = {isa = PBXBuildFile; fileRef = 71574436FAA24C8AADC4CABD /* BTRandom.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		6337FD185FAB49DCAFB58311 /* BTEncryption.m in Sources */ = {isa = PBXBuildFile; fileRef = EA89B0010BE747A389CF726F /* BTEncryption.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		68F53BC4E05443688AEFDA5F /* BTEncryption.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E0FDD85BC9845A0A264B99F /* BTEncryption.h */; };
+		755D76F4EBF44CC2849C393E /* BTPaymentCardUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DC8785730644D579763D73B /* BTPaymentCardUtils.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		778F9CF1BB2B45EDBE17AE30 /* Pods-Braintree-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = E157960977D14728B926C65E /* Pods-Braintree-dummy.m */; };
+		7DE085BF01E14A2CB9344E8C /* BTRSA.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FD55819ED54770A518AE49 /* BTRSA.h */; };
+		805C3829ECEA46ED9FA727B9 /* VTCheckboxView.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E6168226E1E45CB8B82CE33 /* VTCheckboxView.h */; };
+		822A292A32E648A9AB8CFCEC /* BTRSA.m in Sources */ = {isa = PBXBuildFile; fileRef = E93BED81D5454A4A8965C6AE /* BTRSA.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		8A617F0739B14F358B4B851D /* BTSecKeyWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 42028591D64848EB95EB87F8 /* BTSecKeyWrapper.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		8DFA8E53E8D640CCA3D0B283 /* VTClient.h in Headers */ = {isa = PBXBuildFile; fileRef = C04D69ED99FC46258F019D8B /* VTClient.h */; };
+		90CC858EE74F4E11A98F3260 /* BTPaymentCardType.h in Headers */ = {isa = PBXBuildFile; fileRef = F1E76FA7055C4F6D8C658315 /* BTPaymentCardType.h */; };
+		9891FC13D6404EA7ADB10F1F /* BTPaymentFormView.m in Sources */ = {isa = PBXBuildFile; fileRef = 146A9609003A40CB98C6369E /* BTPaymentFormView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		A6BA07625BD54355966442BF /* BTAES.h in Headers */ = {isa = PBXBuildFile; fileRef = 6189465F1D8E460485BEF317 /* BTAES.h */; };
+		AD4A287412BD4E6890717887 /* BTPaymentActivityOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = E352450D17CB43ACAB7B7D77 /* BTPaymentActivityOverlayView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		AEE21EF061B64ED38920C619 /* Pods-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D91E30EFA3A4CE1B05225A3 /* Pods-dummy.m */; };
+		BE688A84F61E447784528770 /* VenmoTouchSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = 16BE90158927405CA66E670C /* VenmoTouchSettings.h */; };
+		D8A8095A55004140AEB99433 /* NSData+Base64.h in Headers */ = {isa = PBXBuildFile; fileRef = 29DBC967FDBF418FB5D19715 /* NSData+Base64.h */; };
+		E445A8CB21BA4AB4BD1BD93F /* BTPaymentFormView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D069E53CC4C46F9A2AC5A2E /* BTPaymentFormView.h */; };
+		EBEABD3AD84A4C74B9AF0528 /* libPods-Braintree.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 294C7C5B5720409FAB8629B9 /* libPods-Braintree.a */; };
+		EEBE8013E7E2494E876AD810 /* BTSecKeyWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B7B012260614A6EACB077DD /* BTSecKeyWrapper.h */; };
+		F319F273E5CA4C54B338562A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3974D58551394E7F8BFE8695 /* Foundation.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8CAA1A86DF4E4DB98558BDD8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2F8E4DD7AA7540AEB772C5AF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 941DF86095BD44AAA1824DF7;
+			remoteInfo = "Pods-Braintree";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		04FD55819ED54770A518AE49 /* BTRSA.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BTRSA.h; path = Braintree/braintree/BTEncryption/BTRSA.h; sourceTree = SOURCE_ROOT; };
+		08544F8D85FA4460AE3EF5D4 /* BTPaymentActivityOverlayView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BTPaymentActivityOverlayView.h; path = Braintree/braintree/BTPayment/BTPaymentActivityOverlayView.h; sourceTree = SOURCE_ROOT; };
+		08EAF76D827B46D1BE10F8EC /* BTRandom.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BTRandom.h; path = Braintree/braintree/BTEncryption/BTRandom.h; sourceTree = SOURCE_ROOT; };
+		126EFB2D4A704A3E96F37F54 /* Pods-Braintree-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Braintree-prefix.pch"; sourceTree = SOURCE_ROOT; };
+		146A9609003A40CB98C6369E /* BTPaymentFormView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BTPaymentFormView.m; path = Braintree/braintree/BTPayment/BTPaymentFormView.m; sourceTree = SOURCE_ROOT; };
+		14880E08DC2B4D628A55B83D /* NSData+Base64.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSData+Base64.m"; path = "Braintree/braintree/BTEncryption/NSData+Base64.m"; sourceTree = SOURCE_ROOT; };
+		16BE90158927405CA66E670C /* VenmoTouchSettings.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = VenmoTouchSettings.h; path = "Braintree/venmo-touch/VenmoTouch.framework/Headers/VenmoTouchSettings.h"; sourceTree = SOURCE_ROOT; };
+		19F9904340D540FFA1856F88 /* Pods-environment.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-environment.h"; sourceTree = SOURCE_ROOT; };
+		1DC8785730644D579763D73B /* BTPaymentCardUtils.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BTPaymentCardUtils.m; path = Braintree/braintree/BTPayment/BTPaymentCardUtils.m; sourceTree = SOURCE_ROOT; };
+		25E70510FCB04144B2FD6BB6 /* Pods-Braintree-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Braintree-Private.xcconfig"; sourceTree = SOURCE_ROOT; };
+		294C7C5B5720409FAB8629B9 /* libPods-Braintree.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		29A43473A89B4E91A8F4B766 /* Pods-Braintree.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Braintree.xcconfig"; sourceTree = SOURCE_ROOT; };
+		29DBC967FDBF418FB5D19715 /* NSData+Base64.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSData+Base64.h"; path = "Braintree/braintree/BTEncryption/NSData+Base64.h"; sourceTree = SOURCE_ROOT; };
+		305D64DDAA0E425D8D3CE72B /* VenmoTouch.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = VenmoTouch.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/VenmoTouch.framework; sourceTree = DEVELOPER_DIR; };
+		3419085500744D4784270875 /* BTPaymentFormTextField.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BTPaymentFormTextField.h; path = Braintree/braintree/BTPayment/BTPaymentFormTextField.h; sourceTree = SOURCE_ROOT; };
+		348278DE883A4FE7BDDBE5F7 /* BTAES.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BTAES.m; path = Braintree/braintree/BTEncryption/BTAES.m; sourceTree = SOURCE_ROOT; };
+		35A0D91C00B84A04869F0BDD /* VTCardView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = VTCardView.h; path = "Braintree/venmo-touch/VenmoTouch.framework/Headers/VTCardView.h"; sourceTree = SOURCE_ROOT; };
+		3974D58551394E7F8BFE8695 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		42028591D64848EB95EB87F8 /* BTSecKeyWrapper.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BTSecKeyWrapper.m; path = Braintree/braintree/BTEncryption/BTSecKeyWrapper.m; sourceTree = SOURCE_ROOT; };
+		422676A541E048DEADBC58AD /* BTPaymentViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BTPaymentViewController.h; path = Braintree/braintree/BTPayment/BTPaymentViewController.h; sourceTree = SOURCE_ROOT; };
+		4D91E30EFA3A4CE1B05225A3 /* Pods-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-dummy.m"; sourceTree = SOURCE_ROOT; };
+		4EBBFC8BEFBF48789EA161EE /* BTPaymentCardUtils.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BTPaymentCardUtils.h; path = Braintree/braintree/BTPayment/BTPaymentCardUtils.h; sourceTree = SOURCE_ROOT; };
+		57152F1D63844691AEF53632 /* QuartzCore.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
+		58925754D6274FEC829EB7CE /* BTPaymentCardType.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BTPaymentCardType.m; path = Braintree/braintree/BTPayment/BTPaymentCardType.m; sourceTree = SOURCE_ROOT; };
+		5E6168226E1E45CB8B82CE33 /* VTCheckboxView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = VTCheckboxView.h; path = "Braintree/venmo-touch/VenmoTouch.framework/Headers/VTCheckboxView.h"; sourceTree = SOURCE_ROOT; };
+		5E75F13C93AF47D78674C35A /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		6189465F1D8E460485BEF317 /* BTAES.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BTAES.h; path = Braintree/braintree/BTEncryption/BTAES.h; sourceTree = SOURCE_ROOT; };
+		61D184F914214472AA830EA4 /* VenmoTouch.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = VenmoTouch.h; path = "Braintree/venmo-touch/VenmoTouch.framework/Headers/VenmoTouch.h"; sourceTree = SOURCE_ROOT; };
+		68ED922C992F4AF5A1667F1E /* BraintreeResources.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = BraintreeResources.bundle; path = Braintree/braintree/BraintreeResources.bundle; sourceTree = SOURCE_ROOT; };
+		6D069E53CC4C46F9A2AC5A2E /* BTPaymentFormView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BTPaymentFormView.h; path = Braintree/braintree/BTPayment/BTPaymentFormView.h; sourceTree = SOURCE_ROOT; };
+		71574436FAA24C8AADC4CABD /* BTRandom.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BTRandom.m; path = Braintree/braintree/BTEncryption/BTRandom.m; sourceTree = SOURCE_ROOT; };
+		82E587ABC8F2490EB191A0F1 /* UIKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		854AF1D398F6482CB935293C /* BTPaymentViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BTPaymentViewController.m; path = Braintree/braintree/BTPayment/BTPaymentViewController.m; sourceTree = SOURCE_ROOT; };
+		8B19AA1F3E88400EABE344C5 /* Pods-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-acknowledgements.markdown"; sourceTree = SOURCE_ROOT; };
+		8B7B012260614A6EACB077DD /* BTSecKeyWrapper.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BTSecKeyWrapper.h; path = Braintree/braintree/BTEncryption/BTSecKeyWrapper.h; sourceTree = SOURCE_ROOT; };
+		930786188FF34B60B288CB4C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		9BF5141AD266401BA9458099 /* Pods-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-resources.sh"; sourceTree = SOURCE_ROOT; };
+		9E0FDD85BC9845A0A264B99F /* BTEncryption.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BTEncryption.h; path = Braintree/braintree/BTEncryption/BTEncryption.h; sourceTree = SOURCE_ROOT; };
+		9FDC534058254A2E977CB44F /* CoreGraphics.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
+		B07FFDAEDB2F41D1922BF35C /* BTPaymentFormTextField.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BTPaymentFormTextField.m; path = Braintree/braintree/BTPayment/BTPaymentFormTextField.m; sourceTree = SOURCE_ROOT; };
+		B60FA8D3C915419DA5490E8A /* Pods-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-acknowledgements.plist"; sourceTree = SOURCE_ROOT; };
+		C04D69ED99FC46258F019D8B /* VTClient.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = VTClient.h; path = "Braintree/venmo-touch/VenmoTouch.framework/Headers/VTClient.h"; sourceTree = SOURCE_ROOT; };
+		D05E37B12CA1461E81C7C30E /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		E157960977D14728B926C65E /* Pods-Braintree-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Braintree-dummy.m"; sourceTree = SOURCE_ROOT; };
+		E352450D17CB43ACAB7B7D77 /* BTPaymentActivityOverlayView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BTPaymentActivityOverlayView.m; path = Braintree/braintree/BTPayment/BTPaymentActivityOverlayView.m; sourceTree = SOURCE_ROOT; };
+		E93BED81D5454A4A8965C6AE /* BTRSA.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BTRSA.m; path = Braintree/braintree/BTEncryption/BTRSA.m; sourceTree = SOURCE_ROOT; };
+		EA89B0010BE747A389CF726F /* BTEncryption.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BTEncryption.m; path = Braintree/braintree/BTEncryption/BTEncryption.m; sourceTree = SOURCE_ROOT; };
+		EEBE01F4F973425D9DE212BC /* Security.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		F1E76FA7055C4F6D8C658315 /* BTPaymentCardType.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BTPaymentCardType.h; path = Braintree/braintree/BTPayment/BTPaymentCardType.h; sourceTree = SOURCE_ROOT; };
+		FC84934D9B0649DDAF7B5745 /* VenmoTouchResources.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = VenmoTouchResources.bundle; path = "Braintree/venmo-touch/VenmoTouchResources.bundle"; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6F780F109A5D4E65B340E9D4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F319F273E5CA4C54B338562A /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AF684D4865C345648E641E9E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1E9D5940F79D44458738BC74 /* Foundation.framework in Frameworks */,
+				EBEABD3AD84A4C74B9AF0528 /* libPods-Braintree.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		08511B267613407C8726B1A2 /* Braintree */ = {
+			isa = PBXGroup;
+			children = (
+				68ED922C992F4AF5A1667F1E /* BraintreeResources.bundle */,
+				FC84934D9B0649DDAF7B5745 /* VenmoTouchResources.bundle */,
+			);
+			name = Braintree;
+			sourceTree = "<group>";
+		};
+		3DBF767C4BEE4C70AE77662D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9FDC534058254A2E977CB44F /* CoreGraphics.framework */,
+				3974D58551394E7F8BFE8695 /* Foundation.framework */,
+				57152F1D63844691AEF53632 /* QuartzCore.framework */,
+				EEBE01F4F973425D9DE212BC /* Security.framework */,
+				82E587ABC8F2490EB191A0F1 /* UIKit.framework */,
+				305D64DDAA0E425D8D3CE72B /* VenmoTouch.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		68BCE60174A4457F9766902D /* Braintree */ = {
+			isa = PBXGroup;
+			children = (
+				61D184F914214472AA830EA4 /* VenmoTouch.h */,
+				16BE90158927405CA66E670C /* VenmoTouchSettings.h */,
+				35A0D91C00B84A04869F0BDD /* VTCardView.h */,
+				5E6168226E1E45CB8B82CE33 /* VTCheckboxView.h */,
+				C04D69ED99FC46258F019D8B /* VTClient.h */,
+				6189465F1D8E460485BEF317 /* BTAES.h */,
+				348278DE883A4FE7BDDBE5F7 /* BTAES.m */,
+				9E0FDD85BC9845A0A264B99F /* BTEncryption.h */,
+				EA89B0010BE747A389CF726F /* BTEncryption.m */,
+				08EAF76D827B46D1BE10F8EC /* BTRandom.h */,
+				71574436FAA24C8AADC4CABD /* BTRandom.m */,
+				04FD55819ED54770A518AE49 /* BTRSA.h */,
+				E93BED81D5454A4A8965C6AE /* BTRSA.m */,
+				8B7B012260614A6EACB077DD /* BTSecKeyWrapper.h */,
+				42028591D64848EB95EB87F8 /* BTSecKeyWrapper.m */,
+				29DBC967FDBF418FB5D19715 /* NSData+Base64.h */,
+				14880E08DC2B4D628A55B83D /* NSData+Base64.m */,
+				08544F8D85FA4460AE3EF5D4 /* BTPaymentActivityOverlayView.h */,
+				E352450D17CB43ACAB7B7D77 /* BTPaymentActivityOverlayView.m */,
+				F1E76FA7055C4F6D8C658315 /* BTPaymentCardType.h */,
+				58925754D6274FEC829EB7CE /* BTPaymentCardType.m */,
+				4EBBFC8BEFBF48789EA161EE /* BTPaymentCardUtils.h */,
+				1DC8785730644D579763D73B /* BTPaymentCardUtils.m */,
+				3419085500744D4784270875 /* BTPaymentFormTextField.h */,
+				B07FFDAEDB2F41D1922BF35C /* BTPaymentFormTextField.m */,
+				6D069E53CC4C46F9A2AC5A2E /* BTPaymentFormView.h */,
+				146A9609003A40CB98C6369E /* BTPaymentFormView.m */,
+				422676A541E048DEADBC58AD /* BTPaymentViewController.h */,
+				854AF1D398F6482CB935293C /* BTPaymentViewController.m */,
+			);
+			name = Braintree;
+			sourceTree = "<group>";
+		};
+		6F77EDB7356F451CBCD55EC8 = {
+			isa = PBXGroup;
+			children = (
+				3DBF767C4BEE4C70AE77662D /* Frameworks */,
+				8A18C921B55C4DFC9BD48D7F /* Pods */,
+				D724FB3BEAD44C649677356C /* Products */,
+				EB2CEBA1495B4F918DD80E1E /* Resources */,
+				D53C12C685594C40924D6EB2 /* Targets Support Files */,
+				5E75F13C93AF47D78674C35A /* Podfile */,
+			);
+			sourceTree = "<group>";
+		};
+		8A18C921B55C4DFC9BD48D7F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				68BCE60174A4457F9766902D /* Braintree */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		D53C12C685594C40924D6EB2 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				E2A4181E3117482AB6ADE676 /* Pods-Braintree */,
+				E7AB7B038AA847589AD2A1B2 /* Pods */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		D724FB3BEAD44C649677356C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				294C7C5B5720409FAB8629B9 /* libPods-Braintree.a */,
+				930786188FF34B60B288CB4C /* libPods.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E2A4181E3117482AB6ADE676 /* Pods-Braintree */ = {
+			isa = PBXGroup;
+			children = (
+				29A43473A89B4E91A8F4B766 /* Pods-Braintree.xcconfig */,
+				25E70510FCB04144B2FD6BB6 /* Pods-Braintree-Private.xcconfig */,
+				126EFB2D4A704A3E96F37F54 /* Pods-Braintree-prefix.pch */,
+				E157960977D14728B926C65E /* Pods-Braintree-dummy.m */,
+			);
+			name = "Pods-Braintree";
+			sourceTree = "<group>";
+		};
+		E7AB7B038AA847589AD2A1B2 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D05E37B12CA1461E81C7C30E /* Pods.xcconfig */,
+				19F9904340D540FFA1856F88 /* Pods-environment.h */,
+				9BF5141AD266401BA9458099 /* Pods-resources.sh */,
+				B60FA8D3C915419DA5490E8A /* Pods-acknowledgements.plist */,
+				8B19AA1F3E88400EABE344C5 /* Pods-acknowledgements.markdown */,
+				4D91E30EFA3A4CE1B05225A3 /* Pods-dummy.m */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		EB2CEBA1495B4F918DD80E1E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				08511B267613407C8726B1A2 /* Braintree */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		6C9F91B0957144C39094F4BB /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5D3D5FC4D2324CDCAE4F4FAC /* VenmoTouch.h in Headers */,
+				BE688A84F61E447784528770 /* VenmoTouchSettings.h in Headers */,
+				0B1472D2A5034B228EBB3440 /* VTCardView.h in Headers */,
+				805C3829ECEA46ED9FA727B9 /* VTCheckboxView.h in Headers */,
+				8DFA8E53E8D640CCA3D0B283 /* VTClient.h in Headers */,
+				A6BA07625BD54355966442BF /* BTAES.h in Headers */,
+				68F53BC4E05443688AEFDA5F /* BTEncryption.h in Headers */,
+				0FB0653857A549188D9EADA5 /* BTRandom.h in Headers */,
+				7DE085BF01E14A2CB9344E8C /* BTRSA.h in Headers */,
+				EEBE8013E7E2494E876AD810 /* BTSecKeyWrapper.h in Headers */,
+				D8A8095A55004140AEB99433 /* NSData+Base64.h in Headers */,
+				1F4093CC8E8541B3BF282BED /* BTPaymentActivityOverlayView.h in Headers */,
+				90CC858EE74F4E11A98F3260 /* BTPaymentCardType.h in Headers */,
+				5FDED7E401274C1E9EC069D5 /* BTPaymentCardUtils.h in Headers */,
+				33EF599D123D48E18CE53D02 /* BTPaymentFormTextField.h in Headers */,
+				E445A8CB21BA4AB4BD1BD93F /* BTPaymentFormView.h in Headers */,
+				3A8244AA4BBD4B7AA6DA6B74 /* BTPaymentViewController.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		6A3E4D1254D5436DA59ECB3A /* Pods */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 840DB09B9C8C4E5B9AB1D8F2 /* Build configuration list for PBXNativeTarget "Pods" */;
+			buildPhases = (
+				1F80CFE9315948E5B7829CC9 /* Sources */,
+				AF684D4865C345648E641E9E /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8F556332B9AE40F4B86A39AE /* PBXTargetDependency */,
+			);
+			name = Pods;
+			productName = Pods;
+			productReference = 930786188FF34B60B288CB4C /* libPods.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		941DF86095BD44AAA1824DF7 /* Pods-Braintree */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2204E3FA69E94A5EA7FEFC16 /* Build configuration list for PBXNativeTarget "Pods-Braintree" */;
+			buildPhases = (
+				8848E48FA56D40B5ACCBC30E /* Sources */,
+				6F780F109A5D4E65B340E9D4 /* Frameworks */,
+				6C9F91B0957144C39094F4BB /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-Braintree";
+			productName = "Pods-Braintree";
+			productReference = 294C7C5B5720409FAB8629B9 /* libPods-Braintree.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2F8E4DD7AA7540AEB772C5AF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0500;
+			};
+			buildConfigurationList = E4338598BDCC4BB483886BAB /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 6F77EDB7356F451CBCD55EC8;
+			productRefGroup = D724FB3BEAD44C649677356C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				941DF86095BD44AAA1824DF7 /* Pods-Braintree */,
+				6A3E4D1254D5436DA59ECB3A /* Pods */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1F80CFE9315948E5B7829CC9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AEE21EF061B64ED38920C619 /* Pods-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8848E48FA56D40B5ACCBC30E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F3C9426FA4C433E8ED8FEF4 /* BTAES.m in Sources */,
+				6337FD185FAB49DCAFB58311 /* BTEncryption.m in Sources */,
+				6211D81F215D43AA936FD5F2 /* BTRandom.m in Sources */,
+				822A292A32E648A9AB8CFCEC /* BTRSA.m in Sources */,
+				8A617F0739B14F358B4B851D /* BTSecKeyWrapper.m in Sources */,
+				4AC86A99CF6B4C0E91B6E2FD /* NSData+Base64.m in Sources */,
+				AD4A287412BD4E6890717887 /* BTPaymentActivityOverlayView.m in Sources */,
+				1BF723B129DD42F89011DA42 /* BTPaymentCardType.m in Sources */,
+				755D76F4EBF44CC2849C393E /* BTPaymentCardUtils.m in Sources */,
+				259CBA47FB5848449E3357C6 /* BTPaymentFormTextField.m in Sources */,
+				9891FC13D6404EA7ADB10F1F /* BTPaymentFormView.m in Sources */,
+				47D21DFAF5DF4D71930A7E89 /* BTPaymentViewController.m in Sources */,
+				778F9CF1BB2B45EDBE17AE30 /* Pods-Braintree-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8F556332B9AE40F4B86A39AE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 941DF86095BD44AAA1824DF7 /* Pods-Braintree */;
+			targetProxy = 8CAA1A86DF4E4DB98558BDD8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		036EB784D8194F7C8120F3C4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: Shaun Connolly (T2FZ84TP6H)";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				PROVISIONING_PROFILE = "B0BB9B19-D3EC-462C-8706-303CEF6B33D2";
+				SDKROOT = iphoneos;
+				STRIP_INSTALLED_PRODUCT = NO;
+			};
+			name = Release;
+		};
+		63149732F446412BA489D5F6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 25E70510FCB04144B2FD6BB6 /* Pods-Braintree-Private.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DSTROOT = /tmp/xcodeproj.dst;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Pods-Braintree-prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_CFLAGS = (
+					"-DNS_BLOCK_ASSERTIONS=1",
+					"$(inherited)",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-DNS_BLOCK_ASSERTIONS=1",
+					"$(inherited)",
+				);
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		7E7E344373804F5F997D811B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D05E37B12CA1461E81C7C30E /* Pods.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DSTROOT = /tmp/xcodeproj.dst;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_CFLAGS = (
+					"-DNS_BLOCK_ASSERTIONS=1",
+					"$(inherited)",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-DNS_BLOCK_ASSERTIONS=1",
+					"$(inherited)",
+				);
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		80D76BC18FF64144A8729AF5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D05E37B12CA1461E81C7C30E /* Pods.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				DSTROOT = /tmp/xcodeproj.dst;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		B30E5177F962487DAB17AD7A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 25E70510FCB04144B2FD6BB6 /* Pods-Braintree-Private.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				DSTROOT = /tmp/xcodeproj.dst;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Pods-Braintree-prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		F167487A79C34BA897C8088C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: Shaun Connolly (T2FZ84TP6H)";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "B0BB9B19-D3EC-462C-8706-303CEF6B33D2";
+				SDKROOT = iphoneos;
+				STRIP_INSTALLED_PRODUCT = NO;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2204E3FA69E94A5EA7FEFC16 /* Build configuration list for PBXNativeTarget "Pods-Braintree" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				63149732F446412BA489D5F6 /* Release */,
+				B30E5177F962487DAB17AD7A /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		840DB09B9C8C4E5B9AB1D8F2 /* Build configuration list for PBXNativeTarget "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7E7E344373804F5F997D811B /* Release */,
+				80D76BC18FF64144A8729AF5 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E4338598BDCC4BB483886BAB /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				036EB784D8194F7C8120F3C4 /* Release */,
+				F167487A79C34BA897C8088C /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2F8E4DD7AA7540AEB772C5AF /* Project object */;
+}

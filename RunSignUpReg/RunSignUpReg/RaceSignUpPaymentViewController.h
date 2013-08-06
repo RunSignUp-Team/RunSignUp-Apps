@@ -7,14 +7,30 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RoundedLoadingIndicator.h"
 
-@interface RaceSignUpPaymentViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>{
+@interface RaceSignUpPaymentViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
+    NSMutableDictionary *dataDict;
     
-    NSDictionary *dataDict;
+    UILabel *raceNameLabel;
     
-    UITableView *registrantsTable;
+    UITableView *eventsTable;
+    UIView *registrationCartView;
+    UIView *couponView;
+    UIView *registrantView;
+    
+    UIScrollView *scrollView;
+    
+    UILabel *nameLabel;
+    UILabel *emailLabel;
+    UILabel *dobLabel;
+    UILabel *genderLabel;
+    UILabel *phoneLabel;
+    UILabel *addressLabel;
+    UILabel *address2Label;
+    UILabel *tshirtLabel;
+    
     UILabel *registrationCartHintLabel;
-    UITableView *registrationCartTable;
     
     UILabel *baseCostHintLabel;
     UILabel *baseCostLabel;
@@ -26,14 +42,38 @@
     UITextField *couponField;
     UILabel *couponHintLabel;
     UIButton *applyButton;
+    
+    UILabel *paymentHintLabel;
+    UIButton *paymentButton;
+    
+    BOOL isFreeRace;
+    
+    RoundedLoadingIndicator *rli;
 
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil data:(NSDictionary *)data;
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil data:(NSMutableDictionary *)data;
 
-@property (nonatomic, retain) IBOutlet UITableView  *registrantsTable;
+@property (nonatomic, retain) IBOutlet UILabel *raceNameLabel;
+
+@property (nonatomic, retain) IBOutlet UITableView *eventsTable;
+@property (nonatomic, retain) IBOutlet UIView *registrationCartView;
+@property (nonatomic, retain) IBOutlet UIView *couponView;
+@property (nonatomic, retain) IBOutlet UIView *registrantView;
+
+@property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, retain) IBOutlet UILabel *nameLabel;
+@property (nonatomic, retain) IBOutlet UILabel *emailLabel;
+@property (nonatomic, retain) IBOutlet UILabel *dobLabel;
+@property (nonatomic, retain) IBOutlet UILabel *genderLabel;
+@property (nonatomic, retain) IBOutlet UILabel *phoneLabel;
+@property (nonatomic, retain) IBOutlet UILabel *addressLabel;
+@property (nonatomic, retain) IBOutlet UILabel *cityLabel;
+@property (nonatomic, retain) IBOutlet UILabel *stateLabel;
+@property (nonatomic, retain) IBOutlet UILabel *zipLabel;
+@property (nonatomic, retain) IBOutlet UILabel *tshirtLabel;
+
 @property (nonatomic, retain) IBOutlet UILabel *registrationCartHintLabel;
-@property (nonatomic, retain) IBOutlet UITableView  *registrationCartTable;
 @property (nonatomic, retain) IBOutlet UILabel *baseCostHintLabel;
 @property (nonatomic, retain) IBOutlet UILabel *baseCostLabel;
 @property (nonatomic, retain) IBOutlet UILabel *processingFeeHintLabel;
@@ -44,8 +84,13 @@
 @property (nonatomic, retain) IBOutlet UILabel *couponHintLabel;
 @property (nonatomic, retain) IBOutlet UIButton *applyButton;
 
-- (IBAction)applyCoupon:(id)sender;
+@property (nonatomic, retain) IBOutlet UILabel *paymentHintLabel;
+@property (nonatomic, retain) IBOutlet UIButton *paymentButton;
 
+@property (nonatomic, retain) RoundedLoadingIndicator *rli;
+
+- (IBAction)applyCoupon:(id)sender;
+- (IBAction)confirmPayment:(id)sender;
 - (void)layoutContent;
 
 @end

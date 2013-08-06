@@ -26,13 +26,13 @@
         [nameLabel setUserInteractionEnabled: NO];
         [self.contentView addSubview: nameLabel];
         
-        self.dateLabel = [[UILabel alloc] initWithFrame: CGRectMake(4, 52, 312, 20)];
+        self.dateLabel = [[UILabel alloc] initWithFrame: CGRectMake(4, 52, 312, 22)];
         //[dateLabel setBackgroundColor: [UIColor redColor]];
         [dateLabel setTextColor: [UIColor colorWithRed:0.8706f green:0.6704f blue:0.298f alpha:1.0f]];
         [dateLabel setFont: [UIFont systemFontOfSize: 18.0f]];
         [self.contentView addSubview: dateLabel];
         
-        self.locationLabel = [[UILabel alloc] initWithFrame: CGRectMake(4, 76, 312, 20)];
+        self.locationLabel = [[UILabel alloc] initWithFrame: CGRectMake(4, 76, 312, 22)];
         //[locationLabel setBackgroundColor: [UIColor redColor]];
         [locationLabel setTextColor: [UIColor colorWithRed:0.8706f green:0.6704f blue:0.298f alpha:1.0f]];
         [locationLabel setFont: [UIFont systemFontOfSize: 18.0f]];

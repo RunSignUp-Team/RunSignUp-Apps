@@ -12,10 +12,10 @@
     UIButton *selectButton;
     UISegmentedControl *tshirtControl;
     
-    NSDictionary *dataDict;
+    NSMutableDictionary *dataDict;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil data:(NSDictionary *)data;
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil data:(NSMutableDictionary *)data;
 
 @property (nonatomic, retain) IBOutlet UIButton *selectButton;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *tshirtControl;

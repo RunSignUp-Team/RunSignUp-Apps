@@ -17,19 +17,29 @@
 @synthesize userDictionary;
 @synthesize isUserProfile;
 
+@synthesize rli;
+
 @synthesize emailLabel;
 @synthesize addressLine1Label;
 @synthesize addressLine2Label;
 @synthesize phoneLabel;
 @synthesize genderLabel;
 @synthesize dobLabel;
+@synthesize profileImageView;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isUserProfile:(BOOL)iup{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        if([[RSUModel sharedModel] lastParsedUser] != nil){
-            self.userDictionary = [[NSDictionary alloc] initWithDictionary:[[RSUModel sharedModel] lastParsedUser] copyItems:YES];
-        }
+        self.isUserProfile = iup;
+        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+            self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:100];
+        else
+            self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:432 YLocation:140];
+        
+        [[rli label] setText:@"Loading..."];
+        [self.view addSubview: rli];
+        [rli release];
+        
         self.title = @"Profile";
     }
     return self;
@@ -39,18 +49,28 @@
     [super viewDidLoad];
     
     if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
-        [self setEdgesForExtendedLayout: UIExtendedEdgeNone];
-    
-    [self updateDataWithUserDictionary];
-    
+        [self setEdgesForExtendedLayout: UIRectEdgeNone];
+        
     if(isUserProfile){
         UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editProfile)];
         [self.navigationItem setRightBarButtonItem: editButton];
-    }    
+        
+        [rli fadeIn];
+        void (^response)(RSUConnectionResponse) = ^(RSUConnectionResponse didSucceed){
+            if(didSucceed == RSUSuccess){
+                [rli fadeOut];
+                self.userDictionary = [[NSDictionary alloc] initWithDictionary:[[RSUModel sharedModel] lastParsedUser] copyItems:YES];
+                [self updateDataWithUserDictionary];
+            }
+        };
+        
+        [[RSUModel sharedModel] retrieveUserInfo:response];
+    }
 }
 
 - (void)updateDataWithUserDictionary{
     if(userDictionary){
+        NSLog(@"%@", userDictionary);
         [nameLabel setText: [NSString stringWithFormat:@"%@ %@", [userDictionary objectForKey:@"FName"], [userDictionary objectForKey:@"LName"]]];
         [emailLabel setText: [userDictionary objectForKey: @"Email"]];
         [addressLine1Label setText: [userDictionary objectForKey: @"Street"]];
@@ -63,6 +83,18 @@
             [genderLabel setText: @"Male"];
         }
         [dobLabel setText: [userDictionary objectForKey: @"DOB"]];
+        
+        if([userDictionary objectForKey:@"ProfileImage"]){
+            dispatch_async(dispatch_get_global_queue(0,0), ^{
+                NSData *imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: [NSString stringWithFormat:@"http:%@", [userDictionary objectForKey:@"ProfileImage"]]]];
+                if(imageData == nil)
+                    return;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [profileImageView setImage: [UIImage imageWithData: imageData]];
+                });
+                [imageData release];
+            });
+        }
     }
 }
 

@@ -13,7 +13,7 @@
 @synthesize selectButton;
 @synthesize tshirtControl;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil data:(NSDictionary *)data{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil data:(NSMutableDictionary *)data{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         dataDict = data;
@@ -27,7 +27,7 @@
     [super viewDidLoad];
     
     if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
-        [self setEdgesForExtendedLayout: UIExtendedEdgeNone];
+        [self setEdgesForExtendedLayout: UIRectEdgeNone];
     
     UIImage *greenButtonImage = [UIImage imageNamed:@"GreenButton.png"];
     UIImage *stretchedGreenButton = [greenButtonImage stretchableImageWithLeftCapWidth:12 topCapHeight:12];
@@ -39,6 +39,8 @@
 }
 
 - (IBAction)select:(id)sender{
+    [dataDict setObject:[NSNumber numberWithInt:[tshirtControl selectedSegmentIndex]] forKey:@"TShirtSize"];
+    
     RaceSignUpPaymentViewController *rsupvc = [[RaceSignUpPaymentViewController alloc] initWithNibName:@"RaceSignUpPaymentViewController" bundle:nil data:dataDict];
     [self.navigationController pushViewController:rsupvc animated:YES];
     [rsupvc release];

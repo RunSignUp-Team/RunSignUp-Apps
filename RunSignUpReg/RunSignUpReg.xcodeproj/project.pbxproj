@@ -41,6 +41,10 @@
 		77681792160539E500C5F29A /* RaceSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77681790160539E500C5F29A /* RaceSearchViewController.m */; };
 		77681793160539E500C5F29A /* RaceSearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77681791160539E500C5F29A /* RaceSearchViewController.xib */; };
 		7781644E168687FD0033B6FE /* RaceDetailsEventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7781644D168687FD0033B6FE /* RaceDetailsEventTableViewCell.m */; };
+		77971E2217B93114005809F8 /* RaceSignUpGiveawayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77971E2017B93114005809F8 /* RaceSignUpGiveawayViewController.m */; };
+		77971E2317B93114005809F8 /* RaceSignUpGiveawayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77971E2117B93114005809F8 /* RaceSignUpGiveawayViewController.xib */; };
+		77971E2617B931C0005809F8 /* RaceSignUpGiveawayTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77971E2517B931C0005809F8 /* RaceSignUpGiveawayTableViewCell.m */; };
+		77971E2917B96527005809F8 /* RaceSignUpCartTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77971E2817B96527005809F8 /* RaceSignUpCartTableViewCell.m */; };
 		77A8626215FBA45A004BAED8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77A8626115FBA45A004BAED8 /* UIKit.framework */; };
 		77A8626415FBA45A004BAED8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77A8626315FBA45A004BAED8 /* Foundation.framework */; };
 		77A8626615FBA45A004BAED8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77A8626515FBA45A004BAED8 /* CoreGraphics.framework */; };
@@ -136,8 +140,6 @@
 		77B0E5F8177A569C00C00E5B /* CancelSearch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B0E5F4177A537600C00E5B /* CancelSearch@2x.png */; };
 		77B0E5F9177A569C00C00E5B /* Search.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B0E5F5177A537600C00E5B /* Search.png */; };
 		77B0E5FA177A569C00C00E5B /* Search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B0E5F6177A537600C00E5B /* Search@2x.png */; };
-		77B6E5181609FA1E009E1AA9 /* RaceSignUpTShirtViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B6E5161609FA1E009E1AA9 /* RaceSignUpTShirtViewController.m */; };
-		77B6E5191609FA1E009E1AA9 /* RaceSignUpTShirtViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77B6E5171609FA1E009E1AA9 /* RaceSignUpTShirtViewController.xib */; };
 		77B6E51F1609FE21009E1AA9 /* RaceSignUpPaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B6E51D1609FE21009E1AA9 /* RaceSignUpPaymentViewController.m */; };
 		77B6E5201609FE21009E1AA9 /* RaceSignUpPaymentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77B6E51E1609FE21009E1AA9 /* RaceSignUpPaymentViewController.xib */; };
 		77CAD417178B0BCE00DEB73C /* RaceResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77CAD415178B091600DEB73C /* RaceResultsViewController.m */; };
@@ -204,6 +206,14 @@
 		77681791160539E500C5F29A /* RaceSearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RaceSearchViewController.xib; sourceTree = "<group>"; };
 		7781644C168687FD0033B6FE /* RaceDetailsEventTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RaceDetailsEventTableViewCell.h; sourceTree = "<group>"; };
 		7781644D168687FD0033B6FE /* RaceDetailsEventTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RaceDetailsEventTableViewCell.m; sourceTree = "<group>"; };
+		77971E1F17B93114005809F8 /* RaceSignUpGiveawayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RaceSignUpGiveawayViewController.h; sourceTree = "<group>"; };
+		77971E2017B93114005809F8 /* RaceSignUpGiveawayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RaceSignUpGiveawayViewController.m; sourceTree = "<group>"; };
+		77971E2117B93114005809F8 /* RaceSignUpGiveawayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RaceSignUpGiveawayViewController.xib; sourceTree = "<group>"; };
+		77971E2417B931C0005809F8 /* RaceSignUpGiveawayTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RaceSignUpGiveawayTableViewCell.h; sourceTree = "<group>"; };
+		77971E2517B931C0005809F8 /* RaceSignUpGiveawayTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RaceSignUpGiveawayTableViewCell.m; sourceTree = "<group>"; };
+		77971E2717B96527005809F8 /* RaceSignUpCartTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RaceSignUpCartTableViewCell.h; sourceTree = "<group>"; };
+		77971E2817B96527005809F8 /* RaceSignUpCartTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RaceSignUpCartTableViewCell.m; sourceTree = "<group>"; };
+		77971E2A17B96AA1005809F8 /* View.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = View.xib; sourceTree = "<group>"; };
 		77A8625D15FBA45A004BAED8 /* RunSignUpReg.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RunSignUpReg.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		77A8626115FBA45A004BAED8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		77A8626315FBA45A004BAED8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -306,9 +316,6 @@
 		77B0E5F4177A537600C00E5B /* CancelSearch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CancelSearch@2x.png"; sourceTree = "<group>"; };
 		77B0E5F5177A537600C00E5B /* Search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Search.png; sourceTree = "<group>"; };
 		77B0E5F6177A537600C00E5B /* Search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Search@2x.png"; sourceTree = "<group>"; };
-		77B6E5151609FA1E009E1AA9 /* RaceSignUpTShirtViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RaceSignUpTShirtViewController.h; sourceTree = "<group>"; };
-		77B6E5161609FA1E009E1AA9 /* RaceSignUpTShirtViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RaceSignUpTShirtViewController.m; sourceTree = "<group>"; };
-		77B6E5171609FA1E009E1AA9 /* RaceSignUpTShirtViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RaceSignUpTShirtViewController.xib; sourceTree = "<group>"; };
 		77B6E51C1609FE21009E1AA9 /* RaceSignUpPaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RaceSignUpPaymentViewController.h; sourceTree = "<group>"; };
 		77B6E51D1609FE21009E1AA9 /* RaceSignUpPaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RaceSignUpPaymentViewController.m; sourceTree = "<group>"; };
 		77B6E51E1609FE21009E1AA9 /* RaceSignUpPaymentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RaceSignUpPaymentViewController.xib; sourceTree = "<group>"; };
@@ -540,9 +547,9 @@
 				77238606179732C80095D1EF /* RaceSignUpEventsViewController.h */,
 				77238607179732C80095D1EF /* RaceSignUpEventsViewController.m */,
 				77238608179732C80095D1EF /* RaceSignUpEventsViewController.xib */,
-				77B6E5151609FA1E009E1AA9 /* RaceSignUpTShirtViewController.h */,
-				77B6E5161609FA1E009E1AA9 /* RaceSignUpTShirtViewController.m */,
-				77B6E5171609FA1E009E1AA9 /* RaceSignUpTShirtViewController.xib */,
+				77971E1F17B93114005809F8 /* RaceSignUpGiveawayViewController.h */,
+				77971E2017B93114005809F8 /* RaceSignUpGiveawayViewController.m */,
+				77971E2117B93114005809F8 /* RaceSignUpGiveawayViewController.xib */,
 				77B6E51C1609FE21009E1AA9 /* RaceSignUpPaymentViewController.h */,
 				77B6E51D1609FE21009E1AA9 /* RaceSignUpPaymentViewController.m */,
 				77B6E51E1609FE21009E1AA9 /* RaceSignUpPaymentViewController.xib */,
@@ -551,6 +558,11 @@
 				77AD105417B13E7A00723395 /* RaceSignUpConfirmationViewController.xib */,
 				7723860B179739C70095D1EF /* RaceSignUpEventTableViewCell.h */,
 				7723860C179739C70095D1EF /* RaceSignUpEventTableViewCell.m */,
+				77971E2417B931C0005809F8 /* RaceSignUpGiveawayTableViewCell.h */,
+				77971E2517B931C0005809F8 /* RaceSignUpGiveawayTableViewCell.m */,
+				77971E2717B96527005809F8 /* RaceSignUpCartTableViewCell.h */,
+				77971E2817B96527005809F8 /* RaceSignUpCartTableViewCell.m */,
+				77971E2A17B96AA1005809F8 /* View.xib */,
 			);
 			name = SignUp;
 			sourceTree = "<group>";
@@ -691,6 +703,7 @@
 				77A862D915FBAA72004BAED8 /* loading12.png in Resources */,
 				77A862DA15FBAA72004BAED8 /* loading12@2x.png in Resources */,
 				77A862DB15FBAA72004BAED8 /* loading13.png in Resources */,
+				77971E2317B93114005809F8 /* RaceSignUpGiveawayViewController.xib in Resources */,
 				77A862DC15FBAA72004BAED8 /* loading13@2x.png in Resources */,
 				77A862DD15FBAA72004BAED8 /* loading14.png in Resources */,
 				77A862DE15FBAA72004BAED8 /* loading14@2x.png in Resources */,
@@ -764,7 +777,6 @@
 				77681793160539E500C5F29A /* RaceSearchViewController.xib in Resources */,
 				77CE5C881607C6ED0049AF36 /* RaceDetailsViewController.xib in Resources */,
 				77CE5C991608DD710049AF36 /* RaceSignUpWaiverViewController.xib in Resources */,
-				77B6E5191609FA1E009E1AA9 /* RaceSignUpTShirtViewController.xib in Resources */,
 				77B6E5201609FE21009E1AA9 /* RaceSignUpPaymentViewController.xib in Resources */,
 				7757C2C8163C3F5200B8780A /* Default-568h@2x.png in Resources */,
 				7757C2C9163C3F5200B8780A /* Default@2x.png in Resources */,
@@ -818,6 +830,7 @@
 				772385FF1796FB7D0095D1EF /* RaceDetailsRegistrationTableViewCell.m in Sources */,
 				77CAD41F178B18CB00DEB73C /* RaceResultsEventTableViewCell.m in Sources */,
 				77CAD417178B0BCE00DEB73C /* RaceResultsViewController.m in Sources */,
+				77971E2917B96527005809F8 /* RaceSignUpCartTableViewCell.m in Sources */,
 				77A8626E15FBA45A004BAED8 /* main.m in Sources */,
 				77A8627215FBA45A004BAED8 /* AppDelegate.m in Sources */,
 				77A8628015FBAA5C004BAED8 /* MainMenuViewController.m in Sources */,
@@ -836,10 +849,11 @@
 				77CE5C871607C6ED0049AF36 /* RaceDetailsViewController.m in Sources */,
 				77AD105517B13E7A00723395 /* RaceSignUpConfirmationViewController.m in Sources */,
 				77CE5C981608DD710049AF36 /* RaceSignUpWaiverViewController.m in Sources */,
-				77B6E5181609FA1E009E1AA9 /* RaceSignUpTShirtViewController.m in Sources */,
 				77B6E51F1609FE21009E1AA9 /* RaceSignUpPaymentViewController.m in Sources */,
 				7757C2CE163F68A300B8780A /* UserRaceListViewController.m in Sources */,
 				7757C2D616403B9700B8780A /* EGORefreshTableHeaderView.m in Sources */,
+				77971E2617B931C0005809F8 /* RaceSignUpGiveawayTableViewCell.m in Sources */,
+				77971E2217B93114005809F8 /* RaceSignUpGiveawayViewController.m in Sources */,
 				7781644E168687FD0033B6FE /* RaceDetailsEventTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -935,7 +949,7 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = "RunSignUpReg/RunSignUpReg-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -953,7 +967,7 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = "RunSignUpReg/RunSignUpReg-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

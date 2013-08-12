@@ -63,6 +63,197 @@ static RSUModel *model = nil;
     [self savePaymentInfoToServer:paymentInfo];
 }
 
+- (void)registerForRace:(NSString *)raceID withInfo:(NSDictionary *)info requestType:(RSURegistrationRequest)type response:(void (^)(RSUConnectionResponse, NSDictionary *))responseBlock{
+    NSString *action = @"get-cart";
+    
+    switch(type){
+        case RSURegGetCart:
+            action = @"get-cart";
+            break;
+        case RSURegRegister:
+            action = @"register";
+            break;
+        case RSURegRefund:
+            action = @"refund";
+            break;
+    }
+    
+    NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
+    
+    if(type != RSURegRefund){
+        NSMutableDictionary *reqDict = [[NSMutableDictionary alloc] init]; // Request dictionary
+        NSMutableArray *registrants = [[NSMutableArray alloc] init];
+        NSMutableDictionary *registrant = [[NSMutableDictionary alloc] init];
+        
+        if(REGISTRATION_REQUIRES_LOGIN){
+            [registrant setObject:[lastParsedUser objectForKey:@"UserID"] forKey:@"user_id"];
+            [registrant setObject:[lastParsedUser objectForKey:@"FName"] forKey:@"first_name"];
+            [registrant setObject:[lastParsedUser objectForKey:@"LName"] forKey:@"last_name"];
+            [registrant setObject:[lastParsedUser objectForKey:@"Email"] forKey:@"email"];
+            [registrant setObject:[lastParsedUser objectForKey:@"Street"] forKey:@"address1"];
+            [registrant setObject:[lastParsedUser objectForKey:@"City"] forKey:@"city"];
+            [registrant setObject:[lastParsedUser objectForKey:@"State"] forKey:@"state"];
+            [registrant setObject:[lastParsedUser objectForKey:@"Country"] forKey:@"country_code"];
+            [registrant setObject:[lastParsedUser objectForKey:@"Zipcode"] forKey:@"zipcode"];
+            [registrant setObject:[lastParsedUser objectForKey:@"Phone"] forKey:@"phone"];
+            [registrant setObject:[lastParsedUser objectForKey:@"DOB"] forKey:@"dob"];
+            [registrant setObject:[lastParsedUser objectForKey:@"Gender"] forKey:@"gender"];
+        }
+        
+        NSMutableArray *events = [[NSMutableArray alloc] init];
+        
+        for(NSDictionary *event in [info objectForKey:@"Events"]){
+            NSMutableDictionary *newEvent = [[NSMutableDictionary alloc] init];
+            [newEvent setObject:[event objectForKey:@"EventID"] forKey:@"event_id"];
+            if([event objectForKey:@"GiveawayOptionID"] != nil){
+                [newEvent setObject:[event objectForKey:@"GiveawayOptionID"] forKey:@"giveaway_option_id"];
+            }
+            [events addObject: newEvent];
+        }
+        
+        [registrant setObject:events forKey:@"events"];
+        [registrants addObject: registrant];
+        [reqDict setObject:@"T" forKey:@"waiver_accepted"];
+        if(type == RSURegRegister)
+            [reqDict setObject:[info objectForKey:@"TotalCost"] forKey:@"total_cost"];
+        [reqDict setObject:registrants forKey:@"registrants"];
+        
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:reqDict options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        NSLog(@"%@", jsonString);
+        
+        NSString *post = [NSString stringWithFormat:@"race_id=%@&request_format=json&action=%@&request=%@&tmp_key=", raceID, action, jsonString];
+        NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+        NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+        
+        [request setURL:[NSURL URLWithString:[NSString stringWithFormat: @"%@/rest/race/%@/registration?tmp_key=%@&tmp_secret=%@", RUNSIGNUP_BASE_URL, raceID, key, secret]]];
+        [request setHTTPMethod:@"POST"];
+        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+        [request setHTTPBody:postData];
+        
+    }else{
+        NSString *requestString = [NSString stringWithFormat:@"{\"primary_registration_id\": \"%@\",\"primary_confirmation_code\": \"%@\"}", [[info objectForKey:@"ConfirmationCodes"] objectForKey:@"PrimaryRegistrationID"], [[info objectForKey:@"ConfirmationCodes"] objectForKey:@"PrimaryConfirmationCode"]];
+        
+        NSString *post = [NSString stringWithFormat:@"race_id=%@&request_format=json&action=%@&request=%@&tmp_key=", raceID, action, requestString];
+        NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+        NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+        
+        [request setURL:[NSURL URLWithString:[NSString stringWithFormat: @"%@/rest/race/%@/registration?tmp_key=%@&tmp_secret=%@", RUNSIGNUP_BASE_URL, raceID, key, secret]]];
+        [request setHTTPMethod:@"POST"];
+        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+        [request setHTTPBody:postData];
+    }
+    
+    void (^completion)(NSURLResponse *,NSData *,NSError *) = ^(NSURLResponse *response,NSData *urlData,NSError *error){
+        if(!urlData){
+            NSLog(@"URLData is nil");
+            dispatch_async(dispatch_get_main_queue(),^(){responseBlock(RSUNoConnection, nil);});
+            return;
+        }
+        
+        NSString *string = [[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding];
+        NSLog(@"%@", string);
+        
+        RXMLElement *rootXML = [[RXMLElement alloc] initFromXMLData:urlData];
+        
+        if([[rootXML tag] isEqualToString:@"response"]){
+            if(type == RSURegGetCart){
+                NSMutableDictionary *cartDictionary = [[NSMutableDictionary alloc] init];
+                RXMLElement *cart = [rootXML child: @"cart"];
+                RXMLElement *baseCost = [rootXML child: @"base_cost"];
+                RXMLElement *processingFee = [rootXML child: @"processing_fee"];
+                RXMLElement *totalCost = [rootXML child: @"total_cost"];
+
+                NSMutableArray *cartArray = [[NSMutableArray alloc] init];
+                
+                for(RXMLElement *cartItem in [cart children:@"cart_item"]){
+                    NSMutableDictionary *cartItemDictionary = [[NSMutableDictionary alloc] init];
+                    RXMLElement *info = [cartItem child: @"info"];
+                    RXMLElement *perItemCost = [cartItem child: @"per_item_cost"];
+                    RXMLElement *quantity = [cartItem child: @"quantity"];
+                    RXMLElement *totalCost = [cartItem child: @"total_cost"];
+                    RXMLElement *subitems = [cartItem child: @"subitems"];
+                    NSMutableArray *subitemsArray = [[NSMutableArray alloc] init];
+                    
+                    for(RXMLElement *subitem in [subitems children: @"subitem"]){
+                        [subitemsArray addObject: [subitem text]];
+                    }
+                    
+                    if(info && perItemCost && quantity && totalCost){
+                        [cartItemDictionary setObject:[info text] forKey:@"Info"];
+                        [cartItemDictionary setObject:[perItemCost text] forKey:@"PerItemCost"];
+                        [cartItemDictionary setObject:[quantity text] forKey:@"Quanity"];
+                        [cartItemDictionary setObject:[totalCost text] forKey:@"TotalCost"];
+
+                    }
+                    if([subitemsArray count] != 0)
+                        [cartItemDictionary setObject:subitemsArray forKey:@"Subitems"];
+                    
+                    [cartArray addObject: cartItemDictionary];
+                    [cartItemDictionary release];
+                }
+                
+                if(baseCost && processingFee && totalCost){
+                    [cartDictionary setObject:[baseCost text] forKey:@"BaseCost"];
+                    [cartDictionary setObject:[processingFee text] forKey:@"ProcessingFee"];
+                    [cartDictionary setObject:[totalCost text] forKey:@"TotalCost"];
+                    
+                    if([cartArray count] > 0){
+                        [cartDictionary setObject: cartArray forKey:@"Cart"];
+                        dispatch_async(dispatch_get_main_queue(),^(){responseBlock(RSUSuccess, cartDictionary);});
+                        return;
+                    }
+                }
+            }else if(type == RSURegRegister){
+                RXMLElement *primaryRegistrationID = [rootXML child: @"primary_registration_id"];
+                RXMLElement *primaryConfirmationCode = [rootXML child: @"primary_confirmation_code"];
+                
+                if(primaryRegistrationID && primaryConfirmationCode){
+                    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+                    [dict setObject:[primaryRegistrationID text] forKey:@"PrimaryRegistrationID"];
+                    [dict setObject:[primaryConfirmationCode text] forKey:@"PrimaryConfirmationCode"];
+                    
+                    dispatch_async(dispatch_get_main_queue(),^(){responseBlock(RSUSuccess, dict);});
+                    return;
+                }
+                dispatch_async(dispatch_get_main_queue(),^(){responseBlock(RSUInvalidData, nil);});
+                return;
+            }else if(type == RSURegRefund){
+                RXMLElement *success = [rootXML child: @"success"];
+                if(success)
+                    dispatch_async(dispatch_get_main_queue(),^(){responseBlock(RSUSuccess, nil);});
+                else
+                    dispatch_async(dispatch_get_main_queue(),^(){responseBlock(RSUInvalidData, nil);});
+
+                return;
+            }
+            
+            dispatch_async(dispatch_get_main_queue(),^(){responseBlock(RSUInvalidData, nil);});
+            return;
+        }
+        dispatch_async(dispatch_get_main_queue(),^(){responseBlock(RSUNoConnection, nil);});
+    };
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:completion];
+}
+
+/*
+ xmlRequest = [xmlRequest stringByAppendingFormat:@"<request><registrants><registrant><user_id>%@</user_id>", [lastParsedUser objectForKey: @"UserID"]];
+ xmlRequest = [xmlRequest stringByAppendingFormat:@"<first_name>%@</first_name><last_name>%@</last_name>", [lastParsedUser objectForKey: @"FName"], [lastParsedUser objectForKey: @"LName"]];
+ xmlRequest = [xmlRequest stringByAppendingFormat:@"<email>%@</email><address1>%@</address1>", [lastParsedUser objectForKey:@"Email"], [lastParsedUser objectForKey:@"Street"]];
+ xmlRequest = [xmlRequest stringByAppendingFormat:@"<city>%@</city><state>%@</state>", [lastParsedUser objectForKey:@"City"], [lastParsedUser objectForKey:@"State"]];
+ xmlRequest = [xmlRequest stringByAppendingFormat:@"<country_code>%@</country_code><zipcode>%@</zipcode>", [lastParsedUser objectForKey:@"Country"], [lastParsedUser objectForKey: @"Zipcode"]];
+ xmlRequest = [xmlRequest stringByAppendingFormat:@"<phone>%@</phone><dob>%@</dob><gender>%@<gender><events>", [lastParsedUser objectForKey:@"Phone"], [lastParsedUser objectForKey:@"DOB"], [lastParsedUser objectForKey:@"Gender"]];
+ 
+ for(int x = 0; x < [[info objectForKey: @"Events"] count]; x++){
+ 
+ }
+ 
+ NSLog(@"Request: %@", xmlRequest);
+ */
+
 - (void)retrieveRaceRegistrationInformation:(void (^)(RSUConnectionResponse, NSDictionary *))responseBlock{
     dispatch_async(dispatch_get_main_queue(),^(){responseBlock(RSUSuccess, nil);});
     return;
@@ -398,7 +589,7 @@ static RSUModel *model = nil;
 
 - (void)retrieveRaceDetailsWithRaceID:(NSString *)raceID response:(void (^)(NSMutableDictionary *))responseBlock{
     NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
-    [request setURL:[NSURL URLWithString:[NSString stringWithFormat: @"%@/rest/race?race_id=%@&include_questions=T&race_headings=T&race_links=T&include_waiver=T", RUNSIGNUP_BASE_URL, raceID]]];
+    [request setURL:[NSURL URLWithString:[NSString stringWithFormat: @"%@/rest/race?race_id=%@&include_waiver=T&include_giveaway_details=T&race_headings=T&race_links=T", RUNSIGNUP_BASE_URL, raceID]]];
     [request setHTTPMethod:@"GET"];
     
     void (^completion)(NSURLResponse *,NSData *,NSError *) = ^(NSURLResponse *response,NSData *urlData,NSError *error){
@@ -468,7 +659,11 @@ static RSUModel *model = nil;
                     RXMLElement *eventStartTime = [[events objectAtIndex: y] child: @"start_time"];
                     //RXMLElement *eventRegOpens = [[events objectAtIndex: y] child: @"registration_opens"];
                     RXMLElement *eventRegPeriods = [[events objectAtIndex: y] child: @"registration_periods"];
+                    RXMLElement *eventGiveaway = [[events objectAtIndex: y] child: @"giveaway"];
+                    RXMLElement *eventGiveawayOptions = [[events objectAtIndex: y] child: @"giveaway_options"];
+                    
                     NSMutableArray *eventRegPeriodsArray = [[NSMutableArray alloc] init];
+                    NSMutableArray *eventGiveawayOptionsArray = [[NSMutableArray alloc] init];
                     
                     for(RXMLElement *eventRegPeriod in [eventRegPeriods children:@"registration_period"]){
                         RXMLElement *eventRegPeriodOpens = [eventRegPeriod child: @"registration_opens"];
@@ -486,14 +681,32 @@ static RSUModel *model = nil;
                         }
                     }
                     
+                    for(RXMLElement *eventGiveawayOption in [eventGiveawayOptions children:@"giveaway_option"]){
+                        RXMLElement *eventGiveawayOptionID = [eventGiveawayOption child: @"giveaway_option_id"];
+                        RXMLElement *eventGiveawayOptionText = [eventGiveawayOption child: @"giveaway_option_text"];
+                        RXMLElement *eventGiveawayAdditionalCost = [eventGiveawayOption child: @"additional_cost"];
+                        
+                        if(eventGiveawayOptionID && eventGiveawayOptionText && eventGiveawayAdditionalCost){
+                            NSDictionary *eventGiveawayOptionDict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                                                     [eventGiveawayOptionID text], @"GiveawayOptionID",
+                                                                     [eventGiveawayOptionText text], @"GiveawayOptionText",
+                                                                     [eventGiveawayAdditionalCost text], @"GiveawayAdditionalCost", nil];
+                            [eventGiveawayOptionsArray addObject: eventGiveawayOptionDict];
+                        }
+                    }
+                    
                     if(eventID)
                         [event setObject:[eventID text] forKey:@"EventID"];
                     if(eventName)
                         [event setObject:[eventName text] forKey:@"Name"];
                     if(eventStartTime)
                         [event setObject:[eventStartTime text] forKey:@"StartTime"];
+                    if(eventGiveaway)
+                        [event setObject:[eventGiveaway text] forKey:@"Giveaway"];
                     
                     [event setObject:eventRegPeriodsArray forKey:@"EventRegistrationPeriods"];
+                    if([eventGiveawayOptionsArray count] != 0)
+                        [event setObject:eventGiveawayOptionsArray forKey:@"EventGiveawayOptions"];
                     [eventsArray addObject: event];
                 }
             }

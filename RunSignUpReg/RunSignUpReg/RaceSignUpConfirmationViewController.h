@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RoundedLoadingIndicator.h"
 
 @interface RaceSignUpConfirmationViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>{
+    RoundedLoadingIndicator *rli;
+    
     UILabel *raceNameLabel;
     UILabel *registeredLabel;
     
@@ -36,6 +39,8 @@
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil data:(NSMutableDictionary *)data;
+
+@property (nonatomic, retain) RoundedLoadingIndicator *rli;
 
 @property (nonatomic, retain) IBOutlet UILabel *raceNameLabel;
 @property (nonatomic, retain) IBOutlet UILabel *registeredLabel;

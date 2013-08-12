@@ -208,23 +208,25 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 28)];
+    int headerHeight = [self tableView:tableView heightForHeaderInSection:section];
+    
+    UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, headerHeight)];
     //[header setBackgroundColor: [UIColor colorWithRed:0.5f green:0.6863f blue:0.8431f alpha:1.0f]];
     [header setBackgroundColor: [refreshHeaderView backgroundColor]];
     
     UIImageView *cancelIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CancelSearch.png"]];
     UIImageView *searchIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Search.png"]];
-    [cancelIcon setFrame: CGRectMake(4, 4, 16, 16)];
-    [searchIcon setFrame: CGRectMake(4, 4, 16, 16)];
+    [cancelIcon setFrame: CGRectMake(4, headerHeight / 2 - 10, 16, 16)];
+    [searchIcon setFrame: CGRectMake(4, headerHeight / 2 - 10, 16, 16)];
     
-    UILabel *racesLabel = [[UILabel alloc] initWithFrame: CGRectMake(6, 2, 100, 24)];
+    UILabel *racesLabel = [[UILabel alloc] initWithFrame: CGRectMake(6, 2, 100, headerHeight - 4)];
     [racesLabel setText: @"Races"];
     [racesLabel setBackgroundColor: [UIColor clearColor]];
     [racesLabel setFont: [UIFont boldSystemFontOfSize: 18.0f]];
     [racesLabel setTextColor: [UIColor darkGrayColor]];
     [header addSubview: racesLabel];
     
-    UILabel *clearSearchLabel = [[UILabel alloc] initWithFrame: CGRectMake(70, 2, 118, 24)];
+    UILabel *clearSearchLabel = [[UILabel alloc] initWithFrame: CGRectMake(70, 2, 118, headerHeight - 4)];
     [clearSearchLabel setBackgroundColor: [UIColor colorWithRed:0.3843f green:0.5529 blue:0.7176f alpha:1.0f]];
     [clearSearchLabel setText: @"Clear Search"];
     [clearSearchLabel setTextAlignment: NSTextAlignmentRight];
@@ -238,7 +240,7 @@
     [gesture release];
     [clearSearchLabel release];
     
-    UILabel *searchLabel = [[UILabel alloc] initWithFrame: CGRectMake(192, 2, 124, 24)];
+    UILabel *searchLabel = [[UILabel alloc] initWithFrame: CGRectMake(192, 2, 124, headerHeight - 4)];
     [searchLabel setBackgroundColor: [UIColor colorWithRed:0.3843f green:0.5529 blue:0.7176f alpha:1.0f]];
     [searchLabel setText: @"Search Races"];
     [searchLabel setTextAlignment: NSTextAlignmentRight];
@@ -255,7 +257,7 @@
     //[cancelIcon release];
     //[searchIcon release];
     
-    UIView *separator = [[UIView alloc] initWithFrame: CGRectMake(0, 28, 320, 1)];
+    UIView *separator = [[UIView alloc] initWithFrame: CGRectMake(0, headerHeight, 320, 1)];
     [separator setBackgroundColor: [UIColor colorWithRed:0.0f green:0.5804f blue:0.8f alpha:1.0f]];
     [header addSubview: separator];
     return header;
@@ -273,7 +275,7 @@
 }
 
 - (float)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 28.0f;
+    return 34.0f;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{

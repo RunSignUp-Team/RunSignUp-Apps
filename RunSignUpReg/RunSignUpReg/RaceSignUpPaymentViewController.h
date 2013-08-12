@@ -11,10 +11,13 @@
 
 @interface RaceSignUpPaymentViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
     NSMutableDictionary *dataDict;
+    NSDictionary *cartDict;
     
     UILabel *raceNameLabel;
     
     UITableView *eventsTable;
+    UITableView *cartTable;
+    
     UIView *registrationCartView;
     UIView *couponView;
     UIView *registrantView;
@@ -28,7 +31,6 @@
     UILabel *phoneLabel;
     UILabel *addressLabel;
     UILabel *address2Label;
-    UILabel *tshirtLabel;
     
     UILabel *registrationCartHintLabel;
     
@@ -49,7 +51,6 @@
     BOOL isFreeRace;
     
     RoundedLoadingIndicator *rli;
-
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil data:(NSMutableDictionary *)data;
@@ -57,6 +58,7 @@
 @property (nonatomic, retain) IBOutlet UILabel *raceNameLabel;
 
 @property (nonatomic, retain) IBOutlet UITableView *eventsTable;
+@property (nonatomic, retain) IBOutlet UITableView *cartTable;
 @property (nonatomic, retain) IBOutlet UIView *registrationCartView;
 @property (nonatomic, retain) IBOutlet UIView *couponView;
 @property (nonatomic, retain) IBOutlet UIView *registrantView;

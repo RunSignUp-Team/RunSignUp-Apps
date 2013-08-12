@@ -8,12 +8,14 @@
 
 #import "RaceSignUpPaymentViewController.h"
 #import "RaceSignUpEventTableViewCell.h"
+#import "RaceSignUpCartTableViewCell.h"
 #import "RaceSignUpConfirmationViewController.h"
 #import "RSUModel.h"
 
 @implementation RaceSignUpPaymentViewController
 @synthesize raceNameLabel;
 @synthesize eventsTable;
+@synthesize cartTable;
 @synthesize registrationCartView;
 @synthesize couponView;
 @synthesize registrantView;
@@ -27,7 +29,6 @@
 @synthesize cityLabel;
 @synthesize stateLabel;
 @synthesize zipLabel;
-@synthesize tshirtLabel;
 
 @synthesize registrationCartHintLabel;
 @synthesize baseCostHintLabel;
@@ -49,16 +50,17 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self){
         dataDict = data;
+        cartDict = nil;
         
         if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
             self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:100];
         else
             self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:432 YLocation:140];
-        [[rli label] setText: @"Retrieving Info..."];
+        [[rli label] setText: @"Retrieving Cost..."];
         [self.view addSubview: rli];
         [rli release];
         
-        isFreeRace = YES;
+        isFreeRace = NO;
         
         self.title = @"Payment";
     }
@@ -82,25 +84,6 @@
     [paymentButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
     
     [raceNameLabel setText: [dataDict objectForKey: @"Name"]];
-    int tshirtSize = [[dataDict objectForKey: @"TShirtSize"] intValue];
-    
-    switch(tshirtSize){
-        case 0:
-            [tshirtLabel setText: @"Small"];
-            break;
-        case 1:
-            [tshirtLabel setText: @"Medium"];
-            break;
-        case 2:
-            [tshirtLabel setText: @"Large"];
-            break;
-        case 3:
-            [tshirtLabel setText: @"Extra Large"];
-            break;
-        default:
-            [tshirtLabel setText: @"No T-Shirt Chosen"];
-            break;
-    }
 
     if(REGISTRATION_REQUIRES_LOGIN && [[RSUModel sharedModel] lastParsedUser] != nil){
         NSString *name = [NSString stringWithFormat: @"%@ %@", [[[RSUModel sharedModel] lastParsedUser] objectForKey: @"FName"], [[[RSUModel sharedModel] lastParsedUser] objectForKey: @"LName"]];
@@ -119,24 +102,49 @@
     void (^response)(RSUConnectionResponse, NSDictionary *) = ^(RSUConnectionResponse didSucceed, NSDictionary *data){
         if(didSucceed == RSUSuccess){
             if(data != nil){
+                if([[data objectForKey:@"Cart"] count] == 0){
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Cart is empty, please try registering again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                    [alert show];
+                    [alert release];
+                    [self.navigationController popToRootViewControllerAnimated: YES];
+                }
                 
+                NSLog(@"%@", data);
+                
+                cartDict = data;
+                [cartTable reloadData];
+                
+                if([[cartDict objectForKey: @"TotalCost"] isEqualToString:@"$0.00"]){
+                    isFreeRace = YES;
+                }else{
+                    isFreeRace = NO;
+                }
+                
+                [baseCostLabel setText: [data objectForKey:@"BaseCost"]];
+                [processingFeeLabel setText: [data objectForKey:@"ProcessingFee"]];
+                [totalLabel setText: [data objectForKey:@"TotalCost"]];
             }else{
-                
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Invalid data, please double check your registrant information and try again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                [alert show];
+                [alert release];
+                [self.navigationController popToRootViewControllerAnimated: YES];
             }
         }else if(didSucceed == RSUInvalidData){
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Invalid data, please double check your registrant information and try again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
             [alert show];
             [alert release];
+            [self.navigationController popToRootViewControllerAnimated: YES];
         }else if(didSucceed == RSUNoConnection){
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There was a problem establishing a connection with RunSignUp. Please try again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
             [alert show];
             [alert release];
+            [self.navigationController popToRootViewControllerAnimated: YES];
         }
         
         [rli fadeOut];
         [self layoutContent];
     };
-    [[RSUModel sharedModel] retrieveRaceRegistrationInformation:response];
+    [[RSUModel sharedModel] registerForRace:[dataDict objectForKey:@"RaceID"] withInfo:dataDict requestType:RSURegGetCart response:response];
 }
 
 - (void)layoutContent{
@@ -146,7 +154,14 @@
         [paymentHintLabel setHidden: YES];
         
         [eventsTable setFrame: CGRectMake(4, eventsTable.frame.origin.y, eventsTable.frame.size.width, [eventsTable rowHeight] * [eventsTable numberOfRowsInSection: 0])];
-        [registrationCartView setFrame: CGRectMake(4, eventsTable.frame.origin.y + eventsTable.frame.size.height + 8, registrationCartView.frame.size.width, registrationCartView.frame.size.height)];
+        [cartTable setFrame: CGRectMake(4, cartTable.frame.origin.y, cartTable.frame.size.width, [cartTable rowHeight] * [cartTable numberOfRowsInSection: 0])];
+        [baseCostHintLabel setFrame: CGRectMake(4, cartTable.frame.origin.y + cartTable.frame.size.height + 4, baseCostHintLabel.frame.size.width, baseCostHintLabel.frame.size.height)];
+        [baseCostLabel setFrame: CGRectMake(baseCostLabel.frame.origin.x, baseCostHintLabel.frame.origin.y, baseCostLabel.frame.size.width, baseCostLabel.frame.size.height)];
+        [processingFeeHintLabel setFrame: CGRectMake(4, baseCostLabel.frame.origin.y + baseCostLabel.frame.size.height + 4, processingFeeHintLabel.frame.size.width, processingFeeHintLabel.frame.size.height)];
+        [processingFeeLabel setFrame: CGRectMake(processingFeeLabel.frame.origin.x, processingFeeHintLabel.frame.origin.y, processingFeeLabel.frame.size.width, processingFeeLabel.frame.size.height)];
+        [totalHintLabel setFrame: CGRectMake(4, processingFeeLabel.frame.origin.y + processingFeeLabel.frame.size.height + 4, totalHintLabel.frame.size.width, totalHintLabel.frame.size.height)];
+        [totalLabel setFrame: CGRectMake(totalLabel.frame.origin.x, totalHintLabel.frame.origin.y, totalLabel.frame.size.width, totalLabel.frame.size.height)];
+        [registrationCartView setFrame: CGRectMake(4, eventsTable.frame.origin.y + eventsTable.frame.size.height + 8, registrationCartView.frame.size.width, totalLabel.frame.origin.y + totalLabel.frame.size.height + 8)];
         //[couponView setFrame: CGRectMake(4, registrationCartView.frame.origin.y + registrationCartView.frame.size.height + 8, couponView.frame.size.width, couponView.frame.size.height)];
         [registrantView setFrame: CGRectMake(4, registrationCartView.frame.origin.y + registrationCartView.frame.size.height + 8, registrantView.frame.size.width, registrantView.frame.size.height)];
         //[paymentHintLabel setFrame: CGRectMake(4, registrantView.frame.origin.y + registrantView.frame.size.height + 8, paymentHintLabel.frame.size.width, paymentHintLabel.frame.size.height)];
@@ -154,7 +169,14 @@
         [scrollView setContentSize: CGSizeMake(scrollView.frame.size.width, paymentButton.frame.origin.y + paymentButton.frame.size.height + 8)];
     }else{
         [eventsTable setFrame: CGRectMake(4, eventsTable.frame.origin.y, eventsTable.frame.size.width, [eventsTable rowHeight] * [eventsTable numberOfRowsInSection: 0])];
-        [registrationCartView setFrame: CGRectMake(4, eventsTable.frame.origin.y + eventsTable.frame.size.height + 8, registrationCartView.frame.size.width, registrationCartView.frame.size.height)];
+        [cartTable setFrame: CGRectMake(4, cartTable.frame.origin.y, cartTable.frame.size.width, [cartTable rowHeight] * [cartTable numberOfRowsInSection: 0])];
+        [baseCostHintLabel setFrame: CGRectMake(4, cartTable.frame.origin.y + cartTable.frame.size.height + 4, baseCostHintLabel.frame.size.width, baseCostHintLabel.frame.size.height)];
+        [baseCostLabel setFrame: CGRectMake(baseCostLabel.frame.origin.x, baseCostHintLabel.frame.origin.y, baseCostLabel.frame.size.width, baseCostLabel.frame.size.height)];
+        [processingFeeHintLabel setFrame: CGRectMake(4, baseCostLabel.frame.origin.y + baseCostLabel.frame.size.height + 4, processingFeeHintLabel.frame.size.width, processingFeeHintLabel.frame.size.height)];
+        [processingFeeLabel setFrame: CGRectMake(processingFeeLabel.frame.origin.x, processingFeeHintLabel.frame.origin.y, processingFeeLabel.frame.size.width, processingFeeLabel.frame.size.height)];
+        [totalHintLabel setFrame: CGRectMake(4, processingFeeLabel.frame.origin.y + processingFeeLabel.frame.size.height + 4, totalHintLabel.frame.size.width, totalHintLabel.frame.size.height)];
+        [totalLabel setFrame: CGRectMake(totalLabel.frame.origin.x, totalHintLabel.frame.origin.y, totalLabel.frame.size.width, totalLabel.frame.size.height)];
+        [registrationCartView setFrame: CGRectMake(4, eventsTable.frame.origin.y + eventsTable.frame.size.height + 8, registrationCartView.frame.size.width, totalLabel.frame.origin.y + totalLabel.frame.size.height + 8)];
         [couponView setFrame: CGRectMake(4, registrationCartView.frame.origin.y + registrationCartView.frame.size.height + 8, couponView.frame.size.width, couponView.frame.size.height)];
         [registrantView setFrame: CGRectMake(4, couponView.frame.origin.y + couponView.frame.size.height + 8, registrantView.frame.size.width, registrantView.frame.size.height)];
         [paymentHintLabel setFrame: CGRectMake(4, registrantView.frame.origin.y + registrantView.frame.size.height + 8, paymentHintLabel.frame.size.width, paymentHintLabel.frame.size.height)];
@@ -176,6 +198,26 @@
         [cell setPrice:[firstRegPeriod objectForKey: @"RegistrationFee"] price2:[firstRegPeriod objectForKey: @"RegistrationProcessingFee"]];
         
         return cell;
+    }else if(tableView == cartTable){
+        static NSString *CartCellIdentifier = @"CartCellIdentifier";
+        RaceSignUpCartTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CartCellIdentifier];
+        if(cell == nil){
+            cell = [[RaceSignUpCartTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CartCellIdentifier];
+        }
+        
+        NSDictionary *cartItem = [[cartDict objectForKey:@"Cart"] objectAtIndex: [indexPath row]];
+        
+        NSString *subitemsString = @"";
+        for(NSString *si in [cartItem objectForKey:@"Subitems"]){
+            subitemsString = [subitemsString stringByAppendingFormat:@", %@", si];
+        }
+        
+        subitemsString = [subitemsString substringFromIndex: 2];
+        
+        [cell setInfo:[cartItem objectForKey:@"Info"] total:[cartItem objectForKey:@"TotalCost"] subitems:subitemsString];
+        return cell;
+
+        
     }else{
         static NSString *CellIdentifier = @"CellIdentifier";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -191,7 +233,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{    
     if(tableView == eventsTable){
         return [[dataDict objectForKey: @"Events"] count];
-    }else
+    }else if(tableView == cartTable)
+        return [[cartDict objectForKey:@"Cart"] count];
+    else
         return 1;
 }
 
@@ -206,14 +250,35 @@
             [[[RSUModel sharedModel] paymentViewController] setDelegate: [RSUModel sharedModel]];
         }
         
+        [dataDict setObject:[cartDict objectForKey:@"TotalCost"] forKey:@"TotalCost"];
+        
         [[RSUModel sharedModel] setDataDict: dataDict];
         [self.navigationController pushViewController:[[RSUModel sharedModel] paymentViewController] animated:YES];
     }else{
+        [dataDict setObject:@"$0.00" forKey:@"TotalCost"];
+        
         [[RSUModel sharedModel] setDataDict: dataDict];
-        // Send data
-        RaceSignUpConfirmationViewController *rsucvc = [[RaceSignUpConfirmationViewController alloc] initWithNibName:@"RaceSignUpConfirmationViewController" bundle:Nil data:dataDict];
-        [self.navigationController pushViewController:rsucvc animated:YES];
-        [rsucvc release];
+        
+        void (^response)(RSUConnectionResponse, NSDictionary *) = ^(RSUConnectionResponse didSucceed, NSDictionary *data){
+            [rli fadeOut];
+            
+            if(didSucceed == RSUSuccess){
+                [dataDict setObject:data forKey:@"ConfirmationCodes"];
+                
+                RaceSignUpConfirmationViewController *rsucvc = [[RaceSignUpConfirmationViewController alloc] initWithNibName:@"RaceSignUpConfirmationViewController" bundle:Nil data:dataDict];
+                [self.navigationController pushViewController:rsucvc animated:YES];
+                [rsucvc release];
+            }else{
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Failed to register for race. Please try registration process again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                [alert show];
+                [alert release];
+                [self.navigationController popToRootViewControllerAnimated: YES];
+            }
+        };
+        
+        [[rli label] setText: @"Registering..."];
+        [rli fadeIn];
+        [[RSUModel sharedModel] registerForRace:[dataDict objectForKey:@"RaceID"] withInfo:dataDict requestType:RSURegRegister response:response];
     }
 }
 

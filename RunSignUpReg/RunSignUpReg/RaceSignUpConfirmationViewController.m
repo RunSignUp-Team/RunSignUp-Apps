@@ -11,6 +11,8 @@
 #import "RSUModel.h"
 
 @implementation RaceSignUpConfirmationViewController
+@synthesize rli;
+
 @synthesize raceNameLabel;
 @synthesize registeredLabel;
 @synthesize eventsTable;
@@ -39,6 +41,14 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         dataDict = data;
+
+        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+            self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:100];
+        else
+            self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:432 YLocation:140];
+        [[rli label] setText: @"Retrieving Cost..."];
+        [self.view addSubview: rli];
+        [rli release];
     }
     
     self.title = @"Congratulations!";
@@ -47,6 +57,9 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+    
+    if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
+        [self setEdgesForExtendedLayout: UIRectEdgeNone];
     
     UIImage *greenButtonImage = [UIImage imageNamed:@"GreenButton.png"];
     UIImage *stretchedGreenButton = [greenButtonImage stretchableImageWithLeftCapWidth:12 topCapHeight:12];
@@ -103,6 +116,8 @@
     
     [self.navigationItem setHidesBackButton: YES];
     [self.navigationItem setRightBarButtonItem:printItem animated:YES];
+    [self.navigationController.navigationBar setNeedsDisplay];
+    
     [printItem release];
     
     [self layoutContent];
@@ -171,7 +186,23 @@
 }
 
 - (IBAction)clearTransaction:(id)sender{
+    void (^response)(RSUConnectionResponse, NSDictionary *) = ^(RSUConnectionResponse didSucceed, NSDictionary *data){
+        [rli fadeOut];
+        
+        if(didSucceed == RSUSuccess){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success" message:@"You have successfully refunded your transaction." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+            [alert show];
+            [alert release];
+        }else{
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Failed to refund race." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+            [alert show];
+            [alert release];
+        }
+    };
     
+    [[rli label] setText: @"Refunding..."];
+    [rli fadeIn];
+    [[RSUModel sharedModel] registerForRace:[dataDict objectForKey:@"RaceID"] withInfo:dataDict requestType:RSURegRefund response:response];
 }
 
 - (IBAction)returnToMainMenu:(id)sender{

@@ -7,7 +7,7 @@
 //
 
 #import "RaceSignUpEventsViewController.h"
-#import "RaceSignUpTShirtViewController.h"
+#import "RaceSignUpGiveawayViewController.h"
 #import "RaceSignUpEventTableViewCell.h"
 
 @implementation RaceSignUpEventsViewController
@@ -67,9 +67,9 @@
         
         [newDataDict setObject:mutableEventsArray forKey:@"Events"];
         
-        RaceSignUpTShirtViewController *rsutvc = [[RaceSignUpTShirtViewController alloc] initWithNibName:@"RaceSignUpTShirtViewController" bundle:nil data:newDataDict];
-        [self.navigationController pushViewController:rsutvc animated:YES];
-        [rsutvc release];
+        RaceSignUpGiveawayViewController *rsugvc = [[RaceSignUpGiveawayViewController alloc] initWithNibName:@"RaceSignUpGiveawayViewController" bundle:nil data:newDataDict];
+        [self.navigationController pushViewController:rsugvc animated:YES];
+        [rsugvc release];
     }
 }
 

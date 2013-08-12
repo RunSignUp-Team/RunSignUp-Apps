@@ -18,6 +18,12 @@ typedef enum{
     RSUInvalidData
 } RSUConnectionResponse;
 
+typedef enum{
+    RSURegGetCart = 10,
+    RSURegRegister,
+    RSURegRefund
+}RSURegistrationRequest;
+
 @interface RSUModel : NSObject <BTPaymentViewControllerDelegate>{
     BTPaymentViewController *paymentViewController;
     
@@ -54,6 +60,7 @@ typedef enum{
 
 - (id)init;
 - (int)renewCredentials;
+
 - (void)attemptLoginWithEmail:(NSString *)em pass:(NSString *)pa response:(void (^)(RSUConnectionResponse))responseBlock;
 - (void)retrieveRaceListWithParams:(NSDictionary *)params response:(void (^)(NSArray *))responseBlock;
 - (void)retrieveRaceDetailsWithRaceID:(NSString *)raceID response:(void (^)(NSMutableDictionary *))responseBlock;
@@ -61,6 +68,7 @@ typedef enum{
 - (void)editUserWithInfo:(NSDictionary *)info response:(void (^)(RSUConnectionResponse))responseBlock;
 - (void)retrieveUserInfo:(void (^)(RSUConnectionResponse))responseBlock;
 - (void)retrieveRaceRegistrationInformation:(void (^)(RSUConnectionResponse, NSDictionary *))responseBlock;
+- (void)registerForRace:(NSString *)raceID withInfo:(NSDictionary *)info requestType:(RSURegistrationRequest)type response:(void (^)(RSUConnectionResponse, NSDictionary *))responseBlock;
 
 - (void)logout;
 

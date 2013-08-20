@@ -92,18 +92,18 @@
             break;
     }
     
-    if(REGISTRATION_REQUIRES_LOGIN && [[RSUModel sharedModel] lastParsedUser] != nil){
-        NSString *name = [NSString stringWithFormat: @"%@ %@", [[[RSUModel sharedModel] lastParsedUser] objectForKey: @"FName"], [[[RSUModel sharedModel] lastParsedUser] objectForKey: @"LName"]];
+    if(REGISTRATION_REQUIRES_LOGIN && [[RSUModel sharedModel] currentUser] != nil){
+        NSString *name = [NSString stringWithFormat: @"%@ %@", [[[RSUModel sharedModel] currentUser] objectForKey: @"FName"], [[[RSUModel sharedModel] currentUser] objectForKey: @"LName"]];
         
         [nameLabel setText: name];
-        [emailLabel setText: [[[RSUModel sharedModel] lastParsedUser] objectForKey: @"Email"]];
-        [dobLabel setText: [[[RSUModel sharedModel] lastParsedUser] objectForKey: @"DOB"]];
-        [genderLabel setText: [[[RSUModel sharedModel] lastParsedUser] objectForKey: @"Gender"]];
-        [phoneLabel setText: [[[RSUModel sharedModel] lastParsedUser] objectForKey: @"Phone"]];
-        [addressLabel setText: [[[RSUModel sharedModel] lastParsedUser] objectForKey: @"Street"]];
-        [cityLabel setText: [[[RSUModel sharedModel] lastParsedUser] objectForKey: @"City"]];
-        [stateLabel setText: [[[RSUModel sharedModel] lastParsedUser] objectForKey: @"State"]];
-        [zipLabel setText: [[[RSUModel sharedModel] lastParsedUser] objectForKey: @"Zipcode"]];
+        [emailLabel setText: [[[RSUModel sharedModel] currentUser] objectForKey: @"Email"]];
+        [dobLabel setText: [[[RSUModel sharedModel] currentUser] objectForKey: @"DOB"]];
+        [genderLabel setText: [[[RSUModel sharedModel] currentUser] objectForKey: @"Gender"]];
+        [phoneLabel setText: [[[RSUModel sharedModel] currentUser] objectForKey: @"Phone"]];
+        [addressLabel setText: [[[RSUModel sharedModel] currentUser] objectForKey: @"Street"]];
+        [cityLabel setText: [[[RSUModel sharedModel] currentUser] objectForKey: @"City"]];
+        [stateLabel setText: [[[RSUModel sharedModel] currentUser] objectForKey: @"State"]];
+        [zipLabel setText: [[[RSUModel sharedModel] currentUser] objectForKey: @"Zipcode"]];
     }
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];

@@ -85,28 +85,27 @@
     
     [raceNameLabel setText: [dataDict objectForKey: @"Name"]];
 
-    if(REGISTRATION_REQUIRES_LOGIN && [[RSUModel sharedModel] lastParsedUser] != nil){
-        NSString *name = [NSString stringWithFormat: @"%@ %@", [[[RSUModel sharedModel] lastParsedUser] objectForKey: @"FName"], [[[RSUModel sharedModel] lastParsedUser] objectForKey: @"LName"]];
+    if(REGISTRATION_REQUIRES_LOGIN && [[RSUModel sharedModel] currentUser] != nil){
+        NSString *name = [NSString stringWithFormat: @"%@ %@", [[[RSUModel sharedModel] currentUser] objectForKey: @"FName"], [[[RSUModel sharedModel] currentUser] objectForKey: @"LName"]];
         
         [nameLabel setText: name];
-        [emailLabel setText: [[[RSUModel sharedModel] lastParsedUser] objectForKey: @"Email"]];
-        [dobLabel setText: [[[RSUModel sharedModel] lastParsedUser] objectForKey: @"DOB"]];
-        [genderLabel setText: [[[RSUModel sharedModel] lastParsedUser] objectForKey: @"Gender"]];
-        [phoneLabel setText: [[[RSUModel sharedModel] lastParsedUser] objectForKey: @"Phone"]];
-        [addressLabel setText: [[[RSUModel sharedModel] lastParsedUser] objectForKey: @"Street"]];
-        [cityLabel setText: [[[RSUModel sharedModel] lastParsedUser] objectForKey: @"City"]];
-        [stateLabel setText: [[[RSUModel sharedModel] lastParsedUser] objectForKey: @"State"]];
-        [zipLabel setText: [[[RSUModel sharedModel] lastParsedUser] objectForKey: @"Zipcode"]];
+        [emailLabel setText: [[[RSUModel sharedModel] currentUser] objectForKey: @"Email"]];
+        [dobLabel setText: [[[RSUModel sharedModel] currentUser] objectForKey: @"DOB"]];
+        [genderLabel setText: [[[RSUModel sharedModel] currentUser] objectForKey: @"Gender"]];
+        [phoneLabel setText: [[[RSUModel sharedModel] currentUser] objectForKey: @"Phone"]];
+        [addressLabel setText: [[[RSUModel sharedModel] currentUser] objectForKey: @"Street"]];
+        [cityLabel setText: [[[RSUModel sharedModel] currentUser] objectForKey: @"City"]];
+        [stateLabel setText: [[[RSUModel sharedModel] currentUser] objectForKey: @"State"]];
+        [zipLabel setText: [[[RSUModel sharedModel] currentUser] objectForKey: @"Zipcode"]];
     }
     
     void (^response)(RSUConnectionResponse, NSDictionary *) = ^(RSUConnectionResponse didSucceed, NSDictionary *data){
         if(didSucceed == RSUSuccess){
             if(data != nil){
                 if([[data objectForKey:@"Cart"] count] == 0){
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Cart is empty, please try registering again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Cart is empty, please try registering again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
                     [alert show];
                     [alert release];
-                    [self.navigationController popToRootViewControllerAnimated: YES];
                 }
                 
                 NSLog(@"%@", data);
@@ -124,27 +123,44 @@
                 [processingFeeLabel setText: [data objectForKey:@"ProcessingFee"]];
                 [totalLabel setText: [data objectForKey:@"TotalCost"]];
             }else{
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Invalid data, please double check your registrant information and try again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Invalid data, please double check your registrant information and try again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
                 [alert show];
                 [alert release];
-                [self.navigationController popToRootViewControllerAnimated: YES];
+            }
+        }else if(didSucceed == RSUInvalidData && data != nil){
+            if([data objectForKey:@"ErrorArray"] == nil){
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error #%@: %@", [data objectForKey:@"ErrorCode"], [data objectForKey:@"ErrorMessage"]] delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                [alert show];
+                [alert release];
+            }else{
+                NSString *errors = @"Errors: ";
+                for(NSString *error in [data objectForKey: @"ErrorArray"]){
+                    errors = [errors stringByAppendingFormat:@"%@, ", error];
+                }
+                errors = [errors substringToIndex: [errors length] - 2];
+                
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:errors delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                [alert show];
+                [alert release];
             }
         }else if(didSucceed == RSUInvalidData){
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Invalid data, please double check your registrant information and try again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Invalid data, please double check your registrant information and try again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
             [alert show];
             [alert release];
-            [self.navigationController popToRootViewControllerAnimated: YES];
         }else if(didSucceed == RSUNoConnection){
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There was a problem establishing a connection with RunSignUp. Please try again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There was a problem establishing a connection with RunSignUp. Please try again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
             [alert show];
             [alert release];
-            [self.navigationController popToRootViewControllerAnimated: YES];
         }
         
         [rli fadeOut];
         [self layoutContent];
     };
     [[RSUModel sharedModel] registerForRace:[dataDict objectForKey:@"RaceID"] withInfo:dataDict requestType:RSURegGetCart response:response];
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
+    [self.navigationController popToRootViewControllerAnimated: YES];
 }
 
 - (void)layoutContent{
@@ -246,7 +262,7 @@
 - (IBAction)confirmPayment:(id)sender{
     if(!isFreeRace){
         if([[RSUModel sharedModel] paymentViewController] == nil){
-            [[RSUModel sharedModel] setPaymentViewController: [BTPaymentViewController paymentViewControllerWithVenmoTouchEnabled:YES]];
+            [[RSUModel sharedModel] setPaymentViewController: [BTPaymentViewController paymentViewControllerWithVenmoTouchEnabled:NO]];
             [[[RSUModel sharedModel] paymentViewController] setDelegate: [RSUModel sharedModel]];
         }
         
@@ -268,11 +284,29 @@
                 RaceSignUpConfirmationViewController *rsucvc = [[RaceSignUpConfirmationViewController alloc] initWithNibName:@"RaceSignUpConfirmationViewController" bundle:Nil data:dataDict];
                 [self.navigationController pushViewController:rsucvc animated:YES];
                 [rsucvc release];
-            }else{
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Failed to register for race. Please try registration process again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+            }else if(didSucceed == RSUInvalidData && data != nil){
+                if([data objectForKey:@"ErrorArray"] == nil){
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error #%@: %@", [data objectForKey:@"ErrorCode"], [data objectForKey:@"ErrorMessage"]] delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                    [alert show];
+                    [alert release];
+                    [self.navigationController popToRootViewControllerAnimated: NO];
+                }else{
+                    NSString *errors = @"Errors: ";
+                    for(NSString *error in [data objectForKey: @"ErrorArray"]){
+                        errors = [errors stringByAppendingFormat:@"%@, ", error];
+                    }
+                    errors = [errors substringToIndex: [errors length] - 2];
+                    
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:errors delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                    [alert show];
+                    [alert release];
+                    [self.navigationController popToRootViewControllerAnimated: NO];
+                }
+            }else if(didSucceed == RSUInvalidData){
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Failed to register for race. Please try registration process again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
                 [alert show];
                 [alert release];
-                [self.navigationController popToRootViewControllerAnimated: YES];
+                [self.navigationController popToRootViewControllerAnimated: NO];
             }
         };
         

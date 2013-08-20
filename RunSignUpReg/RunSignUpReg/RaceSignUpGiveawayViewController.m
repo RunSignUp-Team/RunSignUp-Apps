@@ -94,11 +94,13 @@
 
 - (IBAction)chooseGiveaways:(id)sender{
     for(int x = 0; x < [[dataDict objectForKey:@"Events"] count]; x++){
-        if(x != [[dataDict objectForKey: @"Events"] count]){
+        if(x < [self numberOfSectionsInTableView: giveawayTable]){
             RaceSignUpGiveawayTableViewCell *cell = (RaceSignUpGiveawayTableViewCell *)[giveawayTable cellForRowAtIndexPath: [NSIndexPath indexPathForRow:0 inSection:x]];
-            NSString *giveawayID = [cell getSelectedGiveawayID];
-            if(giveawayID)
-                [[[dataDict objectForKey: @"Events"] objectAtIndex: x] setObject:giveawayID forKey:@"GiveawayOptionID"];
+            if(cell){
+                NSString *giveawayID = [cell getSelectedGiveawayID];
+                if(giveawayID)
+                    [[[dataDict objectForKey: @"Events"] objectAtIndex: x] setObject:giveawayID forKey:@"GiveawayOptionID"];
+            }
         }
     }
     

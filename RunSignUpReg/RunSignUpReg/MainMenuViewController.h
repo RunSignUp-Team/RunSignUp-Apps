@@ -13,32 +13,31 @@
 @interface MainMenuViewController : UIViewController <SignInViewControllerDelegate>{
     UIButton *findRaceButton;
     UIButton *signInButton;
+    UIButton *signUpButton;
     UIButton *signOutButton;
+    UIButton *viewProfileButton;
     
     BOOL signedIn;
+    BOOL firstLoad;
     
-    UILabel *notRegisteredYetLabel;
-    UILabel *signUpLabel;
-    UIView *signUpUnderline;
     UILabel *aboutLabel;
     UILabel *settingsLabel;
     
     UILabel *signedInAsLabel;
     UILabel *emailLabel;
     
-    UILabel *raceDirectorsOnlyLabel;
-    UIButton *raceListButton;
-    
     UILabel *copyrightLabel;
+    
+    UIImageView *backgroundView;
+    UIImageView *titleView;
 }
 
 @property (nonatomic, retain) IBOutlet UIButton *findRaceButton;
 @property (nonatomic, retain) IBOutlet UIButton *signInButton;
+@property (nonatomic, retain) IBOutlet UIButton *signUpButton;
 @property (nonatomic, retain) IBOutlet UIButton *signOutButton;
+@property (nonatomic, retain) IBOutlet UIButton *viewProfileButton;
 
-@property (nonatomic, retain) IBOutlet UILabel *notRegisteredYetLabel;
-@property (nonatomic, retain) IBOutlet UILabel *signUpLabel;
-@property (nonatomic, retain) IBOutlet UIView *signUpUnderline;
 @property (nonatomic, retain) IBOutlet UILabel *aboutLabel;
 @property (nonatomic, retain) IBOutlet UILabel *settingsLabel;
 
@@ -46,15 +45,15 @@
 @property (nonatomic, retain) IBOutlet UILabel *emailLabel;
 @property (nonatomic, retain) IBOutlet UILabel *copyrightLabel;
 
-@property (nonatomic, retain) IBOutlet UILabel *raceDirectorsOnlyLabel;
-@property (nonatomic, retain) IBOutlet UIButton *raceListButton;
+@property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
+@property (nonatomic, retain) IBOutlet UIImageView *titleView;
 
-- (IBAction)signUp:(id)sender;
+- (IBAction)viewProfile:(id)sender;
 - (IBAction)about:(id)sender;
 - (IBAction)settings:(id)sender;
 - (IBAction)findRace:(id)sender;
-- (IBAction)raceList:(id)sender;
 - (IBAction)signIn:(id)sender;
+- (IBAction)signUp:(id)sender;
 - (IBAction)signOut:(id)sender;
 
 - (void)didSignInEmail:(NSString *)email;

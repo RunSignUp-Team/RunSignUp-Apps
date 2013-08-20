@@ -48,8 +48,12 @@
         [self setEdgesForExtendedLayout: UIRectEdgeNone];
     
     [table setSeparatorColor: [UIColor colorWithRed:0.0f green:0.5804f blue:0.8f alpha:1.0f]];
-    
     [self retrieveRaceList];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)viewDidUnload{

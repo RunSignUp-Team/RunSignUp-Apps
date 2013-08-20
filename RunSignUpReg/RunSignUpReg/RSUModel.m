@@ -20,7 +20,9 @@ static RSUModel *model = nil;
 @synthesize email;
 @synthesize password;
 @synthesize signedIn;
-@synthesize lastParsedUser;
+@synthesize registrantType;
+@synthesize currentUser;
+@synthesize creditCardInfo;
 @synthesize dataDict;
 
 - (id)init{
@@ -33,34 +35,81 @@ static RSUModel *model = nil;
         self.email = nil;
         self.password = nil;
         self.signedIn = NO;
-        self.lastParsedUser = nil;
+        self.registrantType = RSURegistrantMe;
+        self.currentUser = nil;
+        self.creditCardInfo = nil;
         self.dataDict = nil;
     }
     return self;
 }
 
 - (void)savePaymentInfoToServer:(NSDictionary *)paymentInfo{
-    NSString *customerId = [[UIDevice currentDevice] identifierForVendor].UUIDString;
-    [paymentInfo setValue:customerId forKey:@"CustomerID"];
+    if(self.creditCardInfo == nil){
+        self.creditCardInfo = [[NSMutableDictionary alloc] init];
+    }
+
+    [creditCardInfo setObject:[paymentInfo objectForKey:@"card_number"] forKey:@"CCNumber"];
+    [creditCardInfo setObject:[paymentInfo objectForKey:@"cvv"] forKey:@"CCCVV"];
+    [creditCardInfo setObject:[NSString stringWithFormat:@"%@/%@", [paymentInfo objectForKey:@"expiration_month"], [paymentInfo objectForKey:@"expiration_year"]] forKey:@"CCExpires"];
+    [creditCardInfo setObject:[paymentInfo objectForKey:@"zipcode"] forKey:@"CCZipcode"];
+
+    void (^response)(RSUConnectionResponse, NSDictionary *) = ^(RSUConnectionResponse didSucceed, NSDictionary *data){
+        if(didSucceed == RSUSuccess){
+            [dataDict setObject:data forKey:@"ConfirmationCodes"];
+            
+            [paymentViewController prepareForDismissal];
+            RaceSignUpConfirmationViewController *rsucvc = [[RaceSignUpConfirmationViewController alloc] initWithNibName:@"RaceSignUpConfirmationViewController" bundle:nil data:dataDict];
+            UINavigationController *navController = paymentViewController.navigationController;
+            [navController popViewControllerAnimated: NO];
+            [navController pushViewController:rsucvc animated:YES];
+            [rsucvc release];
+        }else if(didSucceed == RSUInvalidData && data != nil){
+            if([data objectForKey:@"ErrorArray"] == nil){
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error #%@: %@", [data objectForKey:@"ErrorCode"], [data objectForKey:@"ErrorMessage"]] delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                [alert show];
+                [alert release];
+            }else{
+                NSString *errors = @"Errors: ";
+                for(NSString *error in [data objectForKey: @"ErrorArray"]){
+                    errors = [errors stringByAppendingFormat:@"%@, ", error];
+                }
+                errors = [errors substringToIndex: [errors length] - 2];
+                
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:errors delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                [alert show];
+                [alert release];
+                
+                [paymentViewController prepareForDismissal];
+            }
+        }else{
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Failed to register for race. Please try registration process again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+            [alert show];
+            [alert release];
+            [paymentViewController prepareForDismissal];
+        }
+    };
     
-    [paymentViewController prepareForDismissal];
-    RaceSignUpConfirmationViewController *rsucvc = [[RaceSignUpConfirmationViewController alloc] initWithNibName:@"RaceSignUpConfirmationViewController" bundle:nil data:dataDict];
-    UINavigationController *navController = paymentViewController.navigationController;
-    [navController popViewControllerAnimated: NO];
-    [navController pushViewController:rsucvc animated:YES];
-    [rsucvc release];
+    [[RSUModel sharedModel] registerForRace:[dataDict objectForKey:@"RaceID"] withInfo:dataDict requestType:RSURegRegister response:response];
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
+    [paymentViewController.navigationController popToRootViewControllerAnimated: YES];
 }
 
 - (void)paymentViewController:(BTPaymentViewController *)paymentViewController didSubmitCardWithInfo:(NSDictionary *)cardInfo andCardInfoEncrypted:(NSDictionary *)cardInfoEncrypted{
     NSLog(@"Info: %@", cardInfo);
     NSLog(@"Encrypted: %@", cardInfoEncrypted);
-    [self savePaymentInfoToServer:cardInfoEncrypted];
+    [self savePaymentInfoToServer:cardInfo];
 }
 
 - (void)paymentViewController:(BTPaymentViewController *)paymentViewController didAuthorizeCardWithPaymentMethodCode:(NSString *)paymentMethodCode{
-    NSLog(@"Payment method code: %@", paymentMethodCode);
+    /*NSLog(@"Payment method code: %@", paymentMethodCode);
     NSMutableDictionary *paymentInfo = [NSMutableDictionary dictionaryWithObject:paymentMethodCode forKey:@"venmo_sdk_payment_method_code"];
-    [self savePaymentInfoToServer:paymentInfo];
+    [self savePaymentInfoToServer:paymentInfo];*/
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"We're sorry, but Venmo Touch is not currently supported on RunSignUp Mobile." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+    [alert show];
+    [alert release];
 }
 
 - (void)registerForRace:(NSString *)raceID withInfo:(NSDictionary *)info requestType:(RSURegistrationRequest)type response:(void (^)(RSUConnectionResponse, NSDictionary *))responseBlock{
@@ -86,18 +135,18 @@ static RSUModel *model = nil;
         NSMutableDictionary *registrant = [[NSMutableDictionary alloc] init];
         
         if(REGISTRATION_REQUIRES_LOGIN){
-            [registrant setObject:[lastParsedUser objectForKey:@"UserID"] forKey:@"user_id"];
-            [registrant setObject:[lastParsedUser objectForKey:@"FName"] forKey:@"first_name"];
-            [registrant setObject:[lastParsedUser objectForKey:@"LName"] forKey:@"last_name"];
-            [registrant setObject:[lastParsedUser objectForKey:@"Email"] forKey:@"email"];
-            [registrant setObject:[lastParsedUser objectForKey:@"Street"] forKey:@"address1"];
-            [registrant setObject:[lastParsedUser objectForKey:@"City"] forKey:@"city"];
-            [registrant setObject:[lastParsedUser objectForKey:@"State"] forKey:@"state"];
-            [registrant setObject:[lastParsedUser objectForKey:@"Country"] forKey:@"country_code"];
-            [registrant setObject:[lastParsedUser objectForKey:@"Zipcode"] forKey:@"zipcode"];
-            [registrant setObject:[lastParsedUser objectForKey:@"Phone"] forKey:@"phone"];
-            [registrant setObject:[lastParsedUser objectForKey:@"DOB"] forKey:@"dob"];
-            [registrant setObject:[lastParsedUser objectForKey:@"Gender"] forKey:@"gender"];
+            [registrant setObject:[currentUser objectForKey:@"UserID"] forKey:@"user_id"];
+            [registrant setObject:[currentUser objectForKey:@"FName"] forKey:@"first_name"];
+            [registrant setObject:[currentUser objectForKey:@"LName"] forKey:@"last_name"];
+            [registrant setObject:[currentUser objectForKey:@"Email"] forKey:@"email"];
+            [registrant setObject:[currentUser objectForKey:@"Street"] forKey:@"address1"];
+            [registrant setObject:[currentUser objectForKey:@"City"] forKey:@"city"];
+            [registrant setObject:[currentUser objectForKey:@"State"] forKey:@"state"];
+            [registrant setObject:[currentUser objectForKey:@"Country"] forKey:@"country_code"];
+            [registrant setObject:[currentUser objectForKey:@"Zipcode"] forKey:@"zipcode"];
+            [registrant setObject:[currentUser objectForKey:@"Phone"] forKey:@"phone"];
+            [registrant setObject:[currentUser objectForKey:@"DOB"] forKey:@"dob"];
+            [registrant setObject:[currentUser objectForKey:@"Gender"] forKey:@"gender"];
         }
         
         NSMutableArray *events = [[NSMutableArray alloc] init];
@@ -114,8 +163,21 @@ static RSUModel *model = nil;
         [registrant setObject:events forKey:@"events"];
         [registrants addObject: registrant];
         [reqDict setObject:@"T" forKey:@"waiver_accepted"];
-        if(type == RSURegRegister)
+        if(type == RSURegRegister){
             [reqDict setObject:[info objectForKey:@"TotalCost"] forKey:@"total_cost"];
+            if(![[info objectForKey:@"TotalCost"] isEqualToString:@"$0.00"]){
+                [reqDict setObject:[currentUser objectForKey:@"FName"] forKey:@"cc_first_name"];
+                [reqDict setObject:[currentUser objectForKey:@"LName"] forKey:@"cc_last_name"];
+                [reqDict setObject:[currentUser objectForKey:@"Street"] forKey:@"cc_address1"];
+                [reqDict setObject:[currentUser objectForKey:@"City"] forKey:@"cc_city"];
+                [reqDict setObject:[currentUser objectForKey:@"State"] forKey:@"cc_state"];
+                [reqDict setObject:[currentUser objectForKey:@"Country"] forKey:@"cc_country_code"];
+                [reqDict setObject:[creditCardInfo objectForKey:@"CCZipcode"] forKey:@"cc_zipcode"];
+                [reqDict setObject:[creditCardInfo objectForKey:@"CCNumber"] forKey:@"cc_num"];
+                [reqDict setObject:[creditCardInfo objectForKey:@"CCCVV"] forKey:@"cc_cvv"];
+                [reqDict setObject:[creditCardInfo objectForKey:@"CCExpires"] forKey:@"cc_expires"];
+            }
+        }
         [reqDict setObject:registrants forKey:@"registrants"];
         
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:reqDict options:NSJSONWritingPrettyPrinted error:nil];
@@ -232,6 +294,28 @@ static RSUModel *model = nil;
             
             dispatch_async(dispatch_get_main_queue(),^(){responseBlock(RSUInvalidData, nil);});
             return;
+        }else if([[rootXML tag] isEqualToString:@"error"]){
+            RXMLElement *errorCode = [rootXML child:@"error_code"];
+            RXMLElement *errorMsg = [rootXML child:@"error_msg"];
+            RXMLElement *errorDetails = [rootXML child:@"error_details"];
+            
+            if(errorCode && errorMsg && !errorDetails){
+                NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+                [dict setObject:[errorCode text] forKey:@"ErrorCode"];
+                [dict setObject:[errorMsg text] forKey:@"ErrorMessage"];
+                
+                dispatch_async(dispatch_get_main_queue(),^(){responseBlock(RSUInvalidData, dict);});
+                return;
+            }else if(errorDetails){
+                NSMutableArray *errorArray = [[NSMutableArray alloc] init];
+                for(RXMLElement *error in [errorDetails children: @"error"]){
+                    RXMLElement *message = [error child: @"error_msg"];
+                    [errorArray addObject: [message text]];
+                }
+                dispatch_async(dispatch_get_main_queue(),^(){responseBlock(RSUInvalidData, [NSDictionary dictionaryWithObject:errorArray forKey:@"ErrorArray"]);});
+                return;
+            }
+
         }
         dispatch_async(dispatch_get_main_queue(),^(){responseBlock(RSUNoConnection, nil);});
     };
@@ -240,12 +324,12 @@ static RSUModel *model = nil;
 }
 
 /*
- xmlRequest = [xmlRequest stringByAppendingFormat:@"<request><registrants><registrant><user_id>%@</user_id>", [lastParsedUser objectForKey: @"UserID"]];
- xmlRequest = [xmlRequest stringByAppendingFormat:@"<first_name>%@</first_name><last_name>%@</last_name>", [lastParsedUser objectForKey: @"FName"], [lastParsedUser objectForKey: @"LName"]];
- xmlRequest = [xmlRequest stringByAppendingFormat:@"<email>%@</email><address1>%@</address1>", [lastParsedUser objectForKey:@"Email"], [lastParsedUser objectForKey:@"Street"]];
- xmlRequest = [xmlRequest stringByAppendingFormat:@"<city>%@</city><state>%@</state>", [lastParsedUser objectForKey:@"City"], [lastParsedUser objectForKey:@"State"]];
- xmlRequest = [xmlRequest stringByAppendingFormat:@"<country_code>%@</country_code><zipcode>%@</zipcode>", [lastParsedUser objectForKey:@"Country"], [lastParsedUser objectForKey: @"Zipcode"]];
- xmlRequest = [xmlRequest stringByAppendingFormat:@"<phone>%@</phone><dob>%@</dob><gender>%@<gender><events>", [lastParsedUser objectForKey:@"Phone"], [lastParsedUser objectForKey:@"DOB"], [lastParsedUser objectForKey:@"Gender"]];
+ xmlRequest = [xmlRequest stringByAppendingFormat:@"<request><registrants><registrant><user_id>%@</user_id>", [currentUser objectForKey: @"UserID"]];
+ xmlRequest = [xmlRequest stringByAppendingFormat:@"<first_name>%@</first_name><last_name>%@</last_name>", [currentUser objectForKey: @"FName"], [currentUser objectForKey: @"LName"]];
+ xmlRequest = [xmlRequest stringByAppendingFormat:@"<email>%@</email><address1>%@</address1>", [currentUser objectForKey:@"Email"], [currentUser objectForKey:@"Street"]];
+ xmlRequest = [xmlRequest stringByAppendingFormat:@"<city>%@</city><state>%@</state>", [currentUser objectForKey:@"City"], [currentUser objectForKey:@"State"]];
+ xmlRequest = [xmlRequest stringByAppendingFormat:@"<country_code>%@</country_code><zipcode>%@</zipcode>", [currentUser objectForKey:@"Country"], [currentUser objectForKey: @"Zipcode"]];
+ xmlRequest = [xmlRequest stringByAppendingFormat:@"<phone>%@</phone><dob>%@</dob><gender>%@<gender><events>", [currentUser objectForKey:@"Phone"], [currentUser objectForKey:@"DOB"], [currentUser objectForKey:@"Gender"]];
  
  for(int x = 0; x < [[info objectForKey: @"Events"] count]; x++){
  
@@ -292,7 +376,7 @@ static RSUModel *model = nil;
             RXMLElement *tmp_key = [rootXML child:@"tmp_key"];
             RXMLElement *tmp_secret = [rootXML child:@"tmp_secret"];
             RXMLElement *user = [rootXML child:@"user"];
-            [self parseUser: user];
+            self.currentUser = [self parseUser: user];
             
             if(tmp_key != nil && tmp_secret != nil){
                 self.key = [tmp_key text];
@@ -322,7 +406,7 @@ static RSUModel *model = nil;
 }
 
 - (void)editUserWithInfo:(NSDictionary *)info response:(void (^)(RSUConnectionResponse))responseBlock{
-    if([lastParsedUser objectForKey:@"UserID"] != nil && info != nil){
+    if([currentUser objectForKey:@"UserID"] != nil && info != nil){
         NSString *newDob;
         NSString *oldDob = (NSString *)[info objectForKey:@"DOB"];
         if([oldDob length] == 10){
@@ -332,14 +416,14 @@ static RSUModel *model = nil;
         }
 
         NSString *post = [NSString stringWithFormat:@"user_id=%@&first_name=%@&last_name=%@&dob=%@&gender=%@&phone=%@&address1=%@&city=%@&state=%@&country=%@&zipcode=%@",
-                         [lastParsedUser objectForKey:@"UserID"],[info objectForKey:@"FName"],[info objectForKey:@"LName"], newDob,
+                         [currentUser objectForKey:@"UserID"],[info objectForKey:@"FName"],[info objectForKey:@"LName"], newDob,
                          [info objectForKey:@"Gender"],[info objectForKey:@"Phone"],[info objectForKey:@"Street"],[info objectForKey:@"City"],
                          [info objectForKey:@"State"],[info objectForKey:@"Country"],[info objectForKey:@"Zipcode"]];
         
         NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
         
-        NSString *url = [NSString stringWithFormat:@"%@/rest/user/%@/?tmp_key=%@&tmp_secret=%@", RUNSIGNUP_BASE_URL,  [lastParsedUser objectForKey:@"UserID"], key, secret];
+        NSString *url = [NSString stringWithFormat:@"%@/rest/user/%@/?tmp_key=%@&tmp_secret=%@", RUNSIGNUP_BASE_URL,  [currentUser objectForKey:@"UserID"], key, secret];
         NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
         [request setURL:[NSURL URLWithString:url]];
         [request setHTTPMethod:@"POST"];
@@ -724,7 +808,7 @@ static RSUModel *model = nil;
     if(!signedIn){
         dispatch_async(dispatch_get_main_queue(),^(){responseBlock(RSUNoConnection);});
     }else{
-        NSString *url = [NSString stringWithFormat:@"%@/rest/user/%@/?tmp_key=%@&tmp_secret=%@", RUNSIGNUP_BASE_URL, [lastParsedUser objectForKey:@"UserID"], key, secret];
+        NSString *url = [NSString stringWithFormat:@"%@/rest/user/%@/?tmp_key=%@&tmp_secret=%@&include_secondary_users=T", RUNSIGNUP_BASE_URL, [currentUser objectForKey:@"UserID"], key, secret];
         
         NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
         [request setURL:[NSURL URLWithString:url]];
@@ -737,7 +821,7 @@ static RSUModel *model = nil;
 
                 RXMLElement *rootXML = [[RXMLElement alloc] initFromXMLData:urlData];
                 if([[rootXML tag] isEqualToString:@"user"]){
-                    [self parseUser: rootXML];
+                    self.currentUser = [self parseUser: rootXML];
                     dispatch_async(dispatch_get_main_queue(),^(){responseBlock(RSUSuccess);});
                     return;
                 }else{
@@ -804,7 +888,7 @@ static RSUModel *model = nil;
     self.signedIn = NO;
 }
 
-- (void)parseUser:(RXMLElement *)user{
+- (NSMutableDictionary *)parseUser:(RXMLElement *)user{
     if([[user tag] isEqualToString:@"user"]){
         NSMutableDictionary *userDict = [[NSMutableDictionary alloc] init];
         RXMLElement *userID = [user child:@"user_id"];
@@ -839,7 +923,12 @@ static RSUModel *model = nil;
             [userDict setObject:[profileImage text] forKey:@"ProfileImage"];
         if(dob){
             // Convert from yyyy-MM-dd to MM/dd/yyyy
+            NSArray *dateParts = [[dob text] componentsSeparatedByString:@"/"];
+            /*if([dateParts count] == 3){
+                
+            }*/
             if([[dob text] length] == 10){
+                
                 NSString *realDob = [[dob text] substringWithRange:NSMakeRange(5, 2)];
                 realDob = [realDob stringByAppendingFormat:@"/%@/%@", [[dob text] substringWithRange:NSMakeRange(8, 2)], [[dob text] substringWithRange:NSMakeRange(0, 4)]];
                 [userDict setObject:realDob forKey:@"DOB"];
@@ -870,7 +959,22 @@ static RSUModel *model = nil;
                 [userDict setObject:[country text] forKey:@"Country"];
             }
         }
-        self.lastParsedUser = userDict;
+        
+        RXMLElement *secondaryUsers = [user child: @"secondary_users"];
+        if(secondaryUsers){
+            NSMutableArray *secondaryUsersArray = [[NSMutableArray alloc] init];
+
+            for(RXMLElement *secondaryUser in [secondaryUsers children: @"user"]){
+                NSMutableDictionary *secondaryUserDict = [self parseUser: secondaryUser];
+                [secondaryUsersArray addObject: secondaryUserDict];
+                [secondaryUserDict release];
+            }
+            [userDict setObject:secondaryUsersArray forKey:@"SecondaryUsers"];
+        }
+        
+        return userDict;
+    }else{
+        return nil;
     }
 }
 

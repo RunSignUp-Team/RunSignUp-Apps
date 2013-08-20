@@ -8,7 +8,6 @@
 
 #import "SignUpViewController.h"
 #import "RSUModel.h"
-#import "ProfileViewController.h"
 
 @implementation SignUpViewController
 @synthesize scrollView;
@@ -32,11 +31,14 @@
 @synthesize donePickerBar;
 @synthesize countryPicker;
 @synthesize statePicker;
-@synthesize isEditingUserProfile;
+@synthesize signUpMode;
+@synthesize navigationBar;
 @synthesize userDictionary;
 @synthesize rli;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil profileViewController:(ProfileViewController *)pvc{
+@synthesize delegate;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -71,7 +73,6 @@
         currentSelectedCountry = 0;
         currentSelectedState = 0;
 
-        profileViewController = pvc;
         self.title = @"Sign Up";
     }
     return self;
@@ -112,10 +113,11 @@
     [chooseExistingButton setBackgroundImage:stretchedBlueButton forState:UIControlStateNormal];
     [chooseExistingButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
     
-    if(isEditingUserProfile){
+    if(signUpMode == RSUSignUpEditingUser){
         [passwordField setHidden: YES];
         [confirmPasswordField setHidden: YES];
         [emailField setHidden: YES];
+        self.title = @"Edit Profile";
         for(UIView *view in [scrollView subviews]){
             if([view frame].origin.y > [confirmPasswordField frame].origin.y){
                 CGRect frame = [view frame];
@@ -137,6 +139,9 @@
         if([[userDictionary objectForKey:@"Gender"] isEqualToString:@"F"]){
             [genderControl setSelectedSegmentIndex: 1];
         }
+    }else if(signUpMode == RSUSignUpSomeoneElse){
+        [navigationBar setHidden: NO];
+        [scrollView setFrame: CGRectMake(0, 64, scrollView.frame.size.width, scrollView.frame.size.height - 64)];
     }
     
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
@@ -147,6 +152,15 @@
     [[rli label] setText: @"Sending..."];
     [self.view addSubview: rli];
     [rli release];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
+- (IBAction)cancel:(id)sender{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)viewDidUnload{
@@ -219,45 +233,43 @@
 }
 
 - (IBAction)saveProfile:(id)sender{
-    if(isEditingUserProfile){
-        [rli fadeIn];
-        
-        NSString *genderString = @"M";
-        if([genderControl selectedSegmentIndex] == 1)
-            genderString = @"F";
-        
-        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-        [dict setObject:[firstNameField text] forKey:@"FName"];
-        [dict setObject:[lastNameField text] forKey:@"LName"];
-        [dict setObject:[emailField text] forKey:@"Email"];
-        [dict setObject:[dobField text] forKey:@"DOB"];
-        [dict setObject:genderString forKey:@"Gender"];
-        [dict setObject:[phoneField text] forKey:@"Phone"];
-        [dict setObject:[addressField text] forKey:@"Street"];
-        [dict setObject:[cityField text] forKey:@"City"];
-        int selectedCountry = [countryPicker selectedRowInComponent: 0];
-        if(selectedCountry != 2){
-            if(selectedCountry == 0){
-                [dict setObject:@"US" forKey:@"Country"];
-                [dict setObject:[stateArrayUS objectAtIndex: [statePicker selectedRowInComponent:0]] forKey:@"State"];
-            }else if(selectedCountry == 1){
-                [dict setObject:@"CA" forKey:@"Country"];
-                [dict setObject:[stateArrayCA objectAtIndex: [statePicker selectedRowInComponent:0]] forKey:@"State"];
-            }else{
-                [dict setObject:@"US" forKey:@"Country"];
-                [dict setObject:[stateArrayGE objectAtIndex: [statePicker selectedRowInComponent:0]] forKey:@"State"];
-            }
+    NSString *genderString = @"M";
+    if([genderControl selectedSegmentIndex] == 1)
+        genderString = @"F";
+    
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    [dict setObject:[firstNameField text] forKey:@"FName"];
+    [dict setObject:[lastNameField text] forKey:@"LName"];
+    [dict setObject:[emailField text] forKey:@"Email"];
+    [dict setObject:[dobField text] forKey:@"DOB"];
+    [dict setObject:genderString forKey:@"Gender"];
+    [dict setObject:[phoneField text] forKey:@"Phone"];
+    [dict setObject:[addressField text] forKey:@"Street"];
+    [dict setObject:[cityField text] forKey:@"City"];
+    int selectedCountry = [countryPicker selectedRowInComponent: 0];
+    if(selectedCountry != 2){
+        if(selectedCountry == 0){
+            [dict setObject:@"US" forKey:@"Country"];
+            [dict setObject:[stateArrayUS objectAtIndex: [statePicker selectedRowInComponent:0]] forKey:@"State"];
+        }else if(selectedCountry == 1){
+            [dict setObject:@"CA" forKey:@"Country"];
+            [dict setObject:[stateArrayCA objectAtIndex: [statePicker selectedRowInComponent:0]] forKey:@"State"];
         }else{
-            [dict setObject:@"FR" forKey:@"Country"];
+            [dict setObject:@"US" forKey:@"Country"];
+            [dict setObject:[stateArrayGE objectAtIndex: [statePicker selectedRowInComponent:0]] forKey:@"State"];
         }
-        
-        [dict setObject:[zipcodeField text] forKey:@"Zipcode"];
-        [self setUserDictionary: dict];
-        
+    }else{
+        [dict setObject:@"FR" forKey:@"Country"];
+    }
+    
+    [dict setObject:[zipcodeField text] forKey:@"Zipcode"];
+    [self setUserDictionary: dict];
+    
+    if(signUpMode == RSUSignUpEditingUser){
+        [rli fadeIn];
         void (^response)(RSUConnectionResponse) = ^(RSUConnectionResponse didSucceed){
             if(didSucceed == RSUSuccess){
-                [profileViewController setUserDictionary: userDictionary];
-                [profileViewController updateDataWithUserDictionary];
+                [delegate didSignUpWithDictionary: userDictionary];
                 [self.navigationController popViewControllerAnimated: YES];
             }else if(didSucceed == RSUInvalidData){
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Invalid data, please revise your information and try again." delegate:Nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
@@ -271,8 +283,11 @@
             [rli fadeOut];
         };
         [[RSUModel sharedModel] editUserWithInfo:dict response:response];
-    }else{
-        // create user
+    }else if(signUpMode == RSUSignUpSomeoneElse){
+        [delegate didSignUpWithDictionary: userDictionary];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }else if(signUpMode == RSUSignUpDefault){
+        
     }
 }
 
@@ -332,7 +347,7 @@
     else if(textField == lastNameField)
         [emailField becomeFirstResponder];
     else if(textField == emailField)
-        if(isEditingUserProfile)
+        if(signUpMode == RSUSignUpEditingUser)
             [addressField becomeFirstResponder];
         else
             [passwordField becomeFirstResponder];

@@ -8,11 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
-#import "SignInViewController.h"
 #import "RoundedLoadingIndicator.h"
 #import <EventKitUI/EventKitUI.h>
 
-@interface RaceDetailsViewController : UIViewController <EKEventEditViewDelegate, UIActionSheetDelegate, UIWebViewDelegate, UITableViewDelegate, UITableViewDataSource, SignInViewControllerDelegate>{
+@interface RaceDetailsViewController : UIViewController <EKEventEditViewDelegate, UIActionSheetDelegate, UIWebViewDelegate, UITableViewDelegate, UITableViewDataSource>{
     NSDictionary *dataDict;
     NSDateFormatter *eventDateFormatter;
         
@@ -88,8 +87,6 @@
 - (IBAction)viewResults:(id)sender;
 
 - (void)showEventEditViewWithEvent:(EKEvent *)event;
-
-- (void)didSignInEmail:(NSString *)email;
 
 - (CLLocationCoordinate2D)getLocationFromAddressString:(NSString*)addressStr;
 

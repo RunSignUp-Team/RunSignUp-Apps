@@ -7,7 +7,6 @@
 //
 
 #import "ProfileViewController.h"
-#import "SignUpViewController.h"
 #import "RSUModel.h"
 
 @implementation ProfileViewController
@@ -50,22 +49,23 @@
     
     if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
         [self setEdgesForExtendedLayout: UIRectEdgeNone];
-        
+    
     if(isUserProfile){
         UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editProfile)];
-        [self.navigationItem setRightBarButtonItem: editButton];
-        
-        [rli fadeIn];
-        void (^response)(RSUConnectionResponse) = ^(RSUConnectionResponse didSucceed){
-            if(didSucceed == RSUSuccess){
-                [rli fadeOut];
-                self.userDictionary = [[NSDictionary alloc] initWithDictionary:[[RSUModel sharedModel] lastParsedUser] copyItems:YES];
-                [self updateDataWithUserDictionary];
-            }
-        };
-        
-        [[RSUModel sharedModel] retrieveUserInfo:response];
+        UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
+        [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:editButton, refreshButton, nil]];
     }
+    
+    [self refresh];
+}
+
+- (void)didSignUpWithDictionary:(NSDictionary *)dict{
+    [self refresh];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)updateDataWithUserDictionary{
@@ -99,11 +99,25 @@
 }
 
 - (void)editProfile{
-    SignUpViewController *svc = [[SignUpViewController alloc] initWithNibName:@"SignUpViewController" bundle:nil profileViewController: self];
-    [svc setIsEditingUserProfile: YES];
+    SignUpViewController *svc = [[SignUpViewController alloc] initWithNibName:@"SignUpViewController" bundle:nil];
+    [svc setProfileViewController: self];
+    [svc setSignUpMode: RSUSignUpEditingUser];
     [svc setUserDictionary: userDictionary];
-    [svc setTitle:@"Edit Profile"];
     [self.navigationController pushViewController:svc animated:YES];
+    [svc release];
+}
+
+- (void)refresh{
+    [rli fadeIn];
+    void (^response)(RSUConnectionResponse) = ^(RSUConnectionResponse didSucceed){
+        if(didSucceed == RSUSuccess){
+            [rli fadeOut];
+            self.userDictionary = [[NSDictionary alloc] initWithDictionary:[[RSUModel sharedModel] currentUser] copyItems:YES];
+            [self updateDataWithUserDictionary];
+        }
+    };
+    
+    [[RSUModel sharedModel] retrieveUserInfo:response];
 }
 
 - (void)viewDidUnload{

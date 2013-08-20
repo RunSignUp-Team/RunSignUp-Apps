@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "RoundedLoadingIndicator.h"
 
-@interface RaceSignUpPaymentViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
+@interface RaceSignUpPaymentViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate> {
     NSMutableDictionary *dataDict;
     NSDictionary *cartDict;
     

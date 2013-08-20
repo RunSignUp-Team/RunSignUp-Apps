@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SignUpViewController.h"
 #import "RoundedLoadingIndicator.h"
 
-@interface ProfileViewController : UIViewController{
+@interface ProfileViewController : UIViewController <SignUpViewControllerDelegate>{
     RoundedLoadingIndicator *rli;
     
     UILabel *nameLabel;
@@ -46,6 +47,7 @@
 @property (nonatomic, retain) IBOutlet UIImageView *profileImageView;
 
 - (void)editProfile;
+- (void)refresh;
 - (void)updateDataWithUserDictionary;
 
 @end

@@ -19,11 +19,10 @@
 @implementation MainMenuViewController
 @synthesize findRaceButton;
 @synthesize signInButton;
+@synthesize signUpButton;
 @synthesize signOutButton;
+@synthesize viewProfileButton;
 
-@synthesize notRegisteredYetLabel;
-@synthesize signUpLabel;
-@synthesize signUpUnderline;
 @synthesize aboutLabel;
 @synthesize settingsLabel;
 
@@ -31,21 +30,14 @@
 @synthesize emailLabel;
 @synthesize copyrightLabel;
 
-@synthesize raceDirectorsOnlyLabel;
-@synthesize raceListButton;
+@synthesize backgroundView;
+@synthesize titleView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self){
-        if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0){
-            UIImageView *titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"Logo.png"]];
-            [self.navigationItem setTitleView: titleView];
-        }else{
-            UIImageView *titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"Title.png"]];
-            [self.navigationItem setTitleView: titleView];
-        }
-        
         signedIn = NO;
+        firstLoad = YES;
     }
     return self;
 }
@@ -53,9 +45,25 @@
 - (void)viewDidLoad{
     [super viewDidLoad];
         
-    if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
+    if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0){
         [self setEdgesForExtendedLayout: UIRectEdgeNone];
+        UIInterpolatingMotionEffect *interpolationHorizontal = [[UIInterpolatingMotionEffect alloc]initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+        interpolationHorizontal.minimumRelativeValue = @-15.0;
+        interpolationHorizontal.maximumRelativeValue = @15.0;
+        
+        UIInterpolatingMotionEffect *interpolationVertical = [[UIInterpolatingMotionEffect alloc]initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+        interpolationVertical.minimumRelativeValue = @-15.0;
+        interpolationVertical.maximumRelativeValue = @15.0;
+        
+        [self.backgroundView addMotionEffect:interpolationHorizontal];
+        [self.backgroundView addMotionEffect:interpolationVertical];
+    }
     
+    // Reverse signup button's image
+    UIImage *originalImage = [signUpButton backgroundImageForState: UIControlStateNormal];
+    [signUpButton setBackgroundImage:[UIImage imageWithCGImage:originalImage.CGImage scale:1.0 orientation:UIImageOrientationUpMirrored] forState:UIControlStateNormal];
+
+    // Images created for stretching to variably sized UIButtons (see buttons in resources)
     UIImage *blueButtonImage = [UIImage imageNamed:@"BlueButton.png"];
     UIImage *stretchedBlueButton = [blueButtonImage stretchableImageWithLeftCapWidth:12 topCapHeight:12];
     UIImage *blueButtonTapImage = [UIImage imageNamed:@"BlueButtonTap.png"];
@@ -64,16 +72,13 @@
     UIImage *stretchedGreenButton = [greenButtonImage stretchableImageWithLeftCapWidth:12 topCapHeight:12];
     UIImage *greenButtonTapImage = [UIImage imageNamed:@"GreenButtonTap.png"];
     UIImage *stretchedGreenButtonTap = [greenButtonTapImage stretchableImageWithLeftCapWidth:12 topCapHeight:12];
-    
-    // Images created for stretching to variably sized UIButtons (see buttons in resources)
+
     [findRaceButton setBackgroundImage:stretchedGreenButton forState:UIControlStateNormal];
     [findRaceButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
-    [signInButton setBackgroundImage:stretchedBlueButton forState:UIControlStateNormal];
-    [signInButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
     [signOutButton setBackgroundImage:stretchedBlueButton forState:UIControlStateNormal];
     [signOutButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
-    [raceListButton setBackgroundImage:stretchedBlueButton forState:UIControlStateNormal];
-    [raceListButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
+    [viewProfileButton setBackgroundImage:stretchedBlueButton forState:UIControlStateNormal];
+    [viewProfileButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
     
     // Date formatter set up to allow future-proof Copyright tag on bottom of main menu.
     NSDate *date = [NSDate date];
@@ -86,6 +91,11 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear: animated];
+    [self.navigationController setNavigationBarHidden:YES animated:!firstLoad];
+    firstLoad = NO;
+    if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
     
     if([[RSUModel sharedModel] signedIn] && !signedIn){
         [emailLabel setHidden: NO];
@@ -93,24 +103,18 @@
         [signedInAsLabel setHidden: NO];
         [findRaceButton setHidden: NO];
         [signOutButton setHidden: NO];
-        [signInButton setTitle:@"Your Profile" forState:UIControlStateNormal];
-        [notRegisteredYetLabel setHidden: YES];
-        [signUpLabel setHidden: YES];
-        [signUpUnderline setHidden: YES];
-        [raceDirectorsOnlyLabel setHidden: NO];
-        [raceListButton setHidden: NO];
+        [signUpButton setHidden: YES];
+        [signInButton setHidden: YES];
+        [viewProfileButton setHidden: NO];
         signedIn = YES;
     }else if(![[RSUModel sharedModel] signedIn] && signedIn){
         [emailLabel setHidden: YES];
         [signedInAsLabel setHidden: YES];
         [findRaceButton setHidden: NO];
         [signOutButton setHidden: YES];
-        [signInButton setTitle:@"Sign In" forState:UIControlStateNormal];
-        [notRegisteredYetLabel setHidden: NO];
-        [signUpLabel setHidden: NO];
-        [signUpUnderline setHidden: NO];
-        [raceDirectorsOnlyLabel setHidden: YES];
-        [raceListButton setHidden: YES];
+        [signUpButton setHidden: NO];
+        [signInButton setHidden: NO];
+        [viewProfileButton setHidden: YES];
         signedIn = NO;
     }
 }
@@ -121,12 +125,9 @@
     [signedInAsLabel setHidden: NO];
     [findRaceButton setHidden: NO];
     [signOutButton setHidden: NO];
-    [signInButton setTitle:@"Your Profile" forState:UIControlStateNormal];
-    [notRegisteredYetLabel setHidden: YES];
-    [signUpLabel setHidden: YES];
-    [signUpUnderline setHidden: YES];
-    [raceDirectorsOnlyLabel setHidden: NO];
-    [raceListButton setHidden: NO];
+    [signUpButton setHidden: YES];
+    [signInButton setHidden: YES];
+    [viewProfileButton setHidden: NO];
     signedIn = YES;
 }
 
@@ -136,19 +137,16 @@
     [rlvc release];
 }
 
-- (IBAction)raceList:(id)sender{
-    UserRaceListViewController *urlvc = [[UserRaceListViewController alloc] initWithNibName:@"UserRaceListViewController" bundle:nil];
-    [self.navigationController pushViewController:urlvc animated:YES];
-    [urlvc release];
-}
-
-// Sign in button also doubles as "view profile" button
-- (IBAction)signIn:(id)sender{
+- (IBAction)viewProfile:(id)sender{
     if(signedIn){
         ProfileViewController *pvc = [[ProfileViewController alloc] initWithNibName:@"ProfileViewController" bundle:nil isUserProfile:YES];
         [self.navigationController pushViewController:pvc animated:YES];
         [pvc release];
-    }else{
+    }
+}
+// Sign in button also doubles as "view profile" button
+- (IBAction)signIn:(id)sender{
+    if(!signedIn){
         SignInViewController *svc = [[SignInViewController alloc] initWithNibName:@"SignInViewController" bundle:nil];
         [svc setDelegate: self];
         [self presentViewController:svc animated:YES completion:nil];
@@ -161,18 +159,16 @@
     [signedInAsLabel setHidden: YES];
     [findRaceButton setHidden: NO];
     [signOutButton setHidden: YES];
-    [signInButton setTitle:@"Sign In" forState:UIControlStateNormal];
-    [notRegisteredYetLabel setHidden: NO];
-    [signUpLabel setHidden: NO];
-    [signUpUnderline setHidden: NO];
-    [raceDirectorsOnlyLabel setHidden: YES];
-    [raceListButton setHidden: YES];
+    [signUpButton setHidden: NO];
+    [signInButton setHidden: NO];
+    [viewProfileButton setHidden: YES];
     signedIn = NO;
     [[RSUModel sharedModel] logout];
 }
 
 - (IBAction)signUp:(id)sender{
-    SignUpViewController *svc = [[SignUpViewController alloc] initWithNibName:@"SignUpViewController" bundle:nil profileViewController:nil];
+    SignUpViewController *svc = [[SignUpViewController alloc] initWithNibName:@"SignUpViewController" bundle:nil];
+    [svc setSignUpMode: RSUSignUpDefault];
     [self.navigationController pushViewController:svc animated:YES];
     [svc release];
 }

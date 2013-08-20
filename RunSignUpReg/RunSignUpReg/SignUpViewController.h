@@ -9,6 +9,16 @@
 #import <UIKit/UIKit.h>
 #import "RoundedLoadingIndicator.h"
 
+typedef enum{
+    RSUSignUpDefault = 30,
+    RSUSignUpEditingUser,
+    RSUSignUpSomeoneElse
+}RSUSignUpMode;
+
+@protocol SignUpViewControllerDelegate <NSObject>
+- (void)didSignUpWithDictionary:(NSDictionary *)dict;
+@end
+
 @class ProfileViewController;
 
 @interface SignUpViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate>{
@@ -43,17 +53,20 @@
     NSArray *stateArrayCA;
     NSArray *stateArrayGE;
     
-    BOOL isEditingUserProfile;
+    RSUSignUpMode signUpMode;
     NSDictionary *userDictionary;
     
     int currentPicker;
     NSInteger currentSelectedCountry;
     NSInteger currentSelectedState;
     
-    ProfileViewController *profileViewController;
+    UINavigationBar *navigationBar;
     
+    UIViewController<SignUpViewControllerDelegate> *delegate;
     RoundedLoadingIndicator *rli;
 }
+
+@property (nonatomic, retain) UIViewController<SignUpViewControllerDelegate> *delegate;
 
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, retain) IBOutlet UITextField *firstNameField;
@@ -77,16 +90,18 @@
 @property (nonatomic, retain) IBOutlet UIPickerView *countryPicker;
 @property (nonatomic, retain) IBOutlet UIPickerView *statePicker;
 
-@property BOOL isEditingUserProfile;
+@property RSUSignUpMode signUpMode;
+@property (nonatomic, retain) IBOutlet UINavigationBar *navigationBar;
 @property (nonatomic, retain) NSDictionary *userDictionary;
 @property (nonatomic, retain) RoundedLoadingIndicator *rli;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil profileViewController:(ProfileViewController *)pvc;
+@property (nonatomic, retain) ProfileViewController *profileViewController;
 
 - (IBAction)takePhoto:(id)sender;
 - (IBAction)chooseExistingPhoto:(id)sender;
 
 - (IBAction)saveProfile:(id)sender;
+- (IBAction)cancel:(id)sender;
 
 - (IBAction)showCountryPicker:(id)sender;
 - (IBAction)showStatePicker:(id)sender;

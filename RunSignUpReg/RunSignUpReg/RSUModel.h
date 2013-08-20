@@ -17,14 +17,21 @@ typedef enum{
     RSUSuccess,
     RSUInvalidData
 } RSUConnectionResponse;
-
+     
 typedef enum{
     RSURegGetCart = 10,
     RSURegRegister,
     RSURegRefund
 }RSURegistrationRequest;
 
-@interface RSUModel : NSObject <BTPaymentViewControllerDelegate>{
+typedef enum{
+    RSURegistrantMe = 20,
+    RSURegistrantNewUser,
+    RSURegistrantSomeoneElse,
+    RSURegistrantSecondary
+}RSURegistrantType;
+
+@interface RSUModel : NSObject <BTPaymentViewControllerDelegate, UIAlertViewDelegate>{
     BTPaymentViewController *paymentViewController;
     
     NSMutableDictionary *dataDict;
@@ -39,8 +46,10 @@ typedef enum{
     NSString *password;
     
     BOOL signedIn;
-        
-    NSDictionary *lastParsedUser;
+    
+    RSURegistrantType registrantType;
+    NSDictionary *currentUser;
+    NSMutableDictionary *creditCardInfo;
 }
 
 @property (nonatomic, retain) BTPaymentViewController *paymentViewController;
@@ -51,7 +60,9 @@ typedef enum{
 @property (nonatomic, retain) NSString *email;
 @property (nonatomic, retain) NSString *password;
 @property BOOL signedIn;
-@property (nonatomic, retain) NSDictionary *lastParsedUser;
+@property RSURegistrantType registrantType;
+@property (nonatomic, retain) NSDictionary *currentUser;
+@property (nonatomic, retain) NSMutableDictionary *creditCardInfo;
 @property (nonatomic, retain) NSMutableDictionary *dataDict;
 
 + (id)sharedModel;
@@ -72,6 +83,6 @@ typedef enum{
 
 - (void)logout;
 
-- (void)parseUser:(RXMLElement *)user;
+- (NSMutableDictionary *)parseUser:(RXMLElement *)user;
 
 @end

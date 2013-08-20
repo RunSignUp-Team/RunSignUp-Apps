@@ -8,12 +8,12 @@
 
 #import "RaceDetailsViewController.h"
 #import "RaceResultsViewController.h"
-#import "RaceSignUpWaiverViewController.h"
 #import "RaceDetailsEventTableViewCell.h"
 #import "RaceDetailsRegistrationTableViewCell.h"
 #import "RSUModel.h"
 #import <EventKit/EventKit.h>
 #import <EventKitUI/EventKitUI.h>
+#import "RaceSignUpChooseRegistrantViewController.h"
 
 @implementation RaceDetailsViewController
 @synthesize dataDict;
@@ -178,35 +178,19 @@
     //[descriptionLabel setFrame: CGRectMake(4, descriptionHintLabel.frame.origin.y + descriptionHintLabel.frame.size.height + 8, 312, size.height)];
     [descriptionView setFrame: CGRectMake(4, descriptionHintLabel.frame.origin.y + descriptionHintLabel.frame.size.height + 8, 312, descriptionView.frame.size.height)];
     [signUpButton2 setFrame: CGRectMake(4, descriptionView.frame.origin.y + descriptionView.frame.size.height + 8, 312, 46)];
-    [scrollView setContentSize: CGSizeMake(320.0f, descriptionView.frame.origin.y + descriptionView.frame.size.height + 62)];
+    [scrollView setContentSize: CGSizeMake(320.0f, signUpButton2.frame.origin.y + signUpButton2.frame.size.height + 4)];
 }
 
 - (IBAction)signUp:(id)sender{
     if(hasLoadedDetails){
-        if(REGISTRATION_REQUIRES_LOGIN){
-            if([[RSUModel sharedModel] signedIn]){
-                NSMutableDictionary *dataDictCopy = [[NSMutableDictionary alloc] initWithDictionary:dataDict copyItems:YES];
-                RaceSignUpWaiverViewController *rswvc = [[RaceSignUpWaiverViewController alloc] initWithNibName:@"RaceSignUpWaiverViewController" bundle:nil data: dataDictCopy];
-                [self.navigationController pushViewController:rswvc animated:YES];
-            }else{
-                SignInViewController *sivc = [[SignInViewController alloc] initWithNibName:@"SignInViewController" bundle:nil];
-                [sivc setDelegate: self];
-                [self presentViewController:sivc animated:YES completion:nil];
-                [sivc release];
-            }
-        }else{
-            NSMutableDictionary *dataDictCopy = [[NSMutableDictionary alloc] initWithDictionary:dataDict copyItems:YES];
-            RaceSignUpWaiverViewController *rswvc = [[RaceSignUpWaiverViewController alloc] initWithNibName:@"RaceSignUpWaiverViewController" bundle:nil data: dataDictCopy];
-            [self.navigationController pushViewController:rswvc animated:YES];
-        }
+        NSMutableDictionary *dataDictCopy = [[NSMutableDictionary alloc] initWithDictionary:dataDict copyItems:YES];
+        RaceSignUpChooseRegistrantViewController *rsucrvc = [[RaceSignUpChooseRegistrantViewController alloc] initWithNibName:@"RaceSignUpChooseRegistrantViewController" bundle:nil data:dataDictCopy];
+        [self.navigationController pushViewController:rsucrvc animated:YES];
+        [rsucrvc release];
     }else{
         attemptedToSignUpWithoutDetails = YES;
         [rli fadeIn];
     }
-}
-
-- (void)didSignInEmail:(NSString *)email{
-    [self signUp: nil];
 }
 
 - (IBAction)viewMap:(id)sender{

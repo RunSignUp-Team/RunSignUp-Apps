@@ -29,7 +29,7 @@
     [mmvc release];
     [navController release];
     [self.window makeKeyAndVisible];
-    [self initVTClient];
+    //[self initVTClient];
     return YES;
 }
 

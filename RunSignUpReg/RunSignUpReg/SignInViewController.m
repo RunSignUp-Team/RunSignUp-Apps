@@ -82,9 +82,6 @@
             [rli fadeIn];
             void (^response)(RSUConnectionResponse) = ^(RSUConnectionResponse didSucceed){
                 if(didSucceed == RSUSuccess){
-                    [rli fadeOut];
-                    [delegate didSignInEmail: [emailField text]];
-                    
                     if([[NSUserDefaults standardUserDefaults] objectForKey:@"RememberEmail"] == nil){
                         if([rememberSwitch isOn]){
                             [[NSUserDefaults standardUserDefaults] setObject:[emailField text] forKey:@"RememberEmail"];
@@ -97,7 +94,20 @@
                         }
                     }
                     
-                    [self dismissViewControllerAnimated:YES completion:nil];
+                    void (^response)(RSUConnectionResponse) = ^(RSUConnectionResponse didSucceed){
+                        if(didSucceed == RSUSuccess){
+                            [rli fadeOut];
+                            [delegate didSignInEmail: [emailField text]];
+                            [self dismissViewControllerAnimated:YES completion:nil];
+                        }else{
+                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There was a problem establishing a connection with RunSignUp. Please try again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                            [alert show];
+                            [alert release];
+                            [rli fadeOut];
+                        }
+                    };
+                    
+                    [[RSUModel sharedModel] retrieveUserInfo: response];
                 }else if(didSucceed == RSUInvalidEmail){
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No user exists with that email address. Please try again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
                     [alert show];

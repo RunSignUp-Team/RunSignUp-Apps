@@ -28,8 +28,8 @@ static RSUModel *model = nil;
 - (id)init{
     self = [super init];
     if(self){
-        self.apiKey = API_KEY; // oauth @"3a90690eafbe965ae0b05a4769945a31401ed239";
-        self.apiSecret = API_SECRET; // oauth @"f741ac1aa027a758618f5b032777f4bb3b7999dc";
+        self.apiKey = API_KEY;
+        self.apiSecret = API_SECRET;
         self.key = nil;
         self.secret = nil;
         self.email = nil;
@@ -127,6 +127,8 @@ static RSUModel *model = nil;
             break;
     }
     
+    NSLog(@"%@", info);
+    
     NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
     
     if(type != RSURegRefund){
@@ -134,20 +136,51 @@ static RSUModel *model = nil;
         NSMutableArray *registrants = [[NSMutableArray alloc] init];
         NSMutableDictionary *registrant = [[NSMutableDictionary alloc] init];
         
-        if(REGISTRATION_REQUIRES_LOGIN){
-            [registrant setObject:[currentUser objectForKey:@"UserID"] forKey:@"user_id"];
-            [registrant setObject:[currentUser objectForKey:@"FName"] forKey:@"first_name"];
-            [registrant setObject:[currentUser objectForKey:@"LName"] forKey:@"last_name"];
-            [registrant setObject:[currentUser objectForKey:@"Email"] forKey:@"email"];
-            [registrant setObject:[currentUser objectForKey:@"Street"] forKey:@"address1"];
-            [registrant setObject:[currentUser objectForKey:@"City"] forKey:@"city"];
-            [registrant setObject:[currentUser objectForKey:@"State"] forKey:@"state"];
-            [registrant setObject:[currentUser objectForKey:@"Country"] forKey:@"country_code"];
-            [registrant setObject:[currentUser objectForKey:@"Zipcode"] forKey:@"zipcode"];
-            [registrant setObject:[currentUser objectForKey:@"Phone"] forKey:@"phone"];
-            [registrant setObject:[currentUser objectForKey:@"DOB"] forKey:@"dob"];
-            [registrant setObject:[currentUser objectForKey:@"Gender"] forKey:@"gender"];
+        NSDictionary *userDict = nil;
+        NSString *urlString = [NSString stringWithFormat: @"%@/rest/race/%@/registration", RUNSIGNUP_BASE_URL, raceID];
+        if([[RSUModel sharedModel] signedIn]){
+            if([[RSUModel sharedModel] registrantType] == RSURegistrantMe){
+                userDict = [[RSUModel sharedModel] currentUser];
+                urlString = [urlString stringByAppendingFormat:@"?tmp_key=%@&tmp_secret=%@", key, secret];
+            }else{ //someoneelse or secondary
+                userDict = [info objectForKey:@"Registrant"];
+                urlString = [urlString stringByAppendingFormat:@"?tmp_key=%@&tmp_secret=%@", key, secret];
+            }
+        }else if([[RSUModel sharedModel] registrantType] == RSURegistrantNewUser){
+            userDict = [info objectForKey:@"Registrant"];
         }
+        
+        if(userDict == nil){
+            dispatch_async(dispatch_get_main_queue(),^(){responseBlock(RSUNoConnection, nil);});
+            return;
+        }
+        
+        if([userDict objectForKey:@"UserID"])
+            [registrant setObject:[userDict objectForKey:@"UserID"] forKey:@"user_id"];
+        if([userDict objectForKey:@"FName"])
+            [registrant setObject:[userDict objectForKey:@"FName"] forKey:@"first_name"];
+        if([userDict objectForKey:@"LName"])
+            [registrant setObject:[userDict objectForKey:@"LName"] forKey:@"last_name"];
+        if([userDict objectForKey:@"Email"])
+            [registrant setObject:[userDict objectForKey:@"Email"] forKey:@"email"];
+        if([userDict objectForKey:@"Street"])
+            [registrant setObject:[userDict objectForKey:@"Street"] forKey:@"address1"];
+        if([userDict objectForKey:@"City"])
+            [registrant setObject:[userDict objectForKey:@"City"] forKey:@"city"];
+        if([userDict objectForKey:@"State"])
+            [registrant setObject:[userDict objectForKey:@"State"] forKey:@"state"];
+        if([userDict objectForKey:@"Country"])
+            [registrant setObject:[userDict objectForKey:@"Country"] forKey:@"country_code"];
+        if([userDict objectForKey:@"Zipcode"])
+            [registrant setObject:[userDict objectForKey:@"Zipcode"] forKey:@"zipcode"];
+        if([userDict objectForKey:@"Phone"])
+            [registrant setObject:[userDict objectForKey:@"Phone"] forKey:@"phone"];
+        if([userDict objectForKey:@"DOB"])
+            [registrant setObject:[userDict objectForKey:@"DOB"] forKey:@"dob"];
+        if([userDict objectForKey:@"Gender"])
+            [registrant setObject:[userDict objectForKey:@"Gender"] forKey:@"gender"];
+        if([userDict objectForKey:@"Password"])
+            [registrant setObject:[userDict objectForKey:@"Gender"] forKey:@"password"];
         
         NSMutableArray *events = [[NSMutableArray alloc] init];
         
@@ -166,12 +199,12 @@ static RSUModel *model = nil;
         if(type == RSURegRegister){
             [reqDict setObject:[info objectForKey:@"TotalCost"] forKey:@"total_cost"];
             if(![[info objectForKey:@"TotalCost"] isEqualToString:@"$0.00"]){
-                [reqDict setObject:[currentUser objectForKey:@"FName"] forKey:@"cc_first_name"];
-                [reqDict setObject:[currentUser objectForKey:@"LName"] forKey:@"cc_last_name"];
-                [reqDict setObject:[currentUser objectForKey:@"Street"] forKey:@"cc_address1"];
-                [reqDict setObject:[currentUser objectForKey:@"City"] forKey:@"cc_city"];
-                [reqDict setObject:[currentUser objectForKey:@"State"] forKey:@"cc_state"];
-                [reqDict setObject:[currentUser objectForKey:@"Country"] forKey:@"cc_country_code"];
+                [reqDict setObject:[userDict objectForKey:@"FName"] forKey:@"cc_first_name"];
+                [reqDict setObject:[userDict objectForKey:@"LName"] forKey:@"cc_last_name"];
+                [reqDict setObject:[userDict objectForKey:@"Street"] forKey:@"cc_address1"];
+                [reqDict setObject:[userDict objectForKey:@"City"] forKey:@"cc_city"];
+                [reqDict setObject:[userDict objectForKey:@"State"] forKey:@"cc_state"];
+                [reqDict setObject:[userDict objectForKey:@"Country"] forKey:@"cc_country_code"];
                 [reqDict setObject:[creditCardInfo objectForKey:@"CCZipcode"] forKey:@"cc_zipcode"];
                 [reqDict setObject:[creditCardInfo objectForKey:@"CCNumber"] forKey:@"cc_num"];
                 [reqDict setObject:[creditCardInfo objectForKey:@"CCCVV"] forKey:@"cc_cvv"];
@@ -179,6 +212,7 @@ static RSUModel *model = nil;
             }
         }
         [reqDict setObject:registrants forKey:@"registrants"];
+        NSLog(@"%@", reqDict);
         
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:reqDict options:NSJSONWritingPrettyPrinted error:nil];
         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
@@ -188,7 +222,7 @@ static RSUModel *model = nil;
         NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
         
-        [request setURL:[NSURL URLWithString:[NSString stringWithFormat: @"%@/rest/race/%@/registration?tmp_key=%@&tmp_secret=%@", RUNSIGNUP_BASE_URL, raceID, key, secret]]];
+        [request setURL:[NSURL URLWithString:urlString]];
         [request setHTTPMethod:@"POST"];
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
         [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
@@ -201,7 +235,7 @@ static RSUModel *model = nil;
         NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
         
-        [request setURL:[NSURL URLWithString:[NSString stringWithFormat: @"%@/rest/race/%@/registration?tmp_key=%@&tmp_secret=%@", RUNSIGNUP_BASE_URL, raceID, key, secret]]];
+        [request setURL:[NSURL URLWithString:[NSString stringWithFormat: @"%@/rest/race/%@/registration", RUNSIGNUP_BASE_URL, raceID]]];
         [request setHTTPMethod:@"POST"];
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
         [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
@@ -346,7 +380,7 @@ static RSUModel *model = nil;
 /* Attempt to log in with the given email and password. Multiple responses
  can be returned: no connection, invalid email, invalid pass, success. If
  successful, then the secret and key are stored inside the RSUModel object. */
-- (void)attemptLoginWithEmail:(NSString *)em pass:(NSString *)pa response:(void (^)(RSUConnectionResponse))responseBlock{
+- (void)loginWithEmail:(NSString *)em pass:(NSString *)pa response:(void (^)(RSUConnectionResponse))responseBlock{
     self.email = em;
     self.password = pa;
     
@@ -856,7 +890,7 @@ static RSUModel *model = nil;
     if(urlData){
         RXMLElement *rootXML = [[RXMLElement alloc] initFromXMLData:urlData];
         if(![[rootXML tag] isEqualToString:@"user"]){
-            //int attempt = [self attemptLoginWithEmail:email pass:password];
+            //int attempt = [self loginWithEmail:email pass:password];
             return RSUNoConnection;
         }
     }else{
@@ -922,15 +956,9 @@ static RSUModel *model = nil;
         if(profileImage)
             [userDict setObject:[profileImage text] forKey:@"ProfileImage"];
         if(dob){
-            // Convert from yyyy-MM-dd to MM/dd/yyyy
             NSArray *dateParts = [[dob text] componentsSeparatedByString:@"/"];
-            /*if([dateParts count] == 3){
-                
-            }*/
-            if([[dob text] length] == 10){
-                
-                NSString *realDob = [[dob text] substringWithRange:NSMakeRange(5, 2)];
-                realDob = [realDob stringByAppendingFormat:@"/%@/%@", [[dob text] substringWithRange:NSMakeRange(8, 2)], [[dob text] substringWithRange:NSMakeRange(0, 4)]];
+            if([dateParts count] == 3){
+                NSString *realDob = [NSString stringWithFormat:@"%02d/%02d/%04d", [[dateParts objectAtIndex: 0] intValue], [[dateParts objectAtIndex: 1] intValue], [[dateParts objectAtIndex: 2] intValue]];
                 [userDict setObject:realDob forKey:@"DOB"];
             }else{
                 [userDict setObject:[dob text] forKey:@"DOB"];

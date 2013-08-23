@@ -60,9 +60,9 @@
     UIImage *dropDownStretched = [[UIImage imageNamed:@"DropDown.png"] stretchableImageWithLeftCapWidth:21 topCapHeight:0];
     UIImage *dropDownTapStretched = [[UIImage imageNamed:@"DropDownTap.png"] stretchableImageWithLeftCapWidth:21 topCapHeight:0];
     UIImage *greenButtonImage = [UIImage imageNamed:@"GreenButton.png"];
-    UIImage *stretchedGreenButton = [greenButtonImage stretchableImageWithLeftCapWidth:12 topCapHeight:12];
+    UIImage *stretchedGreenButton = [greenButtonImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     UIImage *greenButtonTapImage = [UIImage imageNamed:@"GreenButtonTap.png"];
-    UIImage *stretchedGreenButtonTap = [greenButtonTapImage stretchableImageWithLeftCapWidth:12 topCapHeight:12];
+    UIImage *stretchedGreenButtonTap = [greenButtonTapImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     
     [distanceDrop setBackgroundImage:dropDownStretched forState:UIControlStateNormal];
     [distanceDrop setBackgroundImage:dropDownTapStretched forState:UIControlStateSelected];
@@ -209,7 +209,8 @@
     if(toDate)[searchParams setObject:toDate forKey:@"ToDate"];
     if(countryPick)[searchParams setObject:countryPick forKey:@"Country"];
     if(statePick)[searchParams setObject:statePick forKey:@"State"];
-        
+    
+    NSLog(@"%@", searchParams);
     [delegate setSearchParams: searchParams];
     [delegate retrieveRaceList];
     

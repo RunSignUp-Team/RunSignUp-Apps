@@ -12,7 +12,9 @@
 typedef enum{
     RSUSignUpDefault = 30,
     RSUSignUpEditingUser,
-    RSUSignUpSomeoneElse
+    RSUSignUpSomeoneElse,
+    RSUSignUpNewUser,
+    RSUSignUpCreditCardInfo
 }RSUSignUpMode;
 
 @protocol SignUpViewControllerDelegate <NSObject>
@@ -60,6 +62,8 @@ typedef enum{
     NSInteger currentSelectedCountry;
     NSInteger currentSelectedState;
     
+    UILabel *ageHintLabel;
+    
     UINavigationBar *navigationBar;
     
     UIViewController<SignUpViewControllerDelegate> *delegate;
@@ -91,6 +95,7 @@ typedef enum{
 @property (nonatomic, retain) IBOutlet UIPickerView *statePicker;
 
 @property RSUSignUpMode signUpMode;
+@property (nonatomic, retain) IBOutlet UILabel *ageHintLabel;
 @property (nonatomic, retain) IBOutlet UINavigationBar *navigationBar;
 @property (nonatomic, retain) NSDictionary *userDictionary;
 @property (nonatomic, retain) RoundedLoadingIndicator *rli;

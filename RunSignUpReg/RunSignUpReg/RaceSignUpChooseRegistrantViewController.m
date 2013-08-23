@@ -29,7 +29,10 @@
 }
 
 - (void)didSignUpWithDictionary:(NSDictionary *)dict{
-    
+    [dataDict setObject:dict forKey:@"Registrant"];
+    RaceSignUpWaiverViewController *rswvc = [[RaceSignUpWaiverViewController alloc] initWithNibName:@"RaceSignUpWaiverViewController" bundle:nil data:dataDict];
+    [self.navigationController pushViewController:rswvc animated:YES];
+    [rswvc release];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -41,10 +44,18 @@
             [rswvc release];
         }else if(indexPath.row == 1){ // Register someone else
             [[RSUModel sharedModel] setRegistrantType: RSURegistrantSomeoneElse];
-            
+            SignUpViewController *suvc = [[SignUpViewController alloc] initWithNibName:@"SignUpViewController" bundle:nil];
+            [suvc setSignUpMode: RSUSignUpSomeoneElse];
+            [suvc setDelegate: self];
+            [self presentViewController:suvc animated:YES completion:nil];
+            [suvc release];
+        }else if(indexPath.row == [tableView numberOfRowsInSection: 0] - 1){
+            [[RSUModel sharedModel] logout];
+            [tableView reloadData];
         }else{ // Register a secondary user
             [[RSUModel sharedModel] setRegistrantType: RSURegistrantSecondary];
-            
+            NSDictionary *secondaryUser = [[[[RSUModel sharedModel] currentUser] objectForKey:@"SecondaryUsers"] objectAtIndex: indexPath.row - 2];
+            [self didSignUpWithDictionary: secondaryUser];
         }
     }else{
         if(indexPath.row == 0){ // Sign in
@@ -55,7 +66,7 @@
         }else if(indexPath.row == 1){ // New user
             [[RSUModel sharedModel] setRegistrantType: RSURegistrantNewUser];
             SignUpViewController *suvc = [[SignUpViewController alloc] initWithNibName:@"SignUpViewController" bundle:nil];
-            [suvc setSignUpMode: RSUSignUpSomeoneElse];
+            [suvc setSignUpMode: RSUSignUpNewUser];
             [suvc setDelegate: self];
             [self presentViewController:suvc animated:YES completion:nil];
             [suvc release];
@@ -63,7 +74,6 @@
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -78,6 +88,8 @@
             [[cell textLabel] setText: @"Register Me"];
         }else if(indexPath.row == 1){
             [[cell textLabel] setText: @"Register Someone Else"];
+        }else if(indexPath.row == [tableView numberOfRowsInSection: 0] - 1){
+            [[cell textLabel] setText:@"Sign Out"];
         }else{
             NSDictionary *user = [[[[RSUModel sharedModel] currentUser] objectForKey:@"SecondaryUsers"] objectAtIndex: indexPath.row - 2];
             [[cell textLabel] setText: [NSString stringWithFormat: @"Register %@ %@", [user objectForKey: @"FName"], [user objectForKey: @"LName"]]];
@@ -95,7 +107,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if([[RSUModel sharedModel] signedIn])
-        return 2 + [[[[RSUModel sharedModel] currentUser] objectForKey:@"SecondaryUsers"] count];
+        return 3 + [[[[RSUModel sharedModel] currentUser] objectForKey:@"SecondaryUsers"] count];
     else
         return 2;
 }

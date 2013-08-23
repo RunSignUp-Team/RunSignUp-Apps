@@ -40,9 +40,9 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         
             UIImage *greenButtonImage = [UIImage imageNamed:@"GreenButton.png"];
-            UIImage *stretchedGreenButton = [greenButtonImage stretchableImageWithLeftCapWidth:12 topCapHeight:12];
+            UIImage *stretchedGreenButton = [greenButtonImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
             UIImage *greenButtonTapImage = [UIImage imageNamed:@"GreenButtonTap.png"];
-            UIImage *stretchedGreenButtonTap = [greenButtonTapImage stretchableImageWithLeftCapWidth:12 topCapHeight:12];
+            UIImage *stretchedGreenButtonTap = [greenButtonTapImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
             
             UIButton *chooseButton = [UIButton buttonWithType: UIButtonTypeCustom];
             [chooseButton addTarget:self action:@selector(chooseGiveaways:) forControlEvents:UIControlEventTouchUpInside];

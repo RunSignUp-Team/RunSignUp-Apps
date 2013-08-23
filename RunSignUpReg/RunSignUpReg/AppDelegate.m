@@ -24,7 +24,7 @@
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     MainMenuViewController *mmvc = [[MainMenuViewController alloc] initWithNibName:@"MainMenuViewController" bundle:nil];
     self.navController = [[UINavigationController alloc] initWithRootViewController: mmvc];
-    [[navController navigationBar] setTintColor: [UIColor colorWithRed:0.0f green:0.5804f blue:0.8f alpha:1.0f]];
+    [[navController navigationBar] setTintColor: [UIColor colorWithRed:0.0f green:0.5686f blue:0.7843f alpha:1.0f]];
     [self.window setRootViewController: navController];
     [mmvc release];
     [navController release];

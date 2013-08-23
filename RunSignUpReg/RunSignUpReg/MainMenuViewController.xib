@@ -12,6 +12,8 @@
                 <outlet property="copyrightLabel" destination="24" id="46"/>
                 <outlet property="emailLabel" destination="19" id="21"/>
                 <outlet property="findRaceButton" destination="4" id="6"/>
+                <outlet property="hintPageControl" destination="bOt-U8-yQn" id="iJR-Mi-pGB"/>
+                <outlet property="hintScrollView" destination="YKV-xp-Bum" id="bcC-R5-92d"/>
                 <outlet property="settingsLabel" destination="27" id="29"/>
                 <outlet property="signInButton" destination="5" id="14"/>
                 <outlet property="signOutButton" destination="13" id="15"/>
@@ -28,11 +30,11 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MainMenuBackground.png" id="dEA-XQ-bqf">
-                    <rect key="frame" x="-7" y="-7" width="335" height="583"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="4">
-                    <rect key="frame" x="20" y="178" width="280" height="60"/>
+                    <rect key="frame" x="20" y="147" width="280" height="60"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                     <state key="normal" title="Find a Race">
@@ -47,7 +49,7 @@
                     </connections>
                 </button>
                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Dqa-LB-TgP">
-                    <rect key="frame" x="20" y="242" width="280" height="60"/>
+                    <rect key="frame" x="20" y="211" width="280" height="60"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                     <state key="normal" title="View Profile">
@@ -62,7 +64,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="5">
-                    <rect key="frame" x="20" y="232" width="140" height="54"/>
+                    <rect key="frame" x="20" y="201" width="140" height="54"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                     <state key="normal" title="Sign In" backgroundImage="MenuClusterBottom.png">
@@ -77,7 +79,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="27i-ZP-7p2">
-                    <rect key="frame" x="160" y="232" width="140" height="54"/>
+                    <rect key="frame" x="160" y="201" width="140" height="54"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                     <state key="normal" title="Sign Up" backgroundImage="MenuClusterBottom.png">
@@ -92,10 +94,10 @@
                     </connections>
                 </button>
                 <label opaque="NO" clipsSubviews="YES" contentMode="left" text="About" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="25">
-                    <rect key="frame" x="0.0" y="434" width="81" height="31"/>
+                    <rect key="frame" x="-9" y="439" width="81" height="31"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <gestureRecognizers/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                     <connections>
@@ -103,15 +105,15 @@
                     </connections>
                 </label>
                 <view contentMode="scaleToFill" id="26">
-                    <rect key="frame" x="18" y="458" width="45" height="1"/>
+                    <rect key="frame" x="11" y="465" width="40" height="1"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
-                <label opaque="NO" clipsSubviews="YES" contentMode="left" text="Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="27">
-                    <rect key="frame" x="234" y="434" width="86" height="31"/>
+                <label opaque="NO" clipsSubviews="YES" contentMode="left" text="Report Bug" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="27">
+                    <rect key="frame" x="232" y="439" width="88" height="31"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <gestureRecognizers/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                     <connections>
@@ -119,7 +121,7 @@
                     </connections>
                 </label>
                 <view contentMode="scaleToFill" id="28">
-                    <rect key="frame" x="247" y="458" width="60" height="1"/>
+                    <rect key="frame" x="240" y="465" width="70" height="1"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
@@ -152,17 +154,39 @@
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="© 2010 RunSignUp LLC" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="24">
-                    <rect key="frame" x="74" y="439" width="163" height="21"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="© 2013 RunSignUp LLC" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="24">
+                    <rect key="frame" x="64" y="446" width="166" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Title.png" id="N35-ra-ddo">
-                    <rect key="frame" x="25" y="97" width="260" height="60"/>
+                    <rect key="frame" x="25" y="66" width="260" height="60"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
+                <pageControl opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" id="bOt-U8-yQn">
+                    <rect key="frame" x="25" y="414" width="282" height="37"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                </pageControl>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" canCancelContentTouches="NO" id="YKV-xp-Bum">
+                    <rect key="frame" x="0.0" y="263" width="320" height="160"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="yGH-RE-7Cg"/>
+                    </connections>
+                </scrollView>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="center" id="F7u-nq-4EJ">
+                    <rect key="frame" x="-320" y="22" width="320" height="436"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <string key="text">RunSignUp Mobile is an application developed to give iPhone and iPad users a mobile version of the RunSignUp website. Using the app, runners can view and edit their profile, search for races, and register to participate. Thank you for using RunSignUp Mobile!</string>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="kUI-TN-tOt" appends="YES" id="dWc-20-S07"/>
+                    </connections>
+                </textView>
             </subviews>
             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
@@ -180,6 +204,11 @@
                 <outlet property="delegate" destination="-1" id="44"/>
             </connections>
         </tapGestureRecognizer>
+        <swipeGestureRecognizer direction="left" id="kUI-TN-tOt">
+            <connections>
+                <action selector="hideAbout:" destination="-1" id="X9G-90-ZJh"/>
+            </connections>
+        </swipeGestureRecognizer>
     </objects>
     <resources>
         <image name="MainMenuBackground.png" width="320" height="568"/>

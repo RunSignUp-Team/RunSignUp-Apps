@@ -45,9 +45,9 @@
     
     // Images created for stretching to variably sized UIButtons (see buttons in resources)
     UIImage *blueButtonImage = [UIImage imageNamed:@"BlueButton.png"];
-    UIImage *stretchedBlueButton = [blueButtonImage stretchableImageWithLeftCapWidth:12 topCapHeight:12];
+    UIImage *stretchedBlueButton = [blueButtonImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     UIImage *blueButtonTapImage = [UIImage imageNamed:@"BlueButtonTap.png"];
-    UIImage *stretchedBlueButtonTap = [blueButtonTapImage stretchableImageWithLeftCapWidth:12 topCapHeight:12];
+    UIImage *stretchedBlueButtonTap = [blueButtonTapImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     
     [signInButton setBackgroundImage:stretchedBlueButton forState:UIControlStateNormal];
     [signInButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
@@ -126,7 +126,7 @@
                 }
             };
             
-            [[RSUModel sharedModel] attemptLoginWithEmail:[emailField text] pass:[passField text] response:response];
+            [[RSUModel sharedModel] loginWithEmail:[emailField text] pass:[passField text] response:response];
         }
     }
 }

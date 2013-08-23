@@ -29,6 +29,7 @@
     UIButton *viewResultsButton;
     UIButton *signUpButton1;
     UIButton *signUpButton2;
+    UIButton *remindMeButton;
     
     UILabel *addressLine1;
     UILabel *addressLine2;
@@ -68,6 +69,7 @@
 @property (nonatomic, retain) IBOutlet UIButton *viewResultsButton;
 @property (nonatomic, retain) IBOutlet UIButton *signUpButton1;
 @property (nonatomic, retain) IBOutlet UIButton *signUpButton2;
+@property (nonatomic, retain) IBOutlet UIButton *remindMeButton;
 
 @property (nonatomic, retain) IBOutlet UILabel *addressLine1;
 @property (nonatomic, retain) IBOutlet UILabel *addressLine2;
@@ -85,6 +87,8 @@
 - (IBAction)viewMap:(id)sender;
 - (IBAction)viewMapOther:(id)sender;
 - (IBAction)viewResults:(id)sender;
+
+- (IBAction)createCalendarEvent:(id)sender;
 
 - (void)showEventEditViewWithEvent:(EKEvent *)event;
 

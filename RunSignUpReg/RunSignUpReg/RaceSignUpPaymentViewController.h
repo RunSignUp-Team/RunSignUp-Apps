@@ -73,7 +73,6 @@
 @property (nonatomic, retain) IBOutlet UILabel *cityLabel;
 @property (nonatomic, retain) IBOutlet UILabel *stateLabel;
 @property (nonatomic, retain) IBOutlet UILabel *zipLabel;
-@property (nonatomic, retain) IBOutlet UILabel *tshirtLabel;
 
 @property (nonatomic, retain) IBOutlet UILabel *registrationCartHintLabel;
 @property (nonatomic, retain) IBOutlet UILabel *baseCostHintLabel;

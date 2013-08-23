@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4488.1" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4488.2" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
+        <deployment defaultVersion="1552" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3715.3"/>
     </dependencies>
     <objects>
@@ -19,6 +19,7 @@
                 <outlet property="placeHintLabel" destination="63" id="78"/>
                 <outlet property="placeLabel" destination="50" id="75"/>
                 <outlet property="registrationTable" destination="53" id="62"/>
+                <outlet property="remindMeButton" destination="09N-0V-9ou" id="Uba-mk-NFl"/>
                 <outlet property="scrollView" destination="47" id="60"/>
                 <outlet property="signUpButton1" destination="51" id="72"/>
                 <outlet property="signUpButton2" destination="69" id="70"/>
@@ -44,15 +45,15 @@
                             <color key="textColor" red="0.0" green="0.58039215690000001" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Date Date Date Date Date Date Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="49">
-                            <rect key="frame" x="4" y="56" width="312" height="21"/>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Date not available" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="49">
+                            <rect key="frame" x="4" y="56" width="210" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="0.87058823529999996" green="0.6705882353" blue="0.29803921570000003" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Location Location Location Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="50">
-                            <rect key="frame" x="4" y="77" width="312" height="21"/>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Location not available" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="50">
+                            <rect key="frame" x="4" y="77" width="210" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="0.87058823529999996" green="0.6705882353" blue="0.29803921570000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -193,6 +194,17 @@
                             </state>
                             <connections>
                                 <action selector="viewMapOther:" destination="-1" eventType="touchUpInside" id="jzK-tM-LXe"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="09N-0V-9ou">
+                            <rect key="frame" x="222" y="56" width="94" height="42"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <state key="normal" title="Remind me">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="createCalendarEvent:" destination="-1" eventType="touchUpInside" id="M8N-sK-Etl"/>
                             </connections>
                         </button>
                     </subviews>

@@ -32,6 +32,7 @@
 @synthesize countryPicker;
 @synthesize statePicker;
 @synthesize signUpMode;
+@synthesize ageHintLabel;
 @synthesize navigationBar;
 @synthesize userDictionary;
 @synthesize rli;
@@ -84,16 +85,14 @@
     if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
         [self setEdgesForExtendedLayout: UIRectEdgeNone];
     
-    [scrollView setContentSize: CGSizeMake(320, 820)];
-    
     UIImage *blueButtonImage = [UIImage imageNamed:@"BlueButton.png"];
-    UIImage *stretchedBlueButton = [blueButtonImage stretchableImageWithLeftCapWidth:12 topCapHeight:12];
+    UIImage *stretchedBlueButton = [blueButtonImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     UIImage *blueButtonTapImage = [UIImage imageNamed:@"BlueButtonTap.png"];
-    UIImage *stretchedBlueButtonTap = [blueButtonTapImage stretchableImageWithLeftCapWidth:12 topCapHeight:12];
+    UIImage *stretchedBlueButtonTap = [blueButtonTapImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     UIImage *greenButtonImage = [UIImage imageNamed:@"GreenButton.png"];
-    UIImage *stretchedGreenButton = [greenButtonImage stretchableImageWithLeftCapWidth:12 topCapHeight:12];
+    UIImage *stretchedGreenButton = [greenButtonImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     UIImage *greenButtonTapImage = [UIImage imageNamed:@"GreenButtonTap.png"];
-    UIImage *stretchedGreenButtonTap = [greenButtonTapImage stretchableImageWithLeftCapWidth:12 topCapHeight:12];
+    UIImage *stretchedGreenButtonTap = [greenButtonTapImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     UIImage *dropDownStretched = [[UIImage imageNamed:@"DropDown.png"] stretchableImageWithLeftCapWidth:21 topCapHeight:0];
     UIImage *dropDownTapStretched = [[UIImage imageNamed:@"DropDownTap.png"] stretchableImageWithLeftCapWidth:21 topCapHeight:0];
     
@@ -139,9 +138,47 @@
         if([[userDictionary objectForKey:@"Gender"] isEqualToString:@"F"]){
             [genderControl setSelectedSegmentIndex: 1];
         }
+    }else if(signUpMode == RSUSignUpNewUser){
+        [navigationBar setHidden: NO];
+        [scrollView setFrame: CGRectMake(0, 64, scrollView.frame.size.width, scrollView.frame.size.height - 64)];
+        [registerButton setTitle:@"Submit" forState:UIControlStateNormal];
     }else if(signUpMode == RSUSignUpSomeoneElse){
         [navigationBar setHidden: NO];
         [scrollView setFrame: CGRectMake(0, 64, scrollView.frame.size.width, scrollView.frame.size.height - 64)];
+        [registerButton setTitle:@"Submit" forState:UIControlStateNormal];
+        [passwordField setHidden: YES];
+        [confirmPasswordField setHidden: YES];
+        for(UIView *view in [scrollView subviews]){
+            if([view frame].origin.y > [confirmPasswordField frame].origin.y){
+                CGRect frame = [view frame];
+                frame.origin.y -= 78.0f;
+                [view setFrame: frame];
+            }
+        }
+    }else if(signUpMode == RSUSignUpCreditCardInfo){
+        [registerButton setTitle:@"Submit" forState:UIControlStateNormal];
+        [passwordField setHidden: YES];
+        [confirmPasswordField setHidden: YES];
+        [emailField setHidden: YES];
+        [zipcodeField setHidden: YES];
+        [dobField setHidden: YES];
+        [phoneField setHidden: YES];
+        [genderControl setHidden: YES];
+        [ageHintLabel setHidden: YES];
+        self.title = @"Credit Card";
+        
+        for(UIView *view in [scrollView subviews]){
+            if([view frame].origin.y > [confirmPasswordField frame].origin.y){
+                int offset = 117;
+                if([view frame].origin.y > [stateDrop frame].origin.y){
+                    offset += 170;
+                }
+                
+                CGRect frame = [view frame];
+                frame.origin.y -= offset;
+                [view setFrame: frame];
+            }
+        }
     }
     
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
@@ -152,6 +189,8 @@
     [[rli label] setText: @"Sending..."];
     [self.view addSubview: rli];
     [rli release];
+    
+    [scrollView setContentSize: CGSizeMake(scrollView.frame.size.width, registerButton.frame.origin.y + registerButton.frame.size.height)];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -237,6 +276,28 @@
     if([genderControl selectedSegmentIndex] == 1)
         genderString = @"F";
     
+    for(UIView *view in [scrollView subviews]){
+        if([view isKindOfClass: [UITextField class]]){
+            if([[(UITextField *)view text] length] == 0){
+                if(signUpMode == RSUSignUpEditingUser){
+                    if(!(view == emailField || view == passwordField || view == confirmPasswordField)){
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"One or more fields left blank." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                        [alert show];
+                        [alert release];
+                        return;
+                    }
+                }else if(signUpMode == RSUSignUpSomeoneElse){
+                    if(!(view == passwordField || view == confirmPasswordField)){
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"One or more fields left blank." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                        [alert show];
+                        [alert release];
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     [dict setObject:[firstNameField text] forKey:@"FName"];
     [dict setObject:[lastNameField text] forKey:@"LName"];
@@ -263,6 +324,8 @@
     }
     
     [dict setObject:[zipcodeField text] forKey:@"Zipcode"];
+    [dict setObject:[passwordField text] forKey:@"Password"];
+
     [self setUserDictionary: dict];
     
     if(signUpMode == RSUSignUpEditingUser){
@@ -283,7 +346,7 @@
             [rli fadeOut];
         };
         [[RSUModel sharedModel] editUserWithInfo:dict response:response];
-    }else if(signUpMode == RSUSignUpSomeoneElse){
+    }else if(signUpMode == RSUSignUpSomeoneElse || signUpMode == RSUSignUpNewUser){
         [delegate didSignUpWithDictionary: userDictionary];
         [self dismissViewControllerAnimated:YES completion:nil];
     }else if(signUpMode == RSUSignUpDefault){
@@ -345,9 +408,12 @@
     if(textField == firstNameField)
         [lastNameField becomeFirstResponder];
     else if(textField == lastNameField)
-        [emailField becomeFirstResponder];
+        if(signUpMode == RSUSignUpEditingUser || signUpMode == RSUSignUpCreditCardInfo)
+            [addressField becomeFirstResponder];
+        else
+            [emailField becomeFirstResponder];
     else if(textField == emailField)
-        if(signUpMode == RSUSignUpEditingUser)
+        if(signUpMode == RSUSignUpSomeoneElse)
             [addressField becomeFirstResponder];
         else
             [passwordField becomeFirstResponder];

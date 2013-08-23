@@ -55,8 +55,6 @@
         UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
         [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:editButton, refreshButton, nil]];
     }
-    
-    [self refresh];
 }
 
 - (void)didSignUpWithDictionary:(NSDictionary *)dict{
@@ -66,6 +64,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self refresh];
 }
 
 - (void)updateDataWithUserDictionary{

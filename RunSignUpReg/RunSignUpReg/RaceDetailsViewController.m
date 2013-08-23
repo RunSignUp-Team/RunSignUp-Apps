@@ -28,6 +28,7 @@
 @synthesize viewResultsButton;
 @synthesize signUpButton1;
 @synthesize signUpButton2;
+@synthesize remindMeButton;
 @synthesize addressLine1;
 @synthesize addressLine2;
 @synthesize mapView;
@@ -67,9 +68,9 @@
         [self setEdgesForExtendedLayout: UIRectEdgeNone];
     
     UIImage *blueButtonImage = [UIImage imageNamed:@"BlueButton.png"];
-    UIImage *stretchedBlueButton = [blueButtonImage stretchableImageWithLeftCapWidth:12 topCapHeight:12];
+    UIImage *stretchedBlueButton = [blueButtonImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     UIImage *blueButtonTapImage = [UIImage imageNamed:@"BlueButtonTap.png"];
-    UIImage *stretchedBlueButtonTap = [blueButtonTapImage stretchableImageWithLeftCapWidth:12 topCapHeight:12];
+    UIImage *stretchedBlueButtonTap = [blueButtonTapImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     
     [viewResultsButton setBackgroundImage:stretchedBlueButton forState:UIControlStateNormal];
     [viewResultsButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
@@ -81,6 +82,8 @@
     [viewMapButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
     [viewMapOtherButton setBackgroundImage:stretchedBlueButton forState:UIControlStateNormal];
     [viewMapOtherButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
+    [remindMeButton setBackgroundImage:stretchedBlueButton forState:UIControlStateNormal];
+    [remindMeButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
     
     [eventsTable flashScrollIndicators];
     [registrationTable setSeparatorColor: [UIColor colorWithRed:0.3686f green:0.8078f blue:0.9412f alpha:1.0f]];
@@ -216,33 +219,37 @@
     }
 }
 
+- (IBAction)createCalendarEvent:(id)sender{
+    if(store == nil){
+        store = [[EKEventStore alloc] init];
+    }
+    
+    EKEvent *event = [EKEvent eventWithEventStore: store];
+    [event setTitle: [dataDict objectForKey: @"Name"]];
+    [event setLocation: [NSString stringWithFormat:@"%@, %@", [dataDict objectForKey:@"AL1"], [dataDict objectForKey:@"AL2"]]];
+    [event setURL: [NSURL URLWithString: [dataDict objectForKey: @"URL"]]];
+    [event setCalendar: [store defaultCalendarForNewEvents]];
+    
+    if([dataDict objectForKey: @"Events"] != nil && [[dataDict objectForKey:@"Events"] count] >= 1){
+        [eventDateFormatter setDateFormat:@"MM/dd/yyyy HH:mm"];
+        NSString *firstEventStartTime = [[[dataDict objectForKey: @"Events"] objectAtIndex: 0] objectForKey: @"StartTime"];
+        [event setStartDate: [eventDateFormatter dateFromString: firstEventStartTime]];
+        [event setEndDate: [NSDate dateWithTimeInterval:3600.0 sinceDate:[event startDate]]]; // give an hour for race to occur.
+    }
+    
+    [store requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+        if(granted){
+            [self performSelectorOnMainThread:@selector(showEventEditViewWithEvent:) withObject:event waitUntilDone:NO];
+        }
+    }];
+}
+
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex{
     if(buttonIndex == 0){
         UIPasteboard *pb = [UIPasteboard generalPasteboard];
         [pb setString: [NSString stringWithFormat:@"%@, %@", [dataDict objectForKey:@"AL1"], [dataDict objectForKey:@"AL2"]]];
     }else if(buttonIndex == 1){
-        if(store == nil){
-            store = [[EKEventStore alloc] init];
-        }
-        
-        EKEvent *event = [EKEvent eventWithEventStore: store];
-        [event setTitle: [dataDict objectForKey: @"Name"]];
-        [event setLocation: [NSString stringWithFormat:@"%@, %@", [dataDict objectForKey:@"AL1"], [dataDict objectForKey:@"AL2"]]];
-        [event setURL: [NSURL URLWithString: [dataDict objectForKey: @"URL"]]];
-        [event setCalendar: [store defaultCalendarForNewEvents]];
-        
-        if([dataDict objectForKey: @"Events"] != nil && [[dataDict objectForKey:@"Events"] count] >= 1){
-            [eventDateFormatter setDateFormat:@"MM/dd/yyyy HH:mm"];
-            NSString *firstEventStartTime = [[[dataDict objectForKey: @"Events"] objectAtIndex: 0] objectForKey: @"StartTime"];
-            [event setStartDate: [eventDateFormatter dateFromString: firstEventStartTime]];
-            [event setEndDate: [NSDate dateWithTimeInterval:3600.0 sinceDate:[event startDate]]]; // give an hour for race to occur.
-        }
-        
-        [store requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
-            if(granted){
-                [self performSelectorOnMainThread:@selector(showEventEditViewWithEvent:) withObject:event waitUntilDone:NO];
-            }
-        }];
+        [self createCalendarEvent: nil];
     }
 }
 

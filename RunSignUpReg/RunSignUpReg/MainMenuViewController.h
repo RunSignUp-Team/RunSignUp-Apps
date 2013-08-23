@@ -10,7 +10,7 @@
 #import "RSUModel.h"
 #import "SignInViewController.h"
 
-@interface MainMenuViewController : UIViewController <SignInViewControllerDelegate>{
+@interface MainMenuViewController : UIViewController <SignInViewControllerDelegate, UIAlertViewDelegate, UIScrollViewDelegate>{
     UIButton *findRaceButton;
     UIButton *signInButton;
     UIButton *signUpButton;
@@ -27,6 +27,10 @@
     UILabel *emailLabel;
     
     UILabel *copyrightLabel;
+    
+    BOOL hintPageControlIsChangingPage;
+    UIPageControl *hintPageControl;
+    UIScrollView *hintScrollView;
     
     UIImageView *backgroundView;
     UIImageView *titleView;
@@ -45,10 +49,14 @@
 @property (nonatomic, retain) IBOutlet UILabel *emailLabel;
 @property (nonatomic, retain) IBOutlet UILabel *copyrightLabel;
 
+@property (nonatomic, retain) IBOutlet UIPageControl *hintPageControl;
+@property (nonatomic, retain) IBOutlet UIScrollView *hintScrollView;
+
 @property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
 @property (nonatomic, retain) IBOutlet UIImageView *titleView;
 
 - (IBAction)viewProfile:(id)sender;
+- (IBAction)hideAbout:(id)sender;
 - (IBAction)about:(id)sender;
 - (IBAction)settings:(id)sender;
 - (IBAction)findRace:(id)sender;

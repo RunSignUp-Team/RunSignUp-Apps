@@ -16,9 +16,7 @@
 #define API_SECRET @""
 
 #define RUNSIGNUP_BASE_URL @"https://runsignup.com"
- 
-#define REGISTRATION_REQUIRES_LOGIN YES
- 
+  
 */
 
 #endif

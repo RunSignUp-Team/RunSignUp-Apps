@@ -30,15 +30,12 @@
         [self setEdgesForExtendedLayout: UIRectEdgeNone];
     
     UIImage *greenButtonImage = [UIImage imageNamed:@"GreenButton.png"];
-    UIImage *stretchedGreenButton = [greenButtonImage stretchableImageWithLeftCapWidth:12 topCapHeight:12];
+    UIImage *stretchedGreenButton = [greenButtonImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     UIImage *greenButtonTapImage = [UIImage imageNamed:@"GreenButtonTap.png"];
-    UIImage *stretchedGreenButtonTap = [greenButtonTapImage stretchableImageWithLeftCapWidth:12 topCapHeight:12];
-    UIImage *grayButtonImage = [UIImage imageNamed:@"GrayButton.png"];
-    UIImage *stretchedGrayButton = [grayButtonImage stretchableImageWithLeftCapWidth:12 topCapHeight:12];
+    UIImage *stretchedGreenButtonTap = [greenButtonTapImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     
     [agreeButton setBackgroundImage:stretchedGreenButton forState:UIControlStateNormal];
     [agreeButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
-    [agreeButton setBackgroundImage:stretchedGrayButton forState:UIControlStateDisabled];
     
     [waiverLabel setFont: [UIFont boldSystemFontOfSize: 11.0f]];
     if([dataDict objectForKey: @"Waiver"] != nil && [(NSString *)[dataDict objectForKey: @"Waiver"] length] > 0)

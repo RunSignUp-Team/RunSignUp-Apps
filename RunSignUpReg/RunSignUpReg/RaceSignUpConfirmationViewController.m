@@ -27,7 +27,6 @@
 @synthesize cityLabel;
 @synthesize stateLabel;
 @synthesize zipLabel;
-@synthesize tshirtLabel;
 
 @synthesize totalLabel;
 
@@ -62,9 +61,9 @@
         [self setEdgesForExtendedLayout: UIRectEdgeNone];
     
     UIImage *greenButtonImage = [UIImage imageNamed:@"GreenButton.png"];
-    UIImage *stretchedGreenButton = [greenButtonImage stretchableImageWithLeftCapWidth:12 topCapHeight:12];
+    UIImage *stretchedGreenButton = [greenButtonImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     UIImage *greenButtonTapImage = [UIImage imageNamed:@"GreenButtonTap.png"];
-    UIImage *stretchedGreenButtonTap = [greenButtonTapImage stretchableImageWithLeftCapWidth:12 topCapHeight:12];
+    UIImage *stretchedGreenButtonTap = [greenButtonTapImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     
     [mistakeButton setBackgroundImage:stretchedGreenButton forState:UIControlStateNormal];
     [mistakeButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
@@ -72,39 +71,29 @@
     [mainMenuButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
     
     [raceNameLabel setText: [dataDict objectForKey: @"Name"]];
-    int tshirtSize = [[dataDict objectForKey: @"TShirtSize"] intValue];
     
-    switch(tshirtSize){
-        case 0:
-            [tshirtLabel setText: @"Small"];
-            break;
-        case 1:
-            [tshirtLabel setText: @"Medium"];
-            break;
-        case 2:
-            [tshirtLabel setText: @"Large"];
-            break;
-        case 3:
-            [tshirtLabel setText: @"Extra Large"];
-            break;
-        default:
-            [tshirtLabel setText: @"No T-Shirt Chosen"];
-            break;
+    NSDictionary *userDict = nil;
+    if([[RSUModel sharedModel] signedIn]){
+        if([[RSUModel sharedModel] registrantType] == RSURegistrantMe){
+            userDict = [[RSUModel sharedModel] currentUser];
+        }else{ //someoneelse or secondary
+            userDict = [dataDict objectForKey:@"Registrant"];
+        }
+    }else if([[RSUModel sharedModel] registrantType] == RSURegistrantNewUser){
+        userDict = [dataDict objectForKey:@"Registrant"];
     }
     
-    if(REGISTRATION_REQUIRES_LOGIN && [[RSUModel sharedModel] currentUser] != nil){
-        NSString *name = [NSString stringWithFormat: @"%@ %@", [[[RSUModel sharedModel] currentUser] objectForKey: @"FName"], [[[RSUModel sharedModel] currentUser] objectForKey: @"LName"]];
-        
-        [nameLabel setText: name];
-        [emailLabel setText: [[[RSUModel sharedModel] currentUser] objectForKey: @"Email"]];
-        [dobLabel setText: [[[RSUModel sharedModel] currentUser] objectForKey: @"DOB"]];
-        [genderLabel setText: [[[RSUModel sharedModel] currentUser] objectForKey: @"Gender"]];
-        [phoneLabel setText: [[[RSUModel sharedModel] currentUser] objectForKey: @"Phone"]];
-        [addressLabel setText: [[[RSUModel sharedModel] currentUser] objectForKey: @"Street"]];
-        [cityLabel setText: [[[RSUModel sharedModel] currentUser] objectForKey: @"City"]];
-        [stateLabel setText: [[[RSUModel sharedModel] currentUser] objectForKey: @"State"]];
-        [zipLabel setText: [[[RSUModel sharedModel] currentUser] objectForKey: @"Zipcode"]];
-    }
+    NSString *name = [NSString stringWithFormat: @"%@ %@", [userDict objectForKey: @"FName"], [userDict objectForKey: @"LName"]];
+    
+    [nameLabel setText: name];
+    [emailLabel setText: [userDict objectForKey: @"Email"]];
+    [dobLabel setText: [userDict objectForKey: @"DOB"]];
+    [genderLabel setText: [userDict objectForKey: @"Gender"]];
+    [phoneLabel setText: [userDict objectForKey: @"Phone"]];
+    [addressLabel setText: [userDict objectForKey: @"Street"]];
+    [cityLabel setText: [userDict objectForKey: @"City"]];
+    [stateLabel setText: [userDict objectForKey: @"State"]];
+    [zipLabel setText: [userDict objectForKey: @"Zipcode"]];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateStyle: NSDateFormatterLongStyle];
@@ -206,7 +195,14 @@
 }
 
 - (IBAction)returnToMainMenu:(id)sender{
-    [self.navigationController popToRootViewControllerAnimated: YES];
+    [[rli label] setText:@"Refreshing..."];
+    [rli fadeIn];
+    void (^response)(RSUConnectionResponse) = ^(RSUConnectionResponse didSucceed){
+        [rli fadeOut];
+        [self.navigationController popToRootViewControllerAnimated: YES];
+    };
+    
+    [[RSUModel sharedModel] retrieveUserInfo:response];
 }
 
 - (void)didReceiveMemoryWarning{

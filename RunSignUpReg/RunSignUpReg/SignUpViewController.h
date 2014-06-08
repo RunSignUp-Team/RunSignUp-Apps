@@ -47,6 +47,8 @@ typedef enum{
     
     UIToolbar *donePickerBar;
     
+    UIView *pickerBackgroundView;
+    
     UIPickerView *countryPicker;
     UIPickerView *statePicker;
     
@@ -91,6 +93,7 @@ typedef enum{
 @property (nonatomic, retain) IBOutlet UIButton *chooseExistingButton;
 @property (nonatomic, retain) IBOutlet UIImageView *profileImageView;
 @property (nonatomic, retain) IBOutlet UIToolbar *donePickerBar;
+@property (nonatomic, retain) IBOutlet UIView *pickerBackgroundView;
 @property (nonatomic, retain) IBOutlet UIPickerView *countryPicker;
 @property (nonatomic, retain) IBOutlet UIPickerView *statePicker;
 

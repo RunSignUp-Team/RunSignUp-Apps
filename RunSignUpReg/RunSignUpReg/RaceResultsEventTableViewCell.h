@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define kDividerTag 29
+
 @interface RaceResultsEventTableViewCell : UITableViewCell{
     UILabel *placeLabel;
     UILabel *bibLabel;
@@ -27,5 +29,8 @@
 @property (nonatomic, retain) UILabel *timeLabel;
 @property (nonatomic, retain) UILabel *paceLabel;
 @property (nonatomic, retain) UILabel *ageLabel;
+
+- (void)hideDividers;
+- (void)showDividers;
 
 @end

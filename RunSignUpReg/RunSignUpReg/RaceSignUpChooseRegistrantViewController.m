@@ -29,7 +29,7 @@
 }
 
 - (void)didSignUpWithDictionary:(NSDictionary *)dict{
-    [dataDict setObject:dict forKey:@"Registrant"];
+    [dataDict setObject:dict forKey:@"registrant"];
     RaceSignUpWaiverViewController *rswvc = [[RaceSignUpWaiverViewController alloc] initWithNibName:@"RaceSignUpWaiverViewController" bundle:nil data:dataDict];
     [self.navigationController pushViewController:rswvc animated:YES];
     [rswvc release];
@@ -54,7 +54,7 @@
             [tableView reloadData];
         }else{ // Register a secondary user
             [[RSUModel sharedModel] setRegistrantType: RSURegistrantSecondary];
-            NSDictionary *secondaryUser = [[[[RSUModel sharedModel] currentUser] objectForKey:@"SecondaryUsers"] objectAtIndex: indexPath.row - 2];
+            NSDictionary *secondaryUser = [[[[RSUModel sharedModel] currentUser] objectForKey:@"secondary_users"] objectAtIndex: indexPath.row - 2];
             [self didSignUpWithDictionary: secondaryUser];
         }
     }else{
@@ -91,8 +91,8 @@
         }else if(indexPath.row == [tableView numberOfRowsInSection: 0] - 1){
             [[cell textLabel] setText:@"Sign Out"];
         }else{
-            NSDictionary *user = [[[[RSUModel sharedModel] currentUser] objectForKey:@"SecondaryUsers"] objectAtIndex: indexPath.row - 2];
-            [[cell textLabel] setText: [NSString stringWithFormat: @"Register %@ %@", [user objectForKey: @"FName"], [user objectForKey: @"LName"]]];
+            NSDictionary *user = [[[[RSUModel sharedModel] currentUser] objectForKey:@"secondary_users"] objectAtIndex: indexPath.row - 2];
+            [[cell textLabel] setText: [NSString stringWithFormat: @"Register %@ %@", [user objectForKey: @"first_name"], [user objectForKey: @"last_name"]]];
         }
     }else{
         if(indexPath.row == 0){
@@ -107,7 +107,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if([[RSUModel sharedModel] signedIn])
-        return 3 + [[[[RSUModel sharedModel] currentUser] objectForKey:@"SecondaryUsers"] count];
+        return 3 + [[[[RSUModel sharedModel] currentUser] objectForKey:@"secondary_users"] count];
     else
         return 2;
 }

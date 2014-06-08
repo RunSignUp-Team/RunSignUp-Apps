@@ -22,6 +22,8 @@
     UITextField *fromDateField;
     UITextField *toDateField;
     
+    UIView *pickerBackgroundView;
+    
     UIPickerView *distancePicker;
     UIPickerView *countryPicker;
     UIPickerView *statePicker;
@@ -50,6 +52,8 @@
 @property (nonatomic, retain) IBOutlet UITextField *distanceField;
 @property (nonatomic, retain) IBOutlet UITextField *fromDateField;
 @property (nonatomic, retain) IBOutlet UITextField *toDateField;
+
+@property (nonatomic, retain) IBOutlet UIView *pickerBackgroundView;
 
 @property (nonatomic, retain) IBOutlet UIPickerView *distancePicker;
 @property (nonatomic, retain) IBOutlet UIPickerView *countryPicker;

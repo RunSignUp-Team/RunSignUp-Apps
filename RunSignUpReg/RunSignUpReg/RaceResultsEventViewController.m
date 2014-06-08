@@ -8,16 +8,45 @@
 
 #import "RaceResultsEventViewController.h"
 #import "RaceResultsEventTableViewCell.h"
+#import "RaceResultsEventDetailsViewController.h"
+#import "RSUModel.h"
 
 @implementation RaceResultsEventViewController
 @synthesize table;
+@synthesize rli;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil data:(NSDictionary *)data{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.title = @"Event Results";
+        
+        dataDict = data;
+        
+        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+            self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:100];
+        else
+            self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:432 YLocation:140];
+        [[rli label] setText: @"Fetching Results..."];
+        [self.view addSubview: rli];
+        [rli release];
     }
     return self;
+}
+
+- (void)viewDidLoad{
+    [super viewDidLoad];
+    
+    [rli fadeIn];
+    
+    void (^response)(NSArray *) = ^(NSArray *resultsArray){
+        NSLog(@"%@", resultsArray);
+        results = resultsArray;
+        
+        [rli fadeOut];
+        [table reloadData];
+    };
+    
+    [[RSUModel sharedModel] retrieveEventResultsWithRaceID:[dataDict objectForKey:@"race_id"] eventID:[dataDict objectForKey:@"event_id"] resultSetID:[dataDict objectForKey:@"individual_result_set_id"] response:response];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
@@ -61,37 +90,41 @@
         cell = [[RaceResultsEventTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    // Fake some data
-    
-    NSArray *fakeNames = [[NSArray alloc] initWithObjects:@"William", @"Arnold", @"Robert", @"Stephen", @"Andrew", @"Ryan", @"Christopher", @"Alex", nil];
-    NSArray *fakeLNames = [[NSArray alloc] initWithObjects:@"Connolly", @"Palmer", @"Bickel", @"Sigwary", @"Burke", @"Snell", @"Schweikert", @"Rider", nil];
-    
-    [[cell placeLabel] setText: [NSString stringWithFormat:@"%i", rand() % 999]];
-    [[cell bibLabel] setText: [NSString stringWithFormat:@"%i", rand() % 9999]];
-    [[cell firstNameLabel] setText: [fakeNames objectAtIndex: rand() % 8]];
-    [[cell lastNameLabel] setText: [fakeLNames objectAtIndex: rand() % 8]];
-    [[cell genderLabel] setText: @"M"];
-    [[cell timeLabel] setText: [NSString stringWithFormat:@"%i:%i", rand() % 15 + 15, rand() % 49 + 10]];
-    [[cell paceLabel] setText: [NSString stringWithFormat:@"5:%i", rand() % 40 + 15]];
-    [[cell ageLabel] setText: [NSString stringWithFormat:@"%i", rand() % 30 + 20]];
-    
+    if([results count] > 0){
+        [[cell placeLabel] setText: [[results objectAtIndex: [indexPath row]] objectForKey: @"place"]];
+        [[cell bibLabel] setText: [[results objectAtIndex: [indexPath row]] objectForKey: @"bib"]];
+        [[cell firstNameLabel] setText: [[results objectAtIndex: [indexPath row]] objectForKey: @"first_name"]];
+        [[cell lastNameLabel] setText: [[results objectAtIndex: [indexPath row]] objectForKey: @"last_name"]];
+        [[cell genderLabel] setText: [[results objectAtIndex: [indexPath row]] objectForKey: @"gender"]];
+        [[cell timeLabel] setText: [[results objectAtIndex: [indexPath row]] objectForKey: @"clock_time"]];
+        [[cell paceLabel] setText: @""];
+        [[cell ageLabel] setText: [[results objectAtIndex: [indexPath row]] objectForKey: @"age"]];
+        [[cell textLabel] setText: @""];
+        [cell showDividers];
+    }else{
+        [[cell textLabel] setText: @"No Results Found"];
+        [cell hideDividers];
+    }
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    RaceResultsEventDetailsViewController *rredvc = [[RaceResultsEventDetailsViewController alloc] initWithNibName:@"RaceResultsEventDetailsViewController" bundle:nil data:[results objectAtIndex: [indexPath row]]];
+    [self.navigationController pushViewController:rredvc animated:YES];
+    [rredvc release];
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    return @"";
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 199;
-}
-
-- (void)viewDidLoad{
-    [super viewDidLoad];
+    if([results count] > 0)
+        return [results count];
+    else
+        return 1;
 }
 
 - (void)didReceiveMemoryWarning{

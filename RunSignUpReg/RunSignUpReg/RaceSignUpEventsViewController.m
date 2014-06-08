@@ -20,11 +20,13 @@
         dataDict = data;
         selectedArray = [[NSMutableArray alloc] init];
         
-        for(int x = 0; x < [[dataDict objectForKey: @"Events"] count]; x++){
+        for(int x = 0; x < [[dataDict objectForKey: @"events"] count]; x++){
             [selectedArray addObject: [NSNumber numberWithBool:NO]];
         }
         
         self.title = @"Choose Event";
+        
+        eventDateFormatter = [[NSDateFormatter alloc] init];
     }
     return self;
 }
@@ -57,7 +59,7 @@
         [alert release];
     }else{
         NSMutableDictionary *newDataDict = [[NSMutableDictionary alloc] initWithDictionary:dataDict copyItems:YES];
-        NSMutableArray *mutableEventsArray = [[newDataDict objectForKey: @"Events"] mutableCopy];
+        NSMutableArray *mutableEventsArray = [[newDataDict objectForKey: @"events"] mutableCopy];
         
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"MM/dd/yyyy HH:mm"];
@@ -67,13 +69,12 @@
                 [mutableEventsArray removeObjectAtIndex: x];
             }else{
                 BOOL registrationOpen = NO;
-                for(int y = 0; y < [[[mutableEventsArray objectAtIndex: x] objectForKey:@"EventRegistrationPeriods"] count]; y++){
-                    NSString *startDateString = [[[[mutableEventsArray objectAtIndex: x] objectForKey:@"EventRegistrationPeriods"] objectAtIndex: y] objectForKey: @"RegistrationOpens"];
-                    NSString *endDateString = [[[[mutableEventsArray objectAtIndex: x] objectForKey:@"EventRegistrationPeriods"] objectAtIndex: y] objectForKey: @"RegistrationCloses"];
+                for(int y = 0; y < [[[mutableEventsArray objectAtIndex: x] objectForKey:@"registration_periods"] count]; y++){
+                    NSString *startDateString = [[[[mutableEventsArray objectAtIndex: x] objectForKey:@"registration_periods"] objectAtIndex: y] objectForKey: @"registration_opens"];
+                    NSString *endDateString = [[[[mutableEventsArray objectAtIndex: x] objectForKey:@"registration_periods"] objectAtIndex: y] objectForKey: @"registration_closes"];
                     NSDate *startDate = [dateFormatter dateFromString: startDateString];
                     NSDate *endDate = [dateFormatter dateFromString: endDateString];
                     
-                    NSLog(@"%@ %@ %@", startDate, [NSDate date], endDate);
                     if([[NSDate date] compare: startDate] != NSOrderedAscending && [[NSDate date] compare: endDate] != NSOrderedDescending)
                         registrationOpen = YES;
                 }
@@ -87,7 +88,7 @@
             }
         }
         
-        [newDataDict setObject:mutableEventsArray forKey:@"Events"];
+        [newDataDict setObject:mutableEventsArray forKey:@"events"];
         
         RaceSignUpGiveawayViewController *rsugvc = [[RaceSignUpGiveawayViewController alloc] initWithNibName:@"RaceSignUpGiveawayViewController" bundle:nil data:newDataDict];
         [self.navigationController pushViewController:rsugvc animated:YES];
@@ -113,14 +114,60 @@
         cell = [[RaceSignUpEventTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    NSDictionary *firstRegPeriod = [[[[dataDict objectForKey: @"Events"] objectAtIndex: indexPath.row] objectForKey: @"EventRegistrationPeriods"] objectAtIndex: 0];
-    [cell setPrice:[firstRegPeriod objectForKey: @"RegistrationFee"] price2:[firstRegPeriod objectForKey: @"RegistrationProcessingFee"]];
-    [[cell nameLabel] setText: [[[dataDict objectForKey:@"Events"] objectAtIndex: indexPath.row] objectForKey: @"Name"]];
+    NSDictionary *actualEvent = nil;
+    NSDictionary *actualRegPeriod = nil;
+    int index = indexPath.row;
+    
+    [eventDateFormatter setDateFormat:@"MM/dd/yyyy HH:mm"];
+    
+    for(NSDictionary *event in [dataDict objectForKey: @"events"]){
+        NSDate *startDate = [eventDateFormatter dateFromString: [event objectForKey: @"start_time"]];
+        if([startDate compare: [NSDate date]] == NSOrderedDescending)
+            index--;
+        
+        if(index < 0){
+            actualEvent = event;
+            
+            for(NSDictionary *regPeriod in [event objectForKey: @"registration_periods"]){
+                NSDate *openDate = [eventDateFormatter dateFromString: [regPeriod objectForKey: @"registration_opens"]];
+                NSDate *closeDate = [eventDateFormatter dateFromString: [regPeriod objectForKey: @"registration_closes"]];
+                
+                if([openDate compare: [NSDate date]] == NSOrderedAscending && [closeDate compare: [NSDate date]] == NSOrderedDescending)
+                    actualRegPeriod = regPeriod;
+            }
+            
+            break;
+        }
+    }
+    
+    if(actualEvent && actualRegPeriod){
+        [cell setPrice:[actualRegPeriod objectForKey: @"race_fee"] price2:[actualRegPeriod objectForKey: @"processing_fee"]];
+        [[cell nameLabel] setText: [actualEvent objectForKey: @"name"]];
+    }
     return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [[dataDict objectForKey:@"Events"] count];
+    int scheduledEventsWithOpenReg = 0;
+    
+    for(NSDictionary *event in [dataDict objectForKey: @"events"]){
+        [eventDateFormatter setDateFormat: @"MM/dd/yyyy HH:mm"];
+        NSDate *startDate = [eventDateFormatter dateFromString: [event objectForKey: @"start_time"]];
+        if([startDate compare: [NSDate date]] == NSOrderedDescending){
+            BOOL regOpen = NO;
+            for(NSDictionary *regPeriod in [event objectForKey: @"registration_periods"]){
+                NSDate *openDate = [eventDateFormatter dateFromString: [regPeriod objectForKey: @"registration_opens"]];
+                NSDate *closeDate = [eventDateFormatter dateFromString: [regPeriod objectForKey: @"registration_closes"]];
+                
+                if([openDate compare: [NSDate date]] == NSOrderedAscending && [closeDate compare: [NSDate date]] == NSOrderedDescending)
+                    regOpen = YES;
+            }
+            if(regOpen)
+                scheduledEventsWithOpenReg++;
+        }
+    }
+    NSLog(@"Schedevreg: %i", scheduledEventsWithOpenReg);
+    return scheduledEventsWithOpenReg;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{

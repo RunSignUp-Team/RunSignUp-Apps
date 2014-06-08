@@ -8,16 +8,67 @@
 
 #import "RaceResultsViewController.h"
 #import "RaceResultsEventViewController.h"
+#import "RSUModel.h"
 
 @implementation RaceResultsViewController
 @synthesize table;
+@synthesize dataDict;
+@synthesize rli;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil data:(NSDictionary *)data{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.title = @"Results";
+        self.dataDict = data;
+        self.title = @"Result Sets";
+        
+        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+            self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:100];
+        else
+            self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:432 YLocation:140];
+        [[rli label] setText: @"Fetching Results..."];
+        [self.view addSubview: rli];
+        [rli release];
     }
     return self;
+}
+
+- (void)viewDidLoad{
+    [super viewDidLoad];
+    
+    if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
+        [self setEdgesForExtendedLayout: UIRectEdgeNone];
+    
+    events = [[NSMutableArray alloc] init];
+    
+    [rli fadeIn];
+    retrieveCalls = [[dataDict objectForKey:@"events"] count];
+    int index = 0;
+    
+    for(NSDictionary *event in [dataDict objectForKey:@"events"]){
+        void (^response)(NSArray *) = ^(NSArray *resultSets){
+            if([resultSets count] > 0){
+                NSMutableDictionary *eventDict = [[NSMutableDictionary alloc] init];
+                [eventDict setObject:[event objectForKey:@"name"] forKey:@"name"];
+                [eventDict setObject:[event objectForKey:@"event_id"] forKey:@"event_id"];
+                [eventDict setObject:resultSets forKey:@"result_sets"];
+                
+                [events addObject: eventDict];
+            }
+            
+            NSLog(@"Recieved index %i info %@", index, resultSets);
+
+            retrieveCalls--;
+            if(retrieveCalls <= 0){
+                [rli fadeOut];
+                NSLog(@"Events: %@", events);
+                [table reloadData];
+            }
+        };
+        
+        [[RSUModel sharedModel] retrieveEventResultSetsWithRaceID:[dataDict objectForKey:@"race_id"] eventID:[event objectForKey:@"event_id"] response:response];
+        index++;
+    }
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -27,30 +78,29 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    [[cell textLabel] setText: @"Results (8K)"];
+    [[cell textLabel] setText: [[[[events objectAtIndex: [indexPath section]] objectForKey:@"result_sets"] objectAtIndex: [indexPath row]] objectForKey:@"individual_result_set_name"]];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    RaceResultsEventViewController *rrevc = [[RaceResultsEventViewController alloc] initWithNibName:@"RaceResultsEventViewController" bundle:nil];
+    NSString *resultSetID = [[[[events objectAtIndex: [indexPath section]] objectForKey:@"result_sets"] objectAtIndex: [indexPath row]] objectForKey:@"individual_result_set_id"];
+    
+    NSDictionary *data = [[NSDictionary alloc] initWithObjectsAndKeys:[dataDict objectForKey:@"race_id"], @"race_id", [[[dataDict objectForKey:@"events"] objectAtIndex: [indexPath section]] objectForKey:@"event_id"], @"event_id", resultSetID, @"individual_result_set_id", nil];
+    RaceResultsEventViewController *rrevc = [[RaceResultsEventViewController alloc] initWithNibName:@"RaceResultsEventViewController" bundle:nil data: data];
     [self.navigationController pushViewController:rrevc animated:YES];
     [rrevc release];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
+    return [events count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    return @"Events";
+    return [[events objectAtIndex: section] objectForKey:@"name"];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 4;
-}
-
-- (void)viewDidLoad{
-    [super viewDidLoad];
+    return [[[events objectAtIndex: section] objectForKey:@"result_sets"] count];
 }
 
 - (void)didReceiveMemoryWarning{

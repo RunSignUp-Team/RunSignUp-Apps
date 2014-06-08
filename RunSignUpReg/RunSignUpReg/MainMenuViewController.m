@@ -69,7 +69,7 @@
     // Reverse signup button's image
     UIImage *originalImage = [signUpButton backgroundImageForState: UIControlStateNormal];
     [signUpButton setBackgroundImage:[UIImage imageWithCGImage:originalImage.CGImage scale:1.0 orientation:UIImageOrientationUpMirrored] forState:UIControlStateNormal];
-
+    
     // Images created for stretching to variably sized UIButtons (see buttons in resources)
     UIImage *blueButtonImage = [UIImage imageNamed:@"BlueButton.png"];
     UIImage *stretchedBlueButton = [blueButtonImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
@@ -86,6 +86,15 @@
     [signOutButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
     [viewProfileButton setBackgroundImage:stretchedBlueButton forState:UIControlStateNormal];
     [viewProfileButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
+    
+    /*
+    for(UIButton *button in @[findRaceButton, signOutButton, viewProfileButton]){
+        button.layer.masksToBounds = NO;
+        button.layer.shadowColor = [UIColor blackColor].CGColor;
+        button.layer.shadowOpacity = 0.5f;
+        button.layer.shadowRadius = 3.0f;
+        button.layer.shadowOffset = CGSizeMake(0, 6);
+    }*/
     
     // Date formatter set up to allow future-proof Copyright tag on bottom of main menu.
     NSDate *date = [NSDate date];
@@ -143,7 +152,6 @@
     
     [hintPageControl setNumberOfPages: [hintArray count]];
     [hintScrollView setContentSize: CGSizeMake(320 * [hintArray count], hintScrollView.frame.size.height)];
-
 
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"FirstRun"] == nil){
         [[NSUserDefaults standardUserDefaults] setObject:@"FirstRun" forKey:@"FirstRun"];

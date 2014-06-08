@@ -19,6 +19,7 @@
 @synthesize distanceField;
 @synthesize fromDateField;
 @synthesize toDateField;
+@synthesize pickerBackgroundView;
 @synthesize distancePicker;
 @synthesize countryPicker;
 @synthesize statePicker;
@@ -82,52 +83,58 @@
     [fromDateField setText: [formatter stringFromDate: [NSDate date]]];
     [formatter release];*/
     
-    //// not completed, sleeping
+    // MAKE SURE INPUT IS OK
+    // Picker view blur beneath in signupviewcontroller
+    // picker view solid background in searchviewcont, maybe toolbar to show end
     if([delegate searchParams] != nil){
-        if([[delegate searchParams] objectForKey:@"Name"])
-            [raceNameField setText:[[delegate searchParams] objectForKey:@"Name"]];
-        if([[delegate searchParams] objectForKey:@"Dist"])
-            [distanceField setText:[[delegate searchParams] objectForKey:@"Dist"]];
-        if([[delegate searchParams] objectForKey:@"FromDate"])
-            [fromDateField setText: [[delegate searchParams] objectForKey:@"FromDate"]];
-        if([[delegate searchParams] objectForKey:@"ToDate"])
-                [toDateField setText: [[delegate searchParams] objectForKey:@"ToDate"]];
-        if([[delegate searchParams] objectForKey:@"DistUnits"]){
-            int index = 0;
-            for(NSString *distanceType in distanceArray){
-                if([distanceType isEqualToString:[[delegate searchParams] objectForKey:@"DistUnits"]]){
-                    [distanceDrop setTitle:[NSString stringWithFormat:@"  %@", distanceType] forState:UIControlStateNormal];
-                    [distancePicker selectRow:index inComponent:0 animated:NO];
-                    currentSelectedDistance = index;
-                    break;
-                }
-                index++;
-            }
-        }
-        if([[delegate searchParams] objectForKey:@"Country"]){
-            NSString *country = [[delegate searchParams] objectForKey:@"Country"];
-            if([country isEqualToString:@"US"])
-                currentSelectedCountry = 0;
-            else if([country isEqualToString:@"CA"])
-                currentSelectedCountry = 1;
-            else if([country isEqualToString:@"FR"])
-                currentSelectedCountry = 2;
+        if([[delegate searchParams] objectForKey:@"name"])
+            [raceNameField setText:[[delegate searchParams] objectForKey:@"name"]];
+        if([[delegate searchParams] objectForKey:@"min_distance"])
+            [distanceField setText:[[delegate searchParams] objectForKey:@"min_distance"]];
+        if([[delegate searchParams] objectForKey:@"start_date"])
+            [fromDateField setText: [[delegate searchParams] objectForKey:@"start_date"]];
+        if([[delegate searchParams] objectForKey:@"end_date"])
+                [toDateField setText: [[delegate searchParams] objectForKey:@"end_date"]];
+        if([[delegate searchParams] objectForKey:@"distance_units"]){
+            NSString *distanceUnits = [[delegate searchParams] objectForKey:@"distance_units"];
+            if([distanceUnits isEqualToString: @"K"])
+                currentSelectedDistance = 1;
+            else if([distanceUnits isEqualToString: @"M"])
+                currentSelectedDistance = 2;
+            else if([distanceUnits isEqualToString: @"Y"])
+                currentSelectedDistance = 3;
             else
-                currentSelectedCountry = 3;
+                currentSelectedDistance = 4;
             
-            [countryDrop setTitle:[NSString stringWithFormat:@"  %@", [countryArray objectAtIndex: currentSelectedCountry]] forState:UIControlStateNormal];
+            NSString *distanceType = [distanceArray objectAtIndex: currentSelectedDistance];
+            [distanceDrop setTitle:[NSString stringWithFormat:@"  %@", distanceType] forState:UIControlStateNormal];
+            [distancePicker selectRow:currentSelectedDistance inComponent:0 animated:NO];
+        }
+        if([[delegate searchParams] objectForKey:@"country_code"]){
+            NSString *country = [[delegate searchParams] objectForKey:@"country_code"];
+            if([country isEqualToString:@"US"])
+                currentSelectedCountry = 1;
+            else if([country isEqualToString:@"CA"])
+                currentSelectedCountry = 2;
+            else if([country isEqualToString:@"FR"])
+                currentSelectedCountry = 3;
+            else
+                currentSelectedCountry = 4;
+            
+            NSString *countryTitle = [NSString stringWithFormat:@"  %@", [countryArray objectAtIndex: currentSelectedCountry]];
+            [countryDrop setTitle:countryTitle forState:UIControlStateNormal];
             [countryPicker selectRow:currentSelectedCountry inComponent:0 animated:NO];
             
-            if([[delegate searchParams] objectForKey:@"State"] && currentSelectedCountry != 2){
+            if([[delegate searchParams] objectForKey:@"state"] && currentSelectedCountry != 3){
                 NSArray *currentStateArray = stateArrayUS;
-                if(currentSelectedCountry == 1)
+                if(currentSelectedCountry == 2)
                     currentStateArray = stateArrayCA;
-                else if(currentSelectedCountry == 3)
+                else if(currentSelectedCountry == 4)
                     currentStateArray = stateArrayGE;
                 
                 int index = 0;
                 for(NSString *state in currentStateArray){
-                    if([state isEqualToString:[[delegate searchParams] objectForKey:@"State"]]){
+                    if([state isEqualToString:[[delegate searchParams] objectForKey:@"state"]]){
                         [stateDrop setTitle:[NSString stringWithFormat:@"  %@", state] forState:UIControlStateNormal];
                         [statePicker selectRow:index inComponent:0 animated:NO];
                         currentSelectedState = index;
@@ -201,14 +208,14 @@
         toDate = nil;
     
     NSMutableDictionary *searchParams = [[NSMutableDictionary alloc] init];
-    [searchParams setObject:@"1" forKey:@"Page"];
-    if(name)[searchParams setObject:name forKey:@"Name"];
-    if(distance)[searchParams setObject:distance forKey:@"Dist"];
-    if(distancePick)[searchParams setObject:distancePick forKey:@"DistUnits"];
-    [searchParams setObject:fromDate forKey:@"FromDate"];
-    if(toDate)[searchParams setObject:toDate forKey:@"ToDate"];
-    if(countryPick)[searchParams setObject:countryPick forKey:@"Country"];
-    if(statePick)[searchParams setObject:statePick forKey:@"State"];
+    [searchParams setObject:@"1" forKey:@"page"];
+    if(name)[searchParams setObject:name forKey:@"name"];
+    if(distance)[searchParams setObject:distance forKey:@"min_distance"];
+    if(distancePick)[searchParams setObject:distancePick forKey:@"distance_units"];
+    [searchParams setObject:fromDate forKey:@"start_date"];
+    if(toDate)[searchParams setObject:toDate forKey:@"end_date"];
+    if(countryPick)[searchParams setObject:countryPick forKey:@"country_code"];
+    if(statePick)[searchParams setObject:statePick forKey:@"state"];
     
     NSLog(@"%@", searchParams);
     [delegate setSearchParams: searchParams];
@@ -229,22 +236,25 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     if(currentPicker != 0){
+        UIPickerView *pickerToAnimate = distancePicker;
+        UIButton *currentDrop = distanceDrop;
         if(currentPicker == 1){
-            [distanceDrop setSelected: NO];
-            [UIView beginAnimations:@"PickerSlide" context:nil];
-            [distancePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
-            [UIView commitAnimations];
+            pickerToAnimate = distancePicker;
+            currentDrop = distanceDrop;
         }else if(currentPicker == 2){
-            [countryDrop setSelected: NO];
-            [UIView beginAnimations:@"PickerSlide" context:nil];
-            [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
-            [UIView commitAnimations];
+            pickerToAnimate = countryPicker;
+            currentDrop = countryDrop;
         }else{
-            [stateDrop setSelected: NO];
-            [UIView beginAnimations:@"PickerSlide" context:nil];
-            [statePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
-            [UIView commitAnimations];
+            pickerToAnimate = statePicker;
+            currentDrop = stateDrop;
         }
+        
+        [currentDrop setSelected: NO];
+        [UIView beginAnimations:@"PickerSlide" context:nil];
+        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
+        [pickerToAnimate setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
+        [UIView commitAnimations];
+        
         currentPicker = 0;
     }
         
@@ -354,6 +364,7 @@
     if(currentPicker == 0){
         [UIView beginAnimations:@"PickerSlide" context:nil];
         [UIView setAnimationDuration: 0.25f];
+        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
         [distancePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
         [UIView commitAnimations];
     }else{
@@ -374,6 +385,7 @@
     if(currentPicker == 0){
         [UIView beginAnimations:@"PickerSlide" context:nil];
         [UIView setAnimationDuration: 0.25f];
+        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
         [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
         [UIView commitAnimations];
     }else{
@@ -394,6 +406,7 @@
     if(currentPicker == 0){
         [UIView beginAnimations:@"PickerSlide" context:nil];
         [UIView setAnimationDuration: 0.25f];
+        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
         [statePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
         [UIView commitAnimations];    
     }else{

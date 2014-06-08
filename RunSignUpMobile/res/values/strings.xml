@@ -1,0 +1,12 @@
+
+    <resources>
+        <string name="button_findrace">Find a Race</string>
+        <string name="button_signin">Sign In</string>
+        <string name="button_signup">Sign Up</string>
+        <string name="action_reportbug">Report Bug</string>
+        <string name="action_about">About</string>
+        <string name="hint_password">Password</string>
+        <string name="hint_rememberme">Remember my E-mail</string>
+        <string name="hint_email">E-mail</string>
+        <string name="app_name">RunSignUp Mobile</string>
+    </resources>

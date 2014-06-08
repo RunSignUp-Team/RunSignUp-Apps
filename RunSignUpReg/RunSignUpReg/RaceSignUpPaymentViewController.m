@@ -56,7 +56,7 @@
             self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:100];
         else
             self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:432 YLocation:140];
-        [[rli label] setText: @"Retrieving Cost..."];
+        [[rli label] setText: @"Fetching Cost..."];
         [self.view addSubview: rli];
         [rli release];
         
@@ -83,35 +83,35 @@
     [paymentButton setBackgroundImage:stretchedGreenButton forState:UIControlStateNormal];
     [paymentButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
     
-    [raceNameLabel setText: [dataDict objectForKey: @"Name"]];
+    [raceNameLabel setText: [dataDict objectForKey: @"name"]];
 
     NSDictionary *userDict = nil;
     if([[RSUModel sharedModel] signedIn]){
         if([[RSUModel sharedModel] registrantType] == RSURegistrantMe){
             userDict = [[RSUModel sharedModel] currentUser];
         }else{ //someoneelse or secondary
-            userDict = [dataDict objectForKey:@"Registrant"];
+            userDict = [dataDict objectForKey:@"registrant"];
         }
     }else if([[RSUModel sharedModel] registrantType] == RSURegistrantNewUser){
-        userDict = [dataDict objectForKey:@"Registrant"];
+        userDict = [dataDict objectForKey:@"registrant"];
     }
     
-    NSString *name = [NSString stringWithFormat: @"%@ %@", [userDict objectForKey: @"FName"], [userDict objectForKey: @"LName"]];
+    NSString *name = [NSString stringWithFormat: @"%@ %@", [userDict objectForKey: @"first_name"], [userDict objectForKey: @"last_name"]];
     
     [nameLabel setText: name];
-    [emailLabel setText: [userDict objectForKey: @"Email"]];
-    [dobLabel setText: [userDict objectForKey: @"DOB"]];
-    [genderLabel setText: [userDict objectForKey: @"Gender"]];
-    [phoneLabel setText: [userDict objectForKey: @"Phone"]];
-    [addressLabel setText: [userDict objectForKey: @"Street"]];
-    [cityLabel setText: [userDict objectForKey: @"City"]];
-    [stateLabel setText: [userDict objectForKey: @"State"]];
-    [zipLabel setText: [userDict objectForKey: @"Zipcode"]];
+    [emailLabel setText: [userDict objectForKey: @"email"]];
+    [dobLabel setText: [userDict objectForKey: @"dob"]];
+    [genderLabel setText: [userDict objectForKey: @"gender"]];
+    [phoneLabel setText: [userDict objectForKey: @"phone"]];
+    [addressLabel setText: [[userDict objectForKey: @"address"] objectForKey:@"street"]];
+    [cityLabel setText: [[userDict objectForKey: @"address"] objectForKey:@"city"]];
+    [stateLabel setText: [[userDict objectForKey: @"address"] objectForKey:@"state"]];
+    [zipLabel setText: [[userDict objectForKey: @"address"] objectForKey:@"zipcode"]];
     
     void (^response)(RSUConnectionResponse, NSDictionary *) = ^(RSUConnectionResponse didSucceed, NSDictionary *data){
         if(didSucceed == RSUSuccess){
             if(data != nil){
-                if([[data objectForKey:@"Cart"] count] == 0){
+                if([[data objectForKey:@"cart"] count] == 0){
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Cart is empty, please try registering again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
                     [alert show];
                     [alert release];
@@ -122,15 +122,18 @@
                 cartDict = data;
                 [cartTable reloadData];
                 
-                if([[cartDict objectForKey: @"TotalCost"] isEqualToString:@"$0.00"]){
+                if([[cartDict objectForKey: @"total_cost"] isEqualToString:@"$0.00"]){
                     isFreeRace = YES;
                 }else{
                     isFreeRace = NO;
                 }
                 
-                [baseCostLabel setText: [data objectForKey:@"BaseCost"]];
-                [processingFeeLabel setText: [data objectForKey:@"ProcessingFee"]];
-                [totalLabel setText: [data objectForKey:@"TotalCost"]];
+                float baseCostDollars = [[[data objectForKey:@"base_cost"] substringFromIndex: 1] floatValue];
+                float totalCostDollars = [[[data objectForKey:@"total_cost"] substringFromIndex: 1] floatValue];
+                
+                [baseCostLabel setText: [data objectForKey:@"base_cost"]];
+                [processingFeeLabel setText: [NSString stringWithFormat: @"$%.02f", totalCostDollars - baseCostDollars]];
+                [totalLabel setText: [data objectForKey:@"total_cost"]];
             }else{
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Invalid data, please double check your registrant information and try again." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
                 [alert show];
@@ -138,7 +141,7 @@
             }
         }else if(didSucceed == RSUInvalidData && data != nil){
             if([data objectForKey:@"ErrorArray"] == nil){
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error #%@: %@", [data objectForKey:@"ErrorCode"], [data objectForKey:@"ErrorMessage"]] delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error #%@: %@", [data objectForKey:@"error_code"], [data objectForKey:@"error_msg"]] delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
                 [alert show];
                 [alert release];
             }else{
@@ -165,7 +168,7 @@
         [rli fadeOut];
         [self layoutContent];
     };
-    [[RSUModel sharedModel] registerForRace:[dataDict objectForKey:@"RaceID"] withInfo:dataDict requestType:RSURegGetCart response:response];
+    [[RSUModel sharedModel] registerForRace:[dataDict objectForKey:@"race_id"] withInfo:dataDict requestType:RSURegGetCart response:response];
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
@@ -218,9 +221,9 @@
             cell = [[RaceSignUpEventTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:EventCellIdentifier];
         }
         
-        [[cell nameLabel] setText: [[[dataDict objectForKey: @"Events"] objectAtIndex: indexPath.row] objectForKey: @"Name"]];
-        NSDictionary *firstRegPeriod = [[[[dataDict objectForKey: @"Events"] objectAtIndex: indexPath.row] objectForKey: @"EventRegistrationPeriods"] objectAtIndex: 0];
-        [cell setPrice:[firstRegPeriod objectForKey: @"RegistrationFee"] price2:[firstRegPeriod objectForKey: @"RegistrationProcessingFee"]];
+        [[cell nameLabel] setText: [[[dataDict objectForKey: @"events"] objectAtIndex: indexPath.row] objectForKey: @"name"]];
+        NSDictionary *firstRegPeriod = [[[[dataDict objectForKey: @"events"] objectAtIndex: indexPath.row] objectForKey: @"registration_periods"] objectAtIndex: 0];
+        [cell setPrice:[firstRegPeriod objectForKey: @"race_fee"] price2:[firstRegPeriod objectForKey: @"processing_fee"]];
         
         return cell;
     }else if(tableView == cartTable){
@@ -230,16 +233,16 @@
             cell = [[RaceSignUpCartTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CartCellIdentifier];
         }
         
-        NSDictionary *cartItem = [[cartDict objectForKey:@"Cart"] objectAtIndex: [indexPath row]];
+        NSDictionary *cartItem = [[cartDict objectForKey:@"cart"] objectAtIndex: [indexPath row]];
         
         NSString *subitemsString = @"";
-        for(NSString *si in [cartItem objectForKey:@"Subitems"]){
+        for(NSString *si in [cartItem objectForKey:@"subitems"]){
             subitemsString = [subitemsString stringByAppendingFormat:@", %@", si];
         }
         
         subitemsString = [subitemsString substringFromIndex: 2];
         
-        [cell setInfo:[cartItem objectForKey:@"Info"] total:[cartItem objectForKey:@"TotalCost"] subitems:subitemsString];
+        [cell setInfo:[cartItem objectForKey:@"info"] total:[cartItem objectForKey:@"total_cost"] subitems:subitemsString];
         return cell;
 
         
@@ -257,9 +260,9 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{    
     if(tableView == eventsTable){
-        return [[dataDict objectForKey: @"Events"] count];
+        return [[dataDict objectForKey: @"events"] count];
     }else if(tableView == cartTable)
-        return [[cartDict objectForKey:@"Cart"] count];
+        return [[cartDict objectForKey:@"cart"] count];
     else
         return 1;
 }
@@ -275,12 +278,12 @@
             [[[RSUModel sharedModel] paymentViewController] setDelegate: [RSUModel sharedModel]];
         }
         
-        [dataDict setObject:[cartDict objectForKey:@"TotalCost"] forKey:@"TotalCost"];
+        [dataDict setObject:[cartDict objectForKey:@"total_cost"] forKey:@"total_cost"];
         
         [[RSUModel sharedModel] setDataDict: dataDict];
         [self.navigationController pushViewController:[[RSUModel sharedModel] paymentViewController] animated:YES];
     }else{
-        [dataDict setObject:@"$0.00" forKey:@"TotalCost"];
+        [dataDict setObject:@"$0.00" forKey:@"total_cost"];
         
         [[RSUModel sharedModel] setDataDict: dataDict];
         
@@ -290,12 +293,12 @@
             if(didSucceed == RSUSuccess){
                 [dataDict setObject:data forKey:@"ConfirmationCodes"];
                 
-                RaceSignUpConfirmationViewController *rsucvc = [[RaceSignUpConfirmationViewController alloc] initWithNibName:@"RaceSignUpConfirmationViewController" bundle:Nil data:dataDict];
+                RaceSignUpConfirmationViewController *rsucvc = [[RaceSignUpConfirmationViewController alloc] initWithNibName:@"RaceSignUpConfirmationViewController" bundle:nil data:dataDict];
                 [self.navigationController pushViewController:rsucvc animated:YES];
                 [rsucvc release];
             }else if(didSucceed == RSUInvalidData && data != nil){
                 if([data objectForKey:@"ErrorArray"] == nil){
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error #%@: %@", [data objectForKey:@"ErrorCode"], [data objectForKey:@"ErrorMessage"]] delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Error #%@: %@", [data objectForKey:@"error_code"], [data objectForKey:@"error_msg"]] delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
                     [alert show];
                     [alert release];
                     [self.navigationController popToRootViewControllerAnimated: NO];
@@ -321,7 +324,7 @@
         
         [[rli label] setText: @"Registering..."];
         [rli fadeIn];
-        [[RSUModel sharedModel] registerForRace:[dataDict objectForKey:@"RaceID"] withInfo:dataDict requestType:RSURegRegister response:response];
+        [[RSUModel sharedModel] registerForRace:[dataDict objectForKey:@"race_id"] withInfo:dataDict requestType:RSURegRegister response:response];
     }
 }
 

@@ -14,6 +14,7 @@
 #import <EventKit/EventKit.h>
 #import <EventKitUI/EventKitUI.h>
 #import "RaceSignUpChooseRegistrantViewController.h"
+#import "AddressAnnotation.h"
 
 @implementation RaceDetailsViewController
 @synthesize dataDict;
@@ -47,15 +48,18 @@
             self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:100];
         else
             self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:432 YLocation:140];
-        [[rli label] setText: @"Retrieving Details..."];
+        [[rli label] setText: @"Fetching Details..."];
         [self.view addSubview: rli];
         [rli release];
         
         self.title = @"Details";
-        loadedDescription = NO;
+        hasLoadedDescription = NO;
         hasLoadedDetails = NO;
+        
         attemptedToSignUpWithoutDetails = NO;
         eventDateFormatter = [[NSDateFormatter alloc] init];
+        [eventDateFormatter setAMSymbol: @"am"];
+        [eventDateFormatter setPMSymbol: @"pm"];
         
     }
     return self;
@@ -87,23 +91,28 @@
     
     [eventsTable flashScrollIndicators];
     [registrationTable setSeparatorColor: [UIColor colorWithRed:0.3686f green:0.8078f blue:0.9412f alpha:1.0f]];
-        
-    [nameLabel setText: [dataDict objectForKey: @"Name"]];
-    [dateLabel setText: [dataDict objectForKey: @"Date"]];
-    [placeLabel setText: [dataDict objectForKey: @"AL2"]];
-    [addressLine1 setText: [dataDict objectForKey: @"AL1"]];
-    [addressLine2 setText: [dataDict objectForKey: @"AL2"]];
     
-    NSString *htmlString = [dataDict objectForKey: @"Description"];
+    
+    [nameLabel setText: [dataDict objectForKey: @"name"]];
+    [dateLabel setText: [dataDict objectForKey: @"next_date"]];
+    [placeLabel setText: [[RSUModel sharedModel] addressLine2FromAddress: [dataDict objectForKey:@"address"]]];
+    [addressLine1 setText: [[dataDict objectForKey: @"address"] objectForKey:@"street"]];
+    [addressLine2 setText: [[RSUModel sharedModel] addressLine2FromAddress: [dataDict objectForKey:@"address"]]];
+    
+    NSString *htmlString = [dataDict objectForKey: @"description"];
     htmlString = [htmlString stringByReplacingOccurrencesOfString:@"&amp;"  withString:@"&"];
     htmlString = [htmlString stringByReplacingOccurrencesOfString:@"&lt;"  withString:@"<"];
     htmlString = [htmlString stringByReplacingOccurrencesOfString:@"&gt;"  withString:@">"];
     htmlString = [htmlString stringByReplacingOccurrencesOfString:@"&quot;" withString:@""""];
     htmlString = [htmlString stringByReplacingOccurrencesOfString:@"&#039;"  withString:@"'"];
     
-    addressLocation = [self getLocationFromAddressString:[NSString stringWithFormat:@"%@, %@", [dataDict objectForKey: @"AL1"], [dataDict objectForKey: @"AL2"]]];
+    addressLocation = [self getLocationFromAddressString:[NSString stringWithFormat:@"%@, %@", [[dataDict objectForKey: @"address"] objectForKey:@"street"], [[RSUModel sharedModel] addressLine2FromAddress:[dataDict objectForKey:@"address"]]]];
     [mapView setRegion: MKCoordinateRegionMake(addressLocation, MKCoordinateSpanMake(0.005, 0.003))]; // these two just trial and error
 
+    AddressAnnotation *addr = [[AddressAnnotation alloc] initWithCoordinate: addressLocation];
+    [mapView addAnnotation: addr];
+    [addr release];
+    
     [descriptionView loadHTMLString:htmlString baseURL:[NSURL URLWithString:@"http://www.runsignup.com/"]];
     
     void (^response)(NSMutableDictionary *) = ^(NSMutableDictionary *race){
@@ -115,9 +124,15 @@
         
         NSLog(@"%@", dataDict);
         attemptedToSignUpWithoutDetails = NO;
+        
+        [eventsTable reloadData];
+        [registrationTable reloadData];
+        
+        if(hasLoadedDescription) // description loaded first
+            [self layoutContent];
     };
     
-    [[RSUModel sharedModel] retrieveRaceDetailsWithRaceID:[dataDict objectForKey: @"RaceID"] response:response];
+    [[RSUModel sharedModel] retrieveRaceDetailsWithRaceID:[dataDict objectForKey: @"race_id"] response:response];
 
 }
 
@@ -133,18 +148,20 @@
     f.size = fittingSize;
     webView.frame = f;
     
-    [self layoutContent];
+    if(hasLoadedDetails) // details loaded first
+        [self layoutContent];
 }
 
 - (IBAction)viewResults:(id)sender{
-    RaceResultsViewController *rrvc = [[RaceResultsViewController alloc] initWithNibName:@"RaceResultsViewController" bundle:nil];
+    NSMutableDictionary *dataDictCopy = [[NSMutableDictionary alloc] initWithDictionary:dataDict copyItems:YES];
+    RaceResultsViewController *rrvc = [[RaceResultsViewController alloc] initWithNibName:@"RaceResultsViewController" bundle:nil data:dataDictCopy];
     [self.navigationController pushViewController:rrvc animated:YES];
     [rrvc release];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
-    if(!loadedDescription){
-        loadedDescription = YES;
+    if(!hasLoadedDescription){
+        hasLoadedDescription = YES;
         return YES;
     }else{
         // Intercept link clicks and send them to safari
@@ -159,15 +176,17 @@
         [viewResultsButton setFrame: CGRectMake(4, viewResultsButton.frame.origin.y, 312, viewResultsButton.frame.size.height)];
         [signUpButton1 setFrame: CGRectMake(4, viewResultsButton.frame.origin.y + viewResultsButton.frame.size.height + 8, 312, signUpButton1.frame.size.height)];
         [eventsHintLabel setFrame: CGRectMake(4, signUpButton1.frame.origin.y + signUpButton1.frame.size.height + 8, 312, eventsHintLabel.frame.size.height)];
-        [eventsTable setFrame: CGRectMake(4, eventsHintLabel.frame.origin.y + eventsHintLabel.frame.size.height + 8, 312, [[dataDict objectForKey:@"Events"] count] * [eventsTable rowHeight])];
+        [eventsTable setFrame: CGRectMake(4, eventsHintLabel.frame.origin.y + eventsHintLabel.frame.size.height + 8, 312, [eventsTable numberOfRowsInSection: 0] * 22)];
     }else{
-        [eventsTable setFrame: CGRectMake(4, eventsTable.frame.origin.y, 312, [[dataDict objectForKey:@"Events"] count] * 22)];
+        [eventsTable setFrame: CGRectMake(4, eventsTable.frame.origin.y, 312, [eventsTable numberOfRowsInSection: 0] * 22)];
     }
     
-    if([[dataDict objectForKey: @"RegistrationOpen"] boolValue]){
-        [registrationTable setFrame: CGRectMake(4, eventsTable.frame.origin.y + eventsTable.frame.size.height + 8, 312, [[dataDict objectForKey:@"Events"] count] * [registrationTable rowHeight])];
+    if([[dataDict objectForKey: @"is_registration_open"] boolValue]){
+        [registrationTable setFrame: CGRectMake(4, eventsTable.frame.origin.y + eventsTable.frame.size.height + 8, 312, [registrationTable numberOfRowsInSection: 0] * 98)];
     }else{
         [registrationTable setFrame: CGRectMake(4, eventsTable.frame.origin.y + eventsTable.frame.size.height, 312, 0)];
+        [signUpButton1 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        [signUpButton2 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     }
     
     [placeHintLabel setFrame: CGRectMake(4, registrationTable.frame.origin.y + registrationTable.frame.size.height + 8, 312, placeHintLabel.frame.size.height)];
@@ -225,29 +244,33 @@
     }
     
     EKEvent *event = [EKEvent eventWithEventStore: store];
-    [event setTitle: [dataDict objectForKey: @"Name"]];
-    [event setLocation: [NSString stringWithFormat:@"%@, %@", [dataDict objectForKey:@"AL1"], [dataDict objectForKey:@"AL2"]]];
+    [event setTitle: [dataDict objectForKey: @"name"]];
+    [event setLocation: [NSString stringWithFormat:@"%@, %@", [[dataDict objectForKey:@"address"] objectForKey:@"street"], [[RSUModel sharedModel] addressLine2FromAddress: [dataDict objectForKey:@"address"]]]];
     [event setURL: [NSURL URLWithString: [dataDict objectForKey: @"URL"]]];
     [event setCalendar: [store defaultCalendarForNewEvents]];
     
-    if([dataDict objectForKey: @"Events"] != nil && [[dataDict objectForKey:@"Events"] count] >= 1){
+    if([dataDict objectForKey: @"events"] != nil && [[dataDict objectForKey:@"events"] count] >= 1){
         [eventDateFormatter setDateFormat:@"MM/dd/yyyy HH:mm"];
-        NSString *firstEventStartTime = [[[dataDict objectForKey: @"Events"] objectAtIndex: 0] objectForKey: @"StartTime"];
+        NSString *firstEventStartTime = [[[dataDict objectForKey: @"events"] objectAtIndex: 0] objectForKey: @"start_time"];
         [event setStartDate: [eventDateFormatter dateFromString: firstEventStartTime]];
         [event setEndDate: [NSDate dateWithTimeInterval:3600.0 sinceDate:[event startDate]]]; // give an hour for race to occur.
     }
     
-    [store requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
-        if(granted){
-            [self performSelectorOnMainThread:@selector(showEventEditViewWithEvent:) withObject:event waitUntilDone:NO];
-        }
-    }];
+    if([store respondsToSelector:@selector(requestAccessToEntityType:completion:)]){
+        [store requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+            if(granted){
+                [self performSelectorOnMainThread:@selector(showEventEditViewWithEvent:) withObject:event waitUntilDone:NO];
+            }
+        }];
+    }else{
+        [self performSelectorOnMainThread:@selector(showEventEditViewWithEvent:) withObject:event waitUntilDone:NO];
+    }
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex{
     if(buttonIndex == 0){
         UIPasteboard *pb = [UIPasteboard generalPasteboard];
-        [pb setString: [NSString stringWithFormat:@"%@, %@", [dataDict objectForKey:@"AL1"], [dataDict objectForKey:@"AL2"]]];
+        [pb setString: [NSString stringWithFormat:@"%@, %@", [[dataDict objectForKey:@"address"] objectForKey:@"street"], [[RSUModel sharedModel] addressLine2FromAddress: [dataDict objectForKey:@"address"]]]];
     }else if(buttonIndex == 1){
         [self createCalendarEvent: nil];
     }
@@ -280,17 +303,34 @@
             cell = [[RaceDetailsEventTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:EventsCellIdentifier];
         }
         
-        NSString *eventName = [[[dataDict objectForKey: @"Events"] objectAtIndex: indexPath.row] objectForKey:@"Name"];
-        NSString *eventStartTime = [[[dataDict objectForKey: @"Events"] objectAtIndex: indexPath.row] objectForKey:@"StartTime"];
-        [eventDateFormatter setDateFormat:@"MM/dd/yyyy HH:mm"];
-        NSDate *formattedDate = [eventDateFormatter dateFromString: eventStartTime];
-        [eventDateFormatter setDateFormat:@"h:mm a"];
-        eventStartTime = [eventDateFormatter stringFromDate: formattedDate];
+        NSDictionary *actualEvent = nil;
+        int index = indexPath.row;
         
-        [[cell nameLabel] setText: eventName];
-        [[cell timeLabel] setText: [@": " stringByAppendingString:eventStartTime]];
-        [cell layoutSubviews];
-                
+        [eventDateFormatter setDateFormat:@"MM/dd/yyyy HH:mm"];
+        
+        for(NSDictionary *event in [dataDict objectForKey: @"events"]){
+            NSDate *startDate = [eventDateFormatter dateFromString: [event objectForKey: @"start_time"]];
+            if([startDate compare: [NSDate date]] == NSOrderedDescending)
+                index--;
+            
+            if(index < 0){
+                actualEvent = event;
+                break;
+            }
+        }
+        
+        if(actualEvent != nil){
+            NSString *eventName = [actualEvent objectForKey:@"name"];
+            NSString *eventStartTime = [actualEvent objectForKey:@"start_time"];
+            NSDate *formattedDate = [eventDateFormatter dateFromString: eventStartTime];
+            [eventDateFormatter setDateFormat:@"h:mm a"];
+            eventStartTime = [eventDateFormatter stringFromDate: formattedDate];
+            
+            [[cell nameLabel] setText: eventName];
+            [[cell timeLabel] setText: [@": " stringByAppendingString: eventStartTime]];
+            [cell layoutSubviews];
+        }
+        
         return cell;
     }else if(tableView == registrationTable){
         static NSString *RegistrationCellIdentifier = @"RegistrationCellIdentifier";
@@ -300,11 +340,41 @@
             cell = [[RaceDetailsRegistrationTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:RegistrationCellIdentifier];
         }
         
-        if([[[[dataDict objectForKey: @"Events"] objectAtIndex: indexPath.row] objectForKey: @"EventRegistrationPeriods"] count] > 0){
-            NSDictionary *firstRegPeriod = [[[[dataDict objectForKey: @"Events"] objectAtIndex: indexPath.row] objectForKey: @"EventRegistrationPeriods"] objectAtIndex: 0];
-            [cell setPrice:[firstRegPeriod objectForKey: @"RegistrationFee"] price2:[firstRegPeriod objectForKey: @"RegistrationProcessingFee"]];
-            [[cell periodLabel] setText: @"July 11, 2013 @ 12:43pm ET - July 23, 2013 @ 11:59pm ET"];
-            [[cell titleLabel] setText: [NSString stringWithFormat: @"Registration: %@", [[[dataDict objectForKey: @"Events"] objectAtIndex: indexPath.row] objectForKey: @"Name"]]];
+        NSDictionary *actualEvent = nil;
+        NSDictionary *actualRegPeriod = nil;
+        int index = indexPath.row;
+        
+        [eventDateFormatter setDateFormat:@"MM/dd/yyyy HH:mm"];
+
+        for(NSDictionary *event in [dataDict objectForKey: @"events"]){
+            NSDate *startDate = [eventDateFormatter dateFromString: [event objectForKey: @"start_time"]];
+            if([startDate compare: [NSDate date]] == NSOrderedDescending)
+                index--;
+            
+            if(index < 0){
+                actualEvent = event;
+                
+                for(NSDictionary *regPeriod in [event objectForKey: @"registration_periods"]){
+                    NSDate *openDate = [eventDateFormatter dateFromString: [regPeriod objectForKey: @"registration_opens"]];
+                    NSDate *closeDate = [eventDateFormatter dateFromString: [regPeriod objectForKey: @"registration_closes"]];
+                    
+                    if([openDate compare: [NSDate date]] == NSOrderedAscending && [closeDate compare: [NSDate date]] == NSOrderedDescending)
+                        actualRegPeriod = regPeriod;
+                }
+                
+                break;
+            }
+        }
+        
+        if(actualEvent && actualRegPeriod){
+            [cell setPrice:[actualRegPeriod objectForKey: @"race_fee"] price2:[actualRegPeriod objectForKey: @"processing_fee"]];
+            [eventDateFormatter setDateFormat: @"MM/dd/yyyy HH:mm"];
+            NSDate *openDate = [eventDateFormatter dateFromString: [actualRegPeriod objectForKey: @"registration_opens"]];
+            NSDate *closeDate = [eventDateFormatter dateFromString: [actualRegPeriod objectForKey: @"registration_closes"]];
+            [eventDateFormatter setDateFormat: @"MMMM dd, yyyy @ h:mma"];
+            
+            [[cell periodLabel] setText: [NSString stringWithFormat: @"%@ ET - %@ ET", [eventDateFormatter stringFromDate: openDate], [eventDateFormatter stringFromDate: closeDate]]];
+            [[cell titleLabel] setText: [NSString stringWithFormat: @"Registration: %@", [actualEvent objectForKey: @"name"]]];
         }
         
         return cell;
@@ -360,10 +430,41 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    if(tableView == eventsTable)
-        return [[dataDict objectForKey:@"Events"] count];
-    else
-        return [[dataDict objectForKey:@"Events"] count];
+    if(hasLoadedDetails){
+        if(tableView == eventsTable){
+            int scheduledEvents = 0;
+            for(NSDictionary *event in [dataDict objectForKey: @"events"]){
+                [eventDateFormatter setDateFormat: @"MM/dd/yyyy HH:mm"];
+                NSDate *startDate = [eventDateFormatter dateFromString: [event objectForKey: @"start_time"]];
+                if([startDate compare: [NSDate date]] == NSOrderedDescending)
+                    scheduledEvents++;
+            }
+            NSLog(@"Schedev: %i", scheduledEvents);
+            return scheduledEvents;
+        }else{
+            int scheduledEventsWithOpenReg = 0;
+            for(NSDictionary *event in [dataDict objectForKey: @"events"]){
+                [eventDateFormatter setDateFormat: @"MM/dd/yyyy HH:mm"];
+                NSDate *startDate = [eventDateFormatter dateFromString: [event objectForKey: @"start_time"]];
+                if([startDate compare: [NSDate date]] == NSOrderedDescending){
+                    BOOL regOpen = NO;
+                    for(NSDictionary *regPeriod in [event objectForKey: @"registration_periods"]){
+                        NSDate *openDate = [eventDateFormatter dateFromString: [regPeriod objectForKey: @"registration_opens"]];
+                        NSDate *closeDate = [eventDateFormatter dateFromString: [regPeriod objectForKey: @"registration_closes"]];
+                        
+                        if([openDate compare: [NSDate date]] == NSOrderedAscending && [closeDate compare: [NSDate date]] == NSOrderedDescending)
+                            regOpen = YES;
+                    }
+                    if(regOpen)
+                        scheduledEventsWithOpenReg++;
+                }
+            }
+            NSLog(@"Schedevreg: %i", scheduledEventsWithOpenReg);
+            return scheduledEventsWithOpenReg;
+        }
+    }else{
+        return 0;
+    }
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{

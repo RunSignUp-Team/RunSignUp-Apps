@@ -11,6 +11,8 @@
 @interface RaceSignUpEventsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>{
     UITableView *eventsTable;
     
+    NSDateFormatter *eventDateFormatter;
+    
     NSMutableDictionary *dataDict;
     NSMutableArray *selectedArray;
         

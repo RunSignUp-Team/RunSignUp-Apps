@@ -8,6 +8,7 @@
 
 #import "RaceSignUpGiveawayViewController.h"
 #import "RaceSignUpGiveawayTableViewCell.h"
+#import "RaceSignUpQuestionsViewController.h"
 #import "RaceSignUpPaymentViewController.h"
 
 @implementation RaceSignUpGiveawayViewController
@@ -23,14 +24,14 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if([indexPath section] != [[dataDict objectForKey:@"Events"] count]){
+    if([indexPath section] != [[dataDict objectForKey:@"events"] count]){
         static NSString *GiveawayCellIdentifier = @"GiveawayCellIdentifier";
         RaceSignUpGiveawayTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:GiveawayCellIdentifier];
         if(cell == nil){
             cell = [[RaceSignUpGiveawayTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:GiveawayCellIdentifier];
         }
         
-        [cell setGiveawayOptions: [[[dataDict objectForKey: @"Events"] objectAtIndex: [indexPath section]] objectForKey: @"EventGiveawayOptions"]];
+        [cell setGiveawayOptions: [[[dataDict objectForKey: @"events"] objectAtIndex: [indexPath section]] objectForKey: @"giveaway_options"]];
         
         return cell;
     }else{
@@ -61,15 +62,15 @@
 }
 
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if([indexPath section] != [[dataDict objectForKey:@"Events"] count])
+    if([indexPath section] != [[dataDict objectForKey:@"events"] count])
         return [tableView rowHeight];
     else
         return 54;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    if(section != [[dataDict objectForKey:@"Events"] count]){
-        if([[[[dataDict objectForKey: @"Events"] objectAtIndex: section] objectForKey: @"EventGiveawayOptions"] count] != 0)
+    if(section != [[dataDict objectForKey:@"events"] count]){
+        if([[[[dataDict objectForKey: @"events"] objectAtIndex: section] objectForKey: @"giveaway_options"] count] != 0)
             return 1;
         else
             return 0;
@@ -79,34 +80,40 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    if(section != [[dataDict objectForKey:@"Events"] count]){
-        NSString *giveawayOption = [[[dataDict objectForKey: @"Events"] objectAtIndex: section] objectForKey: @"Giveaway"];
+    if(section != [[dataDict objectForKey:@"events"] count]){
+        NSString *giveawayOption = [[[dataDict objectForKey: @"events"] objectAtIndex: section] objectForKey: @"giveaway"];
         if(giveawayOption == nil)
             giveawayOption = @"No giveaway";
-        return [NSString stringWithFormat:@"%@ - %@", [[[dataDict objectForKey:@"Events"] objectAtIndex: section] objectForKey: @"Name"], giveawayOption];
+        return [NSString stringWithFormat:@"%@ - %@", [[[dataDict objectForKey:@"events"] objectAtIndex: section] objectForKey: @"name"], giveawayOption];
     }else
         return nil;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return [[dataDict objectForKey: @"Events"] count] + 1;
+    return [[dataDict objectForKey: @"events"] count] + 1;
 }
 
 - (IBAction)chooseGiveaways:(id)sender{
-    for(int x = 0; x < [[dataDict objectForKey:@"Events"] count]; x++){
+    for(int x = 0; x < [[dataDict objectForKey:@"events"] count]; x++){
         if(x < [self numberOfSectionsInTableView: giveawayTable]){
             RaceSignUpGiveawayTableViewCell *cell = (RaceSignUpGiveawayTableViewCell *)[giveawayTable cellForRowAtIndexPath: [NSIndexPath indexPathForRow:0 inSection:x]];
             if(cell){
                 NSString *giveawayID = [cell getSelectedGiveawayID];
                 if(giveawayID)
-                    [[[dataDict objectForKey: @"Events"] objectAtIndex: x] setObject:giveawayID forKey:@"GiveawayOptionID"];
+                    [[[dataDict objectForKey: @"events"] objectAtIndex: x] setObject:giveawayID forKey:@"giveaway_option_id"];
             }
         }
     }
     
-    RaceSignUpPaymentViewController *rsupvc = [[RaceSignUpPaymentViewController alloc] initWithNibName:@"RaceSignUpPaymentViewController" bundle:nil data:dataDict];
-    [self.navigationController pushViewController:rsupvc animated:YES];
-    [rsupvc release];
+    if([dataDict objectForKey: @"questions"]){
+        RaceSignUpQuestionsViewController *rsuqvc = [[RaceSignUpQuestionsViewController alloc] initWithNibName:@"RaceSignUpQuestionsViewController" bundle:nil data:dataDict];
+        [self.navigationController pushViewController:rsuqvc animated:YES];
+        [rsuqvc release];
+    }else{
+        RaceSignUpPaymentViewController *rsupvc = [[RaceSignUpPaymentViewController alloc] initWithNibName:@"RaceSignUpPaymentViewController" bundle:nil data:dataDict];
+        [self.navigationController pushViewController:rsupvc animated:YES];
+        [rsupvc release];
+    }
 }
 
 - (void)viewDidLoad{

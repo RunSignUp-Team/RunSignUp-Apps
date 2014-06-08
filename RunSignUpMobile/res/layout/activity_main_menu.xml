@@ -1,0 +1,62 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/main_menu_background"
+    tools:context=".MainMenuActivity" >
+
+    <Button
+        android:id="@+id/buttonFindRace"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="140dp"
+        android:background="@drawable/green_button_selector"
+        android:text="@string/button_findrace" />
+    
+    <Button
+        android:id="@+id/buttonSignUp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonSignIn"
+        android:layout_alignRight="@+id/buttonSignIn"
+        android:layout_below="@+id/buttonSignIn"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/blue_button_selector"
+        android:text="@string/button_signup" />
+
+    <Button
+        android:id="@+id/buttonSignIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonFindRace"
+        android:layout_alignRight="@+id/buttonFindRace"
+        android:layout_below="@+id/buttonFindRace"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/blue_button_selector"
+        android:text="@string/button_signin" />
+    
+    <TextView
+        android:id="@+id/copyrightView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="6dp"
+        android:text=""
+        android:textColor="@android:color/white" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/title" />
+
+</RelativeLayout>

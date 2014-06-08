@@ -33,7 +33,7 @@
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
-    return [NSString stringWithFormat: @"%@ - %@", [[giveawayOptions objectAtIndex: row] objectForKey:@"GiveawayOptionText"], [[giveawayOptions objectAtIndex: row] objectForKey:@"GiveawayAdditionalCost"]];
+    return [NSString stringWithFormat: @"%@ - %@", [[giveawayOptions objectAtIndex: row] objectForKey:@"giveaway_option_text"], [[giveawayOptions objectAtIndex: row] objectForKey:@"additional_cost"]];
 }
 
 - (void)setGiveawayOptions:(NSArray *)go{
@@ -42,7 +42,7 @@
 
 - (NSString *)getSelectedGiveawayID{
     if(giveawayOptions != nil)
-        return [[giveawayOptions objectAtIndex: [pickerView selectedRowInComponent: 0]] objectForKey: @"GiveawayOptionID"];
+        return [[giveawayOptions objectAtIndex: [pickerView selectedRowInComponent: 0]] objectForKey: @"giveaway_option_id"];
     else
         return nil;
 }

@@ -29,7 +29,7 @@
         [self setEdgesForExtendedLayout: UIRectEdgeNone];
     
     self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:100];
-    [[rli label] setText:@"Retrieving list..."];
+    [[rli label] setText:@"Fetching list..."];
     [self.view addSubview: rli];
     [rli release];
     
@@ -69,8 +69,8 @@
         [(UILabel *)[cell viewWithTag:13] setText:@""];
     }else{
         [[cell textLabel] setText:@""];
-        [(UILabel *)[cell viewWithTag:12] setText: [[raceList objectAtIndex:indexPath.row] objectForKey:@"Name"]];
-        [(UILabel *)[cell viewWithTag:13] setText: [[raceList objectAtIndex:indexPath.row] objectForKey:@"NDate"]];
+        [(UILabel *)[cell viewWithTag:12] setText: [[raceList objectAtIndex:indexPath.row] objectForKey:@"name"]];
+        [(UILabel *)[cell viewWithTag:13] setText: [[raceList objectAtIndex:indexPath.row] objectForKey:@"next_date"]];
     }
     return cell;
 }

@@ -45,7 +45,7 @@
             self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:100];
         else
             self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:432 YLocation:140];
-        [[rli label] setText: @"Retrieving Cost..."];
+        [[rli label] setText: @"Fetching Cost..."];
         [self.view addSubview: rli];
         [rli release];
     }
@@ -70,30 +70,34 @@
     [mainMenuButton setBackgroundImage:stretchedGreenButton forState:UIControlStateNormal];
     [mainMenuButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
     
-    [raceNameLabel setText: [dataDict objectForKey: @"Name"]];
+    [raceNameLabel setText: [dataDict objectForKey: @"name"]];
     
     NSDictionary *userDict = nil;
     if([[RSUModel sharedModel] signedIn]){
         if([[RSUModel sharedModel] registrantType] == RSURegistrantMe){
             userDict = [[RSUModel sharedModel] currentUser];
         }else{ //someoneelse or secondary
-            userDict = [dataDict objectForKey:@"Registrant"];
+            userDict = [dataDict objectForKey:@"registrant"];
         }
     }else if([[RSUModel sharedModel] registrantType] == RSURegistrantNewUser){
-        userDict = [dataDict objectForKey:@"Registrant"];
+        userDict = [dataDict objectForKey:@"registrant"];
     }
     
-    NSString *name = [NSString stringWithFormat: @"%@ %@", [userDict objectForKey: @"FName"], [userDict objectForKey: @"LName"]];
+    NSString *name = [NSString stringWithFormat: @"%@ %@", [userDict objectForKey: @"first_name"], [userDict objectForKey: @"last_name"]];
     
     [nameLabel setText: name];
-    [emailLabel setText: [userDict objectForKey: @"Email"]];
-    [dobLabel setText: [userDict objectForKey: @"DOB"]];
-    [genderLabel setText: [userDict objectForKey: @"Gender"]];
-    [phoneLabel setText: [userDict objectForKey: @"Phone"]];
-    [addressLabel setText: [userDict objectForKey: @"Street"]];
-    [cityLabel setText: [userDict objectForKey: @"City"]];
-    [stateLabel setText: [userDict objectForKey: @"State"]];
-    [zipLabel setText: [userDict objectForKey: @"Zipcode"]];
+    [emailLabel setText: [userDict objectForKey: @"email"]];
+    [dobLabel setText: [userDict objectForKey: @"dob"]];
+    [genderLabel setText: [userDict objectForKey: @"gender"]];
+    [phoneLabel setText: [userDict objectForKey: @"phone"]];
+    [addressLabel setText: [[userDict objectForKey: @"address"] objectForKey:@"street"]];
+    [cityLabel setText: [[userDict objectForKey: @"address"] objectForKey:@"city"]];
+    [stateLabel setText: [[userDict objectForKey: @"address"] objectForKey:@"state"]];
+    [zipLabel setText: [[userDict objectForKey: @"address"] objectForKey:@"zipcode"]];
+    
+    [totalLabel setText: [dataDict objectForKey: @"total_cost"]];
+    
+    NSLog(@"Data: %@", dataDict);
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateStyle: NSDateFormatterLongStyle];
@@ -115,10 +119,10 @@
 - (void)printConfirmation{
     UIPrintInteractionController *printInteractionController = [UIPrintInteractionController sharedPrintController];
     NSString *markupText = [NSString stringWithFormat:@"<html><head><style>body{font-family: \"Helvetica\", \"Arial\", sans-serif;}h3{color: #0094CC;}.title{}.subheading{color: #DEAB4C;}ul{padding-left: 15px;list-style-type: none;}li{padding: 5px 0 5px 0;}</style></head><body><h3>Race Information</h3><span class=\"subheading\">Race:&nbsp;</span>%@<br /><span class=\"subheading\">Date:&nbsp;</span>%@<br /><span class=\"subheading\">Location:&nbsp;</span>%@<br /><span class=\"subheading\">Registered:&nbsp;</span>%@<br /><h3>Event(s)</h3><ul>",
-                            [raceNameLabel text], [dataDict objectForKey:@"Date"], [NSString stringWithFormat:@"%@ - %@", [dataDict objectForKey:@"AL1"], [dataDict objectForKey:@"AL2"]], [registeredLabel text]];
+                            [raceNameLabel text], [dataDict objectForKey:@"start_date"], [NSString stringWithFormat:@"%@ - %@", [[dataDict objectForKey:@"address"] objectForKey:@"street"], [[RSUModel sharedModel] addressLine2FromAddress: [dataDict objectForKey:@"address"]]], [registeredLabel text]];
     
-    for(NSDictionary *event in [dataDict objectForKey: @"Events"]){
-        markupText = [markupText stringByAppendingFormat:@"<li><b>%@</b> - %@</li>", [event objectForKey:@"Name"], [event objectForKey: @"StartTime"]];
+    for(NSDictionary *event in [dataDict objectForKey: @"events"]){
+        markupText = [markupText stringByAppendingFormat:@"<li><b>%@</b> - %@</li>", [event objectForKey:@"name"], [event objectForKey: @"start_time"]];
     }
     
     markupText = [markupText stringByAppendingFormat:@"</ul><h3>Registrant</h3><span class=\"subheading\">Name:&nbsp;</span>%@<br /><span class=\"subheading\">E-mail:&nbsp;</span>%@<br /><span class=\"subheading\">Date of Birth:&nbsp;</span>%@<br /><span class=\"subheading\">Gender:&nbsp;</span>%@<br /><span class=\"subheading\">Phone:&nbsp;</span>%@<br /><span class=\"subheading\">Address:&nbsp;</span>%@<br /><span class=\"subheading\">City:&nbsp;</span>%@<br /><span class=\"subheading\">State:&nbsp;</span>%@<br /><span class=\"subheading\">Zip Code:&nbsp;</span>%@<br /><h3>Total</h3>%@</body></html>",
@@ -156,16 +160,16 @@
         [cell setShowPrice: NO];
     }
     
-    [[cell nameLabel] setText: [[[dataDict objectForKey: @"Events"] objectAtIndex: indexPath.row] objectForKey: @"Name"]];
-    NSDictionary *firstRegPeriod = [[[[dataDict objectForKey: @"Events"] objectAtIndex: indexPath.row] objectForKey: @"EventRegistrationPeriods"] objectAtIndex: 0];
-    [cell setPrice:[firstRegPeriod objectForKey: @"RegistrationFee"] price2:[firstRegPeriod objectForKey: @"RegistrationProcessingFee"]];
+    [[cell nameLabel] setText: [[[dataDict objectForKey: @"events"] objectAtIndex: indexPath.row] objectForKey: @"name"]];
+    NSDictionary *firstRegPeriod = [[[[dataDict objectForKey: @"events"] objectAtIndex: indexPath.row] objectForKey: @"registration_periods"] objectAtIndex: 0];
+    [cell setPrice:[firstRegPeriod objectForKey: @"race_fee"] price2:[firstRegPeriod objectForKey: @"processing_fee"]];
     
     return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if(tableView == eventsTable){
-        return [[dataDict objectForKey: @"Events"] count];
+        return [[dataDict objectForKey: @"events"] count];
     }else
         return 1;
 }
@@ -182,6 +186,8 @@
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success" message:@"You have successfully refunded your transaction." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
             [alert show];
             [alert release];
+            
+            [mistakeButton setEnabled: NO];
         }else{
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Failed to refund race." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
             [alert show];
@@ -191,7 +197,7 @@
     
     [[rli label] setText: @"Refunding..."];
     [rli fadeIn];
-    [[RSUModel sharedModel] registerForRace:[dataDict objectForKey:@"RaceID"] withInfo:dataDict requestType:RSURegRefund response:response];
+    [[RSUModel sharedModel] registerForRace:[dataDict objectForKey:@"race_id"] withInfo:dataDict requestType:RSURegRefund response:response];
 }
 
 - (IBAction)returnToMainMenu:(id)sender{

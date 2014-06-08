@@ -70,22 +70,22 @@
 - (void)updateDataWithUserDictionary{
     if(userDictionary){
         NSLog(@"%@", userDictionary);
-        [nameLabel setText: [NSString stringWithFormat:@"%@ %@", [userDictionary objectForKey:@"FName"], [userDictionary objectForKey:@"LName"]]];
-        [emailLabel setText: [userDictionary objectForKey: @"Email"]];
-        [addressLine1Label setText: [userDictionary objectForKey: @"Street"]];
-        NSString *addressLine2 = [NSString stringWithFormat:@"%@, %@ %@ %@", [userDictionary objectForKey: @"City"], [userDictionary objectForKey: @"State"], [userDictionary objectForKey: @"Country"], [userDictionary objectForKey: @"Zipcode"]];
+        [nameLabel setText: [NSString stringWithFormat:@"%@ %@", [userDictionary objectForKey:@"first_name"], [userDictionary objectForKey:@"last_name"]]];
+        [emailLabel setText: [userDictionary objectForKey: @"email"]];
+        [addressLine1Label setText: [[userDictionary objectForKey: @"address"] objectForKey:@"street"]];
+        NSString *addressLine2 = [NSString stringWithFormat:@"%@, %@ %@ %@", [[userDictionary objectForKey: @"address"] objectForKey:@"city"], [[userDictionary objectForKey: @"address"] objectForKey:@"state"], [[userDictionary objectForKey: @"address"] objectForKey:@"country_code"], [[userDictionary objectForKey: @"address"] objectForKey:@"zipcode"]];
         [addressLine2Label setText: addressLine2];
-        [phoneLabel setText: [userDictionary objectForKey: @"Phone"]];
-        if([[userDictionary objectForKey:@"Gender"] isEqualToString:@"F"]){
+        [phoneLabel setText: [userDictionary objectForKey: @"phone"]];
+        if([[userDictionary objectForKey:@"gender"] isEqualToString:@"F"]){
             [genderLabel setText: @"Female"];
         }else{
             [genderLabel setText: @"Male"];
         }
-        [dobLabel setText: [userDictionary objectForKey: @"DOB"]];
+        [dobLabel setText: [userDictionary objectForKey: @"dob"]];
         
-        if([userDictionary objectForKey:@"ProfileImage"]){
+        if([userDictionary objectForKey:@"profile_image_url"]){
             dispatch_async(dispatch_get_global_queue(0,0), ^{
-                NSData *imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: [NSString stringWithFormat:@"http:%@", [userDictionary objectForKey:@"ProfileImage"]]]];
+                NSData *imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: [NSString stringWithFormat:@"http:%@", [userDictionary objectForKey:@"profile_image_url"]]]];
                 if(imageData == nil)
                     return;
                 dispatch_async(dispatch_get_main_queue(), ^{

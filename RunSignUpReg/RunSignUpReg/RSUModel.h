@@ -81,6 +81,12 @@ typedef enum{
 // Retrieve specific race details for a given race with a raceID. Returns a mutable dictionary with race information, or nil if theres no connection.
 - (void)retrieveRaceDetailsWithRaceID:(NSString *)raceID response:(void (^)(NSMutableDictionary *))responseBlock;
 
+// Retrieve list of result sets in a given event
+- (void)retrieveEventResultSetsWithRaceID:(NSString *)raceID eventID:(NSString *)eventID response:(void (^)(NSArray *))responseBlock;
+
+// Retrieve results for a given event and result set id
+- (void)retrieveEventResultsWithRaceID:(NSString *)raceID eventID:(NSString *)eventID resultSetID:(NSString *)resultSetID response:(void (^)(NSArray *))responseBlock;
+
 // Retrieve a race director's race list. Unfinished, do not use.
 - (void)retrieveUserRaceList:(void (^)(NSArray *))responseBlock;
 
@@ -100,5 +106,8 @@ typedef enum{
 - (void)logout;
 
 - (NSMutableDictionary *)parseUser:(RXMLElement *)user;
+- (NSString *)standardizeDate:(NSString *)dateString;
+- (NSString *)convertDate:(NSString *)dashDate;
+- (NSString *)addressLine2FromAddress:(NSDictionary *)address;
 
 @end

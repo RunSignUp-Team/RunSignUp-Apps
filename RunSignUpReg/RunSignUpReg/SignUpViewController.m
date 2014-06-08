@@ -29,6 +29,7 @@
 @synthesize chooseExistingButton;
 @synthesize profileImageView;
 @synthesize donePickerBar;
+@synthesize pickerBackgroundView;
 @synthesize countryPicker;
 @synthesize statePicker;
 @synthesize signUpMode;
@@ -125,17 +126,47 @@
             }
         }
         [registerButton setTitle:@"Save Changes" forState:UIControlStateNormal];
-        [firstNameField setText: [userDictionary objectForKey:@"FName"]];
-        [lastNameField setText: [userDictionary objectForKey:@"LName"]];
-        [emailField setText: [userDictionary objectForKey:@"Email"]];
-        [addressField setText: [userDictionary objectForKey:@"Street"]];
-        [cityField setText: [userDictionary objectForKey:@"City"]];
-        [countryDrop setTitle: [NSString stringWithFormat:@"  %@", [userDictionary objectForKey:@"Country"]] forState:UIControlStateNormal];
-        [stateDrop setTitle: [NSString stringWithFormat:@"  %@", [userDictionary objectForKey:@"State"]] forState:UIControlStateNormal];
-        [zipcodeField setText: [userDictionary objectForKey:@"Zipcode"]];
-        [phoneField setText: [userDictionary objectForKey:@"Phone"]];
-        [dobField setText: [userDictionary objectForKey:@"DOB"]];
-        if([[userDictionary objectForKey:@"Gender"] isEqualToString:@"F"]){
+        [firstNameField setText: [userDictionary objectForKey:@"first_name"]];
+        [lastNameField setText: [userDictionary objectForKey:@"last_name"]];
+        [emailField setText: [userDictionary objectForKey:@"email"]];
+        [addressField setText: [[userDictionary objectForKey:@"address"] objectForKey:@"street"]];
+        [cityField setText: [[userDictionary objectForKey:@"address"] objectForKey:@"city"]];
+        
+        NSString *countryCode = [[userDictionary objectForKey:@"address"] objectForKey:@"country_code"];
+        NSArray *currentStateArray = nil;
+        
+        if([countryCode isEqualToString: @"US"]){
+            currentSelectedCountry = 0;
+            currentStateArray = stateArrayUS;
+        }else if([countryCode isEqualToString: @"CA"]){
+            currentSelectedCountry = 1;
+            currentStateArray = stateArrayCA;
+        }else if([countryCode isEqualToString: @"FR"]){
+            currentSelectedCountry = 2;
+        }else{
+            currentSelectedCountry = 3;
+            currentStateArray = stateArrayGE;
+        }
+        
+        [countryDrop setTitle: [NSString stringWithFormat:@"  %@", [countryArray objectAtIndex: currentSelectedCountry]] forState:UIControlStateNormal];
+         
+        if(currentSelectedCountry != 2){
+            int index = 0;
+            for(NSString *state in currentStateArray){
+                if([state isEqualToString:[[userDictionary objectForKey:@"address"] objectForKey:@"state"]]){
+                    [stateDrop setTitle:[NSString stringWithFormat:@"  %@", state] forState:UIControlStateNormal];
+                    [statePicker selectRow:index inComponent:0 animated:NO];
+                    currentSelectedState = index;
+                    break;
+                }
+                index++;
+            }
+        }
+        
+        [zipcodeField setText: [[userDictionary objectForKey:@"address"] objectForKey:@"zipcode"]];
+        [phoneField setText: [userDictionary objectForKey:@"phone"]];
+        [dobField setText: [userDictionary objectForKey:@"dob"]];
+        if([[userDictionary objectForKey:@"gender"] isEqualToString:@"F"]){
             [genderControl setSelectedSegmentIndex: 1];
         }
     }else if(signUpMode == RSUSignUpNewUser){
@@ -164,7 +195,6 @@
         [dobField setHidden: YES];
         [phoneField setHidden: YES];
         [genderControl setHidden: YES];
-        [ageHintLabel setHidden: YES];
         self.title = @"Credit Card";
         
         for(UIView *view in [scrollView subviews]){
@@ -190,7 +220,7 @@
     [self.view addSubview: rli];
     [rli release];
     
-    [scrollView setContentSize: CGSizeMake(scrollView.frame.size.width, registerButton.frame.origin.y + registerButton.frame.size.height)];
+    [scrollView setContentSize: CGSizeMake(scrollView.frame.size.width, MAX(600, registerButton.frame.origin.y + registerButton.frame.size.height))];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -299,32 +329,36 @@
     }
 
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    [dict setObject:[firstNameField text] forKey:@"FName"];
-    [dict setObject:[lastNameField text] forKey:@"LName"];
-    [dict setObject:[emailField text] forKey:@"Email"];
-    [dict setObject:[dobField text] forKey:@"DOB"];
-    [dict setObject:genderString forKey:@"Gender"];
-    [dict setObject:[phoneField text] forKey:@"Phone"];
-    [dict setObject:[addressField text] forKey:@"Street"];
-    [dict setObject:[cityField text] forKey:@"City"];
+    [dict setObject:[firstNameField text] forKey:@"first_name"];
+    [dict setObject:[lastNameField text] forKey:@"last_name"];
+    [dict setObject:[emailField text] forKey:@"email"];
+    [dict setObject:[dobField text] forKey:@"dob"];
+    [dict setObject:genderString forKey:@"gender"];
+    [dict setObject:[phoneField text] forKey:@"phone"];
+    [dict setObject:[passwordField text] forKey:@"password"];
+    
+    NSMutableDictionary *address = [[NSMutableDictionary alloc] init];
+    [address setObject:[addressField text] forKey:@"street"];
+    [address setObject:[cityField text] forKey:@"city"];
+    
     int selectedCountry = [countryPicker selectedRowInComponent: 0];
     if(selectedCountry != 2){
         if(selectedCountry == 0){
-            [dict setObject:@"US" forKey:@"Country"];
-            [dict setObject:[stateArrayUS objectAtIndex: [statePicker selectedRowInComponent:0]] forKey:@"State"];
+            [address setObject:@"US" forKey:@"country_code"];
+            [address setObject:[stateArrayUS objectAtIndex: currentSelectedState] forKey:@"state"];
         }else if(selectedCountry == 1){
-            [dict setObject:@"CA" forKey:@"Country"];
-            [dict setObject:[stateArrayCA objectAtIndex: [statePicker selectedRowInComponent:0]] forKey:@"State"];
+            [address setObject:@"CA" forKey:@"country_code"];
+            [address setObject:[stateArrayCA objectAtIndex: currentSelectedState] forKey:@"state"];
         }else{
-            [dict setObject:@"US" forKey:@"Country"];
-            [dict setObject:[stateArrayGE objectAtIndex: [statePicker selectedRowInComponent:0]] forKey:@"State"];
+            [address setObject:@"US" forKey:@"country_code"];
+            [address setObject:[stateArrayGE objectAtIndex: currentSelectedState] forKey:@"state"];
         }
     }else{
-        [dict setObject:@"FR" forKey:@"Country"];
+        [address setObject:@"FR" forKey:@"country_code"];
     }
     
-    [dict setObject:[zipcodeField text] forKey:@"Zipcode"];
-    [dict setObject:[passwordField text] forKey:@"Password"];
+    [address setObject:[zipcodeField text] forKey:@"zipcode"];
+    [dict setObject:address forKey:@"address"];
 
     [self setUserDictionary: dict];
     
@@ -444,6 +478,7 @@
         [UIView beginAnimations:@"PickerSlide" context:nil];
         [UIView setAnimationDuration: 0.25f];
         [donePickerBar setFrame: CGRectMake(0, [self.view frame].size.height - 216 - [donePickerBar frame].size.height, 320, 44)];
+        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
         [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
         [UIView commitAnimations];
     }else{
@@ -468,6 +503,7 @@
         [UIView beginAnimations:@"PickerSlide" context:nil];
         [UIView setAnimationDuration: 0.25f];
         [donePickerBar setFrame: CGRectMake(0, [self.view frame].size.height - 216 - [donePickerBar frame].size.height, 320, 44)];
+        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
         [statePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
         [UIView commitAnimations];
     }else{
@@ -490,6 +526,7 @@
         [UIView beginAnimations:@"PickerSlide" context:nil];
         [UIView setAnimationDuration: 0.25f];
         [donePickerBar setFrame: CGRectMake(0, [self.view frame].size.height, 320, 44)];
+        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
         [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height + [donePickerBar frame].size.height, 320, 216)];
         [UIView commitAnimations];
     }else if(currentPicker == 2){
@@ -497,6 +534,7 @@
         [UIView beginAnimations:@"PickerSlide" context:nil];
         [UIView setAnimationDuration: 0.25f];
         [donePickerBar setFrame: CGRectMake(0, [self.view frame].size.height, 320, 44)];
+        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
         [statePicker setFrame: CGRectMake(0, [self.view frame].size.height + [donePickerBar frame].size.height, 320, 216)];
         [UIView commitAnimations];
     }else{
@@ -504,6 +542,7 @@
         [UIView beginAnimations:@"PickerSlide" context:nil];
         [UIView setAnimationDuration: 0.25f];
         [donePickerBar setFrame: CGRectMake(0, [self.view frame].size.height, 320, 44)];
+        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
         [UIView commitAnimations];
     }
     currentPicker = 0;

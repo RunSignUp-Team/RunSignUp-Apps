@@ -26,7 +26,7 @@
             self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:100];
         else
             self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:432 YLocation:140];
-        [[rli label] setText: @"Retrieving List..."];
+        [[rli label] setText: @"Fetching List..."];
         [self.view addSubview: rli];
         [rli release];
         
@@ -87,8 +87,8 @@
         if(list == nil || [list count] == 0){
             // Page retrieval returned empty - reset page number
             moreResultsToRetrieve = NO;
-            int currentPage = [[searchParams objectForKey:@"Page"] intValue];
-            [searchParams setObject:[NSString stringWithFormat:@"%i", MAX(currentPage - 1, 0)] forKey:@"Page"];
+            int currentPage = [[searchParams objectForKey:@"page"] intValue];
+            [searchParams setObject:[NSString stringWithFormat:@"%i", MAX(currentPage - 1, 0)] forKey:@"page"];
         }else if([list count] < 10)
             moreResultsToRetrieve = NO;
         
@@ -135,10 +135,10 @@
             cell = [[RaceTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:RaceCellIdentifier];
         }
         
-        [[cell nameLabel] setText: [[raceList objectAtIndex: indexPath.row] objectForKey: @"Name"]];
-        [[cell dateLabel] setText: [[raceList objectAtIndex: indexPath.row] objectForKey: @"Date"]];
-        [[cell locationLabel] setText: [[raceList objectAtIndex: indexPath.row] objectForKey: @"AL2"]];
-        NSString *htmlString = [[raceList objectAtIndex: indexPath.row] objectForKey: @"Description"];
+        [[cell nameLabel] setText: [[raceList objectAtIndex: indexPath.row] objectForKey: @"name"]];
+        [[cell dateLabel] setText: [[raceList objectAtIndex: indexPath.row] objectForKey: @"next_date"]];
+        [[cell locationLabel] setText: [[RSUModel sharedModel] addressLine2FromAddress: [[raceList objectAtIndex: indexPath.row] objectForKey: @"address"]]];
+        NSString *htmlString = [[raceList objectAtIndex: indexPath.row] objectForKey: @"description"];
         htmlString = [htmlString stringByReplacingOccurrencesOfString:@"&amp;"  withString:@"&"];
         htmlString = [htmlString stringByReplacingOccurrencesOfString:@"&lt;"  withString:@"<"];
         htmlString = [htmlString stringByReplacingOccurrencesOfString:@"&gt;"  withString:@">"];
@@ -197,15 +197,15 @@
         [self.navigationController pushViewController:rdvc animated:YES];
         [rdvc release];
     }else if(moreResultsToRetrieve){
-        if([searchParams objectForKey:@"Page"]){
-            int currentPage = [[searchParams objectForKey:@"Page"] intValue];
-            [searchParams setObject:[NSString stringWithFormat:@"%i", currentPage + 1] forKey:@"Page"];
+        if([searchParams objectForKey:@"page"]){
+            int currentPage = [[searchParams objectForKey:@"page"] intValue];
+            [searchParams setObject:[NSString stringWithFormat:@"%i", currentPage + 1] forKey:@"page"];
         }else if(searchParams){
-            [searchParams setObject:@"2" forKey:@"Page"];
+            [searchParams setObject:@"2" forKey:@"page"];
             // No page value was listed, assumed to be 1. Increment to 2^
         }else{
             searchParams = [[NSMutableDictionary alloc] init];
-            [searchParams setObject:@"2" forKey:@"Page"];
+            [searchParams setObject:@"2" forKey:@"page"];
         }
         [self retrieveRaceListAndAppend];
     }
@@ -292,7 +292,7 @@
 
 - (void)reloadTableViewDataSource{
     reloading = YES;
-    [searchParams setObject:@"1" forKey:@"Page"]; // Only reload page 1 if refreshing
+    [searchParams setObject:@"1" forKey:@"page"]; // Only reload page 1 if refreshing
     [self retrieveRaceList];
 }
 

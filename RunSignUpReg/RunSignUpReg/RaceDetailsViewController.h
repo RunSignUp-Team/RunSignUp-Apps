@@ -40,7 +40,7 @@
     CLLocationCoordinate2D addressLocation;
     
     UIWebView *descriptionView;
-    BOOL loadedDescription;
+    BOOL hasLoadedDescription;
     BOOL hasLoadedDetails;
     BOOL attemptedToSignUpWithoutDetails;
     

@@ -19,8 +19,12 @@
     [super dealloc];
 }
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"AutoSignIn"] == nil){
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"AutoSignIn"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     MainMenuViewController *mmvc = [[MainMenuViewController alloc] initWithNibName:@"MainMenuViewController" bundle:nil];
     self.navController = [[UINavigationController alloc] initWithRootViewController: mmvc];

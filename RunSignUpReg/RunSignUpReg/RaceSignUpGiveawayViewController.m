@@ -9,6 +9,7 @@
 #import "RaceSignUpGiveawayViewController.h"
 #import "RaceSignUpGiveawayTableViewCell.h"
 #import "RaceSignUpQuestionsViewController.h"
+#import "RaceSignUpMembershipsViewController.h"
 #import "RaceSignUpPaymentViewController.h"
 
 @implementation RaceSignUpGiveawayViewController
@@ -18,6 +19,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self){
         dataDict = data;
+        
+        self.title = @"Giveaways";
     }
     return self;
 }
@@ -109,6 +112,10 @@
         RaceSignUpQuestionsViewController *rsuqvc = [[RaceSignUpQuestionsViewController alloc] initWithNibName:@"RaceSignUpQuestionsViewController" bundle:nil data:dataDict];
         [self.navigationController pushViewController:rsuqvc animated:YES];
         [rsuqvc release];
+    }else if([dataDict objectForKey: @"membership_settings"]){
+        RaceSignUpMembershipsViewController *rsumvc = [[RaceSignUpMembershipsViewController alloc] initWithNibName:@"RaceSignUpMembershipsViewController" bundle:nil data:dataDict];
+        [self.navigationController pushViewController:rsumvc animated:YES];
+        [rsumvc release];
     }else{
         RaceSignUpPaymentViewController *rsupvc = [[RaceSignUpPaymentViewController alloc] initWithNibName:@"RaceSignUpPaymentViewController" bundle:nil data:dataDict];
         [self.navigationController pushViewController:rsupvc animated:YES];

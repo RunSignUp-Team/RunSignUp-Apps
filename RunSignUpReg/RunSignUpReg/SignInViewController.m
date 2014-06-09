@@ -20,6 +20,8 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        keychain = [[KeychainItemWrapper alloc] initWithIdentifier:@"RSURegLogin" accessGroup:nil];
+
         if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
             self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:100];
         else
@@ -53,10 +55,15 @@
     [signInButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
     
     // Set email field to have keyboard open on load
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"RememberEmail"] != nil){
-        [emailField setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"RememberEmail"]];
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"RememberMe"] != nil){
+        [emailField setText: [keychain objectForKey: kSecAttrAccount]];
+        [passField setText: [keychain objectForKey: kSecValueData]];
         [rememberSwitch setOn:YES];
         [passField becomeFirstResponder];
+        
+        if([[NSUserDefaults standardUserDefaults] boolForKey:@"AutoSignIn"]){
+            [self performSelector:@selector(signIn:) withObject:nil afterDelay:0.1f];
+        }
     }else{
         [emailField becomeFirstResponder];
     }
@@ -98,7 +105,15 @@
                         if(didSucceed == RSUSuccess){
                             [rli fadeOut];
                             [delegate didSignInEmail: [emailField text]];
-                            [self dismissViewControllerAnimated:YES completion:nil];
+                            
+                            if(![self.navigationController isBeingPresented] && ![self.navigationController isBeingDismissed]){
+                                [self dismissViewControllerAnimated:YES completion:nil];
+                            }else{
+                                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 1.0f), dispatch_get_main_queue(), ^{
+                                    [self dismissViewControllerAnimated:YES completion:nil];
+                                });
+                            }
+                                
                         }else{
                             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There was a problem establishing a connection with RunSignUp. Please try again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
                             [alert show];

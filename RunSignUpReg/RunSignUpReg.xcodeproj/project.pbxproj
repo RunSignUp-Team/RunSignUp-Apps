@@ -144,6 +144,14 @@
 		77A8632A15FC0EBE004BAED8 /* DropDownTap@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77A8632615FC0EBE004BAED8 /* DropDownTap@2x.png */; };
 		77AD105517B13E7A00723395 /* RaceSignUpConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77AD105317B13E7A00723395 /* RaceSignUpConfirmationViewController.m */; };
 		77AD105617B13E7A00723395 /* RaceSignUpConfirmationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77AD105417B13E7A00723395 /* RaceSignUpConfirmationViewController.xib */; };
+		77AD372019460D0800A267C5 /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 77AD371F19460D0800A267C5 /* KeychainItemWrapper.m */; };
+		77AD37231946151700A267C5 /* QuestionsCheckbox.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AD37211946151700A267C5 /* QuestionsCheckbox.png */; };
+		77AD37241946151700A267C5 /* QuestionsCheckbox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AD37221946151700A267C5 /* QuestionsCheckbox@2x.png */; };
+		77AD37271946296F00A267C5 /* QuestionsRadio.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AD37251946296F00A267C5 /* QuestionsRadio.png */; };
+		77AD37281946296F00A267C5 /* QuestionsRadio@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AD37261946296F00A267C5 /* QuestionsRadio@2x.png */; };
+		77AD372C194654C500A267C5 /* RaceSignUpMembershipsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77AD372A194654C500A267C5 /* RaceSignUpMembershipsViewController.m */; };
+		77AD372D194654C500A267C5 /* RaceSignUpMembershipsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77AD372B194654C500A267C5 /* RaceSignUpMembershipsViewController.xib */; };
+		77AD37301946560F00A267C5 /* RaceSignUpMembershipsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77AD372F1946560F00A267C5 /* RaceSignUpMembershipsTableViewCell.m */; };
 		77B0E5F7177A569C00C00E5B /* CancelSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B0E5F3177A537600C00E5B /* CancelSearch.png */; };
 		77B0E5F8177A569C00C00E5B /* CancelSearch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B0E5F4177A537600C00E5B /* CancelSearch@2x.png */; };
 		77B0E5F9177A569C00C00E5B /* Search.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B0E5F5177A537600C00E5B /* Search.png */; };
@@ -332,6 +340,17 @@
 		77AD105217B13E7A00723395 /* RaceSignUpConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RaceSignUpConfirmationViewController.h; sourceTree = "<group>"; };
 		77AD105317B13E7A00723395 /* RaceSignUpConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RaceSignUpConfirmationViewController.m; sourceTree = "<group>"; };
 		77AD105417B13E7A00723395 /* RaceSignUpConfirmationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RaceSignUpConfirmationViewController.xib; sourceTree = "<group>"; };
+		77AD371E19460D0800A267C5 /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainItemWrapper.h; sourceTree = "<group>"; };
+		77AD371F19460D0800A267C5 /* KeychainItemWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainItemWrapper.m; sourceTree = "<group>"; };
+		77AD37211946151700A267C5 /* QuestionsCheckbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = QuestionsCheckbox.png; sourceTree = "<group>"; };
+		77AD37221946151700A267C5 /* QuestionsCheckbox@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "QuestionsCheckbox@2x.png"; sourceTree = "<group>"; };
+		77AD37251946296F00A267C5 /* QuestionsRadio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = QuestionsRadio.png; sourceTree = "<group>"; };
+		77AD37261946296F00A267C5 /* QuestionsRadio@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "QuestionsRadio@2x.png"; sourceTree = "<group>"; };
+		77AD3729194654C500A267C5 /* RaceSignUpMembershipsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RaceSignUpMembershipsViewController.h; sourceTree = "<group>"; };
+		77AD372A194654C500A267C5 /* RaceSignUpMembershipsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RaceSignUpMembershipsViewController.m; sourceTree = "<group>"; };
+		77AD372B194654C500A267C5 /* RaceSignUpMembershipsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RaceSignUpMembershipsViewController.xib; sourceTree = "<group>"; };
+		77AD372E1946560F00A267C5 /* RaceSignUpMembershipsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RaceSignUpMembershipsTableViewCell.h; sourceTree = "<group>"; };
+		77AD372F1946560F00A267C5 /* RaceSignUpMembershipsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RaceSignUpMembershipsTableViewCell.m; sourceTree = "<group>"; };
 		77B0E5F3177A537600C00E5B /* CancelSearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CancelSearch.png; sourceTree = "<group>"; };
 		77B0E5F4177A537600C00E5B /* CancelSearch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CancelSearch@2x.png"; sourceTree = "<group>"; };
 		77B0E5F5177A537600C00E5B /* Search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Search.png; sourceTree = "<group>"; };
@@ -443,6 +462,8 @@
 		77A8626715FBA45A004BAED8 /* RunSignUpReg */ = {
 			isa = PBXGroup;
 			children = (
+				77AD371E19460D0800A267C5 /* KeychainItemWrapper.h */,
+				77AD371F19460D0800A267C5 /* KeychainItemWrapper.m */,
 				77238600179724060095D1EF /* Config.h */,
 				772386011797249B0095D1EF /* Config-Sample.h */,
 				7757C2D416403B9200B8780A /* EGORefreshTableHeaderView.h */,
@@ -477,6 +498,10 @@
 		77A8628215FBAA72004BAED8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				77AD37251946296F00A267C5 /* QuestionsRadio.png */,
+				77AD37261946296F00A267C5 /* QuestionsRadio@2x.png */,
+				77AD37211946151700A267C5 /* QuestionsCheckbox.png */,
+				77AD37221946151700A267C5 /* QuestionsCheckbox@2x.png */,
 				77A7120317C3FCC7008E1509 /* MenuClusterBottom.png */,
 				77A7120417C3FCC7008E1509 /* MenuClusterBottom@2x.png */,
 				77A7120017C3EF63008E1509 /* MainMenuBackground.png */,
@@ -598,6 +623,9 @@
 				778BB4881941065D0098F9B6 /* RaceSignUpQuestionsViewController.h */,
 				778BB4891941065D0098F9B6 /* RaceSignUpQuestionsViewController.m */,
 				778BB48A1941065D0098F9B6 /* RaceSignUpQuestionsViewController.xib */,
+				77AD3729194654C500A267C5 /* RaceSignUpMembershipsViewController.h */,
+				77AD372A194654C500A267C5 /* RaceSignUpMembershipsViewController.m */,
+				77AD372B194654C500A267C5 /* RaceSignUpMembershipsViewController.xib */,
 				77B6E51C1609FE21009E1AA9 /* RaceSignUpPaymentViewController.h */,
 				77B6E51D1609FE21009E1AA9 /* RaceSignUpPaymentViewController.m */,
 				77B6E51E1609FE21009E1AA9 /* RaceSignUpPaymentViewController.xib */,
@@ -612,6 +640,8 @@
 				77971E2817B96527005809F8 /* RaceSignUpCartTableViewCell.m */,
 				778BB48D194107E70098F9B6 /* RaceSignUpQuestionsTableViewCell.h */,
 				778BB48E194107E70098F9B6 /* RaceSignUpQuestionsTableViewCell.m */,
+				77AD372E1946560F00A267C5 /* RaceSignUpMembershipsTableViewCell.h */,
+				77AD372F1946560F00A267C5 /* RaceSignUpMembershipsTableViewCell.m */,
 			);
 			name = SignUp;
 			sourceTree = "<group>";
@@ -737,6 +767,7 @@
 				77A8626C15FBA45A004BAED8 /* InfoPlist.strings in Resources */,
 				77A8628115FBAA5C004BAED8 /* MainMenuViewController.xib in Resources */,
 				77A862C915FBAA72004BAED8 /* BlueButton.png in Resources */,
+				77AD37281946296F00A267C5 /* QuestionsRadio@2x.png in Resources */,
 				77A862CA15FBAA72004BAED8 /* BlueButton@2x.png in Resources */,
 				77A862CB15FBAA72004BAED8 /* BlueButtonTap.png in Resources */,
 				77A862CC15FBAA72004BAED8 /* BlueButtonTap@2x.png in Resources */,
@@ -765,6 +796,7 @@
 				77A862E015FBAA72004BAED8 /* loading15@2x.png in Resources */,
 				77A711FE17C263A6008E1509 /* RaceSignUpChooseRegistrantViewController.xib in Resources */,
 				77A862E115FBAA72004BAED8 /* loading16.png in Resources */,
+				77AD37271946296F00A267C5 /* QuestionsRadio.png in Resources */,
 				77A862E215FBAA72004BAED8 /* loading16@2x.png in Resources */,
 				77A862E315FBAA72004BAED8 /* loading17.png in Resources */,
 				77A862E415FBAA72004BAED8 /* loading17@2x.png in Resources */,
@@ -798,6 +830,7 @@
 				77A862FF15FBAA72004BAED8 /* loading5@2x.png in Resources */,
 				77A8630015FBAA72004BAED8 /* loading6.png in Resources */,
 				77A8630115FBAA72004BAED8 /* loading6@2x.png in Resources */,
+				77AD37231946151700A267C5 /* QuestionsCheckbox.png in Resources */,
 				77A8630215FBAA72004BAED8 /* loading7.png in Resources */,
 				77A8630315FBAA72004BAED8 /* loading7@2x.png in Resources */,
 				77A8630415FBAA72004BAED8 /* loading8.png in Resources */,
@@ -808,6 +841,7 @@
 				77A8630915FBAA72004BAED8 /* Logo@2x.png in Resources */,
 				778BB48C1941065D0098F9B6 /* RaceSignUpQuestionsViewController.xib in Resources */,
 				7723860A179732C80095D1EF /* RaceSignUpEventsViewController.xib in Resources */,
+				77AD37241946151700A267C5 /* QuestionsCheckbox@2x.png in Resources */,
 				77A8631615FBACB8004BAED8 /* GreenButton.png in Resources */,
 				77A8631715FBACB8004BAED8 /* GreenButton@2x.png in Resources */,
 				77AD105617B13E7A00723395 /* RaceSignUpConfirmationViewController.xib in Resources */,
@@ -831,6 +865,7 @@
 				77CE5C991608DD710049AF36 /* RaceSignUpWaiverViewController.xib in Resources */,
 				77B6E5201609FE21009E1AA9 /* RaceSignUpPaymentViewController.xib in Resources */,
 				7757C2C8163C3F5200B8780A /* Default-568h@2x.png in Resources */,
+				77AD372D194654C500A267C5 /* RaceSignUpMembershipsViewController.xib in Resources */,
 				7757C2C9163C3F5200B8780A /* Default@2x.png in Resources */,
 				7757C2CF163F68A300B8780A /* UserRaceListViewController.xib in Resources */,
 				7757C2E116403BB000B8780A /* blueArrow.png in Resources */,
@@ -881,6 +916,7 @@
 				7723860D17973B0F0095D1EF /* RaceSignUpEventTableViewCell.m in Sources */,
 				772385FF1796FB7D0095D1EF /* RaceDetailsRegistrationTableViewCell.m in Sources */,
 				77CAD41F178B18CB00DEB73C /* RaceResultsEventTableViewCell.m in Sources */,
+				77AD372C194654C500A267C5 /* RaceSignUpMembershipsViewController.m in Sources */,
 				77CAD417178B0BCE00DEB73C /* RaceResultsViewController.m in Sources */,
 				77971E2917B96527005809F8 /* RaceSignUpCartTableViewCell.m in Sources */,
 				77A8626E15FBA45A004BAED8 /* main.m in Sources */,
@@ -891,6 +927,7 @@
 				77238609179732C80095D1EF /* RaceSignUpEventsViewController.m in Sources */,
 				774F664D15FE92ED008A1112 /* RSUModel.m in Sources */,
 				774F665115FE93AC008A1112 /* RXMLElement.m in Sources */,
+				77AD372019460D0800A267C5 /* KeychainItemWrapper.m in Sources */,
 				77CAD41B178B0CBB00DEB73C /* RaceResultsEventViewController.m in Sources */,
 				774F665415FE9424008A1112 /* RoundedLoadingIndicator.m in Sources */,
 				774F665815FE9451008A1112 /* SignInViewController.m in Sources */,
@@ -901,6 +938,7 @@
 				77012F131606D9AA00E1627C /* RaceTableViewCell.m in Sources */,
 				77CE5C871607C6ED0049AF36 /* RaceDetailsViewController.m in Sources */,
 				77AD105517B13E7A00723395 /* RaceSignUpConfirmationViewController.m in Sources */,
+				77AD37301946560F00A267C5 /* RaceSignUpMembershipsTableViewCell.m in Sources */,
 				778BB485193BB8A90098F9B6 /* RaceResultsEventDetailsViewController.m in Sources */,
 				77CE5C981608DD710049AF36 /* RaceSignUpWaiverViewController.m in Sources */,
 				77B6E51F1609FE21009E1AA9 /* RaceSignUpPaymentViewController.m in Sources */,

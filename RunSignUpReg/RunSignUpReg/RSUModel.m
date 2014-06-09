@@ -46,12 +46,6 @@ static RSUModel *model = nil;
 - (void)savePaymentInfoToServer:(NSDictionary *)paymentInfo{
     self.creditCardInfo = [[NSMutableDictionary alloc] initWithDictionary: paymentInfo];
     
-    /*[creditCardInfo setObject:[paymentInfo objectForKey:@"card_number"] forKey:@"card_number"];
-    [creditCardInfo setObject:[paymentInfo objectForKey:@"cvv"] forKey:@"cvv"];
-    [creditCardInfo setObject:[NSString stringWithFormat:@"%@/%@", [paymentInfo objectForKey:@"expiration_month"], [paymentInfo objectForKey:@"expiration_year"]] forKey:@"CCExpires"];
-    [creditCardInfo setObject:[paymentInfo objectForKey:@"zipcode"] forKey:@"CCZipcode"];
-    */
-    
     void (^response)(RSUConnectionResponse, NSDictionary *) = ^(RSUConnectionResponse didSucceed, NSDictionary *data){
         if(didSucceed == RSUSuccess){
             [dataDict setObject:data forKey:@"ConfirmationCodes"];
@@ -839,6 +833,51 @@ static RSUModel *model = nil;
             
             if(questionsArray && [questionsArray count] > 0)
                 [race setObject:questionsArray forKey:@"questions"];
+            
+            NSMutableArray *membershipsArray = [[NSMutableArray alloc] init];
+            RXMLElement *memberships = [rootXML child: @"membership_settings"];
+            for(RXMLElement *membership in [memberships children: @"membership_setting"]){
+                RXMLElement *membershipSettingID = [membership child: @"membership_setting_id"];
+                RXMLElement *membershipSettingName = [membership child: @"membership_setting_name"];
+                RXMLElement *priceAdjustment = [membership child: @"price_adjustment"];
+                RXMLElement *applyPriceAdjustmentForNonMember = [membership child: @"apply_price_adjustment_for_non_member"];
+                RXMLElement *membershipSettingAddlField = [membership child: @"membership_setting_addl_field"];
+                RXMLElement *expiresXDaysBeforeEvent = [membership child: @"expires_x_days_before_event"];
+                RXMLElement *userNotice = [membership child: @"user_notice"];
+                RXMLElement *yesOptionText = [membership child: @"yes_option_text"];
+                RXMLElement *noOptionText = [membership child: @"no_option_text"];
+                
+                RXMLElement *usatfSpecific = [membership child: @"usatf_specific"];
+                
+                NSMutableDictionary *membershipDict = [[NSMutableDictionary alloc] init];
+                
+                for(RXMLElement *ele in @[membershipSettingID, membershipSettingName, priceAdjustment, applyPriceAdjustmentForNonMember, expiresXDaysBeforeEvent]){
+                    if([ele text])
+                        [membershipDict setObject:[ele text] forKey:[ele tag]];
+                }
+                
+                if(userNotice)
+                    [membershipDict setObject:[userNotice text] forKey:[userNotice tag]];
+                if(yesOptionText)
+                    [membershipDict setObject:[yesOptionText text] forKey:[yesOptionText tag]];
+                if(noOptionText)
+                    [membershipDict setObject:[noOptionText text] forKey:[noOptionText tag]];
+                if(usatfSpecific)
+                    [membershipDict setObject:[usatfSpecific text] forKey:[usatfSpecific tag]];
+                
+                if(membershipSettingAddlField){
+                    RXMLElement *fieldText = [membershipSettingAddlField child: @"field_text"];
+                    RXMLElement *required = [membershipSettingAddlField child: @"required"];
+                    
+                    NSDictionary *additionalField = [[NSDictionary alloc] initWithObjectsAndKeys:fieldText, @"field_text", required, @"required", nil];
+                    [membershipDict setObject:additionalField forKey:@"membership_setting_addl_field"];
+                }
+                
+                [membershipsArray addObject: membershipDict];
+            }
+            
+            if(membershipsArray && [membershipsArray count] > 0)
+                [race setObject:membershipsArray forKey:@"membership_settings"];
             
             dispatch_async(dispatch_get_main_queue(),^(){responseBlock(race);});
             return;

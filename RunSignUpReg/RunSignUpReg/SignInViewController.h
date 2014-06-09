@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "RoundedLoadingIndicator.h"
+#import "KeychainItemWrapper.h"
 
 @protocol SignInViewControllerDelegate <NSObject>
 - (void)didSignInEmail:(NSString *)email;
@@ -17,6 +18,8 @@
     UIButton *signInButton;
     UITextField *emailField;
     UITextField *passField;
+    
+    KeychainItemWrapper *keychain;
     
     UISwitch *rememberSwitch;
     

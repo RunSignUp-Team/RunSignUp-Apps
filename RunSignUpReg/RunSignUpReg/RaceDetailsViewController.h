@@ -10,8 +10,9 @@
 #import <MapKit/MapKit.h>
 #import "RoundedLoadingIndicator.h"
 #import <EventKitUI/EventKitUI.h>
+#import "SignInViewController.h"
 
-@interface RaceDetailsViewController : UIViewController <EKEventEditViewDelegate, UIActionSheetDelegate, UIWebViewDelegate, UITableViewDelegate, UITableViewDataSource>{
+@interface RaceDetailsViewController : UIViewController <EKEventEditViewDelegate, UIActionSheetDelegate, UIWebViewDelegate, UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate, SignInViewControllerDelegate>{
     NSDictionary *dataDict;
     NSDateFormatter *eventDateFormatter;
         

@@ -106,11 +106,11 @@
                             [rli fadeOut];
                             [delegate didSignInEmail: [emailField text]];
                             
-                            if(![self.navigationController isBeingPresented] && ![self.navigationController isBeingDismissed]){
-                                [self dismissViewControllerAnimated:YES completion:nil];
+                            if(![self isBeingPresented] && ![self isBeingDismissed]){
+                                [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
                             }else{
-                                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 1.0f), dispatch_get_main_queue(), ^{
-                                    [self dismissViewControllerAnimated:YES completion:nil];
+                                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.31f), dispatch_get_main_queue(), ^{
+                                    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
                                 });
                             }
                                 

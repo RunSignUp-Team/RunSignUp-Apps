@@ -7,7 +7,10 @@
 //
 
 #import "RaceSignUpWaiverViewController.h"
-#import "RaceSignUpEventsViewController.h"
+#import "RaceSignUpGiveawayViewController.h"
+#import "RaceSignUpQuestionsViewController.h"
+#import "RaceSignUpMembershipsViewController.h"
+#import "RaceSignUpPaymentViewController.h"
 
 @implementation RaceSignUpWaiverViewController
 @synthesize agreeButton;
@@ -50,9 +53,35 @@
 }*/
 
 - (IBAction)agree:(id)sender{
-    RaceSignUpEventsViewController *rsuevc = [[RaceSignUpEventsViewController alloc] initWithNibName:@"RaceSignUpEventsViewController" bundle:nil data:dataDict];
-    [self.navigationController pushViewController:rsuevc animated:YES];
-    [rsuevc release];
+    BOOL hasGiveaway = NO;
+    for(NSDictionary *event in [dataDict objectForKey: @"events"]){
+        if([event objectForKey: @"giveaway"] != nil || [event objectForKey: @"giveaway-options"] != nil)
+            hasGiveaway = YES;
+    }
+    
+    RaceSignUpWaiverViewController *rswvc = [[RaceSignUpWaiverViewController alloc] initWithNibName:@"RaceSignUpWaiverViewController" bundle:nil data:dataDict];
+    [self.navigationController pushViewController:rswvc animated:YES];
+    [rswvc release];
+    
+    if(hasGiveaway){
+        RaceSignUpGiveawayViewController *rsugvc = [[RaceSignUpGiveawayViewController alloc] initWithNibName:@"RaceSignUpGiveawayViewController" bundle:nil data:dataDict];
+        [self.navigationController pushViewController:rsugvc animated:YES];
+        [rsugvc release];
+    }else{
+        if([dataDict objectForKey: @"membership_settings"]){
+            RaceSignUpMembershipsViewController *rsumvc = [[RaceSignUpMembershipsViewController alloc] initWithNibName:@"RaceSignUpMembershipsViewController" bundle:nil data:dataDict];
+            [self.navigationController pushViewController:rsumvc animated:YES];
+            [rsumvc release];
+        }else if([dataDict objectForKey: @"questions"]){
+            RaceSignUpQuestionsViewController *rsuqvc = [[RaceSignUpQuestionsViewController alloc] initWithNibName:@"RaceSignUpQuestionsViewController" bundle:nil data:dataDict];
+            [self.navigationController pushViewController:rsuqvc animated:YES];
+            [rsuqvc release];
+        }else{
+            RaceSignUpPaymentViewController *rsupvc = [[RaceSignUpPaymentViewController alloc] initWithNibName:@"RaceSignUpPaymentViewController" bundle:nil data:dataDict];
+            [self.navigationController pushViewController:rsupvc animated:YES];
+            [rsupvc release];
+        }
+    }
 }
 
 - (void)viewDidUnload{

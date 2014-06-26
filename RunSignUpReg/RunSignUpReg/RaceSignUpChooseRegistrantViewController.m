@@ -9,7 +9,7 @@
 #import "RaceSignUpChooseRegistrantViewController.h"
 #import "RSUModel.h"
 #import "SignUpViewController.h"
-#import "RaceSignUpWaiverViewController.h"
+#import "RaceSignUpEventsViewController.h"
 
 @implementation RaceSignUpChooseRegistrantViewController
 @synthesize table;
@@ -30,18 +30,20 @@
 
 - (void)didSignUpWithDictionary:(NSDictionary *)dict{
     [dataDict setObject:dict forKey:@"registrant"];
-    RaceSignUpWaiverViewController *rswvc = [[RaceSignUpWaiverViewController alloc] initWithNibName:@"RaceSignUpWaiverViewController" bundle:nil data:dataDict];
-    [self.navigationController pushViewController:rswvc animated:YES];
-    [rswvc release];
+    
+    RaceSignUpEventsViewController *rsuevc = [[RaceSignUpEventsViewController alloc] initWithNibName:@"RaceSignUpEventsViewController" bundle:nil data:dataDict];
+    [self.navigationController pushViewController:rsuevc animated:YES];
+    [rsuevc release];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if([[RSUModel sharedModel] signedIn]){
         if(indexPath.row == 0){ // Register me
             [[RSUModel sharedModel] setRegistrantType: RSURegistrantMe];
-            RaceSignUpWaiverViewController *rswvc = [[RaceSignUpWaiverViewController alloc] initWithNibName:@"RaceSignUpWaiverViewController" bundle:nil data:dataDict];
-            [self.navigationController pushViewController:rswvc animated:YES];
-            [rswvc release];
+            
+            RaceSignUpEventsViewController *rsuevc = [[RaceSignUpEventsViewController alloc] initWithNibName:@"RaceSignUpEventsViewController" bundle:nil data:dataDict];
+            [self.navigationController pushViewController:rsuevc animated:YES];
+            [rsuevc release];
         }else if(indexPath.row == 1){ // Register someone else
             [[RSUModel sharedModel] setRegistrantType: RSURegistrantSomeoneElse];
             SignUpViewController *suvc = [[SignUpViewController alloc] initWithNibName:@"SignUpViewController" bundle:nil];

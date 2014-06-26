@@ -52,11 +52,13 @@ typedef enum{
 @property (nonatomic, retain) NSObject<RaceSignUpQuestionsTableViewCellDelegate> *delegate;
 
 - (void)setQuestionLabelText:(NSString *)text;
-- (int)requiredHeight;
+- (void)setFreeformKeyboardType:(UIKeyboardType)ktype;
+- (void)setFreeformPlaceholderText:(NSString *)text;
+
+- (void)reset;
+- (void)setCurrentResponse:(id)resp;
 
 - (id)response;
 - (void)valueDidChange;
-
-- (void)hideKeyboard;
 
 @end

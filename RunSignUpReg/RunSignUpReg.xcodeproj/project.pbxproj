@@ -17,6 +17,12 @@
 		7723860A179732C80095D1EF /* RaceSignUpEventsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77238608179732C80095D1EF /* RaceSignUpEventsViewController.xib */; };
 		7723860D17973B0F0095D1EF /* RaceSignUpEventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7723860C179739C70095D1EF /* RaceSignUpEventTableViewCell.m */; };
 		772BC8641934E91900759FA7 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 772BC8631934E91900759FA7 /* JavaScriptCore.framework */; };
+		774F473F19588F7C0003469F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 774F473E19588F7C0003469F /* Images.xcassets */; };
+		774F47411958918F0003469F /* Icon-114.png in Resources */ = {isa = PBXBuildFile; fileRef = 774F47401958918F0003469F /* Icon-114.png */; };
+		774F4746195891980003469F /* IconSpotlight.png in Resources */ = {isa = PBXBuildFile; fileRef = 774F4742195891980003469F /* IconSpotlight.png */; };
+		774F4747195891980003469F /* IconSpotlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 774F4743195891980003469F /* IconSpotlight@2x.png */; };
+		774F4748195891980003469F /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 774F4744195891980003469F /* iTunesArtwork */; };
+		774F4749195891980003469F /* iTunesArtwork@2x in Resources */ = {isa = PBXBuildFile; fileRef = 774F4745195891980003469F /* iTunesArtwork@2x */; };
 		774F664D15FE92ED008A1112 /* RSUModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 774F664C15FE92ED008A1112 /* RSUModel.m */; };
 		774F665115FE93AC008A1112 /* RXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 774F665015FE93AC008A1112 /* RXMLElement.m */; };
 		774F665415FE9424008A1112 /* RoundedLoadingIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 774F665315FE9424008A1112 /* RoundedLoadingIndicator.m */; };
@@ -73,7 +79,6 @@
 		77A862CC15FBAA72004BAED8 /* BlueButtonTap@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77A8628615FBAA72004BAED8 /* BlueButtonTap@2x.png */; };
 		77A862CD15FBAA72004BAED8 /* Gears.png in Resources */ = {isa = PBXBuildFile; fileRef = 77A8628715FBAA72004BAED8 /* Gears.png */; };
 		77A862CE15FBAA72004BAED8 /* Gears@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77A8628815FBAA72004BAED8 /* Gears@2x.png */; };
-		77A862D115FBAA72004BAED8 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 77A8628B15FBAA72004BAED8 /* Icon-72.png */; };
 		77A862D215FBAA72004BAED8 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 77A8628C15FBAA72004BAED8 /* Icon.png */; };
 		77A862D315FBAA72004BAED8 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77A8628D15FBAA72004BAED8 /* Icon@2x.png */; };
 		77A862D415FBAA72004BAED8 /* loading1.png in Resources */ = {isa = PBXBuildFile; fileRef = 77A8628F15FBAA72004BAED8 /* loading1.png */; };
@@ -152,6 +157,8 @@
 		77AD372C194654C500A267C5 /* RaceSignUpMembershipsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77AD372A194654C500A267C5 /* RaceSignUpMembershipsViewController.m */; };
 		77AD372D194654C500A267C5 /* RaceSignUpMembershipsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77AD372B194654C500A267C5 /* RaceSignUpMembershipsViewController.xib */; };
 		77AD37301946560F00A267C5 /* RaceSignUpMembershipsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77AD372F1946560F00A267C5 /* RaceSignUpMembershipsTableViewCell.m */; };
+		77B04377194F831B001FF6B5 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B04375194F831B001FF6B5 /* SettingsViewController.m */; };
+		77B04378194F831B001FF6B5 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77B04376194F831B001FF6B5 /* SettingsViewController.xib */; };
 		77B0E5F7177A569C00C00E5B /* CancelSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B0E5F3177A537600C00E5B /* CancelSearch.png */; };
 		77B0E5F8177A569C00C00E5B /* CancelSearch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B0E5F4177A537600C00E5B /* CancelSearch@2x.png */; };
 		77B0E5F9177A569C00C00E5B /* Search.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B0E5F5177A537600C00E5B /* Search.png */; };
@@ -188,6 +195,12 @@
 		7723860B179739C70095D1EF /* RaceSignUpEventTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RaceSignUpEventTableViewCell.h; sourceTree = "<group>"; };
 		7723860C179739C70095D1EF /* RaceSignUpEventTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RaceSignUpEventTableViewCell.m; sourceTree = "<group>"; };
 		772BC8631934E91900759FA7 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		774F473E19588F7C0003469F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		774F47401958918F0003469F /* Icon-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-114.png"; sourceTree = "<group>"; };
+		774F4742195891980003469F /* IconSpotlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IconSpotlight.png; sourceTree = "<group>"; };
+		774F4743195891980003469F /* IconSpotlight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IconSpotlight@2x.png"; sourceTree = "<group>"; };
+		774F4744195891980003469F /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
+		774F4745195891980003469F /* iTunesArtwork@2x */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iTunesArtwork@2x"; sourceTree = "<group>"; };
 		774F664B15FE92ED008A1112 /* RSUModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSUModel.h; sourceTree = "<group>"; };
 		774F664C15FE92ED008A1112 /* RSUModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSUModel.m; sourceTree = "<group>"; };
 		774F664F15FE93A5008A1112 /* RXMLElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RXMLElement.h; sourceTree = "<group>"; };
@@ -267,7 +280,6 @@
 		77A8628615FBAA72004BAED8 /* BlueButtonTap@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BlueButtonTap@2x.png"; sourceTree = "<group>"; };
 		77A8628715FBAA72004BAED8 /* Gears.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Gears.png; sourceTree = "<group>"; };
 		77A8628815FBAA72004BAED8 /* Gears@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gears@2x.png"; sourceTree = "<group>"; };
-		77A8628B15FBAA72004BAED8 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
 		77A8628C15FBAA72004BAED8 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		77A8628D15FBAA72004BAED8 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		77A8628F15FBAA72004BAED8 /* loading1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading1.png; sourceTree = "<group>"; };
@@ -351,6 +363,9 @@
 		77AD372B194654C500A267C5 /* RaceSignUpMembershipsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RaceSignUpMembershipsViewController.xib; sourceTree = "<group>"; };
 		77AD372E1946560F00A267C5 /* RaceSignUpMembershipsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RaceSignUpMembershipsTableViewCell.h; sourceTree = "<group>"; };
 		77AD372F1946560F00A267C5 /* RaceSignUpMembershipsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RaceSignUpMembershipsTableViewCell.m; sourceTree = "<group>"; };
+		77B04374194F831B001FF6B5 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		77B04375194F831B001FF6B5 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		77B04376194F831B001FF6B5 /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
 		77B0E5F3177A537600C00E5B /* CancelSearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CancelSearch.png; sourceTree = "<group>"; };
 		77B0E5F4177A537600C00E5B /* CancelSearch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CancelSearch@2x.png"; sourceTree = "<group>"; };
 		77B0E5F5177A537600C00E5B /* Search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Search.png; sourceTree = "<group>"; };
@@ -479,6 +494,7 @@
 				77A8627115FBA45A004BAED8 /* AppDelegate.m */,
 				77CE5C8B1607C70A0049AF36 /* Main Menu */,
 				77CE5C8A1607C6F50049AF36 /* Races */,
+				774F473E19588F7C0003469F /* Images.xcassets */,
 			);
 			path = RunSignUpReg;
 			sourceTree = "<group>";
@@ -536,9 +552,13 @@
 				77A8628615FBAA72004BAED8 /* BlueButtonTap@2x.png */,
 				77A8628715FBAA72004BAED8 /* Gears.png */,
 				77A8628815FBAA72004BAED8 /* Gears@2x.png */,
-				77A8628B15FBAA72004BAED8 /* Icon-72.png */,
 				77A8628C15FBAA72004BAED8 /* Icon.png */,
 				77A8628D15FBAA72004BAED8 /* Icon@2x.png */,
+				774F4742195891980003469F /* IconSpotlight.png */,
+				774F4743195891980003469F /* IconSpotlight@2x.png */,
+				774F4744195891980003469F /* iTunesArtwork */,
+				774F4745195891980003469F /* iTunesArtwork@2x */,
+				774F47401958918F0003469F /* Icon-114.png */,
 				77A8628E15FBAA72004BAED8 /* Loading */,
 				77A862C315FBAA72004BAED8 /* Logo.png */,
 				77A862C415FBAA72004BAED8 /* Logo@2x.png */,
@@ -611,21 +631,21 @@
 				77A711FA17C263A6008E1509 /* RaceSignUpChooseRegistrantViewController.h */,
 				77A711FB17C263A6008E1509 /* RaceSignUpChooseRegistrantViewController.m */,
 				77A711FC17C263A6008E1509 /* RaceSignUpChooseRegistrantViewController.xib */,
-				77CE5C951608DD700049AF36 /* RaceSignUpWaiverViewController.h */,
-				77CE5C961608DD700049AF36 /* RaceSignUpWaiverViewController.m */,
-				77CE5C971608DD700049AF36 /* RaceSignUpWaiverViewController.xib */,
 				77238606179732C80095D1EF /* RaceSignUpEventsViewController.h */,
 				77238607179732C80095D1EF /* RaceSignUpEventsViewController.m */,
 				77238608179732C80095D1EF /* RaceSignUpEventsViewController.xib */,
+				77CE5C951608DD700049AF36 /* RaceSignUpWaiverViewController.h */,
+				77CE5C961608DD700049AF36 /* RaceSignUpWaiverViewController.m */,
+				77CE5C971608DD700049AF36 /* RaceSignUpWaiverViewController.xib */,
 				77971E1F17B93114005809F8 /* RaceSignUpGiveawayViewController.h */,
 				77971E2017B93114005809F8 /* RaceSignUpGiveawayViewController.m */,
 				77971E2117B93114005809F8 /* RaceSignUpGiveawayViewController.xib */,
-				778BB4881941065D0098F9B6 /* RaceSignUpQuestionsViewController.h */,
-				778BB4891941065D0098F9B6 /* RaceSignUpQuestionsViewController.m */,
-				778BB48A1941065D0098F9B6 /* RaceSignUpQuestionsViewController.xib */,
 				77AD3729194654C500A267C5 /* RaceSignUpMembershipsViewController.h */,
 				77AD372A194654C500A267C5 /* RaceSignUpMembershipsViewController.m */,
 				77AD372B194654C500A267C5 /* RaceSignUpMembershipsViewController.xib */,
+				778BB4881941065D0098F9B6 /* RaceSignUpQuestionsViewController.h */,
+				778BB4891941065D0098F9B6 /* RaceSignUpQuestionsViewController.m */,
+				778BB48A1941065D0098F9B6 /* RaceSignUpQuestionsViewController.xib */,
 				77B6E51C1609FE21009E1AA9 /* RaceSignUpPaymentViewController.h */,
 				77B6E51D1609FE21009E1AA9 /* RaceSignUpPaymentViewController.m */,
 				77B6E51E1609FE21009E1AA9 /* RaceSignUpPaymentViewController.xib */,
@@ -693,6 +713,9 @@
 				7757C2CB163F68A000B8780A /* UserRaceListViewController.h */,
 				7757C2CC163F68A000B8780A /* UserRaceListViewController.m */,
 				7757C2CD163F68A100B8780A /* UserRaceListViewController.xib */,
+				77B04374194F831B001FF6B5 /* SettingsViewController.h */,
+				77B04375194F831B001FF6B5 /* SettingsViewController.m */,
+				77B04376194F831B001FF6B5 /* SettingsViewController.xib */,
 			);
 			name = "Main Menu";
 			sourceTree = "<group>";
@@ -769,11 +792,12 @@
 				77A862C915FBAA72004BAED8 /* BlueButton.png in Resources */,
 				77AD37281946296F00A267C5 /* QuestionsRadio@2x.png in Resources */,
 				77A862CA15FBAA72004BAED8 /* BlueButton@2x.png in Resources */,
+				774F473F19588F7C0003469F /* Images.xcassets in Resources */,
 				77A862CB15FBAA72004BAED8 /* BlueButtonTap.png in Resources */,
 				77A862CC15FBAA72004BAED8 /* BlueButtonTap@2x.png in Resources */,
 				77A862CD15FBAA72004BAED8 /* Gears.png in Resources */,
 				77A862CE15FBAA72004BAED8 /* Gears@2x.png in Resources */,
-				77A862D115FBAA72004BAED8 /* Icon-72.png in Resources */,
+				774F4749195891980003469F /* iTunesArtwork@2x in Resources */,
 				77A862D215FBAA72004BAED8 /* Icon.png in Resources */,
 				77A7120117C3EF63008E1509 /* MainMenuBackground.png in Resources */,
 				77A862D315FBAA72004BAED8 /* Icon@2x.png in Resources */,
@@ -783,8 +807,10 @@
 				77A862D615FBAA72004BAED8 /* loading10@2x.png in Resources */,
 				778BB486193BB8A90098F9B6 /* RaceResultsEventDetailsViewController.xib in Resources */,
 				77A862D715FBAA72004BAED8 /* loading11.png in Resources */,
+				774F47411958918F0003469F /* Icon-114.png in Resources */,
 				77A862D815FBAA72004BAED8 /* loading11@2x.png in Resources */,
 				77A862D915FBAA72004BAED8 /* loading12.png in Resources */,
+				774F4747195891980003469F /* IconSpotlight@2x.png in Resources */,
 				77A862DA15FBAA72004BAED8 /* loading12@2x.png in Resources */,
 				77A862DB15FBAA72004BAED8 /* loading13.png in Resources */,
 				77971E2317B93114005809F8 /* RaceSignUpGiveawayViewController.xib in Resources */,
@@ -794,6 +820,7 @@
 				77A862DE15FBAA72004BAED8 /* loading14@2x.png in Resources */,
 				77A862DF15FBAA72004BAED8 /* loading15.png in Resources */,
 				77A862E015FBAA72004BAED8 /* loading15@2x.png in Resources */,
+				774F4746195891980003469F /* IconSpotlight.png in Resources */,
 				77A711FE17C263A6008E1509 /* RaceSignUpChooseRegistrantViewController.xib in Resources */,
 				77A862E115FBAA72004BAED8 /* loading16.png in Resources */,
 				77AD37271946296F00A267C5 /* QuestionsRadio.png in Resources */,
@@ -845,6 +872,7 @@
 				77A8631615FBACB8004BAED8 /* GreenButton.png in Resources */,
 				77A8631715FBACB8004BAED8 /* GreenButton@2x.png in Resources */,
 				77AD105617B13E7A00723395 /* RaceSignUpConfirmationViewController.xib in Resources */,
+				77B04378194F831B001FF6B5 /* SettingsViewController.xib in Resources */,
 				77A8631815FBACB8004BAED8 /* GreenButtonTap.png in Resources */,
 				77A8631915FBACB8004BAED8 /* GreenButtonTap@2x.png in Resources */,
 				77A8631C15FBAFA3004BAED8 /* Title.png in Resources */,
@@ -866,6 +894,7 @@
 				77B6E5201609FE21009E1AA9 /* RaceSignUpPaymentViewController.xib in Resources */,
 				7757C2C8163C3F5200B8780A /* Default-568h@2x.png in Resources */,
 				77AD372D194654C500A267C5 /* RaceSignUpMembershipsViewController.xib in Resources */,
+				774F4748195891980003469F /* iTunesArtwork in Resources */,
 				7757C2C9163C3F5200B8780A /* Default@2x.png in Resources */,
 				7757C2CF163F68A300B8780A /* UserRaceListViewController.xib in Resources */,
 				7757C2E116403BB000B8780A /* blueArrow.png in Resources */,
@@ -924,6 +953,7 @@
 				77A8628015FBAA5C004BAED8 /* MainMenuViewController.m in Sources */,
 				778BB48F194107E70098F9B6 /* RaceSignUpQuestionsTableViewCell.m in Sources */,
 				77A8632115FBC40E004BAED8 /* SignUpViewController.m in Sources */,
+				77B04377194F831B001FF6B5 /* SettingsViewController.m in Sources */,
 				77238609179732C80095D1EF /* RaceSignUpEventsViewController.m in Sources */,
 				774F664D15FE92ED008A1112 /* RSUModel.m in Sources */,
 				774F665115FE93AC008A1112 /* RXMLElement.m in Sources */,
@@ -1035,6 +1065,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AA6D4898218C41479B2FCB92 /* Pods.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Bob Bickel (2675BLFJQG)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1045,10 +1077,27 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = "RunSignUpReg/RunSignUpReg-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-framework",
+					CoreGraphics,
+					"-framework",
+					Foundation,
+					"-framework",
+					QuartzCore,
+					"-framework",
+					Security,
+					"-framework",
+					UIKit,
+					"-framework",
+					VenmoTouch,
+					"$(inherited)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
+				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1057,6 +1106,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AA6D4898218C41479B2FCB92 /* Pods.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Bob Bickel (2675BLFJQG)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1067,10 +1118,27 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = "RunSignUpReg/RunSignUpReg-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-framework",
+					CoreGraphics,
+					"-framework",
+					Foundation,
+					"-framework",
+					QuartzCore,
+					"-framework",
+					Security,
+					"-framework",
+					UIKit,
+					"-framework",
+					VenmoTouch,
+					"$(inherited)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
+				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

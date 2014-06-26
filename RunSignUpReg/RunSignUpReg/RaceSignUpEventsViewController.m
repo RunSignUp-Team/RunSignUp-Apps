@@ -7,10 +7,7 @@
 //
 
 #import "RaceSignUpEventsViewController.h"
-#import "RaceSignUpGiveawayViewController.h"
-#import "RaceSignUpQuestionsViewController.h"
-#import "RaceSignUpMembershipsViewController.h"
-#import "RaceSignUpPaymentViewController.h"
+#import "RaceSignUpWaiverViewController.h"
 #import "RaceSignUpEventTableViewCell.h"
 
 @implementation RaceSignUpEventsViewController
@@ -93,31 +90,9 @@
         
         [newDataDict setObject:mutableEventsArray forKey:@"events"];
         
-        BOOL hasGiveaway = NO;
-        for(NSDictionary *event in [newDataDict objectForKey: @"events"]){
-            if([event objectForKey: @"giveaway"] != nil || [event objectForKey: @"giveaway-options"] != nil)
-                hasGiveaway = YES;
-        }
-        
-        if(hasGiveaway){
-            RaceSignUpGiveawayViewController *rsugvc = [[RaceSignUpGiveawayViewController alloc] initWithNibName:@"RaceSignUpGiveawayViewController" bundle:nil data:newDataDict];
-            [self.navigationController pushViewController:rsugvc animated:YES];
-            [rsugvc release];
-        }else{
-            if([newDataDict objectForKey: @"questions"]){
-                RaceSignUpQuestionsViewController *rsuqvc = [[RaceSignUpQuestionsViewController alloc] initWithNibName:@"RaceSignUpQuestionsViewController" bundle:nil data:newDataDict];
-                [self.navigationController pushViewController:rsuqvc animated:YES];
-                [rsuqvc release];
-            }else if([newDataDict objectForKey: @"membership_settings"]){
-                RaceSignUpMembershipsViewController *rsumvc = [[RaceSignUpMembershipsViewController alloc] initWithNibName:@"RaceSignUpMembershipsViewController" bundle:nil data:newDataDict];
-                [self.navigationController pushViewController:rsumvc animated:YES];
-                [rsumvc release];
-            }else{
-                RaceSignUpPaymentViewController *rsupvc = [[RaceSignUpPaymentViewController alloc] initWithNibName:@"RaceSignUpPaymentViewController" bundle:nil data:newDataDict];
-                [self.navigationController pushViewController:rsupvc animated:YES];
-                [rsupvc release];
-            }
-        }
+        RaceSignUpWaiverViewController *rswvc = [[RaceSignUpWaiverViewController alloc] initWithNibName:@"RaceSignUpWaiverViewController" bundle:nil data:newDataDict];
+        [self.navigationController pushViewController:rswvc animated:YES];
+        [rswvc release];
     }
 }
 
@@ -191,7 +166,6 @@
                 scheduledEventsWithOpenReg++;
         }
     }
-    NSLog(@"Schedevreg: %i", scheduledEventsWithOpenReg);
     return scheduledEventsWithOpenReg;
 }
 

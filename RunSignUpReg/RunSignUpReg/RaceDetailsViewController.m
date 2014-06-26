@@ -153,6 +153,17 @@
 }
 
 - (IBAction)viewResults:(id)sender{
+    if([[RSUModel sharedModel] signedIn]){
+        [self didSignInEmail: nil];
+    }else{
+        SignInViewController *sivc = [[SignInViewController alloc] initWithNibName:@"SignInViewController" bundle:nil];
+        [sivc setDelegate: self];
+        [self presentViewController:sivc animated:YES completion:nil];
+        [sivc release];
+    }
+}
+
+- (void)didSignInEmail:(NSString *)email{
     NSMutableDictionary *dataDictCopy = [[NSMutableDictionary alloc] initWithDictionary:dataDict copyItems:YES];
     RaceResultsViewController *rrvc = [[RaceResultsViewController alloc] initWithNibName:@"RaceResultsViewController" bundle:nil data:dataDictCopy];
     [self.navigationController pushViewController:rrvc animated:YES];
@@ -185,8 +196,8 @@
         [registrationTable setFrame: CGRectMake(4, eventsTable.frame.origin.y + eventsTable.frame.size.height + 8, 312, [registrationTable numberOfRowsInSection: 0] * 98)];
     }else{
         [registrationTable setFrame: CGRectMake(4, eventsTable.frame.origin.y + eventsTable.frame.size.height, 312, 0)];
-        [signUpButton1 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        [signUpButton2 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        [signUpButton1 setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        [signUpButton2 setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     }
     
     [placeHintLabel setFrame: CGRectMake(4, registrationTable.frame.origin.y + registrationTable.frame.size.height + 8, 312, placeHintLabel.frame.size.height)];
@@ -205,13 +216,33 @@
 
 - (IBAction)signUp:(id)sender{
     if(hasLoadedDetails){
-        NSMutableDictionary *dataDictCopy = [[NSMutableDictionary alloc] initWithDictionary:dataDict copyItems:YES];
-        RaceSignUpChooseRegistrantViewController *rsucrvc = [[RaceSignUpChooseRegistrantViewController alloc] initWithNibName:@"RaceSignUpChooseRegistrantViewController" bundle:nil data:dataDictCopy];
-        [self.navigationController pushViewController:rsucrvc animated:YES];
-        [rsucrvc release];
+        if([[dataDict objectForKey: @"is_registration_open"] boolValue]){
+            if([[dataDict objectForKey: @"can_use_registration_api"] boolValue]){
+                NSMutableDictionary *dataDictCopy = [[NSMutableDictionary alloc] initWithDictionary:dataDict copyItems:YES];
+                RaceSignUpChooseRegistrantViewController *rsucrvc = [[RaceSignUpChooseRegistrantViewController alloc] initWithNibName:@"RaceSignUpChooseRegistrantViewController" bundle:nil data:dataDictCopy];
+                [self.navigationController pushViewController:rsucrvc animated:YES];
+                [rsucrvc release];
+            }else{
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Registration Unavailable" message:@"Registration for this race requires features of RunSignUp that are unavailable in the mobile app." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"SignUp Online", nil];
+                [alert show];
+                [alert release];
+            }
+        }else{
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Registration Isn't Open" message:@"Online registration is now closed for this race." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+            [alert show];
+            [alert release];
+        }
+        
+    
     }else{
         attemptedToSignUpWithoutDetails = YES;
         [rli fadeIn];
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
+    if(buttonIndex == 1){
+        [[UIApplication sharedApplication] openURL: [NSURL URLWithString: [dataDict objectForKey: @"url"]]];
     }
 }
 
@@ -439,7 +470,6 @@
                 if([startDate compare: [NSDate date]] == NSOrderedDescending)
                     scheduledEvents++;
             }
-            NSLog(@"Schedev: %i", scheduledEvents);
             return scheduledEvents;
         }else{
             int scheduledEventsWithOpenReg = 0;
@@ -459,7 +489,6 @@
                         scheduledEventsWithOpenReg++;
                 }
             }
-            NSLog(@"Schedevreg: %i", scheduledEventsWithOpenReg);
             return scheduledEventsWithOpenReg;
         }
     }else{

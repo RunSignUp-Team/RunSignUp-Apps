@@ -71,14 +71,14 @@
         [paceLabel setTextColor: [UIColor colorWithRed:47/255.0f green:132/255.0f blue:165/255.0f alpha:1.0f]];
         [ageLabel setTextColor: [UIColor colorWithRed:47/255.0f green:132/255.0f blue:165/255.0f alpha:1.0f]];
         
-        [placeLabel setBackgroundColor: [UIColor colorWithRed:(rand() % 255) / 255.0f green:(rand() % 255) / 255.0f blue:(rand() % 255) / 255.0f alpha:1.0f]];
+        /*[placeLabel setBackgroundColor: [UIColor colorWithRed:(rand() % 255) / 255.0f green:(rand() % 255) / 255.0f blue:(rand() % 255) / 255.0f alpha:1.0f]];
         [bibLabel setBackgroundColor: [UIColor colorWithRed:(rand() % 255) / 255.0f green:(rand() % 255) / 255.0f blue:(rand() % 255) / 255.0f alpha:1.0f]];
         [firstNameLabel setBackgroundColor: [UIColor colorWithRed:(rand() % 255) / 255.0f green:(rand() % 255) / 255.0f blue:(rand() % 255) / 255.0f alpha:1.0f]];
         [lastNameLabel setBackgroundColor: [UIColor colorWithRed:(rand() % 255) / 255.0f green:(rand() % 255) / 255.0f blue:(rand() % 255) / 255.0f alpha:1.0f]];
         [genderLabel setBackgroundColor: [UIColor colorWithRed:(rand() % 255) / 255.0f green:(rand() % 255) / 255.0f blue:(rand() % 255) / 255.0f alpha:1.0f]];
         [timeLabel setBackgroundColor: [UIColor colorWithRed:(rand() % 255) / 255.0f green:(rand() % 255) / 255.0f blue:(rand() % 255) / 255.0f alpha:1.0f]];
         [paceLabel setBackgroundColor: [UIColor colorWithRed:(rand() % 255) / 255.0f green:(rand() % 255) / 255.0f blue:(rand() % 255) / 255.0f alpha:1.0f]];
-        [ageLabel setBackgroundColor: [UIColor colorWithRed:(rand() % 255) / 255.0f green:(rand() % 255) / 255.0f blue:(rand() % 255) / 255.0f alpha:1.0f]];
+        [ageLabel setBackgroundColor: [UIColor colorWithRed:(rand() % 255) / 255.0f green:(rand() % 255) / 255.0f blue:(rand() % 255) / 255.0f alpha:1.0f]];*/
         
         [self.contentView addSubview: placeLabel];
         [self.contentView addSubview: bibLabel];

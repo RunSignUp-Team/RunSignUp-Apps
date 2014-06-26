@@ -48,15 +48,15 @@
         }
         
         if(selection != -1)
-            return [NSNumber numberWithInt: [[[responses objectAtIndex: selection] objectForKey: @"response_id"] intValue]];
+            return [NSString stringWithFormat: @"%i", [[[responses objectAtIndex: selection] objectForKey: @"response_id"] intValue]];
         else
-            return [NSNumber numberWithInt: -1];
+            return @"-1";
     }else if(type == RSUQuestionTypeCheck){
         NSMutableArray *responseIDs = [[NSMutableArray alloc] init];
         for(int i = 0; i < [selectedArray count]; i++){
             if([[selectedArray objectAtIndex: i] boolValue]){
                 int responseID = [[[responses objectAtIndex: i] objectForKey: @"response_id"] intValue];
-                [responseIDs addObject: [NSNumber numberWithInt: responseID]];
+                [responseIDs addObject: [NSString stringWithFormat: @"%i", responseID]];
             }
         }
         return responseIDs;
@@ -65,7 +65,40 @@
         int min = [timePicker selectedRowInComponent: 1];
         int sec = [timePicker selectedRowInComponent: 2];
         
-        return [NSString stringWithFormat: @"%i:%i:%i", hours, min, sec];
+        return [NSString stringWithFormat: @"%i:%02i:%02i", hours, min, sec];
+    }
+}
+
+- (void)reset{
+    for(UIView *view in [self.contentView subviews]){
+        if(view != questionLabel)
+            [view removeFromSuperview];
+    }
+}
+
+- (void)setCurrentResponse:(id)resp{
+    if(type == RSUQuestionTypeFreeform){
+        [freeformField setText: (NSString *)resp];
+    }else if(type == RSUQuestionTypeBoolean){
+        [booleanControl setSelectedSegmentIndex: ![resp boolValue]];
+    }else if(type == RSUQuestionTypeSelection || type == RSUQuestionTypeRadio){
+        for(int i = 0; i < [responses count]; i++){
+            if([[[responses objectAtIndex: i] objectForKey: @"response_id"] isEqualToString: (NSString *)resp]){
+                [selectedArray replaceObjectAtIndex:i withObject:[NSNumber numberWithBool: YES]];
+                [[[selectionTable cellForRowAtIndexPath: [NSIndexPath indexPathForRow:i inSection:0]] accessoryView] setHidden: NO];
+            }
+        }
+    }else if(type == RSUQuestionTypeCheck){
+        for(int i = 0; i < [responses count]; i++){
+            for(NSString *respID in (NSArray *)resp){
+                if([[[responses objectAtIndex: i] objectForKey: @"response_id"] isEqualToString: respID]){
+                    [selectedArray replaceObjectAtIndex:i withObject:[NSNumber numberWithBool: YES]];
+                    [[[selectionTable cellForRowAtIndexPath: [NSIndexPath indexPathForRow:i inSection:0]] accessoryView] setHidden: NO];
+                }
+            }
+        }
+    }else if(type == RSUQuestionTypeTime){
+        NSLog(@"set for time %@", resp);
     }
 }
 
@@ -88,10 +121,10 @@
     }else if(t == RSUQuestionTypeBoolean){
         booleanControl = [[UISegmentedControl alloc] initWithItems:@[@"Yes", @"No"]];
         [booleanControl setFrame: CGRectMake(8, 14 + [questionLabel frame].size.height, 304, 30)];
-        [booleanControl setSelectedSegmentIndex: 0];
         [booleanControl addTarget:self action:@selector(valueDidChange) forControlEvents:UIControlEventValueChanged];
         [self.contentView addSubview: booleanControl];
     }else if(t == RSUQuestionTypeSelection || t == RSUQuestionTypeRadio || t == RSUQuestionTypeCheck){
+        NSLog(@"Table frame: %@", NSStringFromCGRect(CGRectMake(0, 14 + [questionLabel frame].size.height, 320, 30)));
         selectionTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 14 + [questionLabel frame].size.height, 320, 30) style:UITableViewStylePlain];
         [selectionTable setDelegate: self];
         [selectionTable setDataSource: self];
@@ -122,15 +155,16 @@
         [selectedArray addObject: [NSNumber numberWithBool:NO]];
     }
     
-    if(type == RSUQuestionTypeSelection || type == RSUQuestionTypeRadio || type == RSUQuestionTypeCheck)
-        [selectionTable setFrame: CGRectMake(0, 34, 320, 30 * [responses count])];
+    if(type == RSUQuestionTypeSelection || type == RSUQuestionTypeRadio || type == RSUQuestionTypeCheck){
+        [selectionTable setFrame: CGRectMake(0, 14 + [questionLabel frame].size.height, 320, 30 * [responses count])];
+    }
     
     [selectionTable reloadData];
     
-    if(type == RSUQuestionTypeRadio){
+    /*if(type == RSUQuestionTypeRadio){
         [selectedArray replaceObjectAtIndex:0 withObject:[NSNumber numberWithBool: YES]];
         [[[selectionTable cellForRowAtIndexPath: [NSIndexPath indexPathForRow:0 inSection:0]] accessoryView] setHidden: NO];
-    }
+    }*/
 }
 
 - (NSArray *)responses{
@@ -223,14 +257,21 @@
         return 240;
 }
 
+- (void)setFreeformKeyboardType:(UIKeyboardType)ktype{
+    [freeformField setKeyboardType: ktype];
+}
+
+- (void)setFreeformPlaceholderText:(NSString *)text{
+    [freeformField setPlaceholder: text];
+}
+
 - (void)setQuestionLabelText:(NSString *)text{
     CGSize requiredSize = [text sizeWithFont:[questionLabel font] constrainedToSize:CGSizeMake(312, 300) lineBreakMode:NSLineBreakByWordWrapping];
     [questionLabel setFrame: CGRectMake(4, 8, requiredSize.width, requiredSize.height)];
     [questionLabel setText: text];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated{
     //[super setSelected:selected animated:animated];
     
     // Configure the view for the selected state

@@ -108,6 +108,10 @@
     [stateLabel setText: [[userDict objectForKey: @"address"] objectForKey:@"state"]];
     [zipLabel setText: [[userDict objectForKey: @"address"] objectForKey:@"zipcode"]];
     
+    [self getCart];
+}
+
+- (void)getCart{
     void (^response)(RSUConnectionResponse, NSDictionary *) = ^(RSUConnectionResponse didSucceed, NSDictionary *data){
         if(didSucceed == RSUSuccess){
             if(data != nil){
@@ -147,9 +151,8 @@
             }else{
                 NSString *errors = @"Errors: ";
                 for(NSString *error in [data objectForKey: @"ErrorArray"]){
-                    errors = [errors stringByAppendingFormat:@"%@, ", error];
+                    errors = [errors stringByAppendingFormat:@"%@\n", error];
                 }
-                errors = [errors substringToIndex: [errors length] - 2];
                 
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:errors delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
                 [alert show];
@@ -169,15 +172,18 @@
         [self layoutContent];
     };
     [[RSUModel sharedModel] registerForRace:[dataDict objectForKey:@"race_id"] withInfo:dataDict requestType:RSURegGetCart response:response];
+
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
-    [self.navigationController popToRootViewControllerAnimated: YES];
+    [self.navigationController popViewControllerAnimated: NO];
+    [self.navigationController popViewControllerAnimated: YES];
 }
 
 - (void)layoutContent{
+    [couponView setHidden: YES];
+    
     if(isFreeRace){
-        [couponView setHidden: YES];
         [paymentButton setTitle:@"Confirm Registration" forState:UIControlStateNormal];
         [paymentHintLabel setHidden: YES];
         
@@ -205,8 +211,8 @@
         [totalHintLabel setFrame: CGRectMake(4, processingFeeLabel.frame.origin.y + processingFeeLabel.frame.size.height + 4, totalHintLabel.frame.size.width, totalHintLabel.frame.size.height)];
         [totalLabel setFrame: CGRectMake(totalLabel.frame.origin.x, totalHintLabel.frame.origin.y, totalLabel.frame.size.width, totalLabel.frame.size.height)];
         [registrationCartView setFrame: CGRectMake(4, eventsTable.frame.origin.y + eventsTable.frame.size.height + 8, registrationCartView.frame.size.width, totalLabel.frame.origin.y + totalLabel.frame.size.height + 8)];
-        [couponView setFrame: CGRectMake(4, registrationCartView.frame.origin.y + registrationCartView.frame.size.height + 8, couponView.frame.size.width, couponView.frame.size.height)];
-        [registrantView setFrame: CGRectMake(4, couponView.frame.origin.y + couponView.frame.size.height + 8, registrantView.frame.size.width, registrantView.frame.size.height)];
+        //[couponView setFrame: CGRectMake(4, registrationCartView.frame.origin.y + registrationCartView.frame.size.height + 8, couponView.frame.size.width, couponView.frame.size.height)];
+        [registrantView setFrame: CGRectMake(4, registrationCartView.frame.origin.y + registrationCartView.frame.size.height + 8, registrantView.frame.size.width, registrantView.frame.size.height)];
         [paymentHintLabel setFrame: CGRectMake(4, registrantView.frame.origin.y + registrantView.frame.size.height + 8, paymentHintLabel.frame.size.width, paymentHintLabel.frame.size.height)];
         [paymentButton setFrame: CGRectMake(4, paymentHintLabel.frame.origin.y + paymentHintLabel.frame.size.height + 8, paymentButton.frame.size.width, paymentButton.frame.size.height)];
         [scrollView setContentSize: CGSizeMake(scrollView.frame.size.width, paymentButton.frame.origin.y + paymentButton.frame.size.height + 8)];
@@ -305,9 +311,8 @@
                 }else{
                     NSString *errors = @"Errors: ";
                     for(NSString *error in [data objectForKey: @"ErrorArray"]){
-                        errors = [errors stringByAppendingFormat:@"%@, ", error];
+                        errors = [errors stringByAppendingFormat:@"%@\n", error];
                     }
-                    errors = [errors substringToIndex: [errors length] - 2];
                     
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:errors delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
                     [alert show];
@@ -329,7 +334,11 @@
 }
 
 - (IBAction)applyCoupon:(id)sender{
-
+    if([[couponField text] length] > 0){
+        [dataDict setObject:[couponField text] forKey:@"coupon"];
+        
+        [self getCart];
+    }
 }
 
 - (void)viewDidUnload{

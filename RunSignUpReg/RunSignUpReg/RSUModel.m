@@ -143,6 +143,12 @@ static RSUModel *model = nil;
             userDict = [[info objectForKey:@"registrant"] mutableCopy];
         }
         
+        if([info objectForKey:@"memberships"])
+            [userDict setObject:[info objectForKey:@"memberships"] forKey:@"memberships"];
+        
+        if([info objectForKey:@"individual_question_responses"])
+            [userDict setObject:[info objectForKey:@"individual_question_responses"] forKey:@"question_responses"];
+        
         if(userDict == nil){
             dispatch_async(dispatch_get_main_queue(),^(){responseBlock(RSUNoConnection, nil);});
             return;
@@ -187,6 +193,8 @@ static RSUModel *model = nil;
             }
         }
         [reqDict setObject:registrants forKey:@"registrants"];
+        if([info objectForKey:@"question_responses"])
+            [reqDict setObject:[info objectForKey:@"question_responses"] forKey:@"question_responses"];
         NSLog(@"%@", reqDict);
         
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:reqDict options:NSJSONWritingPrettyPrinted error:nil];
@@ -661,7 +669,7 @@ static RSUModel *model = nil;
 
 - (void)retrieveRaceDetailsWithRaceID:(NSString *)raceID response:(void (^)(NSMutableDictionary *))responseBlock{
     NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
-    [request setURL:[NSURL URLWithString:[NSString stringWithFormat: @"%@/rest/race?race_id=%@&future_events_only=T&include_waiver=T&include_giveaway_details=T&include_questions=T&include_membership_settings=T&race_headings=T&race_links=T&registration_api_supported_features=giveaway,questions,memberships", RUNSIGNUP_BASE_URL, raceID]]];
+    [request setURL:[NSURL URLWithString:[NSString stringWithFormat: @"%@/rest/race?race_id=%@&future_events_only=T&include_waiver=T&include_giveaway_details=T&include_questions=T&include_membership_settings=T&race_headings=T&race_links=T&registration_api_supported_features=addons,giveaway,questions,memberships", RUNSIGNUP_BASE_URL, raceID]]];
     [request setHTTPMethod:@"GET"];
     
     void (^completion)(NSURLResponse *,NSData *,NSError *) = ^(NSURLResponse *response,NSData *urlData,NSError *error){
@@ -802,6 +810,7 @@ static RSUModel *model = nil;
                 RXMLElement *questionRequired = [question child: @"required"];
                 RXMLElement *questionSkipForEventIDs = [question child: @"skip_for_event_ids"];
                 RXMLElement *questionResponses = [question child: @"responses"];
+                RXMLElement *parentQuestionID = [question child: @"parent_question_id"];
                 
                 NSMutableDictionary *questionDict = [[NSMutableDictionary alloc] init];
                 
@@ -812,9 +821,33 @@ static RSUModel *model = nil;
                 
                 if(questionValidationType)
                     [questionDict setObject:[questionValidationType text] forKey:[questionValidationType tag]];
-                if(questionSkipForEventIDs)
-                    [questionDict setObject:[questionSkipForEventIDs text] forKey:[questionSkipForEventIDs tag]];
                 
+                if(questionSkipForEventIDs && [questionSkipForEventIDs children: @"event_id"] != nil){
+                    NSMutableArray *skipEvents = [[NSMutableArray alloc] init];
+                    for(RXMLElement *eventID in [questionSkipForEventIDs children: @"event_id"]){
+                        [skipEvents addObject: [eventID text]];
+                    }
+                    if([skipEvents count] > 0)
+                        [questionDict setObject:skipEvents forKey:@"skip_for_event_ids"];
+                }
+                
+                if(parentQuestionID){
+                    [questionDict setObject:[parentQuestionID text] forKey:[parentQuestionID tag]];
+                    
+                    RXMLElement *parentVisibleBoolResponse = [question child: @"parent_visible_bool_response"];
+                    RXMLElement *parentVisibleResponseIDs = [question child: @"parent_visible_response_ids"];
+                    
+                    if(parentVisibleBoolResponse){
+                        [questionDict setObject:[parentVisibleBoolResponse text] forKey:[parentVisibleBoolResponse tag]];
+                    }else if(parentVisibleResponseIDs){
+                        NSMutableArray *responseIDs = [[NSMutableArray alloc] init];
+                        for(RXMLElement *response in [parentVisibleResponseIDs children: @"response_id"]){
+                            [responseIDs addObject: [response text]];
+                        }
+                        [questionDict setObject:responseIDs forKey:[parentVisibleResponseIDs tag]];
+                    }
+                }
+                    
                 if(questionResponses){
                     NSMutableArray *responsesArray = [[NSMutableArray alloc] init];
                     for(RXMLElement *response in [questionResponses children: @"response"]){
@@ -844,8 +877,6 @@ static RSUModel *model = nil;
                 RXMLElement *membershipSettingAddlField = [membership child: @"membership_setting_addl_field"];
                 RXMLElement *expiresXDaysBeforeEvent = [membership child: @"expires_x_days_before_event"];
                 RXMLElement *userNotice = [membership child: @"user_notice"];
-                RXMLElement *yesOptionText = [membership child: @"yes_option_text"];
-                RXMLElement *noOptionText = [membership child: @"no_option_text"];
                 
                 RXMLElement *usatfSpecific = [membership child: @"usatf_specific"];
                 
@@ -858,10 +889,6 @@ static RSUModel *model = nil;
                 
                 if(userNotice)
                     [membershipDict setObject:[userNotice text] forKey:[userNotice tag]];
-                if(yesOptionText)
-                    [membershipDict setObject:[yesOptionText text] forKey:[yesOptionText tag]];
-                if(noOptionText)
-                    [membershipDict setObject:[noOptionText text] forKey:[noOptionText tag]];
                 if(usatfSpecific)
                     [membershipDict setObject:[usatfSpecific text] forKey:[usatfSpecific tag]];
                 
@@ -869,7 +896,7 @@ static RSUModel *model = nil;
                     RXMLElement *fieldText = [membershipSettingAddlField child: @"field_text"];
                     RXMLElement *required = [membershipSettingAddlField child: @"required"];
                     
-                    NSDictionary *additionalField = [[NSDictionary alloc] initWithObjectsAndKeys:fieldText, @"field_text", required, @"required", nil];
+                    NSDictionary *additionalField = [[NSDictionary alloc] initWithObjectsAndKeys:[fieldText text], [fieldText tag], [required text], [required tag], nil];
                     [membershipDict setObject:additionalField forKey:@"membership_setting_addl_field"];
                 }
                 
@@ -940,7 +967,7 @@ static RSUModel *model = nil;
 }
 
 - (void)retrieveEventResultsWithRaceID:(NSString *)raceID eventID:(NSString *)eventID resultSetID:(NSString *)resultSetID response:(void (^)(NSArray *))responseBlock{
-    NSString *url = [NSString stringWithFormat:@"%@/rest/race/%@/results?event_id=%@&request_type=get-results&tmp_key=%@&tmp_secret=%@&format=xml", RUNSIGNUP_BASE_URL, raceID, eventID, key, secret];
+    NSString *url = [NSString stringWithFormat:@"%@/rest/race/%@/results?event_id=%@&request_type=get-results&individual_result_set_id=%@&tmp_key=%@&tmp_secret=%@&format=xml", RUNSIGNUP_BASE_URL, raceID, eventID, resultSetID, key, secret];
     NSLog(@"%@", url);
     NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
     [request setURL:[NSURL URLWithString:url]];

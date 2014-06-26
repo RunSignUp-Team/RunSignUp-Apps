@@ -14,6 +14,7 @@
 #import "AboutViewController.h"
 #import "UserRaceListViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SettingsViewController.h"
 
 #import "RaceResultsViewController.h"
 
@@ -54,16 +55,32 @@
         [self setEdgesForExtendedLayout: UIRectEdgeNone];
         
         // iOS 7 Parallax effect:
-        /*UIInterpolatingMotionEffect *interpolationHorizontal = [[UIInterpolatingMotionEffect alloc]initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-        interpolationHorizontal.minimumRelativeValue = @-15.0;
-        interpolationHorizontal.maximumRelativeValue = @15.0;
+        UIInterpolatingMotionEffect *interpolationHorizontal = [[UIInterpolatingMotionEffect alloc]initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+        interpolationHorizontal.minimumRelativeValue = @-12;
+        interpolationHorizontal.maximumRelativeValue = @12;
         
         UIInterpolatingMotionEffect *interpolationVertical = [[UIInterpolatingMotionEffect alloc]initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-        interpolationVertical.minimumRelativeValue = @-15.0;
-        interpolationVertical.maximumRelativeValue = @15.0;
+        interpolationVertical.minimumRelativeValue = @-12;
+        interpolationVertical.maximumRelativeValue = @12;
         
         [self.backgroundView addMotionEffect:interpolationHorizontal];
-        [self.backgroundView addMotionEffect:interpolationVertical];*/
+        [self.backgroundView addMotionEffect:interpolationVertical];
+        
+        UIInterpolatingMotionEffect *buttonsInterpolationHorizontal = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+        buttonsInterpolationHorizontal.minimumRelativeValue = @-20;
+        buttonsInterpolationHorizontal.maximumRelativeValue = @20;
+        
+        UIInterpolatingMotionEffect *buttonsInterpolationVertical = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+        buttonsInterpolationVertical.minimumRelativeValue = @-20;
+        buttonsInterpolationVertical.maximumRelativeValue = @20;
+        
+        UIMotionEffectGroup *effectGroup = [UIMotionEffectGroup new];
+        [effectGroup setMotionEffects: @[buttonsInterpolationHorizontal, buttonsInterpolationVertical]];
+        
+        for(UIView *view in [self.view subviews]){
+            if(view != backgroundView)
+                [view addMotionEffect: effectGroup];
+        }
     }
     
     // Reverse signup button's image
@@ -265,8 +282,8 @@
     [signUpButton setHidden: NO];
     [signInButton setHidden: NO];
     [viewProfileButton setHidden: YES];
-    [hintScrollView setHidden: YES];
-    [hintPageControl setHidden: YES];
+    [hintScrollView setHidden: NO];
+    [hintPageControl setHidden: NO];
     signedIn = NO;
     [[RSUModel sharedModel] logout];
 }
@@ -321,7 +338,9 @@
 }
 
 - (IBAction)settings:(id)sender{
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"mailto:billy_connolly@comcast.net?cc=info@runsignup.com&subject=Bug%20Report"]];
+    //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"mailto:billy_connolly@comcast.net?cc=info@runsignup.com&subject=Bug%20Report"]];
+    SettingsViewController *svc = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController" bundle:nil];
+    [self presentViewController:svc animated:YES completion:nil];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle{

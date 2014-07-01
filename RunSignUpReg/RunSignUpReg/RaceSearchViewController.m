@@ -2,9 +2,19 @@
 //  RaceSearchViewController.m
 //  RunSignUpReg
 //
-//  Created by Billy Connolly on 9/15/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+// Copyright 2014 RunSignUp
 //
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 #import "RaceSearchViewController.h"
 #import "RaceListViewController.h"
@@ -23,20 +33,21 @@
 @synthesize distancePicker;
 @synthesize countryPicker;
 @synthesize statePicker;
+@synthesize datePicker;
 @synthesize delegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self){
-        distanceArray = [[NSArray alloc] initWithObjects:@"", @"K", @"Miles", @"Yards", @"Meters", nil];
-        countryArray = [[NSArray alloc] initWithObjects:@"", @"United States", @"Canada", @"France", @"Germany", nil];
-        stateArrayUS = [[NSArray alloc] initWithObjects:@"", @"AK", @"AL", @"AR", @"AZ", @"CA", @"CO", @"CT", @"DE",
+        distanceArray = [[NSArray alloc] initWithObjects:@"Distance Units", @"K", @"Miles", @"Yards", @"Meters", nil];
+        countryArray = [[NSArray alloc] initWithObjects:@"Country", @"United States", @"Canada", @"France", @"Germany", nil];
+        stateArrayUS = [[NSArray alloc] initWithObjects:@"State", @"AK", @"AL", @"AR", @"AZ", @"CA", @"CO", @"CT", @"DE",
                         @"FL", @"GA", @"HA", @"IA", @"ID", @"IL", @"IN", @"KS", @"KY", @"LA", @"MA", @"MD", @"ME",
                         @"MI", @"MN", @"MO", @"MS", @"MT", @"NC", @"ND", @"NE", @"NH", @"NJ", @"NM", @"NV", @"NY",
                         @"OH", @"OK", @"OR", @"PA", @"RI", @"SC", @"SD", @"TN", @"TX", @"UT", @"VA", @"VT", @"WA",
                         @"WI", @"WV", @"WY", nil]; 
-        stateArrayCA = [[NSArray alloc] initWithObjects:@"", @"AB", @"BC", @"MB", @"NB", @"NL", @"NS", @"ON", @"PE", @"QC", @"SK", nil];
-        stateArrayGE = [[NSArray alloc] initWithObjects:@"", @"BB", @"BE", @"BW", @"BY", @"HB", @"HE", @"HH", @"MV", @"NI", @"NW", @"RP", @"SH",
+        stateArrayCA = [[NSArray alloc] initWithObjects:@"State", @"AB", @"BC", @"MB", @"NB", @"NL", @"NS", @"ON", @"PE", @"QC", @"SK", nil];
+        stateArrayGE = [[NSArray alloc] initWithObjects:@"State", @"BB", @"BE", @"BW", @"BY", @"HB", @"HE", @"HH", @"MV", @"NI", @"NW", @"RP", @"SH",
                         @"SL", @"SN", @"ST", @"TH", nil];
         
         currentPicker = 0;
@@ -234,7 +245,7 @@
     [self.navigationController popViewControllerAnimated: YES];
 }
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
+- (void)hideCurrentPicker:(BOOL)animated{
     if(currentPicker != 0){
         UIPickerView *pickerToAnimate = distancePicker;
         UIButton *currentDrop = distanceDrop;
@@ -244,18 +255,101 @@
         }else if(currentPicker == 2){
             pickerToAnimate = countryPicker;
             currentDrop = countryDrop;
-        }else{
+        }else if(currentPicker == 3){
             pickerToAnimate = statePicker;
             currentDrop = stateDrop;
+        }else if(currentPicker == 4){
+            [UIView beginAnimations:@"DatePickerSlide" context:nil];
+            [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
+            [datePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
+            [UIView commitAnimations];
+            
+            fromDateField.layer.borderColor = [[UIColor clearColor] CGColor];
+            toDateField.layer.borderColor = [[UIColor clearColor] CGColor];
+            
+            currentPicker = 0;
+            return;
         }
         
         [currentDrop setSelected: NO];
-        [UIView beginAnimations:@"PickerSlide" context:nil];
+        
+        if(animated)
+            [UIView beginAnimations:@"PickerSlide" context:nil];
         [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
         [pickerToAnimate setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
-        [UIView commitAnimations];
+        if(animated)
+            [UIView commitAnimations];
         
         currentPicker = 0;
+    }else{
+        [self.view endEditing: YES];
+    }
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
+    if(textField == fromDateField || textField == toDateField){
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"MM/dd/yyyy"];
+        
+        NSDate *currentDate = [NSDate date];
+        if(textField == fromDateField){
+            if([[fromDateField text] length] > 0){
+                currentDate = [dateFormatter dateFromString: [fromDateField text]];
+            }
+        }else if(textField == toDateField){
+            if([[toDateField text] length] > 0){
+                currentDate = [dateFormatter dateFromString: [toDateField text]];
+            }
+        }
+        
+        [datePicker setDate: currentDate];
+        
+        if(currentPicker != 4 && currentPicker != 5){
+            [distanceDrop setSelected: NO];
+            [countryDrop setSelected: NO];
+            [stateDrop setSelected: NO];
+            
+            if(currentPicker != 0){
+                [self hideCurrentPicker: NO];
+                [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
+                [datePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
+            }else{
+                [self hideCurrentPicker: YES];
+                [UIView beginAnimations:@"DatePickerSlide" context:nil];
+                [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
+                [datePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
+                [UIView commitAnimations];
+            }
+        }
+        
+        
+        if(textField == fromDateField){
+            currentPicker = 4;
+            fromDateField.layer.cornerRadius = 4.0f;
+            fromDateField.layer.masksToBounds = YES;
+            fromDateField.layer.borderWidth = 1.0f;
+            CABasicAnimation *colorAnim = [CABasicAnimation animationWithKeyPath:@"borderColor"];
+            colorAnim.toValue = (id)[UIColor grayColor].CGColor;
+            [fromDateField.layer addAnimation:colorAnim forKey:@"borderColor"];
+            fromDateField.layer.borderColor = [UIColor grayColor].CGColor;
+            toDateField.layer.borderColor = [[UIColor clearColor] CGColor];
+        }else if(textField == toDateField){
+            currentPicker = 5;
+            toDateField.layer.cornerRadius = 4.0f;
+            toDateField.layer.masksToBounds = YES;
+            toDateField.layer.borderWidth = 1.0f;
+            CABasicAnimation *colorAnim = [CABasicAnimation animationWithKeyPath:@"borderColor"];
+            colorAnim.toValue = (id)[UIColor grayColor].CGColor;
+            [toDateField.layer addAnimation:colorAnim forKey:@"borderColor"];
+            toDateField.layer.borderColor = [UIColor grayColor].CGColor;
+            fromDateField.layer.borderColor = [[UIColor clearColor] CGColor];
+        }
+        
+        [self datePickerDidChange: nil];
+        
+        return NO;
+    }else{
+        [self hideCurrentPicker: YES];
     }
         
     return YES;
@@ -272,6 +366,17 @@
         [self search: nil];
     
     return NO;
+}
+
+- (IBAction)datePickerDidChange:(id)sender{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"MM/dd/yyyy"];
+
+    if(currentPicker == 4){
+        [fromDateField setText: [dateFormatter stringFromDate: [datePicker date]]];
+    }else if(currentPicker == 5){
+        [toDateField setText: [dateFormatter stringFromDate: [datePicker date]]];
+    }
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
@@ -372,6 +477,7 @@
     }
     [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
     [statePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
+    [datePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
     
     currentPicker = 1;
 }
@@ -393,6 +499,7 @@
     }
     [distancePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
     [statePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
+    [datePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
     
     currentPicker = 2;
 }
@@ -414,6 +521,7 @@
     }
     [distancePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
     [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
+    [datePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
     
     currentPicker = 3;
 }

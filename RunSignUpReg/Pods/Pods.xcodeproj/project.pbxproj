@@ -388,12 +388,17 @@
 		036EB784D8194F7C8120F3C4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					armv7s,
+					armv7,
+				);
 				CODE_SIGN_IDENTITY = "iPhone Developer: Shaun Connolly (T2FZ84TP6H)";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = "$(inherited)";
-				PROVISIONING_PROFILE = "B0BB9B19-D3EC-462C-8706-303CEF6B33D2";
+				PROVISIONING_PROFILE = "717EFBCE-5D00-44E3-ABF7-B29E99D95AD1";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = NO;
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Release;
 		};
@@ -514,13 +519,18 @@
 		F167487A79C34BA897C8088C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					armv7s,
+					armv7,
+				);
 				CODE_SIGN_IDENTITY = "iPhone Developer: Shaun Connolly (T2FZ84TP6H)";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "$(inherited)";
-				PROVISIONING_PROFILE = "B0BB9B19-D3EC-462C-8706-303CEF6B33D2";
+				PROVISIONING_PROFILE = "717EFBCE-5D00-44E3-ABF7-B29E99D95AD1";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = NO;
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Debug;
 		};

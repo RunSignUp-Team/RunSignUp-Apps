@@ -47,6 +47,9 @@
 		7768178E1604F3FB00C5F29A /* RaceListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7768178C1604F3FB00C5F29A /* RaceListViewController.xib */; };
 		77681792160539E500C5F29A /* RaceSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77681790160539E500C5F29A /* RaceSearchViewController.m */; };
 		77681793160539E500C5F29A /* RaceSearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77681791160539E500C5F29A /* RaceSearchViewController.xib */; };
+		777AA930195E2CDC00C45970 /* IconSpotlight7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 777AA92F195E2CDC00C45970 /* IconSpotlight7@2x.png */; };
+		777AA933195E36BF00C45970 /* GrayButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 777AA931195E36BF00C45970 /* GrayButton.png */; };
+		777AA934195E36BF00C45970 /* GrayButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 777AA932195E36BF00C45970 /* GrayButton@2x.png */; };
 		7781644E168687FD0033B6FE /* RaceDetailsEventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7781644D168687FD0033B6FE /* RaceDetailsEventTableViewCell.m */; };
 		778BB485193BB8A90098F9B6 /* RaceResultsEventDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 778BB483193BB8A90098F9B6 /* RaceResultsEventDetailsViewController.m */; };
 		778BB486193BB8A90098F9B6 /* RaceResultsEventDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 778BB484193BB8A90098F9B6 /* RaceResultsEventDetailsViewController.xib */; };
@@ -235,6 +238,9 @@
 		7768178F160539E500C5F29A /* RaceSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RaceSearchViewController.h; sourceTree = "<group>"; };
 		77681790160539E500C5F29A /* RaceSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RaceSearchViewController.m; sourceTree = "<group>"; };
 		77681791160539E500C5F29A /* RaceSearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RaceSearchViewController.xib; sourceTree = "<group>"; };
+		777AA92F195E2CDC00C45970 /* IconSpotlight7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IconSpotlight7@2x.png"; sourceTree = "<group>"; };
+		777AA931195E36BF00C45970 /* GrayButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GrayButton.png; sourceTree = "<group>"; };
+		777AA932195E36BF00C45970 /* GrayButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GrayButton@2x.png"; sourceTree = "<group>"; };
 		7781644C168687FD0033B6FE /* RaceDetailsEventTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RaceDetailsEventTableViewCell.h; sourceTree = "<group>"; };
 		7781644D168687FD0033B6FE /* RaceDetailsEventTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RaceDetailsEventTableViewCell.m; sourceTree = "<group>"; };
 		778BB482193BB8A90098F9B6 /* RaceResultsEventDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RaceResultsEventDetailsViewController.h; sourceTree = "<group>"; };
@@ -514,6 +520,8 @@
 		77A8628215FBAA72004BAED8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				777AA931195E36BF00C45970 /* GrayButton.png */,
+				777AA932195E36BF00C45970 /* GrayButton@2x.png */,
 				77AD37251946296F00A267C5 /* QuestionsRadio.png */,
 				77AD37261946296F00A267C5 /* QuestionsRadio@2x.png */,
 				77AD37211946151700A267C5 /* QuestionsCheckbox.png */,
@@ -556,6 +564,7 @@
 				77A8628D15FBAA72004BAED8 /* Icon@2x.png */,
 				774F4742195891980003469F /* IconSpotlight.png */,
 				774F4743195891980003469F /* IconSpotlight@2x.png */,
+				777AA92F195E2CDC00C45970 /* IconSpotlight7@2x.png */,
 				774F4744195891980003469F /* iTunesArtwork */,
 				774F4745195891980003469F /* iTunesArtwork@2x */,
 				774F47401958918F0003469F /* Icon-114.png */,
@@ -748,7 +757,7 @@
 		77A8625415FBA459004BAED8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				TargetAttributes = {
 					77A8625C15FBA45A004BAED8 = {
 						DevelopmentTeam = 2675BLFJQG;
@@ -830,6 +839,7 @@
 				77A862E515FBAA72004BAED8 /* loading18.png in Resources */,
 				77A862E615FBAA72004BAED8 /* loading18@2x.png in Resources */,
 				77A862E715FBAA72004BAED8 /* loading19.png in Resources */,
+				777AA934195E36BF00C45970 /* GrayButton@2x.png in Resources */,
 				77A862E815FBAA72004BAED8 /* loading19@2x.png in Resources */,
 				77A862E915FBAA72004BAED8 /* loading1@2x.png in Resources */,
 				77A862EA15FBAA72004BAED8 /* loading2.png in Resources */,
@@ -853,6 +863,7 @@
 				77A862FB15FBAA72004BAED8 /* loading3@2x.png in Resources */,
 				77A862FC15FBAA72004BAED8 /* loading4.png in Resources */,
 				77A862FD15FBAA72004BAED8 /* loading4@2x.png in Resources */,
+				777AA933195E36BF00C45970 /* GrayButton.png in Resources */,
 				77A862FE15FBAA72004BAED8 /* loading5.png in Resources */,
 				77A862FF15FBAA72004BAED8 /* loading5@2x.png in Resources */,
 				77A8630015FBAA72004BAED8 /* loading6.png in Resources */,
@@ -873,6 +884,7 @@
 				77A8631715FBACB8004BAED8 /* GreenButton@2x.png in Resources */,
 				77AD105617B13E7A00723395 /* RaceSignUpConfirmationViewController.xib in Resources */,
 				77B04378194F831B001FF6B5 /* SettingsViewController.xib in Resources */,
+				777AA930195E2CDC00C45970 /* IconSpotlight7@2x.png in Resources */,
 				77A8631815FBACB8004BAED8 /* GreenButtonTap.png in Resources */,
 				77A8631915FBACB8004BAED8 /* GreenButtonTap@2x.png in Resources */,
 				77A8631C15FBAFA3004BAED8 /* Title.png in Resources */,
@@ -1001,6 +1013,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -1018,6 +1031,7 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -1026,9 +1040,10 @@
 				HEADER_SEARCH_PATHS = "\"$(SDK_DIR)\"/usr/include/libxml2";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				LIBRARY_SEARCH_PATHS = "\"$(SDK_DIR)\"/usr/lib";
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Debug;
 		};
@@ -1036,6 +1051,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -1046,6 +1062,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -1058,6 +1075,7 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Release;
 		};
@@ -1067,7 +1085,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Bob Bickel (2675BLFJQG)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RunSignUpReg/RunSignUpReg-Prefix.pch";
@@ -1108,7 +1126,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Bob Bickel (2675BLFJQG)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RunSignUpReg/RunSignUpReg-Prefix.pch";

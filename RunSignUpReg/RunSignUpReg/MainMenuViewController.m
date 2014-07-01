@@ -2,9 +2,19 @@
 //  MainMenuViewController.m
 //  RunSignUpReg
 //
-//  Created by Billy Connolly on 9/8/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+// Copyright 2014 RunSignUp
 //
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 #import "MainMenuViewController.h"
 #import "SignUpViewController.h"
@@ -169,15 +179,6 @@
     
     [hintPageControl setNumberOfPages: [hintArray count]];
     [hintScrollView setContentSize: CGSizeMake(320 * [hintArray count], hintScrollView.frame.size.height)];
-
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"FirstRun"] == nil){
-        [[NSUserDefaults standardUserDefaults] setObject:@"FirstRun" forKey:@"FirstRun"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Thank you" message:@"Thank you for testing out RunSignUp Mobile Beta. You will only see this popup once. Please send any critiques or bugs to billy_connolly@comcast.net and I will get to them as soon as I can." delegate:nil cancelButtonTitle:@"You're Welcome!" otherButtonTitles:nil];
-        [alert show];
-        [alert release];
-    }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
@@ -289,9 +290,7 @@
 }
 
 - (IBAction)signUp:(id)sender{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Not Supported" message:@"Signing up from the mobile app is not currently supported. Please create an account online by tapping \"Sign Up\"." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Sign Up", nil];
-    [alert show];
-    [alert release];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://runsignup.com/CreateAccount"]];
     
     /*SignUpViewController *svc = [[SignUpViewController alloc] initWithNibName:@"SignUpViewController" bundle:nil];
     [svc setSignUpMode: RSUSignUpDefault];
@@ -299,11 +298,11 @@
     [svc release];*/
 }
 
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
+/*- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
     if(buttonIndex == 1){
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://runsignup.com/CreateAccount"]];
     }
-}
+}*/
 
 - (IBAction)about:(id)sender{
     [UIView beginAnimations:@"AboutSlide" context:nil];

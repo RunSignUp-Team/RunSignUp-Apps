@@ -2,9 +2,19 @@
 //  RaceSignUpWaiverViewController.m
 //  RunSignUpReg
 //
-//  Created by Billy Connolly on 9/18/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+// Copyright 2014 RunSignUp
 //
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 #import "RaceSignUpWaiverViewController.h"
 #import "RaceSignUpGiveawayViewController.h"
@@ -58,10 +68,6 @@
         if([event objectForKey: @"giveaway"] != nil || [event objectForKey: @"giveaway-options"] != nil)
             hasGiveaway = YES;
     }
-    
-    RaceSignUpWaiverViewController *rswvc = [[RaceSignUpWaiverViewController alloc] initWithNibName:@"RaceSignUpWaiverViewController" bundle:nil data:dataDict];
-    [self.navigationController pushViewController:rswvc animated:YES];
-    [rswvc release];
     
     if(hasGiveaway){
         RaceSignUpGiveawayViewController *rsugvc = [[RaceSignUpGiveawayViewController alloc] initWithNibName:@"RaceSignUpGiveawayViewController" bundle:nil data:dataDict];

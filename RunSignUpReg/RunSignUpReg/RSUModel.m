@@ -2,9 +2,19 @@
 //  RSUModel.m
 //  RunSignUpReg
 //
-//  Created by Billy Connolly on 9/10/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+// Copyright 2014 RunSignUp
 //
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 #import "RSUModel.h"
 #import "RaceSignUpConfirmationViewController.h"
@@ -418,7 +428,8 @@ static RSUModel *model = nil;
 
 - (void)editUserWithInfo:(NSDictionary *)info response:(void (^)(RSUConnectionResponse))responseBlock{
     if([currentUser objectForKey:@"user_id"] != nil && info != nil){
-        NSString *dob = [self convertDate: [info objectForKey:@"dob"]];
+        NSString *standardDob = [self standardizeDate: [info objectForKey: @"dob"]];
+        NSString *dob = [self convertSlashDateToDashDate: standardDob];
         
         NSString *post = [NSString stringWithFormat:@"user_id=%@&first_name=%@&last_name=%@&dob=%@&gender=%@&phone=%@&address1=%@&city=%@&state=%@&country=%@&zipcode=%@",
                          [currentUser objectForKey:@"user_id"],[info objectForKey:@"first_name"],[info objectForKey:@"last_name"], dob,
@@ -536,9 +547,9 @@ static RSUModel *model = nil;
     if([params objectForKey:@"distance_units"])
         urlString = [urlString stringByAppendingFormat:@"&distance_units=%@", [params objectForKey:@"distance_units"]];
     if([params objectForKey:@"start_date"])
-        urlString = [urlString stringByAppendingFormat:@"&start_date=%@", [self convertDate: [params objectForKey:@"start_date"]]];
+        urlString = [urlString stringByAppendingFormat:@"&start_date=%@", [self convertSlashDateToDashDate: [params objectForKey:@"start_date"]]];
     if([params objectForKey:@"end_date"])
-        urlString = [urlString stringByAppendingFormat:@"&end_date=%@", [self convertDate: [params objectForKey:@"end_date"]]];
+        urlString = [urlString stringByAppendingFormat:@"&end_date=%@", [self convertSlashDateToDashDate: [params objectForKey:@"end_date"]]];
     if([params objectForKey:@"country"])
         urlString = [urlString stringByAppendingFormat:@"&country=%@", [params objectForKey:@"country"]];
     if([params objectForKey:@"state"])
@@ -669,8 +680,10 @@ static RSUModel *model = nil;
 
 - (void)retrieveRaceDetailsWithRaceID:(NSString *)raceID response:(void (^)(NSMutableDictionary *))responseBlock{
     NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
-    [request setURL:[NSURL URLWithString:[NSString stringWithFormat: @"%@/rest/race?race_id=%@&future_events_only=T&include_waiver=T&include_giveaway_details=T&include_questions=T&include_membership_settings=T&race_headings=T&race_links=T&registration_api_supported_features=addons,giveaway,questions,memberships", RUNSIGNUP_BASE_URL, raceID]]];
+    [request setURL:[NSURL URLWithString:[NSString stringWithFormat: @"%@/rest/race?race_id=%@&future_events_only=F&include_waiver=T&include_giveaway_details=T&include_questions=T&include_membership_settings=T&race_headings=T&race_links=T&registration_api_supported_features=giveaway,questions,memberships", RUNSIGNUP_BASE_URL, raceID]]];
     [request setHTTPMethod:@"GET"];
+    
+    NSLog(@"Request URL: %@", [request URL]);
     
     void (^completion)(NSURLResponse *,NSData *,NSError *) = ^(NSURLResponse *response,NSData *urlData,NSError *error){
         if(!urlData){
@@ -695,6 +708,8 @@ static RSUModel *model = nil;
             RXMLElement *raceAddress = [rootXML child: @"address"];
             RXMLElement *raceRegistrationOpen = [rootXML child: @"is_registration_open"];
             RXMLElement *canUseRegistrationAPI = [rootXML child: @"can_use_registration_api"];
+            RXMLElement *raceLatitude = [rootXML child: @"latitude"];
+            RXMLElement *raceLongitude = [rootXML child: @"longitude"];
             
             BOOL registrationOpen = NO;
             if(raceRegistrationOpen != nil && [[raceRegistrationOpen text] isEqualToString:@"T"])
@@ -710,6 +725,12 @@ static RSUModel *model = nil;
                     [race setObject:[ele text] forKey:[ele tag]];
                 }
             }
+            
+            if(raceLatitude)
+                [race setObject:[raceLatitude text] forKey:[raceLatitude tag]];
+            
+            if(raceLongitude)
+                [race setObject:[raceLongitude text] forKey:[raceLongitude tag]];
             
             if(raceWaiver)
                 [race setObject:[raceWaiver text] forKey:[raceWaiver tag]];
@@ -926,7 +947,7 @@ static RSUModel *model = nil;
         NSMutableArray *resultSetList = [[NSMutableArray alloc] init];
         
         NSString *string = [[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding];
-        //NSLog(string);
+        NSLog(string);
         
         if(urlData != nil){
             RXMLElement *rootXML = [[RXMLElement alloc] initFromXMLData:urlData];
@@ -1112,10 +1133,22 @@ static RSUModel *model = nil;
         RXMLElement *dob = [user child:@"dob"];
         RXMLElement *address = [user child:@"address"];
         
-        for(RXMLElement *ele in @[userID,fname,lname,emailAddress,gender,phone]){
+        for(RXMLElement *ele in @[userID,fname,lname]){
             if([ele text]){
                 [userDict setObject:[ele text] forKey:[ele tag]];
             }
+        }
+        
+        if(emailAddress){
+            [userDict setObject:[emailAddress text] forKey:[emailAddress tag]];
+        }
+        
+        if(gender){
+            [userDict setObject:[gender text] forKey:[gender tag]];
+        }
+        
+        if(phone){
+            [userDict setObject:[phone text] forKey:[phone tag]];
         }
         
         if(profileImage){
@@ -1172,9 +1205,9 @@ static RSUModel *model = nil;
     return dateString;
 }
 
-- (NSString *)convertDate:(NSString *)dashDate{
-    if([dashDate length] == 10){
-        return [NSString stringWithFormat:@"%@-%@-%@", [dashDate substringWithRange:NSRangeFromString(@"6-4")], [dashDate substringWithRange:NSRangeFromString(@"0-2")], [dashDate substringWithRange:NSRangeFromString(@"3-2")]];
+- (NSString *)convertSlashDateToDashDate:(NSString *)slashDate{
+    if([slashDate length] == 10){
+        return [NSString stringWithFormat:@"%@-%@-%@", [slashDate substringWithRange:NSRangeFromString(@"6-4")], [slashDate substringWithRange:NSRangeFromString(@"0-2")], [slashDate substringWithRange:NSRangeFromString(@"3-2")]];
     }
     return @"Error";
 }

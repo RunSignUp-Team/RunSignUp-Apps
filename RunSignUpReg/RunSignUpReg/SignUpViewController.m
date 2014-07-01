@@ -2,9 +2,19 @@
 //  SignUpViewController.m
 //  RunSignUpReg
 //
-//  Created by Billy Connolly on 9/8/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+// Copyright 2014 RunSignUp
 //
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 #import "SignUpViewController.h"
 #import "RSUModel.h"
@@ -327,7 +337,7 @@
             }
         }
     }
-
+    
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     [dict setObject:[firstNameField text] forKey:@"first_name"];
     [dict setObject:[lastNameField text] forKey:@"last_name"];
@@ -359,7 +369,37 @@
     
     [address setObject:[zipcodeField text] forKey:@"zipcode"];
     [dict setObject:address forKey:@"address"];
-
+    
+    if([dict objectForKey: @"first_name"] == nil || [dict objectForKey: @"last_name"] == nil){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Name field is missing, please revise and try again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+    }else if([dict objectForKey: @"email"] == nil || [[dict objectForKey: @"email"] rangeOfString:@"@"].location == NSNotFound){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please enter a valid email address and try again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+    }else if([dict objectForKey: @"dob"] == nil || [[[RSUModel sharedModel] convertSlashDateToDashDate: [[RSUModel sharedModel] standardizeDate: [dict objectForKey:@"dob"]]] isEqualToString: @"Error"]){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please enter a valid date of birth and try again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+    }else if([dict objectForKey: @"gender"] == nil || !([[dict objectForKey: @"gender"] isEqualToString: @"M"] || [[dict objectForKey: @"gender"] isEqualToString: @"F"])){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please choose a gender and try again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+    }else if([dict objectForKey: @"phone"] == nil){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please enter a valid phone number and try again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+    }else if(signUpMode == RSUSignUpNewUser && [dict objectForKey: @"password"] == nil){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please enter a valid password and try again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+    }else if(signUpMode == RSUSignUpNewUser && ![[passwordField text] isEqualToString: [confirmPasswordField text]]){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please enter a matching passwords and try again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+    }
+    
     [self setUserDictionary: dict];
     
     if(signUpMode == RSUSignUpEditingUser){

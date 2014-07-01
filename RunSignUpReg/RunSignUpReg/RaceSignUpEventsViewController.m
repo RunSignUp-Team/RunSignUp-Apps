@@ -2,9 +2,19 @@
 //  RaceSignUpEventsViewController.m
 //  RunSignUpReg
 //
-//  Created by Billy Connolly on 7/17/13.
+// Copyright 2014 RunSignUp
 //
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 #import "RaceSignUpEventsViewController.h"
 #import "RaceSignUpWaiverViewController.h"
@@ -22,6 +32,13 @@
         
         for(int x = 0; x < [[dataDict objectForKey: @"events"] count]; x++){
             [selectedArray addObject: [NSNumber numberWithBool:NO]];
+        }
+        
+        if([dataDict objectForKey: @"chosenRegistration"]){
+            int chosenRegistration = [[dataDict objectForKey:@"chosenRegistration"] intValue];
+            if(chosenRegistration >= 0 && chosenRegistration < [selectedArray count]){
+                [selectedArray replaceObjectAtIndex:chosenRegistration withObject:[NSNumber numberWithBool: YES]];
+            }
         }
         
         eventDateFormatter = [[NSDateFormatter alloc] init];
@@ -132,17 +149,28 @@
                 NSDate *openDate = [eventDateFormatter dateFromString: [regPeriod objectForKey: @"registration_opens"]];
                 NSDate *closeDate = [eventDateFormatter dateFromString: [regPeriod objectForKey: @"registration_closes"]];
                 
+                actualRegPeriod = nil;
+                
                 if([openDate compare: [NSDate date]] == NSOrderedAscending && [closeDate compare: [NSDate date]] == NSOrderedDescending)
                     actualRegPeriod = regPeriod;
             }
             
-            break;
+            if(actualRegPeriod){
+                break;
+            }else{
+                index++;
+            }
         }
     }
     
     if(actualEvent && actualRegPeriod){
         [cell setPrice:[actualRegPeriod objectForKey: @"race_fee"] price2:[actualRegPeriod objectForKey: @"processing_fee"]];
         [[cell nameLabel] setText: [actualEvent objectForKey: @"name"]];
+        
+        if([[selectedArray objectAtIndex: indexPath.row] boolValue])
+            [cell setAccessoryType: UITableViewCellAccessoryCheckmark];
+        else
+            [cell setAccessoryType: UITableViewCellAccessoryNone];
     }
     return cell;
 }

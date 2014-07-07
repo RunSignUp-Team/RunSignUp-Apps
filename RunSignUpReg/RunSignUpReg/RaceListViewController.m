@@ -21,6 +21,7 @@
 #import "RaceDetailsViewController.h"
 #import "RaceTableViewCell.h"
 #import "RSUModel.h"
+#import "RaceSearchTableViewCell.h"
 
 @implementation RaceListViewController
 @synthesize table;
@@ -33,7 +34,7 @@
     if(self){
         self.title = @"Races";
         if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-            self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:100];
+            self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:80];
         else
             self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:432 YLocation:140];
         [[rli label] setText: @"Fetching List..."];
@@ -57,7 +58,7 @@
     if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
         [self setEdgesForExtendedLayout: UIRectEdgeNone];
     
-    [table setSeparatorColor: [UIColor colorWithRed:0.0f green:0.5804f blue:0.8f alpha:1.0f]];
+    //[table setContentOffset: CGPointMake(0, 44) animated:YES];
     [self retrieveRaceList];
 }
 
@@ -86,6 +87,7 @@
         self.raceList = list;
         [rli fadeOut];
         [table reloadData];
+        //[table setContentOffset: CGPointMake(0, 44) animated:YES];
         [self doneLoadingTableViewData:YES];
     };
     [[RSUModel sharedModel] retrieveRaceListWithParams:searchParams response:response];
@@ -108,6 +110,7 @@
         self.raceList = newRaceList;
         [rli fadeOut];
         [table reloadData];
+        //[table setContentOffset: CGPointMake(0, 44) animated:YES];
         
         if([raceList count] != oldCount){
             UITableViewCell *cell = [table cellForRowAtIndexPath:[NSIndexPath indexPathForRow:oldCount inSection:0]];
@@ -121,6 +124,17 @@
         [self doneLoadingTableViewData:NO];
     };
     [[RSUModel sharedModel] retrieveRaceListWithParams:searchParams response:response];
+}
+
+- (void)searchButtonTappedWithSearch:(NSString *)search{
+    self.searchParams = [[NSMutableDictionary alloc] initWithObjectsAndKeys:search, @"name", nil];
+    [self retrieveRaceList];
+}
+
+- (void)advancedSearchTappedWithSearch:(NSString *)search{
+    if([search length] > 0)
+        self.searchParams = [[NSMutableDictionary alloc] initWithObjectsAndKeys:search, @"name", nil];
+    [self showSearchParams: nil];
 }
 
 - (IBAction)showSearchParams:(id)sender{
@@ -137,7 +151,18 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if(indexPath.row < [raceList count]){
+    if(indexPath.section == 0){
+        static NSString *SearchCellIdentifier = @"SearchCellIdentifier";
+        
+        RaceSearchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SearchCellIdentifier];
+        if(cell == nil){
+            cell = [[RaceSearchTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SearchCellIdentifier];
+        }
+        
+        [cell setDelegate: self];
+        
+        return cell;
+    }else if(indexPath.section == 1){
         static NSString *RaceCellIdentifier = @"RaceCellIdentifier";
 
         RaceTableViewCell *cell = (RaceTableViewCell *)[tableView dequeueReusableCellWithIdentifier:RaceCellIdentifier];
@@ -145,11 +170,20 @@
             cell = [[RaceTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:RaceCellIdentifier];
         }
         
-        [[cell nameLabel] setText: [[raceList objectAtIndex: indexPath.row] objectForKey: @"name"]];
-        [[cell dateLabel] setText: [[raceList objectAtIndex: indexPath.row] objectForKey: @"next_date"]];
-        [[cell locationLabel] setText: [[RSUModel sharedModel] addressLine2FromAddress: [[raceList objectAtIndex: indexPath.row] objectForKey: @"address"]]];
+        [cell setData: [raceList objectAtIndex: indexPath.row]];
         
-        NSString *htmlString = [[raceList objectAtIndex: indexPath.row] objectForKey: @"description"];
+        if(indexPath.row % 2)
+            [[cell contentView] setBackgroundColor: [UIColor colorWithRed:231/255.0f green:239/255.0f blue:248/255.0f alpha:1.0f]];
+        else
+            [[cell contentView] setBackgroundColor: [UIColor whiteColor]];
+        
+        /*UIImage *disclosureImage = [UIImage imageNamed:@"RaceListDisclosure.png"];
+        UIImageView *disclosureImageView = [[UIImageView alloc] initWithImage: disclosureImage];
+        [cell setAccessoryView: disclosureImageView];
+        [[cell accessoryView] setBackgroundColor: [UIColor clearColor]];
+        [disclosureImageView release];*/
+        
+        /*NSString *htmlString = [[raceList objectAtIndex: indexPath.row] objectForKey: @"description"];
         
         NSRange r;
         while((r = [htmlString rangeOfString:@"<[^>]+>" options:NSRegularExpressionSearch]).location != NSNotFound){
@@ -184,7 +218,7 @@
         htmlString = [htmlString stringByReplacingOccurrencesOfString:@"</b>" withString:@""];
 
         [[cell descriptionLabel] setText: htmlString];
-        
+        */ 
         return cell;
     }else{
         static NSString *CellIdentifier = @"CellIdentifier";
@@ -204,16 +238,23 @@
             [cell setSelectionStyle: UITableViewCellSelectionStyleNone];
         }
         [[cell textLabel] setTextAlignment: NSTextAlignmentCenter];
+        
+        if([raceList count] % 2){
+            [[cell contentView] setBackgroundColor: [UIColor colorWithRed:231/255.0f green:239/255.0f blue:248/255.0f alpha:1.0f]];
+        }else{
+            [[cell contentView] setBackgroundColor: [UIColor whiteColor]];
+        }
+        
         return cell;
     }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if(indexPath.row < [raceList count]){
+    if(indexPath.section == 1){
         RaceDetailsViewController *rdvc = [[RaceDetailsViewController alloc] initWithNibName:@"RaceDetailsViewController" bundle:nil data:[raceList objectAtIndex: indexPath.row]];
         [self.navigationController pushViewController:rdvc animated:YES];
         [rdvc release];
-    }else if(moreResultsToRetrieve){
+    }else if(indexPath.section == 2 && moreResultsToRetrieve){
         if([searchParams objectForKey:@"page"]){
             int currentPage = [[searchParams objectForKey:@"page"] intValue];
             [searchParams setObject:[NSString stringWithFormat:@"%i", currentPage + 1] forKey:@"page"];
@@ -225,10 +266,12 @@
             [searchParams setObject:@"2" forKey:@"page"];
         }
         [self retrieveRaceListAndAppend];
+    }else{
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+/*- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     int headerHeight = [self tableView:tableView heightForHeaderInSection:section];
     
     UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, headerHeight)];
@@ -281,30 +324,42 @@
     UIView *separator = [[UIView alloc] initWithFrame: CGRectMake(0, headerHeight, 320, 1)];
     [separator setBackgroundColor: [UIColor colorWithRed:0.0f green:0.5804f blue:0.8f alpha:1.0f]];
     [header addSubview: separator];
-    return header;
-}
+    
+    if(headerSearch == nil)
+        headerSearch = [[UISearchBar alloc] init];
+    return headerSearch;
+    
+    //return header;
+}*/
 
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if([raceList count] != 0){
-        if(indexPath.row < [raceList count])
-            return 200;
+    if(indexPath.section == 0){
+        return 44;
+    }else if(indexPath.section == 1){
+        NSDictionary *data = [raceList objectAtIndex: indexPath.row];
+        CGSize reqSize = [[data objectForKey:@"name"] sizeWithFont:[UIFont fontWithName:@"Sanchez-Regular" size:20] constrainedToSize:CGSizeMake(296, 100)];
+        if(reqSize.height > 35)
+            return 132;
         else
-            return 100;
+            return 104;
     }else{
-        return 200;
+        return 100;
     }
 }
 
 - (float)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 34.0f;
+    return 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [raceList count] + 1; // + 1 for "Load More" button
+    if(section == 1)
+        return [raceList count];
+    else
+        return 1;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
+    return 3;
 }
 
 - (void)reloadTableViewDataSource{

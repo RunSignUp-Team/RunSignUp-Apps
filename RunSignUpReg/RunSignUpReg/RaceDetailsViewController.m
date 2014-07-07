@@ -107,9 +107,9 @@
 
     [nameLabel setText: [dataDict objectForKey: @"name"]];
     [dateLabel setText: [dataDict objectForKey: @"next_date"]];
-    [placeLabel setText: [[RSUModel sharedModel] addressLine2FromAddress: [dataDict objectForKey:@"address"]]];
+    [placeLabel setText: [RSUModel addressLine2FromAddress: [dataDict objectForKey:@"address"]]];
     [addressLine1 setText: [[dataDict objectForKey: @"address"] objectForKey:@"street"]];
-    [addressLine2 setText: [[RSUModel sharedModel] addressLine2FromAddress: [dataDict objectForKey:@"address"]]];
+    [addressLine2 setText: [RSUModel addressLine2FromAddress: [dataDict objectForKey:@"address"]]];
     
     NSString *htmlString = [dataDict objectForKey: @"description"];
     htmlString = [htmlString stringByReplacingOccurrencesOfString:@"&amp;"  withString:@"&"];
@@ -142,7 +142,7 @@
             [addr release];
         }else{
             dispatch_async(dispatch_get_main_queue(), ^{
-                addressLocation = [self getLocationFromAddressString:[NSString stringWithFormat:@"%@, %@", [[dataDict objectForKey: @"address"] objectForKey:@"street"], [[RSUModel sharedModel] addressLine2FromAddress:[dataDict objectForKey:@"address"]]]];
+                addressLocation = [self getLocationFromAddressString:[NSString stringWithFormat:@"%@, %@", [[dataDict objectForKey: @"address"] objectForKey:@"street"], [RSUModel addressLine2FromAddress:[dataDict objectForKey:@"address"]]]];
                 [mapView setRegion: MKCoordinateRegionMake(addressLocation, MKCoordinateSpanMake(0.005, 0.003))]; // these two just trial and error
                 
                 AddressAnnotation *addr = [[AddressAnnotation alloc] initWithCoordinate: addressLocation];
@@ -313,7 +313,7 @@
     
     EKEvent *event = [EKEvent eventWithEventStore: store];
     [event setTitle: [dataDict objectForKey: @"name"]];
-    [event setLocation: [NSString stringWithFormat:@"%@, %@", [[dataDict objectForKey:@"address"] objectForKey:@"street"], [[RSUModel sharedModel] addressLine2FromAddress: [dataDict objectForKey:@"address"]]]];
+    [event setLocation: [NSString stringWithFormat:@"%@, %@", [[dataDict objectForKey:@"address"] objectForKey:@"street"], [RSUModel addressLine2FromAddress: [dataDict objectForKey:@"address"]]]];
     [event setURL: [NSURL URLWithString: [dataDict objectForKey: @"URL"]]];
     [event setCalendar: [store defaultCalendarForNewEvents]];
     
@@ -338,7 +338,7 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex{
     if(buttonIndex == 0){
         UIPasteboard *pb = [UIPasteboard generalPasteboard];
-        [pb setString: [NSString stringWithFormat:@"%@, %@", [[dataDict objectForKey:@"address"] objectForKey:@"street"], [[RSUModel sharedModel] addressLine2FromAddress: [dataDict objectForKey:@"address"]]]];
+        [pb setString: [NSString stringWithFormat:@"%@, %@", [[dataDict objectForKey:@"address"] objectForKey:@"street"], [RSUModel addressLine2FromAddress: [dataDict objectForKey:@"address"]]]];
     }else if(buttonIndex == 1){
         [self createCalendarEvent: nil];
     }

@@ -129,7 +129,7 @@
 - (void)printConfirmation{
     UIPrintInteractionController *printInteractionController = [UIPrintInteractionController sharedPrintController];
     NSString *markupText = [NSString stringWithFormat:@"<html><head><style>body{font-family: \"Helvetica\", \"Arial\", sans-serif;}h3{color: #0094CC;}.title{}.subheading{color: #DEAB4C;}ul{padding-left: 15px;list-style-type: none;}li{padding: 5px 0 5px 0;}</style></head><body><h3>Race Information</h3><span class=\"subheading\">Race:&nbsp;</span>%@<br /><span class=\"subheading\">Date:&nbsp;</span>%@<br /><span class=\"subheading\">Location:&nbsp;</span>%@<br /><span class=\"subheading\">Registered:&nbsp;</span>%@<br /><h3>Event(s)</h3><ul>",
-                            [raceNameLabel text], [dataDict objectForKey:@"start_date"], [NSString stringWithFormat:@"%@ - %@", [[dataDict objectForKey:@"address"] objectForKey:@"street"], [[RSUModel sharedModel] addressLine2FromAddress: [dataDict objectForKey:@"address"]]], [registeredLabel text]];
+                            [raceNameLabel text], [dataDict objectForKey:@"start_date"], [NSString stringWithFormat:@"%@ - %@", [[dataDict objectForKey:@"address"] objectForKey:@"street"], [RSUModel addressLine2FromAddress: [dataDict objectForKey:@"address"]]], [registeredLabel text]];
     
     for(NSDictionary *event in [dataDict objectForKey: @"events"]){
         markupText = [markupText stringByAppendingFormat:@"<li><b>%@</b> - %@</li>", [event objectForKey:@"name"], [event objectForKey: @"start_time"]];

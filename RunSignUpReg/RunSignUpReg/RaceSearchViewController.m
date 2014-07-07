@@ -18,8 +18,10 @@
 
 #import "RaceSearchViewController.h"
 #import "RaceListViewController.h"
+#import "RaceSearchRoundedTableViewCell.h"
 
 @implementation RaceSearchViewController
+@synthesize table;
 @synthesize distanceDrop;
 @synthesize countryDrop;
 @synthesize stateDrop;
@@ -29,8 +31,11 @@
 @synthesize distanceField;
 @synthesize fromDateField;
 @synthesize toDateField;
+@synthesize dateClearButton;
+@synthesize prevNextControl;
 @synthesize pickerBackgroundView;
 @synthesize distancePicker;
+@synthesize cityField;
 @synthesize countryPicker;
 @synthesize statePicker;
 @synthesize datePicker;
@@ -52,8 +57,10 @@
         
         currentPicker = 0;
         currentSelectedDistance = 0;
-        currentSelectedCountry = 0;
+        currentSelectedCountry = 1;
         currentSelectedState = 0;
+        
+        showingBackground = NO;
         
         self.title = @"Search Races";
     }
@@ -76,23 +83,30 @@
     UIImage *greenButtonTapImage = [UIImage imageNamed:@"GreenButtonTap.png"];
     UIImage *stretchedGreenButtonTap = [greenButtonTapImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     
-    [distanceDrop setBackgroundImage:dropDownStretched forState:UIControlStateNormal];
+    /*[distanceDrop setBackgroundImage:dropDownStretched forState:UIControlStateNormal];
     [distanceDrop setBackgroundImage:dropDownTapStretched forState:UIControlStateSelected];
     [countryDrop setBackgroundImage:dropDownStretched forState:UIControlStateNormal];
     [countryDrop setBackgroundImage:dropDownTapStretched forState:UIControlStateSelected];
     [stateDrop setBackgroundImage:dropDownStretched forState:UIControlStateNormal];
-    [stateDrop setBackgroundImage:dropDownTapStretched forState:UIControlStateSelected];
+    [stateDrop setBackgroundImage:dropDownTapStretched forState:UIControlStateSelected];*/
     [searchButton setBackgroundImage:stretchedGreenButton forState:UIControlStateNormal];
     [searchButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
     [cancelButton setBackgroundImage:stretchedGreenButton forState:UIControlStateNormal];
     [cancelButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
     
-    //[UIColor colorWithRed:0.5f green:0.6863f blue:0.8431f alpha:1.0f]
-
-    /*NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"MM/dd/yyyy"];
-    [fromDateField setText: [formatter stringFromDate: [NSDate date]]];
-    [formatter release];*/
+    for(UITextField *field in @[raceNameField,distanceField,cityField,fromDateField,toDateField]){
+        [field setFont: [UIFont fontWithName:@"Sanchez-Regular" size:16]];
+    }
+    
+    for(UIButton *button in @[distanceDrop, stateDrop, countryDrop]){
+        [[button titleLabel] setFont: [UIFont fontWithName:@"Sanchez-Regular" size:16]];
+    }
+    
+    dateFieldOriginalTextColor = [[fromDateField textColor] retain];
+    
+    NSString *countryTitle = [NSString stringWithFormat:@"  %@", [countryArray objectAtIndex: currentSelectedCountry]];
+    [countryDrop setTitle:countryTitle forState:UIControlStateNormal];
+    [countryPicker selectRow:currentSelectedCountry inComponent:0 animated:NO];
     
     // MAKE SURE INPUT IS OK
     // Picker view blur beneath in signupviewcontroller
@@ -158,9 +172,7 @@
             }
         }
         
-    }
-    
-    [raceNameField becomeFirstResponder];
+    }    
 }
 
 - (IBAction)search:(id)sender{
@@ -245,6 +257,135 @@
     [self.navigationController popViewControllerAnimated: YES];
 }
 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *CellIdentifier = @"CellIdentifier";
+    
+    RaceSearchRoundedTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if(cell == nil){
+        cell = [[RaceSearchRoundedTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    
+    [cell setTop: NO];
+    [cell setBottom: NO];
+    [cell setExtra: NO];
+    [cell setMiddleDivider: NO];
+    [cell reset];
+    
+    if(indexPath.row == 0){
+        [cell setExtra: YES];
+    }else if(indexPath.row == 1){
+        if(raceNameField.superview != nil)
+            [raceNameField removeFromSuperview];
+        [raceNameField setFrame: CGRectMake(36, 0, 248, 64)];
+        [cell.contentView addSubview: raceNameField];
+        
+        [cell setTop: YES];
+    }else if(indexPath.row == 2){
+        if(distanceField.superview != nil)
+            [distanceField removeFromSuperview];
+        [distanceField setFrame: CGRectMake(36, 0, 248, 64)];
+        [cell.contentView addSubview: distanceField];
+    }else if(indexPath.row == 3){
+        if(distanceDrop.superview != nil)
+            [distanceDrop removeFromSuperview];
+        [distanceDrop setFrame: CGRectMake(28, 0, 260, 64)];
+        [cell.contentView addSubview: distanceDrop];
+    }else if(indexPath.row == 4){
+        if(cityField.superview != nil)
+            [cityField removeFromSuperview];
+        [cityField setFrame: CGRectMake(36, 0, 248, 64)];
+        [cell.contentView addSubview: cityField];
+    }else if(indexPath.row == 5){
+        if(stateDrop.superview != nil)
+            [stateDrop removeFromSuperview];
+        [stateDrop setFrame: CGRectMake(28, 0, 260, 64)];
+        [cell.contentView addSubview: stateDrop];
+    }else if(indexPath.row == 6){
+        if(countryDrop.superview != nil)
+            [countryDrop removeFromSuperview];
+        [countryDrop setFrame: CGRectMake(28, 0, 260, 64)];
+        [cell.contentView addSubview: countryDrop];
+    }else if(indexPath.row == 7){
+        if(fromDateField.superview != nil)
+            [fromDateField removeFromSuperview];
+        if(toDateField.superview != nil)
+            [toDateField removeFromSuperview];
+        
+        [fromDateField setFrame: CGRectMake(20, 0, 140, 64)];
+        [toDateField setFrame: CGRectMake(160, 0, 140, 64)];
+
+        [cell.contentView addSubview: fromDateField];
+        [cell.contentView addSubview: toDateField];
+        
+        [cell setMiddleDivider: YES];
+        [cell setBottom: YES];
+    }else if(indexPath.row == 8){
+        if(searchButton.superview != nil)
+           [searchButton removeFromSuperview];
+        
+        [searchButton setFrame: CGRectMake(16, 16, 280, 44)];
+        [cell.contentView addSubview: searchButton];
+        [cell setExtra: YES];
+    }
+    
+    return cell;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return 9;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(indexPath.row != 0)
+        return 64;
+    return 20;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+}
+
+- (void)hideBackground{
+    if(showingBackground){
+        [UIView beginAnimations:@"TableSize" context:nil];
+        [UIView setAnimationDuration: 0.3f];
+        [table setFrame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+        [UIView commitAnimations];
+        
+        [UIView beginAnimations:@"BackgroundSlide" context:nil];
+        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height, 320, 260)];
+        [UIView commitAnimations];
+        showingBackground = NO;
+    }
+}
+
+- (void)showBackground{
+    [fromDateField setTextColor: dateFieldOriginalTextColor];
+    [toDateField setTextColor: dateFieldOriginalTextColor];
+
+    if(!showingBackground){
+        [UIView beginAnimations:@"TableSize" context:nil];
+        [UIView setAnimationDuration: 0.3f];
+        [table setFrame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 260)];
+        [UIView commitAnimations];
+        
+        [UIView beginAnimations:@"BackgroundSlide" context:nil];
+        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height - 260, 320, 260)];
+        [UIView commitAnimations];
+        showingBackground = YES;
+    }
+}
+
+- (IBAction)hidePicker:(id)sender{
+    [self hideCurrentPicker: YES];
+    [self.view endEditing: YES];
+    [self hideBackground];
+}
+
 - (void)hideCurrentPicker:(BOOL)animated{
     if(currentPicker != 0){
         UIPickerView *pickerToAnimate = distancePicker;
@@ -253,19 +394,15 @@
             pickerToAnimate = distancePicker;
             currentDrop = distanceDrop;
         }else if(currentPicker == 2){
-            pickerToAnimate = countryPicker;
-            currentDrop = countryDrop;
-        }else if(currentPicker == 3){
             pickerToAnimate = statePicker;
             currentDrop = stateDrop;
-        }else if(currentPicker == 4){
+        }else if(currentPicker == 3){
+            pickerToAnimate = countryPicker;
+            currentDrop = countryDrop;
+        }else if(currentPicker == 4 || currentPicker == 5){
             [UIView beginAnimations:@"DatePickerSlide" context:nil];
-            [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
             [datePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
             [UIView commitAnimations];
-            
-            fromDateField.layer.borderColor = [[UIColor clearColor] CGColor];
-            toDateField.layer.borderColor = [[UIColor clearColor] CGColor];
             
             currentPicker = 0;
             return;
@@ -275,84 +412,84 @@
         
         if(animated)
             [UIView beginAnimations:@"PickerSlide" context:nil];
-        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
         [pickerToAnimate setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
         if(animated)
             [UIView commitAnimations];
         
         currentPicker = 0;
-    }else{
-        [self.view endEditing: YES];
     }
 }
 
+- (void)showDatePickerForFromDateField:(BOOL)from{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"MM/dd/yyyy"];
+    
+    [self showBackground];
+    
+    NSDate *currentDate = [NSDate date];
+    if(from){
+        if([[fromDateField text] length] > 0){
+            currentDate = [dateFormatter dateFromString: [fromDateField text]];
+        }
+        [fromDateField setTextColor: [UIColor blackColor]];
+    }else{ // to date field
+        if([[toDateField text] length] > 0){
+            currentDate = [dateFormatter dateFromString: [toDateField text]];
+        }
+        [toDateField setTextColor: [UIColor blackColor]];
+    }
+    
+    [datePicker setDate: currentDate];
+    
+    if(currentPicker != 4 && currentPicker != 5){
+        [distanceDrop setSelected: NO];
+        [countryDrop setSelected: NO];
+        [stateDrop setSelected: NO];
+        
+        if(currentPicker != 0){
+            [self hideCurrentPicker: NO];
+            [datePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
+        }else{
+            [self.view endEditing: YES];
+            [UIView beginAnimations:@"DatePickerSlide" context:nil];
+            [datePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
+            [UIView commitAnimations];
+        }
+    }
+    
+    if(from)
+        currentPicker = 4;
+    else
+        currentPicker = 5;
+    
+    [self datePickerDidChange: nil];
+}
+
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
+    [self showBackground];
+    
+    if(textField == raceNameField){
+        [table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    }else if(textField == distanceField){
+        [table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    }else if(textField == cityField){
+        [table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    }else if(textField == fromDateField || textField == toDateField){
+        [table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:7 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    }
+    
     if(textField == fromDateField || textField == toDateField){
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"MM/dd/yyyy"];
-        
-        NSDate *currentDate = [NSDate date];
         if(textField == fromDateField){
-            if([[fromDateField text] length] > 0){
-                currentDate = [dateFormatter dateFromString: [fromDateField text]];
-            }
+            [self showDatePickerForFromDateField: YES];
         }else if(textField == toDateField){
-            if([[toDateField text] length] > 0){
-                currentDate = [dateFormatter dateFromString: [toDateField text]];
-            }
+            [self showDatePickerForFromDateField: NO];
         }
-        
-        [datePicker setDate: currentDate];
-        
-        if(currentPicker != 4 && currentPicker != 5){
-            [distanceDrop setSelected: NO];
-            [countryDrop setSelected: NO];
-            [stateDrop setSelected: NO];
-            
-            if(currentPicker != 0){
-                [self hideCurrentPicker: NO];
-                [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
-                [datePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
-            }else{
-                [self hideCurrentPicker: YES];
-                [UIView beginAnimations:@"DatePickerSlide" context:nil];
-                [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
-                [datePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
-                [UIView commitAnimations];
-            }
-        }
-        
-        
-        if(textField == fromDateField){
-            currentPicker = 4;
-            fromDateField.layer.cornerRadius = 4.0f;
-            fromDateField.layer.masksToBounds = YES;
-            fromDateField.layer.borderWidth = 1.0f;
-            CABasicAnimation *colorAnim = [CABasicAnimation animationWithKeyPath:@"borderColor"];
-            colorAnim.toValue = (id)[UIColor grayColor].CGColor;
-            [fromDateField.layer addAnimation:colorAnim forKey:@"borderColor"];
-            fromDateField.layer.borderColor = [UIColor grayColor].CGColor;
-            toDateField.layer.borderColor = [[UIColor clearColor] CGColor];
-        }else if(textField == toDateField){
-            currentPicker = 5;
-            toDateField.layer.cornerRadius = 4.0f;
-            toDateField.layer.masksToBounds = YES;
-            toDateField.layer.borderWidth = 1.0f;
-            CABasicAnimation *colorAnim = [CABasicAnimation animationWithKeyPath:@"borderColor"];
-            colorAnim.toValue = (id)[UIColor grayColor].CGColor;
-            [toDateField.layer addAnimation:colorAnim forKey:@"borderColor"];
-            toDateField.layer.borderColor = [UIColor grayColor].CGColor;
-            fromDateField.layer.borderColor = [[UIColor clearColor] CGColor];
-        }
-        
-        [self datePickerDidChange: nil];
         
         return NO;
     }else{
         [self hideCurrentPicker: YES];
+        return YES;
     }
-        
-    return YES;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
@@ -360,10 +497,8 @@
         [distanceField becomeFirstResponder];
     else if(textField == distanceField)
         [self showDistancePicker: nil];
-    else if(textField == fromDateField)
-        [toDateField becomeFirstResponder];
-    else if(textField == toDateField)
-        [self search: nil];
+    else if(textField == cityField)
+        [self showStatePicker: nil];
     
     return NO;
 }
@@ -377,6 +512,8 @@
     }else if(currentPicker == 5){
         [toDateField setText: [dateFormatter stringFromDate: [datePicker date]]];
     }
+    
+    [dateFormatter release];
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
@@ -460,18 +597,94 @@
     }
 }
 
+- (IBAction)prevNextChanged:(id)sender{
+    if(prevNextControl.selectedSegmentIndex == 0){
+        if(currentPicker != 0){
+            if(currentPicker == 1){
+                [distanceField becomeFirstResponder];
+            }else if(currentPicker == 2){
+                [cityField becomeFirstResponder];
+            }else if(currentPicker == 3){
+                [self showStatePicker: nil];
+            }else if(currentPicker == 4){
+                [self showCountryPicker: nil];
+            }else if(currentPicker == 5){
+                [self showDatePickerForFromDateField: YES];
+            }
+            return;
+        }
+        
+        for(UITextField *field in @[raceNameField,distanceField,cityField,fromDateField,toDateField]){
+            if([field isFirstResponder]){
+                if(field == distanceField)
+                    [raceNameField becomeFirstResponder];
+                else if(field == cityField)
+                    [self showDistancePicker: nil];
+                else if(field == fromDateField)
+                    [self showCountryPicker: nil];
+                else if(field == toDateField)
+                    [self showDatePickerForFromDateField: YES];
+                return;
+            }
+        }
+    }else{
+        if(currentPicker != 0){
+            if(currentPicker == 1){
+                [cityField becomeFirstResponder];
+            }else if(currentPicker == 2){
+                [self showCountryPicker: nil];
+            }else if(currentPicker == 3){
+                [self showDatePickerForFromDateField: YES];
+            }else if(currentPicker == 4){
+                [self showDatePickerForFromDateField: NO];
+            }
+            return;
+        }
+        
+        for(UITextField *field in @[raceNameField,distanceField,cityField,fromDateField,toDateField]){
+            if([field isFirstResponder]){
+                if(field == raceNameField)
+                    [distanceField becomeFirstResponder];
+                else if(field == distanceField)
+                    [self showDistancePicker: nil];
+                else if(field == cityField)
+                    [self showStatePicker: nil];
+                else if(field == fromDateField)
+                    [self showDatePickerForFromDateField: NO];
+                return;
+            }
+        }
+    }
+}
+
+- (IBAction)clearDateField:(id)sender{
+    if(currentPicker == 4 || currentPicker == 5){
+        if(currentPicker == 4){
+            [fromDateField setText: @""];
+            [self hidePicker: nil];
+        }else{
+            [toDateField setText: @""];
+            [self hidePicker: nil];
+        }
+    }
+}
+
 - (IBAction)showDistancePicker:(id)sender{
     [self.view endEditing: YES];
     [distanceDrop setSelected: YES];
     [countryDrop setSelected: NO];
     [stateDrop setSelected: NO];
     
+    [table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    
+    [self showBackground];
+
     if(currentPicker == 0){
         [UIView beginAnimations:@"PickerSlide" context:nil];
         [UIView setAnimationDuration: 0.25f];
-        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
         [distancePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
         [UIView commitAnimations];
+        
     }else{
         [distancePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
     }
@@ -482,45 +695,54 @@
     currentPicker = 1;
 }
 
+- (IBAction)showStatePicker:(id)sender{
+    [self.view endEditing: YES];
+    [distanceDrop setSelected: NO];
+    [countryDrop setSelected: NO];
+    [stateDrop setSelected: YES];
+    
+    [table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    
+    [self showBackground];
+
+    if(currentPicker == 0){
+        [UIView beginAnimations:@"PickerSlide" context:nil];
+        [UIView setAnimationDuration: 0.25f];
+        [statePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
+        [UIView commitAnimations];
+        
+    }else{
+        [statePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
+    }
+    [distancePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
+    [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
+    [datePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
+    
+    currentPicker = 2;
+}
+
 - (IBAction)showCountryPicker:(id)sender{
     [self.view endEditing: YES];
     [distanceDrop setSelected: NO];
     [countryDrop setSelected: YES];
     [stateDrop setSelected: NO];
     
+    [table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    
+    [self showBackground];
+
     if(currentPicker == 0){
         [UIView beginAnimations:@"PickerSlide" context:nil];
         [UIView setAnimationDuration: 0.25f];
-        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
+        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height - 260, 320, 260)];
         [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
         [UIView commitAnimations];
+        
     }else{
         [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
     }
     [distancePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
     [statePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
-    [datePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
-    
-    currentPicker = 2;
-}
-
-- (IBAction)showStatePicker:(id)sender{
-    [self.view endEditing: YES];
-    [distanceDrop setSelected: NO];
-    [countryDrop setSelected: NO];
-    [stateDrop setSelected: YES];    
-    
-    if(currentPicker == 0){
-        [UIView beginAnimations:@"PickerSlide" context:nil];
-        [UIView setAnimationDuration: 0.25f];
-        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
-        [statePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
-        [UIView commitAnimations];    
-    }else{
-        [statePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
-    }
-    [distancePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
-    [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
     [datePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
     
     currentPicker = 3;

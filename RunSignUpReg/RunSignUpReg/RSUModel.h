@@ -146,8 +146,8 @@ typedef enum{
 - (void)logout;
 
 - (NSMutableDictionary *)parseUser:(RXMLElement *)user;
-- (NSString *)standardizeDate:(NSString *)dateString;
-- (NSString *)convertSlashDateToDashDate:(NSString *)slashDate;
-- (NSString *)addressLine2FromAddress:(NSDictionary *)address;
++ (NSString *)standardizeDate:(NSString *)dateString;
++ (NSString *)convertSlashDateToDashDate:(NSString *)slashDate;
++ (NSString *)addressLine2FromAddress:(NSDictionary *)address;
 
 @end

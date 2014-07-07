@@ -19,11 +19,12 @@
 #import <UIKit/UIKit.h>
 #import "RoundedLoadingIndicator.h"
 #import "EGORefreshTableHeaderView.h"
+#import "RaceSearchTableViewCell.h"
 
-@interface RaceListViewController : UIViewController <EGORefreshTableHeaderDelegate, UITableViewDelegate, UITableViewDataSource>{
+@interface RaceListViewController : UIViewController <EGORefreshTableHeaderDelegate, UITableViewDelegate, UITableViewDataSource, RaceSearchTableViewCellDelegate>{
     UITableView *table;
     NSMutableDictionary *searchParams;
-    
+        
     EGORefreshTableHeaderView *refreshHeaderView;
     BOOL reloading;
     

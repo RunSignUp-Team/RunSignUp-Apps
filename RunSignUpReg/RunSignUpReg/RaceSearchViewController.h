@@ -20,7 +20,9 @@
 
 @class RaceListViewController;
 
-@interface RaceSearchViewController : UIViewController <UITextFieldDelegate, UIPickerViewDelegate>{
+@interface RaceSearchViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDelegate>{
+    UITableView *table;
+    
     UIButton *distanceDrop;
     UIButton *countryDrop;
     UIButton *stateDrop;
@@ -29,11 +31,17 @@
     
     UITextField *raceNameField;
     UITextField *distanceField;
+    UITextField *cityField;
     UITextField *fromDateField;
     UITextField *toDateField;
     
-    UIView *pickerBackgroundView;
+    UIColor *dateFieldOriginalTextColor;
     
+    BOOL showingBackground;
+    UISegmentedControl *prevNextControl;
+    UIBarButtonItem *dateClearButton;
+        
+    UIView *pickerBackgroundView;
     UIPickerView *distancePicker;
     UIPickerView *countryPicker;
     UIPickerView *statePicker;
@@ -53,6 +61,8 @@
     NSInteger currentSelectedState;
 }
 
+@property (nonatomic, retain) IBOutlet UITableView *table;
+
 @property (nonatomic, retain) IBOutlet UIButton *distanceDrop;
 @property (nonatomic, retain) IBOutlet UIButton *countryDrop;
 @property (nonatomic, retain) IBOutlet UIButton *stateDrop;
@@ -61,9 +71,12 @@
 
 @property (nonatomic, retain) IBOutlet UITextField *raceNameField;
 @property (nonatomic, retain) IBOutlet UITextField *distanceField;
+@property (nonatomic, retain) IBOutlet UITextField *cityField;
 @property (nonatomic, retain) IBOutlet UITextField *fromDateField;
 @property (nonatomic, retain) IBOutlet UITextField *toDateField;
 
+@property (nonatomic, retain) IBOutlet UISegmentedControl *prevNextControl;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *dateClearButton;
 @property (nonatomic, retain) IBOutlet UIView *pickerBackgroundView;
 
 @property (nonatomic, retain) IBOutlet UIPickerView *distancePicker;
@@ -76,9 +89,13 @@
 - (IBAction)search:(id)sender;
 - (IBAction)cancel:(id)sender;
 
+- (IBAction)hidePicker:(id)sender;
 - (IBAction)showCountryPicker:(id)sender;
 - (IBAction)showStatePicker:(id)sender;
 - (IBAction)showDistancePicker:(id)sender;
+
+- (IBAction)prevNextChanged:(id)sender;
+- (IBAction)clearDateField:(id)sender;
 
 - (IBAction)datePickerDidChange:(id)sender;
 

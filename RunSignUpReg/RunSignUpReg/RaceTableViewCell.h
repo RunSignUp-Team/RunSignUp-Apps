@@ -22,13 +22,12 @@
     UILabel *nameLabel;
     UILabel *dateLabel;
     UILabel *locationLabel;
-    UILabel *descriptionLabel;
 }
 
 @property (nonatomic, retain) UILabel *nameLabel;
 @property (nonatomic, retain) UILabel *dateLabel;
 @property (nonatomic, retain) UILabel *locationLabel;
-@property (nonatomic, retain) UILabel *descriptionLabel;
 
+- (void)setData:(NSDictionary *)data;
 
 @end

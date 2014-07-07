@@ -428,8 +428,8 @@ static RSUModel *model = nil;
 
 - (void)editUserWithInfo:(NSDictionary *)info response:(void (^)(RSUConnectionResponse))responseBlock{
     if([currentUser objectForKey:@"user_id"] != nil && info != nil){
-        NSString *standardDob = [self standardizeDate: [info objectForKey: @"dob"]];
-        NSString *dob = [self convertSlashDateToDashDate: standardDob];
+        NSString *standardDob = [RSUModel standardizeDate: [info objectForKey: @"dob"]];
+        NSString *dob = [RSUModel convertSlashDateToDashDate: standardDob];
         
         NSString *post = [NSString stringWithFormat:@"user_id=%@&first_name=%@&last_name=%@&dob=%@&gender=%@&phone=%@&address1=%@&city=%@&state=%@&country=%@&zipcode=%@",
                          [currentUser objectForKey:@"user_id"],[info objectForKey:@"first_name"],[info objectForKey:@"last_name"], dob,
@@ -547,9 +547,9 @@ static RSUModel *model = nil;
     if([params objectForKey:@"distance_units"])
         urlString = [urlString stringByAppendingFormat:@"&distance_units=%@", [params objectForKey:@"distance_units"]];
     if([params objectForKey:@"start_date"])
-        urlString = [urlString stringByAppendingFormat:@"&start_date=%@", [self convertSlashDateToDashDate: [params objectForKey:@"start_date"]]];
+        urlString = [urlString stringByAppendingFormat:@"&start_date=%@", [RSUModel convertSlashDateToDashDate: [params objectForKey:@"start_date"]]];
     if([params objectForKey:@"end_date"])
-        urlString = [urlString stringByAppendingFormat:@"&end_date=%@", [self convertSlashDateToDashDate: [params objectForKey:@"end_date"]]];
+        urlString = [urlString stringByAppendingFormat:@"&end_date=%@", [RSUModel convertSlashDateToDashDate: [params objectForKey:@"end_date"]]];
     if([params objectForKey:@"country"])
         urlString = [urlString stringByAppendingFormat:@"&country=%@", [params objectForKey:@"country"]];
     if([params objectForKey:@"state"])
@@ -1156,7 +1156,7 @@ static RSUModel *model = nil;
         }
         
         if(dob){
-            NSString *realDob = [self standardizeDate: [dob text]];
+            NSString *realDob = [RSUModel standardizeDate: [dob text]];
             [userDict setObject:realDob forKey:@"dob"];
         }
         
@@ -1196,7 +1196,7 @@ static RSUModel *model = nil;
     }
 }
 
-- (NSString *)standardizeDate:(NSString *)dateString{
++ (NSString *)standardizeDate:(NSString *)dateString{
     NSArray *dateParts = [dateString componentsSeparatedByString:@"/"];
     if([dateParts count] == 3){
         NSString *realDob = [NSString stringWithFormat:@"%02d/%02d/%04d", [[dateParts objectAtIndex: 0] intValue], [[dateParts objectAtIndex: 1] intValue], [[dateParts objectAtIndex: 2] intValue]];
@@ -1205,14 +1205,14 @@ static RSUModel *model = nil;
     return dateString;
 }
 
-- (NSString *)convertSlashDateToDashDate:(NSString *)slashDate{
++ (NSString *)convertSlashDateToDashDate:(NSString *)slashDate{
     if([slashDate length] == 10){
         return [NSString stringWithFormat:@"%@-%@-%@", [slashDate substringWithRange:NSRangeFromString(@"6-4")], [slashDate substringWithRange:NSRangeFromString(@"0-2")], [slashDate substringWithRange:NSRangeFromString(@"3-2")]];
     }
     return @"Error";
 }
 
-- (NSString *)addressLine2FromAddress:(NSDictionary *)address{
++ (NSString *)addressLine2FromAddress:(NSDictionary *)address{
     return [NSString stringWithFormat:@"%@ %@ %@, %@", [address objectForKey:@"city"], [address objectForKey:@"state"], [address objectForKey:@"country_code"], [address objectForKey:@"zipcode"]];
 }
 

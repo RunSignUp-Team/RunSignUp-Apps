@@ -31,7 +31,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"AutoSignIn"] == nil){
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"AutoSignIn"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"AutoSignIn"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     

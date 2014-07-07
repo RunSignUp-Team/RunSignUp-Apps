@@ -378,7 +378,7 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please enter a valid email address and try again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
         [alert show];
         [alert release];
-    }else if([dict objectForKey: @"dob"] == nil || [[[RSUModel sharedModel] convertSlashDateToDashDate: [[RSUModel sharedModel] standardizeDate: [dict objectForKey:@"dob"]]] isEqualToString: @"Error"]){
+    }else if([dict objectForKey: @"dob"] == nil || [[RSUModel convertSlashDateToDashDate: [RSUModel standardizeDate: [dict objectForKey:@"dob"]]] isEqualToString: @"Error"]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please enter a valid date of birth and try again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
         [alert show];
         [alert release];

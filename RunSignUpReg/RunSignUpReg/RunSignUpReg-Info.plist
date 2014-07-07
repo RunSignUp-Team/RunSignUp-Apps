@@ -30,7 +30,8 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Coustard.ttf</string>
+		<string>OpenSans-Regular.ttf</string>
+		<string>Sanchez-Regular.ttf</string>
 	</array>
 	<key>UIPrerenderedIcon</key>
 	<true/>

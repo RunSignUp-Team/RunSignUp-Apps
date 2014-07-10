@@ -20,11 +20,58 @@
 #import "RoundedLoadingIndicator.h"
 #import "EGORefreshTableHeaderView.h"
 #import "RaceSearchTableViewCell.h"
+#import "RaceSearchRoundedTableViewCell.h"
 
-@interface RaceListViewController : UIViewController <EGORefreshTableHeaderDelegate, UITableViewDelegate, UITableViewDataSource, RaceSearchTableViewCellDelegate>{
+@interface RaceListViewController : UIViewController <EGORefreshTableHeaderDelegate, UITableViewDelegate, UITableViewDataSource, RaceSearchTableViewCellDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource>{
     UITableView *table;
     NSMutableDictionary *searchParams;
-        
+    
+    BOOL showingAdvancedSearch;
+    BOOL showingBackground;
+    
+    // Search UI elements
+    float advancedSearchHeight;
+    UITableView *searchTable;
+    UIButton *toggleSearchButton;
+    UIButton *distanceDrop;
+    UIButton *countryDrop;
+    UIButton *stateDrop;
+    UIButton *searchButton;
+    UIButton *cancelButton;
+    
+    UIImageView *distanceDropTriangle;
+    UIImageView *countryDropTriangle;
+    UIImageView *stateDropTriangle;
+    
+    UITextField *raceNameField;
+    UITextField *distanceField;
+    UITextField *cityField;
+    UITextField *fromDateField;
+    UITextField *toDateField;
+    
+    UIColor *dateFieldOriginalTextColor;
+    
+    UISegmentedControl *prevNextControl;
+    UIBarButtonItem *dateClearButton;
+    
+    UIView *pickerBackgroundView;
+    UIPickerView *distancePicker;
+    UIPickerView *countryPicker;
+    UIPickerView *statePicker;
+    UIDatePicker *datePicker;
+    
+    NSArray *distanceArray;
+    NSArray *countryArray;
+    NSArray *stateArrayUS;
+    NSArray *stateArrayCA;
+    NSArray *stateArrayGE;
+    
+    int currentPicker;
+    NSInteger currentSelectedDistance;
+    NSInteger currentSelectedCountry;
+    NSInteger currentSelectedState;
+    // End search UI elements
+    
     EGORefreshTableHeaderView *refreshHeaderView;
     BOOL reloading;
     
@@ -35,6 +82,33 @@
 }
 
 @property (nonatomic, retain) IBOutlet UITableView *table;
+@property (nonatomic, retain) IBOutlet UITableView *searchTable;
+@property (nonatomic, retain) IBOutlet UIButton *toggleSearchButton;
+@property (nonatomic, retain) IBOutlet UIButton *distanceDrop;
+@property (nonatomic, retain) IBOutlet UIButton *countryDrop;
+@property (nonatomic, retain) IBOutlet UIButton *stateDrop;
+@property (nonatomic, retain) IBOutlet UIButton *searchButton;
+@property (nonatomic, retain) IBOutlet UIButton *cancelButton;
+
+@property (nonatomic, retain) IBOutlet UIImageView *distanceDropTriangle;
+@property (nonatomic, retain) IBOutlet UIImageView *countryDropTriangle;
+@property (nonatomic, retain) IBOutlet UIImageView *stateDropTriangle;
+
+@property (nonatomic, retain) IBOutlet UITextField *raceNameField;
+@property (nonatomic, retain) IBOutlet UITextField *distanceField;
+@property (nonatomic, retain) IBOutlet UITextField *cityField;
+@property (nonatomic, retain) IBOutlet UITextField *fromDateField;
+@property (nonatomic, retain) IBOutlet UITextField *toDateField;
+
+@property (nonatomic, retain) IBOutlet UISegmentedControl *prevNextControl;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *dateClearButton;
+@property (nonatomic, retain) IBOutlet UIView *pickerBackgroundView;
+
+@property (nonatomic, retain) IBOutlet UIPickerView *distancePicker;
+@property (nonatomic, retain) IBOutlet UIPickerView *countryPicker;
+@property (nonatomic, retain) IBOutlet UIPickerView *statePicker;
+@property (nonatomic, retain) IBOutlet UIDatePicker *datePicker;
+
 @property (nonatomic, retain) NSMutableDictionary *searchParams;
 @property (nonatomic, retain) NSArray *raceList;
 @property (nonatomic, retain) RoundedLoadingIndicator *rli;
@@ -45,7 +119,18 @@
 - (void)reloadTableViewDataSource;
 - (void)doneLoadingTableViewData:(BOOL)scroll;
 
-- (IBAction)showSearchParams:(id)sender;
-- (IBAction)clearSearchParams:(id)sender;
+- (IBAction)toggleAdvancedSearch:(id)sender;
+
+- (IBAction)search:(id)sender;
+
+- (IBAction)hidePicker:(id)sender;
+- (IBAction)showCountryPicker:(id)sender;
+- (IBAction)showStatePicker:(id)sender;
+- (IBAction)showDistancePicker:(id)sender;
+
+- (IBAction)prevNextChanged:(id)sender;
+- (IBAction)clearDateField:(id)sender;
+
+- (IBAction)datePickerDidChange:(id)sender;
 
 @end

@@ -540,8 +540,10 @@ static RSUModel *model = nil;
     NSString *urlString = [NSString stringWithFormat: @"%@/rest/races?events=T&sort=date+ASC,name+ASC", RUNSIGNUP_BASE_URL];
     if([params objectForKey:@"page"])
         urlString = [urlString stringByAppendingFormat:@"&page=%i", [[params objectForKey:@"page"] intValue]];
-    if([params objectForKey:@"name"])
-        urlString = [urlString stringByAppendingFormat:@"&name=%@", [params objectForKey:@"name"]];
+    if([params objectForKey:@"name"]){
+        NSString *nameString = [[params objectForKey:@"name"] stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        urlString = [urlString stringByAppendingFormat:@"&name=%@", nameString];
+    }
     if([params objectForKey:@"min_distance"])
         urlString = [urlString stringByAppendingFormat:@"&min_distance=%@", [params objectForKey:@"min_distance"]];
     if([params objectForKey:@"distance_units"])
@@ -554,7 +556,11 @@ static RSUModel *model = nil;
         urlString = [urlString stringByAppendingFormat:@"&country=%@", [params objectForKey:@"country"]];
     if([params objectForKey:@"state"])
         urlString = [urlString stringByAppendingFormat:@"&state=%@", [params objectForKey:@"state"]];
-
+    if([params objectForKey:@"city"]){
+        NSString *cityString = [[params objectForKey:@"city"] stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        urlString = [urlString stringByAppendingFormat:@"&city=%@", cityString];
+    }
+    
     [request setURL:[NSURL URLWithString:urlString]];//[NSString stringWithFormat:@"%@&api_key=%@&api_secret=%@", urlString, apiKey, apiSecret]]];
     [request setHTTPMethod:@"GET"];
     

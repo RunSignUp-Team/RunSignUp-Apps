@@ -10,8 +10,9 @@
 
 @protocol RaceSearchTableViewCellDelegate <NSObject>
 
+- (void)searchFieldDidBeginEdit;
+- (void)searchFieldDidCancel;
 - (void)searchButtonTappedWithSearch:(NSString *)search;
-- (void)advancedSearchTappedWithSearch:(NSString *)search;
 
 @end
 
@@ -19,12 +20,15 @@
     UITextField *searchField;
     UIImageView *searchGlass;
     UIButton *cancelButton;
-    UIButton *advancedButton;
     UIButton *startEditButton;
-        
+    
+    UIView *paddingView;
+    
     NSObject<RaceSearchTableViewCellDelegate> *delegate;
 }
 
 @property (nonatomic, retain) NSObject<RaceSearchTableViewCellDelegate> *delegate;
+
+- (void)setActiveSearch;
 
 @end

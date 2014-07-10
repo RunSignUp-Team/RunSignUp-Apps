@@ -36,14 +36,15 @@
         else
             self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:432 YLocation:140];
         [[rli label] setText: @"Fetching Results..."];
-        [self.view addSubview: rli];
-        [rli release];
     }
     return self;
 }
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+    
+    [self.view addSubview: rli];
+    [rli release];
     
     if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
         [self setEdgesForExtendedLayout: UIRectEdgeNone];

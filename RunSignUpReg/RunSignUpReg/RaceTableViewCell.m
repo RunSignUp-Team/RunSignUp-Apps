@@ -33,7 +33,7 @@
         [dateLabel setFont: [UIFont fontWithName:@"OpenSans" size:18]];
         [self.contentView addSubview: dateLabel];
         
-        self.nameLabel = [[UILabel alloc] initWithFrame: CGRectMake(12, 40, 296, 26)];
+        self.nameLabel = [[UILabel alloc] initWithFrame: CGRectMake(12, 42, 296, 26)];
         [nameLabel setFont: [UIFont fontWithName:@"Sanchez-Regular" size:20]];
         [nameLabel setNumberOfLines: 0];
         [nameLabel setLineBreakMode: NSLineBreakByWordWrapping];
@@ -41,7 +41,7 @@
         [nameLabel setUserInteractionEnabled: NO];
         [self.contentView addSubview: nameLabel];
         
-        self.locationLabel = [[UILabel alloc] initWithFrame: CGRectMake(12, 72, 296, 20)];
+        self.locationLabel = [[UILabel alloc] initWithFrame: CGRectMake(12, 74, 296, 24)];
         //[locationLabel setBackgroundColor: [UIColor redColor]];
         [locationLabel setTextColor: [UIColor colorWithRed:64/255.0f green:114/255.0f blue:145/255.0f alpha:1.0f]];
         [locationLabel setFont: [UIFont fontWithName:@"OpenSans" size:18]];
@@ -61,12 +61,8 @@
 - (void)setData:(NSDictionary *)data{
     [nameLabel setText: [data objectForKey: @"name"]];
     CGSize reqSize = [[nameLabel text] sizeWithFont:[UIFont fontWithName:@"Sanchez-Regular" size:20] constrainedToSize:CGSizeMake(296, 100)];
-    [nameLabel setFrame: CGRectMake(12, 40, 296, reqSize.height)];
-    
-    [locationLabel setFrame: CGRectMake(12, 72, 296, 20)];
-    if(reqSize.height > 35){ // Size is 26ish for one line, 52ish for two lines. 35 is being safe
-        [locationLabel setFrame: CGRectMake(12, 100, 296, 20)];
-    }
+    [nameLabel setFrame: CGRectMake(12, 42, 296, reqSize.height)];
+    [locationLabel setFrame: CGRectMake(12, 48 + reqSize.height, 296, 24)];
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat: @"MM/dd/yyyy"];

@@ -46,8 +46,6 @@
             self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:432 YLocation:140];
         
         [[rli label] setText:@"Loading..."];
-        [self.view addSubview: rli];
-        [rli release];
         
         self.title = @"Profile";
     }
@@ -56,7 +54,9 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    
+    [self.view addSubview: rli];
+    [rli release];
+
     if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
         [self setEdgesForExtendedLayout: UIRectEdgeNone];
     

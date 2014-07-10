@@ -7,7 +7,28 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RaceListViewController">
             <connections>
+                <outlet property="cityField" destination="ChH-9L-sH2" id="ICh-zQ-b3M"/>
+                <outlet property="countryDrop" destination="kPz-Zx-PNT" id="QWe-fC-R1i"/>
+                <outlet property="countryDropTriangle" destination="XWM-s2-AF7" id="36E-iE-SbK"/>
+                <outlet property="countryPicker" destination="Zbu-QB-J4c" id="39C-s9-8k0"/>
+                <outlet property="dateClearButton" destination="LH0-Lr-nNs" id="EeT-jK-TL5"/>
+                <outlet property="datePicker" destination="Zl3-8h-bvt" id="UMw-Q7-AmP"/>
+                <outlet property="distanceDrop" destination="7ak-Sm-pqz" id="Tib-u3-0e0"/>
+                <outlet property="distanceDropTriangle" destination="HMg-ge-hNo" id="g1G-gc-rRs"/>
+                <outlet property="distanceField" destination="4Bb-pY-Gv9" id="jsf-CS-cnr"/>
+                <outlet property="distancePicker" destination="jRT-dr-7ZL" id="XH9-xa-KlI"/>
+                <outlet property="fromDateField" destination="2Qz-5z-jW2" id="sCk-o1-6C2"/>
+                <outlet property="pickerBackgroundView" destination="Bdp-BY-tFk" id="ZnO-zA-XPW"/>
+                <outlet property="prevNextControl" destination="e1u-ZF-5sh" id="1Tm-x2-ODJ"/>
+                <outlet property="raceNameField" destination="F93-gL-k94" id="dvL-51-xQ9"/>
+                <outlet property="searchButton" destination="0vl-7t-aY0" id="Rwr-05-wWi"/>
+                <outlet property="searchTable" destination="kGU-fh-ilV" id="qwr-4a-hur"/>
+                <outlet property="stateDrop" destination="zQc-bG-5VN" id="Unh-0x-n5Z"/>
+                <outlet property="stateDropTriangle" destination="Evf-v5-Ml8" id="F7q-bU-jxC"/>
+                <outlet property="statePicker" destination="LNc-Tt-PXs" id="AIY-7l-J6o"/>
                 <outlet property="table" destination="8" id="11"/>
+                <outlet property="toDateField" destination="9fZ-IG-7AJ" id="erx-JT-ccE"/>
+                <outlet property="toggleSearchButton" destination="UW7-py-A5H" id="vcW-Cq-bmv"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -16,6 +37,152 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Race Name" minimumFontSize="17" id="F93-gL-k94">
+                    <rect key="frame" x="11" y="193" width="298" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="textColor" red="0.25098039220000001" green="0.44705882349999998" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="y2X-cy-A7J"/>
+                    </connections>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Distance" minimumFontSize="17" id="4Bb-pY-Gv9">
+                    <rect key="frame" x="11" y="193" width="298" height="31"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="textColor" red="0.25098039220000001" green="0.44705882349999998" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation" returnKeyType="next"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="j3Q-Ud-ZDf"/>
+                    </connections>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="City" minimumFontSize="17" id="ChH-9L-sH2">
+                    <rect key="frame" x="11" y="193" width="298" height="31"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="textColor" red="0.25098039220000001" green="0.44705882349999998" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation" returnKeyType="next"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="mgb-ON-cj9"/>
+                    </connections>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="mm/dd/yyyy" textAlignment="center" minimumFontSize="17" id="2Qz-5z-jW2">
+                    <rect key="frame" x="87" y="193" width="145" height="31"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="textColor" red="0.25098039220000001" green="0.44705882349999998" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation" returnKeyType="next"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="OSa-my-RG3"/>
+                    </connections>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="mm/dd/yyyy" textAlignment="center" minimumFontSize="17" id="9fZ-IG-7AJ">
+                    <rect key="frame" x="87" y="193" width="145" height="31"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="textColor" red="0.25098039220000001" green="0.44705882349999998" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation" returnKeyType="done"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="iIv-H0-FRj"/>
+                    </connections>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="7ak-Sm-pqz">
+                    <rect key="frame" x="11" y="192" width="298" height="32"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <state key="normal" title="  Distance Units">
+                        <color key="titleColor" red="0.25098039220000001" green="0.44705882349999998" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="selected">
+                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="highlighted">
+                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="showDistancePicker:" destination="-1" eventType="touchUpInside" id="4Y8-cf-8VH"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="zQc-bG-5VN">
+                    <rect key="frame" x="11" y="192" width="298" height="32"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <state key="normal" title="  State">
+                        <color key="titleColor" red="0.25098039220000001" green="0.44705882349999998" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="selected">
+                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="highlighted">
+                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="showStatePicker:" destination="-1" eventType="touchUpInside" id="Y5o-np-b9t"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="kPz-Zx-PNT">
+                    <rect key="frame" x="11" y="192" width="298" height="32"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <state key="normal" title="  Country">
+                        <color key="titleColor" red="0.25098039220000001" green="0.44705882349999998" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="selected">
+                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="highlighted">
+                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="showCountryPicker:" destination="-1" eventType="touchUpInside" id="gL4-Mb-vem"/>
+                    </connections>
+                </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DropDownTriangle.png" highlightedImage="DropDownTriangleTap.png" id="HMg-ge-hNo">
+                    <rect key="frame" x="270" y="201" width="20" height="10"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DropDownTriangle.png" highlightedImage="DropDownTriangleTap.png" id="XWM-s2-AF7">
+                    <rect key="frame" x="270" y="231" width="20" height="10"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DropDownTriangle.png" highlightedImage="DropDownTriangleTap.png" id="Evf-v5-Ml8">
+                    <rect key="frame" x="270" y="254" width="20" height="10"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="0vl-7t-aY0">
+                    <rect key="frame" x="11" y="187" width="298" height="43"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                    <state key="normal" title="Search">
+                        <color key="titleColor" red="0.25098039220000001" green="0.44705882349999998" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="highlighted">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="search:" destination="-1" eventType="touchUpInside" id="y9z-PJ-ro0"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="UW7-py-A5H">
+                    <rect key="frame" x="11" y="187" width="298" height="43"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                    <state key="normal" title="Show Advanced Search">
+                        <color key="titleColor" red="0.25098039215686274" green="0.44705882352941173" blue="0.56862745098039214" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="highlighted">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="toggleAdvancedSearch:" destination="-1" eventType="touchUpInside" id="tj6-iA-Ja3"/>
+                    </connections>
+                </button>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="130" sectionHeaderHeight="22" sectionFooterHeight="22" id="8">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -25,10 +192,121 @@
                         <outlet property="delegate" destination="-1" id="10"/>
                     </connections>
                 </tableView>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="kGU-fh-ilV">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="Meh-Aa-Kzo"/>
+                        <outlet property="delegate" destination="-1" id="yWw-JO-Opf"/>
+                    </connections>
+                </tableView>
+                <view contentMode="scaleToFill" id="Bdp-BY-tFk">
+                    <rect key="frame" x="0.0" y="500" width="320" height="260"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="Znk-1h-Itu">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <items>
+                                <barButtonItem style="plain" systemItem="flexibleSpace" id="nzp-fH-BrX"/>
+                                <barButtonItem title="Clear" id="LH0-Lr-nNs">
+                                    <color key="tintColor" red="0.25098039220000001" green="0.44705882349999998" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <connections>
+                                        <action selector="clearDateField:" destination="-1" id="eqv-a6-VZE"/>
+                                    </connections>
+                                </barButtonItem>
+                                <barButtonItem title="Done" id="hsv-Xt-owc">
+                                    <color key="tintColor" red="0.25098039220000001" green="0.44705882349999998" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <connections>
+                                        <action selector="hidePicker:" destination="-1" id="bK2-CM-9eV"/>
+                                    </connections>
+                                </barButtonItem>
+                            </items>
+                        </toolbar>
+                        <view contentMode="scaleToFill" id="kXQ-O4-WHO">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <color key="backgroundColor" red="0.25098039220000001" green="0.44705882349999998" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                        </view>
+                        <segmentedControl opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" momentary="YES" id="e1u-ZF-5sh">
+                            <rect key="frame" x="8" y="8" width="140" height="29"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="Prev"/>
+                                <segment title="Next"/>
+                            </segments>
+                            <color key="tintColor" red="0.25098039220000001" green="0.44705882349999998" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="prevNextChanged:" destination="-1" eventType="valueChanged" id="oBU-HR-zda"/>
+                            </connections>
+                        </segmentedControl>
+                    </subviews>
+                    <color key="backgroundColor" red="0.86274509799999999" green="0.87450980389999999" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
+                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" id="Zl3-8h-bvt">
+                    <rect key="frame" x="0.0" y="500" width="320" height="162"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <date key="date" timeIntervalSinceReferenceDate="425834768.68027002">
+                        <!--2014-06-30 15:26:08 +0000-->
+                    </date>
+                    <timeZone key="timeZone" name="America/Los_Angeles">
+                        <mutableData key="data">
+VFppZgAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAAAC5AAAABAAAABCepkign7sVkKCGKqChmveQ
+y4kaoNIj9HDSYSYQ1v50INiArZDa/tGg28CQENzes6DdqayQ3r6VoN+JjpDgnneg4WlwkOJ+WaDjSVKQ
+5F47oOUpNJDmR1gg5xJREOgnOiDo8jMQ6gccIOrSFRDr5v4g7LH3EO3G4CDukdkQ76/8oPBxuxDxj96g
+8n/BkPNvwKD0X6OQ9U+ioPY/hZD3L4Sg+CiiEPkPZqD6CIQQ+viDIPvoZhD82GUg/chIEP64RyD/qCoQ
+AJgpIAGIDBACeAsgA3EokARhJ6AFUQqQBkEJoAcw7JAHjUOgCRDOkAmtvyAK8LCQC+CvoAzZzRANwJGg
+DrmvEA+priAQmZEQEYmQIBJ5cxATaXIgFFlVEBVJVCAWOTcQFyk2IBgiU5AZCRggGgI1kBryNKAb4heQ
+HNIWoB3B+ZAesfigH6HbkCB2KyAhgb2QIlYNICNq2hAkNe8gJUq8ECYV0SAnKp4QJ/7toCkKgBAp3s+g
+KupiECu+saAs036QLZ6ToC6zYJAvfnWgMJNCkDFnkiAycySQM0d0IDRTBpA1J1YgNjLokDcHOCA4HAUQ
+OOcaIDn75xA6xvwgO9vJEDywGKA9u6sQPo/6oD+bjRBAb9ygQYSpkEJPvqBDZIuQRC+goEVEbZBF89Mg
+Ry2KEEfTtSBJDWwQSbOXIErtThBLnLOgTNZqkE18laBOtkyQT1x3oFCWLpBRPFmgUnYQkFMcO6BUVfKQ
+VPwdoFY11JBW5TogWB7xEFjFHCBZ/tMQWqT+IFvetRBchOAgXb6XEF5kwiBfnnkQYE3eoGGHlZBiLcCg
+Y2d3kGQNoqBlR1mQZe2EoGcnO5BnzWagaQcdkGmtSKBq5v+Qa5ZlIGzQHBBtdkcgbq/+EG9WKSBwj+AQ
+cTYLIHJvwhBzFe0gdE+kEHT/CaB2OMCQdt7roHgYopB4vs2gefiEkHqer6B72GaQfH6RoH24SJB+XnOg
+f5gqkAABAAECAwEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
+AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
+AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
+AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
+</mutableData>
+                    </timeZone>
+                    <connections>
+                        <action selector="datePickerDidChange:" destination="-1" eventType="valueChanged" id="lwx-cp-48m"/>
+                    </connections>
+                </datePicker>
+                <pickerView contentMode="scaleToFill" id="jRT-dr-7ZL">
+                    <rect key="frame" x="0.0" y="500" width="320" height="216"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="hhL-dz-P9N"/>
+                        <outlet property="delegate" destination="-1" id="WRi-bj-VnA"/>
+                    </connections>
+                </pickerView>
+                <pickerView contentMode="scaleToFill" id="LNc-Tt-PXs">
+                    <rect key="frame" x="0.0" y="500" width="320" height="216"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="xCc-Gl-qml"/>
+                        <outlet property="delegate" destination="-1" id="AeY-g1-AdN"/>
+                    </connections>
+                </pickerView>
+                <pickerView contentMode="scaleToFill" id="Zbu-QB-J4c">
+                    <rect key="frame" x="0.0" y="500" width="320" height="216"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="xtV-K6-34B"/>
+                        <outlet property="delegate" destination="-1" id="Fqn-qd-c7f"/>
+                    </connections>
+                </pickerView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
         </view>
     </objects>
+    <resources>
+        <image name="DropDownTriangle.png" width="20" height="10"/>
+        <image name="DropDownTriangleTap.png" width="20" height="10"/>
+    </resources>
 </document>

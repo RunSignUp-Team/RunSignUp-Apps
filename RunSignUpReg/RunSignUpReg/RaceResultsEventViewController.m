@@ -37,8 +37,6 @@
         else
             self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:432 YLocation:140];
         [[rli label] setText: @"Fetching Results..."];
-        [self.view addSubview: rli];
-        [rli release];
     }
     return self;
 }
@@ -46,6 +44,9 @@
 - (void)viewDidLoad{
     [super viewDidLoad];
     
+    [self.view addSubview: rli];
+    [rli release];
+
     [rli fadeIn];
     
     void (^response)(NSArray *) = ^(NSArray *resultsArray){

@@ -56,8 +56,6 @@
         else
             self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:432 YLocation:140];
         [[rli label] setText: @"Fetching Cost..."];
-        [self.view addSubview: rli];
-        [rli release];
     }
     
     self.title = @"Congratulations!";
@@ -66,6 +64,9 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+    
+    [self.view addSubview: rli];
+    [rli release];
     
     if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
         [self setEdgesForExtendedLayout: UIRectEdgeNone];

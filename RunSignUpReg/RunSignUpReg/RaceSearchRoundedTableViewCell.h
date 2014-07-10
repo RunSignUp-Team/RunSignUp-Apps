@@ -12,6 +12,8 @@
     UIImageView *roundedImage;
 }
 
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier height:(float)height;
+
 @property(nonatomic,assign) BOOL top,bottom,extra,middleDivider;
 
 - (void)reset;

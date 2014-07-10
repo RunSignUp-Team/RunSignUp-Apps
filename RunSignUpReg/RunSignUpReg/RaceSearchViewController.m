@@ -78,6 +78,11 @@
     
     UIImage *dropDownStretched = [[UIImage imageNamed:@"DropDown.png"] stretchableImageWithLeftCapWidth:21 topCapHeight:0];
     UIImage *dropDownTapStretched = [[UIImage imageNamed:@"DropDownTap.png"] stretchableImageWithLeftCapWidth:21 topCapHeight:0];
+    
+    UIImage *whiteButtonImage = [UIImage imageNamed:@"WhiteButton.png"];
+    UIImage *stretchedWhiteButton = [whiteButtonImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
+
+    
     UIImage *greenButtonImage = [UIImage imageNamed:@"GreenButton.png"];
     UIImage *stretchedGreenButton = [greenButtonImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     UIImage *greenButtonTapImage = [UIImage imageNamed:@"GreenButtonTap.png"];
@@ -89,10 +94,11 @@
     [countryDrop setBackgroundImage:dropDownTapStretched forState:UIControlStateSelected];
     [stateDrop setBackgroundImage:dropDownStretched forState:UIControlStateNormal];
     [stateDrop setBackgroundImage:dropDownTapStretched forState:UIControlStateSelected];*/
-    [searchButton setBackgroundImage:stretchedGreenButton forState:UIControlStateNormal];
-    [searchButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
+    [searchButton setBackgroundImage:stretchedWhiteButton forState:UIControlStateNormal];
     [cancelButton setBackgroundImage:stretchedGreenButton forState:UIControlStateNormal];
     [cancelButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
+    
+    [[searchButton titleLabel] setFont: [UIFont fontWithName:@"Sanchez-Regular" size:24]];
     
     for(UITextField *field in @[raceNameField,distanceField,cityField,fromDateField,toDateField]){
         [field setFont: [UIFont fontWithName:@"Sanchez-Regular" size:16]];
@@ -103,6 +109,8 @@
     }
     
     dateFieldOriginalTextColor = [[fromDateField textColor] retain];
+    [dateClearButton setEnabled: NO];
+    [dateClearButton setWidth: 0.01f]; // dirty way of hiding the button
     
     NSString *countryTitle = [NSString stringWithFormat:@"  %@", [countryArray objectAtIndex: currentSelectedCountry]];
     [countryDrop setTitle:countryTitle forState:UIControlStateNormal];
@@ -192,18 +200,23 @@
         distancePick = @"m";
     
     NSString *countryPick = nil;
-    if(currentSelectedCountry == 1)
+    NSArray *stateArray = nil;
+    if(currentSelectedCountry == 1){
         countryPick = @"US";
-    else if(currentSelectedCountry == 2)
+        stateArray = stateArrayUS;
+    }else if(currentSelectedCountry == 2){
         countryPick = @"CA";
-    else if(currentSelectedCountry == 3)
+        stateArray = stateArrayCA;
+    }else if(currentSelectedCountry == 3){
         countryPick = @"FR";
-    else if(currentSelectedCountry == 4)
+    }else if(currentSelectedCountry == 4){
         countryPick = @"GE";
+        stateArray = stateArrayGE;
+    }
     
     NSString *statePick = nil;
-    if(currentSelectedCountry != 2 && currentSelectedCountry != 0)
-        statePick = [[[stateDrop titleLabel] text] substringFromIndex: 2];
+    if(currentSelectedState != 0 && stateArray != nil)
+        statePick = [stateArray objectAtIndex: currentSelectedState];
     
     // NOT ENOUGH, ONLY CHECKS IF STARTS WITH A-Z, NOT WHOLE STRING
     // Race name length
@@ -276,34 +289,34 @@
     }else if(indexPath.row == 1){
         if(raceNameField.superview != nil)
             [raceNameField removeFromSuperview];
-        [raceNameField setFrame: CGRectMake(36, 0, 248, 64)];
+        [raceNameField setFrame: CGRectMake(36, 0, 248, 58)];
         [cell.contentView addSubview: raceNameField];
         
         [cell setTop: YES];
     }else if(indexPath.row == 2){
         if(distanceField.superview != nil)
             [distanceField removeFromSuperview];
-        [distanceField setFrame: CGRectMake(36, 0, 248, 64)];
+        [distanceField setFrame: CGRectMake(36, 0, 248, 58)];
         [cell.contentView addSubview: distanceField];
     }else if(indexPath.row == 3){
         if(distanceDrop.superview != nil)
             [distanceDrop removeFromSuperview];
-        [distanceDrop setFrame: CGRectMake(28, 0, 260, 64)];
+        [distanceDrop setFrame: CGRectMake(28, 0, 260, 58)];
         [cell.contentView addSubview: distanceDrop];
     }else if(indexPath.row == 4){
         if(cityField.superview != nil)
             [cityField removeFromSuperview];
-        [cityField setFrame: CGRectMake(36, 0, 248, 64)];
+        [cityField setFrame: CGRectMake(36, 0, 248, 58)];
         [cell.contentView addSubview: cityField];
     }else if(indexPath.row == 5){
         if(stateDrop.superview != nil)
             [stateDrop removeFromSuperview];
-        [stateDrop setFrame: CGRectMake(28, 0, 260, 64)];
+        [stateDrop setFrame: CGRectMake(28, 0, 260, 58)];
         [cell.contentView addSubview: stateDrop];
     }else if(indexPath.row == 6){
         if(countryDrop.superview != nil)
             [countryDrop removeFromSuperview];
-        [countryDrop setFrame: CGRectMake(28, 0, 260, 64)];
+        [countryDrop setFrame: CGRectMake(28, 0, 260, 58)];
         [cell.contentView addSubview: countryDrop];
     }else if(indexPath.row == 7){
         if(fromDateField.superview != nil)
@@ -311,8 +324,8 @@
         if(toDateField.superview != nil)
             [toDateField removeFromSuperview];
         
-        [fromDateField setFrame: CGRectMake(20, 0, 140, 64)];
-        [toDateField setFrame: CGRectMake(160, 0, 140, 64)];
+        [fromDateField setFrame: CGRectMake(20, 0, 140, 58)];
+        [toDateField setFrame: CGRectMake(160, 0, 140, 58)];
 
         [cell.contentView addSubview: fromDateField];
         [cell.contentView addSubview: toDateField];
@@ -323,7 +336,7 @@
         if(searchButton.superview != nil)
            [searchButton removeFromSuperview];
         
-        [searchButton setFrame: CGRectMake(16, 16, 280, 44)];
+        [searchButton setFrame: CGRectMake(20, 7, 280, 44)];
         [cell.contentView addSubview: searchButton];
         [cell setExtra: YES];
     }
@@ -341,7 +354,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.row != 0)
-        return 64;
+        return 58;
     return 20;
 }
 
@@ -366,6 +379,9 @@
 - (void)showBackground{
     [fromDateField setTextColor: dateFieldOriginalTextColor];
     [toDateField setTextColor: dateFieldOriginalTextColor];
+    
+    [dateClearButton setEnabled: NO];
+    [dateClearButton setWidth: 0.01f];
 
     if(!showingBackground){
         [UIView beginAnimations:@"TableSize" context:nil];
@@ -425,6 +441,8 @@
     [dateFormatter setDateFormat:@"MM/dd/yyyy"];
     
     [self showBackground];
+    [dateClearButton setEnabled: YES];
+    [dateClearButton setWidth: 0.0f];
     
     NSDate *currentDate = [NSDate date];
     if(from){
@@ -675,9 +693,9 @@
     [countryDrop setSelected: NO];
     [stateDrop setSelected: NO];
     
-    [table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-    
     [self showBackground];
+    
+    [table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
 
     if(currentPicker == 0){
         [UIView beginAnimations:@"PickerSlide" context:nil];
@@ -701,9 +719,9 @@
     [countryDrop setSelected: NO];
     [stateDrop setSelected: YES];
     
-    [table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-    
     [self showBackground];
+    
+    [table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
 
     if(currentPicker == 0){
         [UIView beginAnimations:@"PickerSlide" context:nil];
@@ -727,9 +745,9 @@
     [countryDrop setSelected: YES];
     [stateDrop setSelected: NO];
     
-    [table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-    
     [self showBackground];
+    
+    [table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
 
     if(currentPicker == 0){
         [UIView beginAnimations:@"PickerSlide" context:nil];

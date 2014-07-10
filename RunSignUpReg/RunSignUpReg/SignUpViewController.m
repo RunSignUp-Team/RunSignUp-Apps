@@ -53,6 +53,13 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+            self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:100];
+        else
+            self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:432 YLocation:140];
+        
+        [[rli label] setText: @"Sending..."];
+
         // Custom initialization
         countryArray = [[NSArray alloc] initWithObjects:@"United States", @"Canada", @"France", @"Germany", nil];
         /*stateArrayUS = [[NSArray alloc] initWithObjects:@"Alabama", @"Alaska", @"Arizona", @"Akansas", @"California", 
@@ -92,6 +99,9 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+    
+    [self.view addSubview: rli];
+    [rli release];
     
     if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
         [self setEdgesForExtendedLayout: UIRectEdgeNone];
@@ -220,15 +230,6 @@
             }
         }
     }
-    
-    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-        self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:100];
-    else
-        self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:432 YLocation:140];
-    
-    [[rli label] setText: @"Sending..."];
-    [self.view addSubview: rli];
-    [rli release];
     
     [scrollView setContentSize: CGSizeMake(scrollView.frame.size.width, MAX(600, registerButton.frame.origin.y + registerButton.frame.size.height))];
 }

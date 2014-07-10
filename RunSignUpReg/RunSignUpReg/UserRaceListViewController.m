@@ -28,6 +28,9 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.title = @"My Race List";
+        
+        self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:100];
+        [[rli label] setText:@"Fetching list..."];
     }
     return self;
 }
@@ -35,13 +38,11 @@
 - (void)viewDidLoad{
     [super viewDidLoad];
     
-    if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
-        [self setEdgesForExtendedLayout: UIRectEdgeNone];
-    
-    self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:100];
-    [[rli label] setText:@"Fetching list..."];
     [self.view addSubview: rli];
     [rli release];
+    
+    if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
+        [self setEdgesForExtendedLayout: UIRectEdgeNone];
     
     void (^response)(NSArray *) = ^(NSArray *list){
         self.raceList = list;

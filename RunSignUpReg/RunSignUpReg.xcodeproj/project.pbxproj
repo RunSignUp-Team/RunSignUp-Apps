@@ -170,6 +170,14 @@
 		77AE5B14196B0A88002F1362 /* RaceSearchRoundBottom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AE5B11196B0A88002F1362 /* RaceSearchRoundBottom@2x.png */; };
 		77AE5B15196B0A88002F1362 /* RaceSearchRoundMiddle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AE5B12196B0A88002F1362 /* RaceSearchRoundMiddle@2x.png */; };
 		77AE5B16196B0A88002F1362 /* RaceSearchRoundTop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AE5B13196B0A88002F1362 /* RaceSearchRoundTop@2x.png */; };
+		77AEC5A4196DCB05002C9471 /* WhiteButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AEC5A2196DCB05002C9471 /* WhiteButton.png */; };
+		77AEC5A5196DCB05002C9471 /* WhiteButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AEC5A3196DCB05002C9471 /* WhiteButton@2x.png */; };
+		77AEC5AB196F49A6002C9471 /* DarkBlueButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AEC5A9196F49A6002C9471 /* DarkBlueButton.png */; };
+		77AEC5AC196F49A6002C9471 /* DarkBlueButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AEC5AA196F49A6002C9471 /* DarkBlueButton@2x.png */; };
+		77AEC5AF196F4F3A002C9471 /* DropDownTriangle.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AEC5AD196F4F3A002C9471 /* DropDownTriangle.png */; };
+		77AEC5B0196F4F3A002C9471 /* DropDownTriangle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AEC5AE196F4F3A002C9471 /* DropDownTriangle@2x.png */; };
+		77AEC5B3196F4FF6002C9471 /* DropDownTriangleTap.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AEC5B1196F4FF6002C9471 /* DropDownTriangleTap.png */; };
+		77AEC5B4196F4FF6002C9471 /* DropDownTriangleTap@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AEC5B2196F4FF6002C9471 /* DropDownTriangleTap@2x.png */; };
 		77B04377194F831B001FF6B5 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B04375194F831B001FF6B5 /* SettingsViewController.m */; };
 		77B04378194F831B001FF6B5 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77B04376194F831B001FF6B5 /* SettingsViewController.xib */; };
 		77B0E5F7177A569C00C00E5B /* CancelSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B0E5F3177A537600C00E5B /* CancelSearch.png */; };
@@ -392,6 +400,14 @@
 		77AE5B11196B0A88002F1362 /* RaceSearchRoundBottom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RaceSearchRoundBottom@2x.png"; sourceTree = "<group>"; };
 		77AE5B12196B0A88002F1362 /* RaceSearchRoundMiddle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RaceSearchRoundMiddle@2x.png"; sourceTree = "<group>"; };
 		77AE5B13196B0A88002F1362 /* RaceSearchRoundTop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RaceSearchRoundTop@2x.png"; sourceTree = "<group>"; };
+		77AEC5A2196DCB05002C9471 /* WhiteButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WhiteButton.png; sourceTree = "<group>"; };
+		77AEC5A3196DCB05002C9471 /* WhiteButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WhiteButton@2x.png"; sourceTree = "<group>"; };
+		77AEC5A9196F49A6002C9471 /* DarkBlueButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DarkBlueButton.png; sourceTree = "<group>"; };
+		77AEC5AA196F49A6002C9471 /* DarkBlueButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DarkBlueButton@2x.png"; sourceTree = "<group>"; };
+		77AEC5AD196F4F3A002C9471 /* DropDownTriangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DropDownTriangle.png; sourceTree = "<group>"; };
+		77AEC5AE196F4F3A002C9471 /* DropDownTriangle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DropDownTriangle@2x.png"; sourceTree = "<group>"; };
+		77AEC5B1196F4FF6002C9471 /* DropDownTriangleTap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DropDownTriangleTap.png; sourceTree = "<group>"; };
+		77AEC5B2196F4FF6002C9471 /* DropDownTriangleTap@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DropDownTriangleTap@2x.png"; sourceTree = "<group>"; };
 		77B04374194F831B001FF6B5 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		77B04375194F831B001FF6B5 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		77B04376194F831B001FF6B5 /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
@@ -543,6 +559,14 @@
 		77A8628215FBAA72004BAED8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				77AEC5B1196F4FF6002C9471 /* DropDownTriangleTap.png */,
+				77AEC5B2196F4FF6002C9471 /* DropDownTriangleTap@2x.png */,
+				77AEC5AD196F4F3A002C9471 /* DropDownTriangle.png */,
+				77AEC5AE196F4F3A002C9471 /* DropDownTriangle@2x.png */,
+				77AEC5A9196F49A6002C9471 /* DarkBlueButton.png */,
+				77AEC5AA196F49A6002C9471 /* DarkBlueButton@2x.png */,
+				77AEC5A2196DCB05002C9471 /* WhiteButton.png */,
+				77AEC5A3196DCB05002C9471 /* WhiteButton@2x.png */,
 				77AE5B11196B0A88002F1362 /* RaceSearchRoundBottom@2x.png */,
 				77AE5B12196B0A88002F1362 /* RaceSearchRoundMiddle@2x.png */,
 				77AE5B13196B0A88002F1362 /* RaceSearchRoundTop@2x.png */,
@@ -862,6 +886,7 @@
 				77A862D615FBAA72004BAED8 /* loading10@2x.png in Resources */,
 				778BB486193BB8A90098F9B6 /* RaceResultsEventDetailsViewController.xib in Resources */,
 				77A862D715FBAA72004BAED8 /* loading11.png in Resources */,
+				77AEC5A5196DCB05002C9471 /* WhiteButton@2x.png in Resources */,
 				774F47411958918F0003469F /* Icon-114.png in Resources */,
 				77A862D815FBAA72004BAED8 /* loading11@2x.png in Resources */,
 				77A862D915FBAA72004BAED8 /* loading12.png in Resources */,
@@ -871,9 +896,11 @@
 				77A862DB15FBAA72004BAED8 /* loading13.png in Resources */,
 				77971E2317B93114005809F8 /* RaceSignUpGiveawayViewController.xib in Resources */,
 				77A862DC15FBAA72004BAED8 /* loading13@2x.png in Resources */,
+				77AEC5AF196F4F3A002C9471 /* DropDownTriangle.png in Resources */,
 				77A7121517C40ADD008E1509 /* Default-568h.png in Resources */,
 				77A862DD15FBAA72004BAED8 /* loading14.png in Resources */,
 				77A862DE15FBAA72004BAED8 /* loading14@2x.png in Resources */,
+				77AEC5B0196F4F3A002C9471 /* DropDownTriangle@2x.png in Resources */,
 				77A862DF15FBAA72004BAED8 /* loading15.png in Resources */,
 				77A862E015FBAA72004BAED8 /* loading15@2x.png in Resources */,
 				774F4746195891980003469F /* IconSpotlight.png in Resources */,
@@ -889,6 +916,7 @@
 				777AA934195E36BF00C45970 /* GrayButton@2x.png in Resources */,
 				77A862E815FBAA72004BAED8 /* loading19@2x.png in Resources */,
 				77A862E915FBAA72004BAED8 /* loading1@2x.png in Resources */,
+				77AEC5B3196F4FF6002C9471 /* DropDownTriangleTap.png in Resources */,
 				77AE5AFF196A0E7E002F1362 /* Sanchez-Regular.ttf in Resources */,
 				77A862EA15FBAA72004BAED8 /* loading2.png in Resources */,
 				77A862EB15FBAA72004BAED8 /* loading20.png in Resources */,
@@ -920,6 +948,7 @@
 				77A8630015FBAA72004BAED8 /* loading6.png in Resources */,
 				77A8630115FBAA72004BAED8 /* loading6@2x.png in Resources */,
 				77AD37231946151700A267C5 /* QuestionsCheckbox.png in Resources */,
+				77AEC5AB196F49A6002C9471 /* DarkBlueButton.png in Resources */,
 				77A8630215FBAA72004BAED8 /* loading7.png in Resources */,
 				77A8630315FBAA72004BAED8 /* loading7@2x.png in Resources */,
 				77A8630415FBAA72004BAED8 /* loading8.png in Resources */,
@@ -947,12 +976,15 @@
 				77A8632915FC0EBE004BAED8 /* DropDownTap.png in Resources */,
 				77A8632A15FC0EBE004BAED8 /* DropDownTap@2x.png in Resources */,
 				774F665915FE9451008A1112 /* SignInViewController.xib in Resources */,
+				77AEC5B4196F4FF6002C9471 /* DropDownTriangleTap@2x.png in Resources */,
 				774F666015FEA5A0008A1112 /* ProfileViewController.xib in Resources */,
 				774F666C1604E2F1008A1112 /* AboutViewController.xib in Resources */,
 				776817891604F2B200C5F29A /* PropicDefault.png in Resources */,
 				7768178E1604F3FB00C5F29A /* RaceListViewController.xib in Resources */,
 				77681793160539E500C5F29A /* RaceSearchViewController.xib in Resources */,
 				77CE5C881607C6ED0049AF36 /* RaceDetailsViewController.xib in Resources */,
+				77AEC5A4196DCB05002C9471 /* WhiteButton.png in Resources */,
+				77AEC5AC196F49A6002C9471 /* DarkBlueButton@2x.png in Resources */,
 				77AE5B0C196AEFFE002F1362 /* SearchMagnifyingGlass@2x.png in Resources */,
 				77CE5C991608DD710049AF36 /* RaceSignUpWaiverViewController.xib in Resources */,
 				77B6E5201609FE21009E1AA9 /* RaceSignUpPaymentViewController.xib in Resources */,

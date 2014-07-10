@@ -9,14 +9,20 @@
 #import "RaceSearchRoundedTableViewCell.h"
 
 @implementation RaceSearchRoundedTableViewCell
-@synthesize top,bottom,extra;
+@synthesize top,bottom,extra,middleDivider;
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier height:(float)height{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self){
         roundedImage = [[UIImageView alloc] initWithImage: [UIImage imageNamed:@"RaceSearchRoundMiddle.png"]];
-        [roundedImage setFrame: CGRectMake(20, 0, 280, 64)];
+        [roundedImage setFrame: CGRectMake(20, 0, 280, height)];
         [self.contentView addSubview: roundedImage];
+        [self.contentView sendSubviewToBack: roundedImage];
+        
+        [self.contentView setBackgroundColor: [UIColor colorWithRed:231/255.0f green:239/255.0f blue:248/255.0f alpha:1.0f]];
+        //[self.contentView setBackgroundColor: [UIColor colorWithRed:40/255.0f green:164/255.0f blue:219/255.0f alpha:1.0f]];
+        
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     return self;
 }
@@ -32,6 +38,7 @@
     [super layoutSubviews];
     
     [self.contentView addSubview: roundedImage];
+    [self.contentView sendSubviewToBack: roundedImage];
     
     [roundedImage setImage: [UIImage imageNamed:@"RaceSearchRoundMiddle.png"]];
     

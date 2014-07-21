@@ -48,9 +48,11 @@
     UIImage *stretchedGreenButtonTap = [greenButtonTapImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     
     [agreeButton setBackgroundImage:stretchedGreenButton forState:UIControlStateNormal];
-    [agreeButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
+    //[agreeButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
+    [[agreeButton titleLabel] setFont: [UIFont fontWithName:@"Sanchez-Regular" size:18]];
     
-    [waiverLabel setFont: [UIFont boldSystemFontOfSize: 11.0f]];
+    [waiverLabel setFont: [UIFont fontWithName:@"OpenSans" size:11]];
+    [waiverView setFont: [UIFont fontWithName:@"OpenSans" size:14]];
     if([dataDict objectForKey: @"Waiver"] != nil && [(NSString *)[dataDict objectForKey: @"Waiver"] length] > 0)
         [waiverView setText: [dataDict objectForKey: @"Waiver"]];
 }

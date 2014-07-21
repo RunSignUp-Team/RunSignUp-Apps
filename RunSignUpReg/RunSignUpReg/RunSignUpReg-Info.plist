@@ -31,6 +31,8 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>OpenSans-Regular.ttf</string>
+		<string>OpenSans-Bold.ttf</string>
+		<string>OpenSans-Semibold.ttf</string>
 		<string>Sanchez-Regular.ttf</string>
 	</array>
 	<key>UIPrerenderedIcon</key>

@@ -28,7 +28,7 @@
     if(self){
         //self.activity = [[UIActivityIndicatorView alloc] initWithFrame: CGRectMake(62, 20, 36, 36)];
         self.label = [[UILabel alloc] initWithFrame: CGRectMake(5, 70, 150, 20)];
-        [label setFont: [UIFont systemFontOfSize: 18.0f]];
+        [label setFont: [UIFont fontWithName:@"OpenSans" size:16]];
         
         /*[activity setActivityIndicatorViewStyle: UIActivityIndicatorViewStyleWhiteLarge];
         [activity setBackgroundColor: [UIColor clearColor]];
@@ -46,18 +46,20 @@
         [self addSubview: loadingView];
         
         [label setBackgroundColor: [UIColor clearColor]];
-        [label setTextColor: [UIColor whiteColor]];
+        [label setTextColor: [UIColor colorWithRed:64/255.0f green:114/255.0f blue:145/255.0f alpha:1.0f]];
         [label setTextAlignment: NSTextAlignmentCenter];
         [label setText: @"Signing in..."];
         [self addSubview: label];
         
-        [self setBackgroundColor: [UIColor colorWithWhite:0.2f alpha:1.0f]];
+        [self setBackgroundColor: [UIColor colorWithRed:231/255.0f green:239/255.0f blue:248/255.0f alpha:1.0f]];
         self.layer.cornerRadius = 10.0f;
         self.layer.masksToBounds = YES;
         self.layer.shadowOffset = CGSizeMake(1, 0);
         self.layer.shadowColor = [[UIColor blackColor] CGColor];
         self.layer.shadowRadius = 5;
         self.layer.shadowOpacity = .25;
+        self.layer.borderColor = [[UIColor colorWithRed:64/255.0f green:114/255.0f blue:145/255.0f alpha:1.0f] CGColor];
+        self.layer.borderWidth = 1.0f;
         
         [self setHidden: YES];
         [self setAlpha: 0.0f];

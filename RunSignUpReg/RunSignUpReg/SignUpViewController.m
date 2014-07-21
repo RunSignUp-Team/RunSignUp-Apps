@@ -18,9 +18,10 @@
 
 #import "SignUpViewController.h"
 #import "RSUModel.h"
+#import "RoundedTableViewCell.h"
 
 @implementation SignUpViewController
-@synthesize scrollView;
+@synthesize table;
 @synthesize firstNameField;
 @synthesize lastNameField;
 @synthesize emailField;
@@ -34,11 +35,11 @@
 @synthesize dobField;
 @synthesize phoneField;
 @synthesize genderControl;
+@synthesize genderUnderline;
 @synthesize registerButton;
 @synthesize takePhotoButton;
 @synthesize chooseExistingButton;
 @synthesize profileImageView;
-@synthesize donePickerBar;
 @synthesize pickerBackgroundView;
 @synthesize countryPicker;
 @synthesize statePicker;
@@ -114,38 +115,50 @@
     UIImage *stretchedGreenButton = [greenButtonImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     UIImage *greenButtonTapImage = [UIImage imageNamed:@"GreenButtonTap.png"];
     UIImage *stretchedGreenButtonTap = [greenButtonTapImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
-    UIImage *dropDownStretched = [[UIImage imageNamed:@"DropDown.png"] stretchableImageWithLeftCapWidth:21 topCapHeight:0];
-    UIImage *dropDownTapStretched = [[UIImage imageNamed:@"DropDownTap.png"] stretchableImageWithLeftCapWidth:21 topCapHeight:0];
     
-    [countryDrop setBackgroundImage:dropDownStretched forState:UIControlStateNormal];
+    /*[countryDrop setBackgroundImage:dropDownStretched forState:UIControlStateNormal];
     [countryDrop setBackgroundImage:dropDownTapStretched forState:UIControlStateSelected];
     [stateDrop setBackgroundImage:dropDownStretched forState:UIControlStateNormal];
-    [stateDrop setBackgroundImage:dropDownTapStretched forState:UIControlStateSelected];
-    
-    [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height + 2*[donePickerBar frame].size.height, 320, 216)];
-    [statePicker setFrame: CGRectMake(0, [self.view frame].size.height + 2*[donePickerBar frame].size.height, 320, 216)];
+    [stateDrop setBackgroundImage:dropDownTapStretched forState:UIControlStateSelected];*/
     
     // Images created for stretching to variably sized UIButtons (see buttons in resources)
     [registerButton setBackgroundImage:stretchedGreenButton forState:UIControlStateNormal];
-    [registerButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
+    //[registerButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
     [takePhotoButton setBackgroundImage:stretchedBlueButton forState:UIControlStateNormal];
-    [takePhotoButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
+    //[takePhotoButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
     [chooseExistingButton setBackgroundImage:stretchedBlueButton forState:UIControlStateNormal];
-    [chooseExistingButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
+    //[chooseExistingButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
+    
+    [[registerButton titleLabel] setFont: [UIFont fontWithName:@"Sanchez-Regular" size:18]];
+    
+    [genderControl setDividerImage:[UIImage imageNamed:@"GenderControlDivider.png"] forLeftSegmentState:UIControlStateNormal rightSegmentState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [genderControl setBackgroundImage:[UIImage new] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [genderControl setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor], NSFontAttributeName: [UIFont fontWithName:@"Sanchez-Regular" size:18]} forState:UIControlStateNormal];
+    [genderControl setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:64/255.0f green:114/255.0f blue:145/255.0f alpha:1.0f], NSFontAttributeName: [UIFont fontWithName:@"Sanchez-Regular" size:18]} forState:UIControlStateSelected];
+
+    for(UITextField *field in @[firstNameField, lastNameField, emailField, passwordField, confirmPasswordField, addressField, cityField, zipcodeField, dobField, phoneField]){
+        [field setFont: [UIFont fontWithName:@"Sanchez-Regular" size:16]];
+        [field setTextColor: [UIColor colorWithRed:64/255.0f green:114/255.0f blue:145/255.0f alpha:1.0f]];
+    }
+    
+    for(UIButton *button in @[stateDrop, countryDrop]){
+        [[button titleLabel] setFont: [UIFont fontWithName:@"Sanchez-Regular" size:16]];
+        [button setTitleColor:[UIColor colorWithRed:64/255.0f green:114/255.0f blue:145/255.0f alpha:1.0f] forState:UIControlStateNormal];
+    }
     
     if(signUpMode == RSUSignUpEditingUser){
         [passwordField setHidden: YES];
         [confirmPasswordField setHidden: YES];
         [emailField setHidden: YES];
         self.title = @"Edit Profile";
-        for(UIView *view in [scrollView subviews]){
+        /*for(UIView *view in [scrollView subviews]){
             if([view frame].origin.y > [confirmPasswordField frame].origin.y){
                 CGRect frame = [view frame];
                 frame.origin.y -= 117.0f;
                 [view setFrame: frame];
             }
-        }
-        [registerButton setTitle:@"Save Changes" forState:UIControlStateNormal];
+        }*/
+        [registerButton setTitle:@"SAVE CHANGES" forState:UIControlStateNormal];
         [firstNameField setText: [userDictionary objectForKey:@"first_name"]];
         [lastNameField setText: [userDictionary objectForKey:@"last_name"]];
         [emailField setText: [userDictionary objectForKey:@"email"]];
@@ -190,24 +203,32 @@
             [genderControl setSelectedSegmentIndex: 1];
         }
     }else if(signUpMode == RSUSignUpNewUser){
-        [navigationBar setHidden: NO];
-        [scrollView setFrame: CGRectMake(0, 64, scrollView.frame.size.width, scrollView.frame.size.height - 64)];
-        [registerButton setTitle:@"Submit" forState:UIControlStateNormal];
+        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
+        [self.navigationItem setLeftBarButtonItem: cancelButton];
+        [cancelButton release];
+        
+        self.title = @"New User";
+
+        [registerButton setTitle:@"SUBMIT" forState:UIControlStateNormal];
     }else if(signUpMode == RSUSignUpSomeoneElse){
-        [navigationBar setHidden: NO];
-        [scrollView setFrame: CGRectMake(0, 64, scrollView.frame.size.width, scrollView.frame.size.height - 64)];
-        [registerButton setTitle:@"Submit" forState:UIControlStateNormal];
+        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
+        [self.navigationItem setLeftBarButtonItem: cancelButton];
+        [cancelButton release];
+        
+        self.title = @"Create User";
+
+        [registerButton setTitle:@"SUBMIT" forState:UIControlStateNormal];
         [passwordField setHidden: YES];
         [confirmPasswordField setHidden: YES];
-        for(UIView *view in [scrollView subviews]){
+        /*for(UIView *view in [scrollView subviews]){
             if([view frame].origin.y > [confirmPasswordField frame].origin.y){
                 CGRect frame = [view frame];
                 frame.origin.y -= 78.0f;
                 [view setFrame: frame];
             }
-        }
-    }else if(signUpMode == RSUSignUpCreditCardInfo){
-        [registerButton setTitle:@"Submit" forState:UIControlStateNormal];
+        }*/
+    }/*else if(signUpMode == RSUSignUpCreditCardInfo){
+        [registerButton setTitle:@"SUBMIT" forState:UIControlStateNormal];
         [passwordField setHidden: YES];
         [confirmPasswordField setHidden: YES];
         [emailField setHidden: YES];
@@ -217,7 +238,7 @@
         [genderControl setHidden: YES];
         self.title = @"Credit Card";
         
-        for(UIView *view in [scrollView subviews]){
+        /*for(UIView *view in [scrollView subviews]){
             if([view frame].origin.y > [confirmPasswordField frame].origin.y){
                 int offset = 117;
                 if([view frame].origin.y > [stateDrop frame].origin.y){
@@ -229,9 +250,9 @@
                 [view setFrame: frame];
             }
         }
-    }
-    
-    [scrollView setContentSize: CGSizeMake(scrollView.frame.size.width, MAX(600, registerButton.frame.origin.y + registerButton.frame.size.height))];
+    }*/
+
+    //[scrollView setContentSize: CGSizeMake(scrollView.frame.size.width, MAX(600, registerButton.frame.origin.y + registerButton.frame.size.height))];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -240,7 +261,7 @@
 }
 
 - (IBAction)cancel:(id)sender{
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)viewDidUnload{
@@ -249,18 +270,30 @@
     // e.g. self.myOutlet = nil;
 }
 
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view{
+    NSString *rowText = nil;
+    
     if(pickerView == countryPicker)
-        return [countryArray objectAtIndex: row];
+        rowText = [countryArray objectAtIndex: row];
     else
         if(currentSelectedCountry == 0)
-            return [stateArrayUS objectAtIndex: row];
+            rowText = [stateArrayUS objectAtIndex: row];
         else if(currentSelectedCountry == 1)
-            return [stateArrayCA objectAtIndex: row];
+            rowText = [stateArrayCA objectAtIndex: row];
         else if(currentSelectedCountry == 3)
-            return [stateArrayGE objectAtIndex: row];
-        else
-            return nil;
+            rowText = [stateArrayGE objectAtIndex: row];
+    
+    if(view == nil){
+        UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, 312, 22)];
+        [label setTextAlignment: NSTextAlignmentCenter];
+        [label setFont: [UIFont fontWithName:@"OpenSans" size:18]];
+        [label setText: rowText];
+        return label;
+    }else{
+        UILabel *label = (UILabel *)view;
+        [label setText: rowText];
+        return label;
+    }
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
@@ -317,7 +350,7 @@
     if([genderControl selectedSegmentIndex] == 1)
         genderString = @"F";
     
-    for(UIView *view in [scrollView subviews]){
+    /*for(UIView *view in [scrollView subviews]){
         if([view isKindOfClass: [UITextField class]]){
             if([[(UITextField *)view text] length] == 0){
                 if(signUpMode == RSUSignUpEditingUser){
@@ -337,7 +370,7 @@
                 }
             }
         }
-    }
+    }*/
     
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     [dict setObject:[firstNameField text] forKey:@"first_name"];
@@ -399,33 +432,31 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please enter a matching passwords and try again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
         [alert show];
         [alert release];
-    }
-    
-    [self setUserDictionary: dict];
-    
-    if(signUpMode == RSUSignUpEditingUser){
-        [rli fadeIn];
-        void (^response)(RSUConnectionResponse) = ^(RSUConnectionResponse didSucceed){
-            if(didSucceed == RSUSuccess){
-                [delegate didSignUpWithDictionary: userDictionary];
-                [self.navigationController popViewControllerAnimated: YES];
-            }else if(didSucceed == RSUInvalidData){
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Invalid data, please revise your information and try again." delegate:Nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-                [alert show];
-                [alert release];
-            }else if(didSucceed == RSUNoConnection){
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There was a problem establishing a connection with RunSignUp. Please try again." delegate:Nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-                [alert show];
-                [alert release];
-            }
-            [rli fadeOut];
-        };
-        [[RSUModel sharedModel] editUserWithInfo:dict response:response];
-    }else if(signUpMode == RSUSignUpSomeoneElse || signUpMode == RSUSignUpNewUser){
-        [delegate didSignUpWithDictionary: userDictionary];
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }else if(signUpMode == RSUSignUpDefault){
+    }else{
+        [self setUserDictionary: dict];
         
+        if(signUpMode == RSUSignUpEditingUser){
+            [rli fadeIn];
+            void (^response)(RSUConnectionResponse) = ^(RSUConnectionResponse didSucceed){
+                if(didSucceed == RSUSuccess){
+                    [delegate didSignUpWithDictionary: userDictionary];
+                    [self.navigationController popViewControllerAnimated: YES];
+                }else if(didSucceed == RSUInvalidData){
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Invalid data, please revise your information and try again." delegate:Nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                    [alert show];
+                    [alert release];
+                }else if(didSucceed == RSUNoConnection){
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There was a problem establishing a connection with RunSignUp. Please try again." delegate:Nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                    [alert show];
+                    [alert release];
+                }
+                [rli fadeOut];
+            };
+            [[RSUModel sharedModel] editUserWithInfo:dict response:response];
+        }else if(signUpMode == RSUSignUpSomeoneElse || signUpMode == RSUSignUpNewUser){
+            [delegate didSignUpWithDictionary: userDictionary];
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        }
     }
 }
 
@@ -461,53 +492,341 @@
     [self dismissViewControllerAnimated: YES completion:nil];
 }
 
+- (void)scrollToTableRow:(int)row{
+    NSLog(@"Scrolling to table row: %i", row);
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        float offset = MAX(row * 52 - 100, 0);
+        [table setContentOffset: CGPointMake(0, offset) animated:YES];
+    });
+    
+}
+
+- (void)hideBackground{
+    if(showingBackground){
+        [UIView beginAnimations:@"BackgroundSlide" context:nil];
+        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height, 320, 260)];
+        [UIView commitAnimations];
+        
+        [UIView beginAnimations:@"TableSize" context:nil];
+        [table setFrame: CGRectMake(0, 0, 320, [self.view frame].size.height)];
+        [UIView commitAnimations];
+        
+        showingBackground = NO;
+    }
+}
+
+- (void)showBackground{
+    if(!showingBackground){
+        [UIView beginAnimations:@"BackgroundSlide" context:nil];
+        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height - 260, 320, 260)];
+        [UIView commitAnimations];
+        
+        [UIView beginAnimations:@"TableSize" context:nil];
+        [table setFrame: CGRectMake(0, 0, 320, [self.view frame].size.height - 260)];
+        [UIView commitAnimations];
+        
+        showingBackground = YES;
+    }
+}
+
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     if(currentPicker != 0)
         [self hideCurrentInput: nil];
 
-    [UIView beginAnimations:@"KeyboardSlide" context:nil];
-    [UIView setAnimationDuration: 0.25f];
-    [donePickerBar setFrame: CGRectMake(0, [self.view frame].size.height - 216 - [donePickerBar frame].size.height, 320, 44)];
-    [UIView commitAnimations];
+    currentInput = textField;
+    [self showBackground];
+
+    if(textField == firstNameField){
+        [self scrollToTableRow: SignUpCellFirstName];
+    }else if(textField == lastNameField){
+        [self scrollToTableRow: SignUpCellLastName];
+    }else if(textField == emailField){
+        [self scrollToTableRow: SignUpCellEmail];
+    }else if(textField == passwordField){
+        [self scrollToTableRow: SignUpCellPass];
+    }else if(textField == confirmPasswordField){
+        [self scrollToTableRow: SignUpCellConfirmPass];
+    }else if(textField == addressField){
+        if(signUpMode == RSUSignUpEditingUser)
+            [self scrollToTableRow: SignUpCellAddress - 3];
+        else if(signUpMode == RSUSignUpNewUser)
+            [self scrollToTableRow: SignUpCellAddress];
+        else
+            [self scrollToTableRow: SignUpCellAddress - 2];
+    }else if(textField == cityField){
+        if(signUpMode == RSUSignUpEditingUser)
+            [self scrollToTableRow: SignUpCellCity - 3];
+        else if(signUpMode == RSUSignUpNewUser)
+            [self scrollToTableRow: SignUpCellCity];
+        else
+            [self scrollToTableRow: SignUpCellCity - 2];
+    }else if(textField == zipcodeField){
+        if(signUpMode == RSUSignUpEditingUser)
+            [self scrollToTableRow: SignUpCellZip - 3];
+        else if(signUpMode == RSUSignUpNewUser)
+            [self scrollToTableRow: SignUpCellZip];
+        else
+            [self scrollToTableRow: SignUpCellZip - 2];
+    }else if(textField == dobField){
+        if(signUpMode == RSUSignUpEditingUser)
+            [self scrollToTableRow: SignUpCellDob - 3];
+        else if(signUpMode == RSUSignUpNewUser)
+            [self scrollToTableRow: SignUpCellDob];
+        else
+            [self scrollToTableRow: SignUpCellDob - 2];
+    }else if(textField == phoneField){
+        if(signUpMode == RSUSignUpEditingUser)
+            [self scrollToTableRow: SignUpCellPhone - 3];
+        else if(signUpMode == RSUSignUpNewUser)
+            [self scrollToTableRow: SignUpCellPhone];
+        else
+            [self scrollToTableRow: SignUpCellPhone - 2];
+    }
     
-    float scrollToLocation = [textField frame].origin.y - 78;
-    if(scrollToLocation < 0)
-        scrollToLocation = 0;
-    
-    [scrollView setContentOffset:CGPointMake(0, scrollToLocation) animated:YES];
-   
     return YES;
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField{
-    if(textField == firstNameField)
+- (void)jumpToNextInputFrom:(id)input{
+    if(input == nil){
+        [firstNameField becomeFirstResponder];
+    }else if(input == firstNameField){
         [lastNameField becomeFirstResponder];
-    else if(textField == lastNameField)
-        if(signUpMode == RSUSignUpEditingUser || signUpMode == RSUSignUpCreditCardInfo)
+    }else if(input == lastNameField){
+        if(signUpMode == RSUSignUpEditingUser){
             [addressField becomeFirstResponder];
+        }else{
+            [emailField becomeFirstResponder];
+        }
+    }else if(input == emailField){
+        if(signUpMode == RSUSignUpSomeoneElse){
+            [addressField becomeFirstResponder];
+        }else{
+            [passwordField becomeFirstResponder];
+        }
+    }else if(input == passwordField){
+        [confirmPasswordField becomeFirstResponder];
+    }else if(input == confirmPasswordField){
+        [addressField becomeFirstResponder];
+    }else if(input == addressField){
+        [cityField becomeFirstResponder];
+    }else if(input == cityField){
+        [self showCountryPicker: nil];
+    }else if(input == countryDrop){
+        [self showStatePicker: nil];
+    }else if(input == stateDrop){
+        [zipcodeField becomeFirstResponder];
+    }else if(input == zipcodeField){
+        [dobField becomeFirstResponder];
+    }else if(input == dobField){
+        [phoneField becomeFirstResponder];
+    }else if(input == phoneField){
+        [self hideCurrentInput: nil];
+    }
+}
+
+- (void)jumpToLastInputFrom:(id)input{
+    if(input == nil){
+        [firstNameField becomeFirstResponder];
+    }else if(input == genderControl){
+        [phoneField becomeFirstResponder];
+    }else if(input == phoneField){
+        [dobField becomeFirstResponder];
+    }else if(input == dobField){
+        [zipcodeField becomeFirstResponder];
+    }else if(input == zipcodeField){
+        [self showStatePicker: nil];
+    }else if(input == stateDrop){
+        [self showCountryPicker: nil];
+    }else if(input == countryDrop){
+        [cityField becomeFirstResponder];
+    }else if(input == cityField){
+        [addressField becomeFirstResponder];
+    }else if(input == addressField){
+        if(signUpMode == RSUSignUpEditingUser)
+            [lastNameField becomeFirstResponder];
+        else if(signUpMode == RSUSignUpNewUser)
+            [confirmPasswordField becomeFirstResponder];
         else
             [emailField becomeFirstResponder];
-    else if(textField == emailField)
-        if(signUpMode == RSUSignUpSomeoneElse)
-            [addressField becomeFirstResponder];
-        else
-            [passwordField becomeFirstResponder];
-    else if(textField == passwordField)
-        [confirmPasswordField becomeFirstResponder];
-    else if(textField == confirmPasswordField)
-        [addressField becomeFirstResponder];
-    else if(textField == addressField)
-        [cityField becomeFirstResponder];
-    else if(textField == cityField){
-        [self showCountryPicker: nil];
-    }else if(textField == zipcodeField)
-        [dobField becomeFirstResponder];
-    else if(textField == dobField)
-        [phoneField becomeFirstResponder];
-    else if(textField == phoneField)
-        [self hideCurrentInput: nil];
-    
+    }else if(input == confirmPasswordField){
+        [passwordField becomeFirstResponder];
+    }else if(input == passwordField){
+        [emailField becomeFirstResponder];
+    }else if(input == emailField){
+        [lastNameField becomeFirstResponder];
+    }else if(input == lastNameField){
+        [firstNameField becomeFirstResponder];
+    }
+}
+
+- (IBAction)prevNextControlDidChange:(id)sender{
+    NSLog(@"Current input: %@", [currentInput class]);
+    if([(UISegmentedControl *)sender selectedSegmentIndex] == 0){
+        [self jumpToLastInputFrom: currentInput];
+    }else{
+        [self jumpToNextInputFrom: currentInput];
+    }
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [self jumpToNextInputFrom: textField];
     return NO;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *SearchControlCellIdentifier = @"SearchControlCellIdentifier";
+    
+    RoundedTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SearchControlCellIdentifier];
+    float cellHeight = [self tableView:tableView heightForRowAtIndexPath:indexPath];
+    if(cell == nil){
+        cell = [[RoundedTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SearchControlCellIdentifier];
+    }
+    
+    [cell setTop: NO];
+    [cell setBottom: NO];
+    [cell setExtra: NO];
+    [cell setMiddleDivider: NO];
+    [cell reset];
+    [cell setCellHeight: cellHeight];
+    
+    int numberOfRows = [self tableView:tableView numberOfRowsInSection:0];
+    
+    if(indexPath.row == 0)
+        [cell setExtra: YES];
+    else if(indexPath.row == 1)
+        [cell setTop: YES];
+    else if(indexPath.row == numberOfRows - 2)
+        [cell setBottom: YES];
+
+    if(indexPath.row == numberOfRows - 1){
+        if(registerButton.superview != nil)
+            [registerButton removeFromSuperview];
+        [registerButton setFrame: CGRectMake(20, cellHeight / 2 - registerButton.frame.size.height / 2, 280, registerButton.frame.size.height)];
+        [cell.contentView addSubview: registerButton];
+        [cell setExtra: YES];
+    }else if(indexPath.row != 0){
+        SignUpCellControl control = SignUpCellFirstName;
+        if(signUpMode == RSUSignUpEditingUser){
+            control = indexPath.row;
+            if(indexPath.row > 2)
+                control = indexPath.row + 3;
+        }else if(signUpMode == RSUSignUpNewUser){
+            control = indexPath.row;
+        }else if(signUpMode == RSUSignUpSomeoneElse){
+            control = indexPath.row;
+            if(indexPath.row > 3)
+                control = indexPath.row + 2;
+        }
+        
+        if(control == SignUpCellFirstName){
+            if(firstNameField.superview != nil)
+                [firstNameField removeFromSuperview];
+            [firstNameField setFrame: CGRectMake(36, 0, 248, cellHeight)];
+            [cell.contentView addSubview: firstNameField];
+        }else if(control == SignUpCellLastName){
+            if(lastNameField.superview != nil)
+                [lastNameField removeFromSuperview];
+            [lastNameField setFrame: CGRectMake(36, 0, 248, cellHeight)];
+            [cell.contentView addSubview: lastNameField];
+        }else if(control == SignUpCellEmail){
+            if(emailField.superview != nil)
+                [emailField removeFromSuperview];
+            [emailField setFrame: CGRectMake(36, 0, 248, cellHeight)];
+            [cell.contentView addSubview: emailField];
+        }else if(control == SignUpCellPass){
+            if(passwordField.superview != nil)
+                [passwordField removeFromSuperview];
+            [passwordField setFrame: CGRectMake(36, 0, 248, cellHeight)];
+            [cell.contentView addSubview: passwordField];
+        }else if(control == SignUpCellConfirmPass){
+            if(confirmPasswordField.superview != nil)
+                [confirmPasswordField removeFromSuperview];
+            [confirmPasswordField setFrame: CGRectMake(36, 0, 248, cellHeight)];
+            [cell.contentView addSubview: confirmPasswordField];
+        }else if(control == SignUpCellAddress){
+            if(addressField.superview != nil)
+                [addressField removeFromSuperview];
+            [addressField setFrame: CGRectMake(36, 0, 248, cellHeight)];
+            [cell.contentView addSubview: addressField];
+        }else if(control == SignUpCellCity){
+            if(cityField.superview != nil)
+                [cityField removeFromSuperview];
+            [cityField setFrame: CGRectMake(36, 0, 248, cellHeight)];
+            [cell.contentView addSubview: cityField];
+        }else if(control == SignUpCellCountry){
+            if(countryDrop.superview != nil)
+                [countryDrop removeFromSuperview];
+            [countryDrop setFrame: CGRectMake(28, 0, 264, cellHeight)];
+            [cell.contentView addSubview: countryDrop];
+        }else if(control == SignUpCellState){
+            if(stateDrop.superview != nil)
+                [stateDrop removeFromSuperview];
+            [stateDrop setFrame: CGRectMake(28, 0, 264, cellHeight)];
+            [cell.contentView addSubview: stateDrop];
+        }else if(control == SignUpCellZip){
+            if(zipcodeField.superview != nil)
+                [zipcodeField removeFromSuperview];
+            [zipcodeField setFrame: CGRectMake(36, 0, 248, cellHeight)];
+            [cell.contentView addSubview: zipcodeField];
+        }else if(control == SignUpCellDob){
+            if(dobField.superview != nil)
+                [dobField removeFromSuperview];
+            [dobField setFrame: CGRectMake(36, 0, 248, cellHeight)];
+            [cell.contentView addSubview: dobField];
+        }else if(control == SignUpCellPhone){
+            if(phoneField.superview != nil)
+                [phoneField removeFromSuperview];
+            [phoneField setFrame: CGRectMake(36, 0, 248, cellHeight)];
+            [cell.contentView addSubview: phoneField];
+        }else if(control == SignUpCellGender){
+            if(genderControl.superview != nil)
+                [genderControl removeFromSuperview];
+            if(genderUnderline.superview != nil)
+                [genderUnderline removeFromSuperview];
+            [genderControl setFrame: CGRectMake(20, 0, 280, cellHeight)];
+            [genderUnderline setFrame: CGRectMake(68, 34, 44, 1)];
+            [cell.contentView addSubview: genderControl];
+            [cell.contentView addSubview: genderUnderline];
+        }
+    }
+
+    return cell;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    if(signUpMode == RSUSignUpEditingUser)
+        return 12;
+    else if(signUpMode == RSUSignUpNewUser)
+        return 15;
+    else if(signUpMode == RSUSignUpSomeoneElse)
+        return 13;
+    
+    return 12;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(indexPath.row == 0)
+        return 20;
+    else if(indexPath.row != [self tableView:tableView numberOfRowsInSection:0] - 1)
+        return 52;
+    return 64;
+}
+
+- (IBAction)genderControlDidChange:(id)sender{
+    [UIView beginAnimations:@"GenderUnderlineSwitch" context:nil];
+    [UIView setAnimationDuration: 0.15f];
+    [UIView setAnimationCurve: UIViewAnimationCurveEaseInOut];
+    if([genderControl selectedSegmentIndex] == 0){
+        [genderUnderline setFrame: CGRectMake(68, 34, 44, 1)];
+    }else{
+        [genderUnderline setFrame: CGRectMake(198, 34, 64, 1)];
+    }
+    [UIView commitAnimations];
 }
 
 - (IBAction)showCountryPicker:(id)sender{
@@ -515,24 +834,24 @@
     [countryDrop setSelected: YES];
     [stateDrop setSelected: NO];
     if(currentPicker == 0){
-        [donePickerBar setFrame: CGRectMake(0, [self.view frame].size.height, 320, 44)];
         [UIView beginAnimations:@"PickerSlide" context:nil];
         [UIView setAnimationDuration: 0.25f];
-        [donePickerBar setFrame: CGRectMake(0, [self.view frame].size.height - 216 - [donePickerBar frame].size.height, 320, 44)];
-        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
         [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
         [UIView commitAnimations];
+        [self showBackground];
     }else{
         [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
-        [statePicker setFrame: CGRectMake(0, [self.view frame].size.height + [donePickerBar frame].size.height, 320, 216)];
+        [statePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
     }
-    
-    float scrollToLocation = [countryDrop frame].origin.y - 78;
-    if(scrollToLocation < 0)
-        scrollToLocation = 0;
-    
-    [scrollView setContentOffset:CGPointMake(0, scrollToLocation) animated:YES];
     currentPicker = 1;
+    currentInput = countryDrop;
+    
+    if(signUpMode == RSUSignUpEditingUser)
+        [self scrollToTableRow: SignUpCellCountry - 3];
+    else if(signUpMode == RSUSignUpNewUser)
+        [self scrollToTableRow: SignUpCellCountry];
+    else
+        [self scrollToTableRow: SignUpCellCountry - 2];
 }
 
 - (IBAction)showStatePicker:(id)sender{
@@ -540,53 +859,45 @@
     [countryDrop setSelected: NO];
     [stateDrop setSelected: YES];    
     if(currentPicker == 0){
-        [donePickerBar setFrame: CGRectMake(0, [self.view frame].size.height, 320, 44)];
         [UIView beginAnimations:@"PickerSlide" context:nil];
         [UIView setAnimationDuration: 0.25f];
-        [donePickerBar setFrame: CGRectMake(0, [self.view frame].size.height - 216 - [donePickerBar frame].size.height, 320, 44)];
-        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
         [statePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
         [UIView commitAnimations];
+        [self showBackground];
     }else{
-        [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height + [donePickerBar frame].size.height, 320, 216)];
+        [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
         [statePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
     }
-    
-    float scrollToLocation = [stateDrop frame].origin.y - 78;
-    if(scrollToLocation < 0)
-        scrollToLocation = 0;
-    
-    [scrollView setContentOffset:CGPointMake(0, scrollToLocation) animated:YES];
-    
     currentPicker = 2;
+    currentInput = stateDrop;
+    
+    if(signUpMode == RSUSignUpEditingUser)
+        [self scrollToTableRow: SignUpCellState - 3];
+    else if(signUpMode == RSUSignUpNewUser)
+        [self scrollToTableRow: SignUpCellState];
+    else
+        [self scrollToTableRow: SignUpCellState - 2];
 }
 
-- (IBAction)hideCurrentInput:(id)sender{    
+- (IBAction)hideCurrentInput:(id)sender{
     if(currentPicker == 1){
         [countryDrop setSelected: NO];
         [UIView beginAnimations:@"PickerSlide" context:nil];
-        [UIView setAnimationDuration: 0.25f];
-        [donePickerBar setFrame: CGRectMake(0, [self.view frame].size.height, 320, 44)];
-        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
-        [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height + [donePickerBar frame].size.height, 320, 216)];
+        [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
         [UIView commitAnimations];
     }else if(currentPicker == 2){
         [stateDrop setSelected: NO];
         [UIView beginAnimations:@"PickerSlide" context:nil];
-        [UIView setAnimationDuration: 0.25f];
-        [donePickerBar setFrame: CGRectMake(0, [self.view frame].size.height, 320, 44)];
-        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
-        [statePicker setFrame: CGRectMake(0, [self.view frame].size.height + [donePickerBar frame].size.height, 320, 216)];
+        [statePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
         [UIView commitAnimations];
     }else{
         [self.view endEditing: YES];
-        [UIView beginAnimations:@"PickerSlide" context:nil];
-        [UIView setAnimationDuration: 0.25f];
-        [donePickerBar setFrame: CGRectMake(0, [self.view frame].size.height, 320, 44)];
-        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
-        [UIView commitAnimations];
     }
+    
+    [self hideBackground];
+
     currentPicker = 0;
+    currentInput = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{

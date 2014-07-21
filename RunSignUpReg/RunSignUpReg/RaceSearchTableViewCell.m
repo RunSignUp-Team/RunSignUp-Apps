@@ -10,11 +10,12 @@
 
 @implementation RaceSearchTableViewCell
 @synthesize delegate;
+@synthesize searchField;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self){
-        searchField = [[UITextField alloc] initWithFrame: CGRectMake(8, 8, 304, 28)];
+        self.searchField = [[UITextField alloc] initWithFrame: CGRectMake(8, 8, 304, 28)];
         [searchField setBorderStyle: UITextBorderStyleRoundedRect];
         [searchField setClearButtonMode: UITextFieldViewModeWhileEditing];
         [searchField setReturnKeyType: UIReturnKeySearch];
@@ -50,42 +51,50 @@
         [self addSubview: startEditButton];
         
         [self.contentView setBackgroundColor: [UIColor colorWithRed:231/255.0f green:239/255.0f blue:248/255.0f alpha:1.0f]];
-        //[self.contentView setBackgroundColor: [UIColor colorWithRed:40/255.0f green:164/255.0f blue:219/255.0f alpha:1.0f]];
     }
     return self;
+}
+
+- (void)makeTextFieldFirstResponder{
+    [searchField becomeFirstResponder];
+}
+
+- (void)layoutActive:(BOOL)active{
+    if(active){
+        [searchField setFrame: CGRectMake(8, 8, 230, 28)];
+        [cancelButton setFrame: CGRectMake(240, 0, 80, 44)];
+        [searchGlass setFrame: CGRectMake(10, 0, 20, 44)];
+        [paddingView setFrame: CGRectMake(0, 0, 18, 44)];
+        [startEditButton setHidden: YES];
+    }else{
+        [searchField setFrame: CGRectMake(8, 8, 304, 28)];
+        [cancelButton setFrame: CGRectMake(350, 0, 80, 44)];
+        [searchGlass setFrame: CGRectMake([self frame].size.width / 2 - 10, 0, 20, 44)];
+        [paddingView setFrame: CGRectMake(0, 0, [self frame].size.width / 2, 44)];
+        [searchField setText: @""];
+        [startEditButton setHidden: NO];
+    }
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
     [UIView beginAnimations:@"SearchSlide" context:nil];
     [UIView setAnimationDuration: 0.2f];
-    [searchField setFrame: CGRectMake(8, 8, 230, 28)];
-    [cancelButton setFrame: CGRectMake(240, 0, 80, 44)];
-    [searchGlass setFrame: CGRectMake(10, 0, 20, 44)];
-    [paddingView setFrame: CGRectMake(0, 0, 18, 44)];
+    [self layoutActive: YES];
     [UIView commitAnimations];
-    [startEditButton setHidden: YES];
     [delegate searchFieldDidBeginEdit];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField{
     [UIView beginAnimations:@"SearchSlide" context:nil];
     [UIView setAnimationDuration: 0.2f];
-    [searchField setFrame: CGRectMake(8, 8, 304, 28)];
-    [cancelButton setFrame: CGRectMake(350, 0, 80, 44)];
-    [searchGlass setFrame: CGRectMake([self frame].size.width / 2 - 10, 0, 20, 44)];
-    [paddingView setFrame: CGRectMake(0, 0, [self frame].size.width / 2, 44)];
-    [searchField setText: @""];
+    [self layoutActive: NO];
     [UIView commitAnimations];
-    [startEditButton setHidden: NO];
 }
 
-- (void)setActiveSearch{
-    [searchField setFrame: CGRectMake(8, 8, 230, 28)];
-    [cancelButton setFrame: CGRectMake(240, 0, 80, 44)];
-    [searchGlass setFrame: CGRectMake(10, 0, 20, 44)];
-    [paddingView setFrame: CGRectMake(0, 0, 18, 44)];
-    
-    [searchField becomeFirstResponder];
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    NSString *stringToBe = [[textField text] stringByReplacingCharactersInRange:range withString:string];
+    [delegate searchFieldDidEditText: stringToBe];
+    return YES;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{

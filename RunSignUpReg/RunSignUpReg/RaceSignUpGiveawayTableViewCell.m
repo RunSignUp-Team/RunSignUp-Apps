@@ -25,7 +25,7 @@
     if (self) {
         giveawayOptions = nil;
         
-        pickerView = [[UIPickerView alloc] initWithFrame: CGRectMake(4, 4, 260, 216)];
+        pickerView = [[UIPickerView alloc] initWithFrame: CGRectMake(4, 4, 312, 216)];
         [pickerView setDelegate: self];
         [pickerView setDataSource: self];
         [pickerView setShowsSelectionIndicator: YES];
@@ -42,8 +42,20 @@
     return [giveawayOptions count];
 }
 
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
-    return [NSString stringWithFormat: @"%@ - %@", [[giveawayOptions objectAtIndex: row] objectForKey:@"giveaway_option_text"], [[giveawayOptions objectAtIndex: row] objectForKey:@"additional_cost"]];
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view{
+    NSString *rowText = [NSString stringWithFormat: @"%@ - %@", [[giveawayOptions objectAtIndex: row] objectForKey:@"giveaway_option_text"], [[giveawayOptions objectAtIndex: row] objectForKey:@"additional_cost"]];
+    
+    if(view == nil){
+        UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, 312, 22)];
+        [label setTextAlignment: NSTextAlignmentCenter];
+        [label setFont: [UIFont fontWithName:@"OpenSans" size:18]];
+        [label setText: rowText];
+        return label;
+    }else{
+        UILabel *label = (UILabel *)view;
+        [label setText: rowText];
+        return label;
+    }
 }
 
 - (void)setGiveawayOptions:(NSArray *)go{

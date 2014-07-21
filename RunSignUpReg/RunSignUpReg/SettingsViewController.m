@@ -57,6 +57,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     
     [cell.textLabel setText: [[NSArray arrayWithObjects:@"Automatically Sign In:", nil] objectAtIndex:indexPath.row]];
+    [cell.textLabel setFont: [UIFont fontWithName:@"OpenSans" size:18]];
     
     switch(indexPath.row){
         case 0:

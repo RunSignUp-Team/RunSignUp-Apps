@@ -90,9 +90,14 @@
     UIImage *stretchedGreenButtonTap = [greenButtonTapImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     
     [applyButton setBackgroundImage:stretchedGreenButton forState:UIControlStateNormal];
-    [applyButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
+    //[applyButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
     [paymentButton setBackgroundImage:stretchedGreenButton forState:UIControlStateNormal];
-    [paymentButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
+    //[paymentButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
+    
+    [self changeFontOfSubviews: self.view];
+    
+    [[applyButton titleLabel] setFont: [UIFont fontWithName:@"Sanchez-Regular" size:18]];
+    [[paymentButton titleLabel] setFont: [UIFont fontWithName:@"Sanchez-Regular" size:18]];
     
     [raceNameLabel setText: [dataDict objectForKey: @"name"]];
 
@@ -120,6 +125,17 @@
     [zipLabel setText: [[userDict objectForKey: @"address"] objectForKey:@"zipcode"]];
     
     [self getCart];
+}
+
+- (void)changeFontOfSubviews:(UIView *)view{
+    for(UIView *subview in [view subviews]){
+        if([subview isKindOfClass: [UILabel class]]){
+            UILabel *label = (UILabel *)subview;
+            [label setFont: [UIFont fontWithName:@"OpenSans" size:[[label font] pointSize]]];
+        }else if([subview isKindOfClass: [UIView class]]){
+            [self changeFontOfSubviews: subview];
+        }
+    }
 }
 
 - (void)getCart{
@@ -195,7 +211,7 @@
     [couponView setHidden: YES];
     
     if(isFreeRace){
-        [paymentButton setTitle:@"Confirm Registration" forState:UIControlStateNormal];
+        [paymentButton setTitle:@"CONFIRM REGISTRATION" forState:UIControlStateNormal];
         [paymentHintLabel setHidden: YES];
         
         [eventsTable setFrame: CGRectMake(4, eventsTable.frame.origin.y, eventsTable.frame.size.width, [eventsTable rowHeight] * [eventsTable numberOfRowsInSection: 0])];

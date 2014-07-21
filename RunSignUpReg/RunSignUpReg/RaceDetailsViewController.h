@@ -50,9 +50,11 @@
     UIButton *viewMapOtherButton;
     CLLocationCoordinate2D addressLocation;
     
+    int eventsToCheckForResults;
     UIWebView *descriptionView;
     BOOL hasLoadedDescription;
     BOOL hasLoadedDetails;
+    BOOL hasLoadedResultsDetails;
     BOOL attemptedToSignUpWithoutDetails;
     
     EKEventStore *store;

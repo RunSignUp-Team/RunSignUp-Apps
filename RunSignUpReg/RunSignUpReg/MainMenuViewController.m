@@ -21,7 +21,6 @@
 #import "SignInViewController.h"
 #import "RaceListViewController.h"
 #import "ProfileViewController.h"
-#import "AboutViewController.h"
 #import "UserRaceListViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SettingsViewController.h"
@@ -94,8 +93,8 @@
     }
     
     // Reverse signup button's image
-    UIImage *originalImage = [signUpButton backgroundImageForState: UIControlStateNormal];
-    [signUpButton setBackgroundImage:[UIImage imageWithCGImage:originalImage.CGImage scale:1.0 orientation:UIImageOrientationUpMirrored] forState:UIControlStateNormal];
+    /*UIImage *originalImage = [signUpButton backgroundImageForState: UIControlStateNormal];
+    [signUpButton setBackgroundImage:[UIImage imageWithCGImage:originalImage.CGImage scale:1.0 orientation:UIImageOrientationUpMirrored] forState:UIControlStateNormal];*/
     
     // Images created for stretching to variably sized UIButtons (see buttons in resources)
     UIImage *blueButtonImage = [UIImage imageNamed:@"BlueButton.png"];
@@ -106,22 +105,32 @@
     UIImage *stretchedGreenButton = [greenButtonImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     UIImage *greenButtonTapImage = [UIImage imageNamed:@"GreenButtonTap.png"];
     UIImage *stretchedGreenButtonTap = [greenButtonTapImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
+    
+    UIImage *orangeButtonImage = [UIImage imageNamed:@"OrangeButtonFilled.png"];
+    UIImage *stretchedOrangeButton = [orangeButtonImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
+    UIImage *whiteButtonImage = [UIImage imageNamed:@"WhiteButtonFilled.png"];
+    UIImage *stretchedWhiteButton = [whiteButtonImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
+
 
     [findRaceButton setBackgroundImage:stretchedGreenButton forState:UIControlStateNormal];
-    [findRaceButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
+    //[findRaceButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
     [signOutButton setBackgroundImage:stretchedBlueButton forState:UIControlStateNormal];
-    [signOutButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
+    //[signOutButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
     [viewProfileButton setBackgroundImage:stretchedBlueButton forState:UIControlStateNormal];
-    [viewProfileButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
+    //[viewProfileButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
+    [signInButton setBackgroundImage:stretchedBlueButton forState:UIControlStateNormal];
+    [signUpButton setBackgroundImage:stretchedBlueButton forState:UIControlStateNormal];
     
-    /*
-    for(UIButton *button in @[findRaceButton, signOutButton, viewProfileButton]){
-        button.layer.masksToBounds = NO;
-        button.layer.shadowColor = [UIColor blackColor].CGColor;
-        button.layer.shadowOpacity = 0.5f;
-        button.layer.shadowRadius = 3.0f;
-        button.layer.shadowOffset = CGSizeMake(0, 6);
-    }*/
+    for(UIButton *button in @[findRaceButton, signOutButton, viewProfileButton, signInButton, signUpButton]){
+        [[button titleLabel] setFont: [UIFont fontWithName:@"Sanchez-Regular" size:20]];
+        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    }
+    
+    for(UIView *view in self.view.subviews){
+        if([view isKindOfClass: [UILabel class]]){
+            [(UILabel *)view setFont: [UIFont fontWithName:@"OpenSans" size:[[(UILabel *)view font] pointSize]]];
+        }
+    }
     
     // Date formatter set up to allow future-proof Copyright tag on bottom of main menu.
     NSDate *date = [NSDate date];
@@ -151,7 +160,7 @@
 		UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake(x * 320 + 20, 10, 280, hintScrollView.frame.size.height - 20)];
         [label setLineBreakMode: NSLineBreakByWordWrapping];
         [label setNumberOfLines: 0];
-        [label setFont: [UIFont systemFontOfSize: 24.0f]];
+        [label setFont: [UIFont fontWithName:@"OpenSans" size:22]];
         [label setText: [hintArray objectAtIndex: x]];
         [label setTextColor: [UIColor whiteColor]];
         [label setBackgroundColor: [UIColor clearColor]];

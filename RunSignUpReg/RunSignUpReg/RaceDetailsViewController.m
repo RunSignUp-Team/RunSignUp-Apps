@@ -61,6 +61,7 @@
         self.title = @"Details";
         hasLoadedDescription = NO;
         hasLoadedDetails = NO;
+        hasLoadedResultsDetails = NO;
         
         chosenRegistration = -1;
         
@@ -83,29 +84,33 @@
     
     UIImage *blueButtonImage = [UIImage imageNamed:@"BlueButton.png"];
     UIImage *stretchedBlueButton = [blueButtonImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
-    UIImage *blueButtonTapImage = [UIImage imageNamed:@"BlueButtonTap.png"];
-    UIImage *stretchedBlueButtonTap = [blueButtonTapImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     UIImage *grayButtonImage = [UIImage imageNamed:@"GrayButton.png"];
     UIImage *stretchedGrayButton = [grayButtonImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
+    UIImage *darkBlueButtonImage = [UIImage imageNamed:@"DarkBlueButton.png"];
+    UIImage *stretchedDarkBlueButton = [darkBlueButtonImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     
     [viewResultsButton setBackgroundImage:stretchedBlueButton forState:UIControlStateNormal];
-    [viewResultsButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
     [viewResultsButton setBackgroundImage:stretchedGrayButton forState:UIControlStateDisabled];
     [signUpButton1 setBackgroundImage:stretchedBlueButton forState:UIControlStateNormal];
-    [signUpButton1 setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
     [signUpButton2 setBackgroundImage:stretchedBlueButton forState:UIControlStateNormal];
-    [signUpButton2 setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
     [signUpButton1 setBackgroundImage:stretchedGrayButton forState:UIControlStateDisabled];
     [signUpButton2 setBackgroundImage:stretchedGrayButton forState:UIControlStateDisabled];
-    [viewMapButton setBackgroundImage:stretchedBlueButton forState:UIControlStateNormal];
-    [viewMapButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
-    [viewMapOtherButton setBackgroundImage:stretchedBlueButton forState:UIControlStateNormal];
-    [viewMapOtherButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
+    [viewMapButton setBackgroundImage:stretchedDarkBlueButton forState:UIControlStateNormal];
+    [viewMapOtherButton setBackgroundImage:stretchedDarkBlueButton forState:UIControlStateNormal];
     [remindMeButton setBackgroundImage:stretchedBlueButton forState:UIControlStateNormal];
-    [remindMeButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
-        
-    [registrationTable setSeparatorColor: [UIColor colorWithRed:0.3686f green:0.8078f blue:0.9412f alpha:1.0f]];
-
+    
+    for(UILabel *label in @[dateLabel, placeLabel, addressLine1, addressLine2, descriptionHintLabel]){
+        [label setFont: [UIFont fontWithName:@"OpenSans" size:[[label font] pointSize]]];
+    }
+    
+    for(UILabel *label in @[nameLabel, placeHintLabel, descriptionHintLabel]){
+        [label setFont: [UIFont fontWithName:@"OpenSans-Bold" size:[[label font] pointSize]]];
+    }
+    
+    for(UIButton *button in @[remindMeButton, viewResultsButton, signUpButton1, signUpButton2, viewMapButton, viewMapOtherButton]){
+        [[button titleLabel] setFont: [UIFont fontWithName:@"Sanchez-Regular" size:[[[button titleLabel] font] pointSize]]];
+    }
+    
     [nameLabel setText: [dataDict objectForKey: @"name"]];
     [dateLabel setText: [dataDict objectForKey: @"next_date"]];
     [placeLabel setText: [RSUModel addressLine2FromAddress: [dataDict objectForKey:@"address"]]];
@@ -125,7 +130,6 @@
     void (^response)(NSMutableDictionary *) = ^(NSMutableDictionary *race){
         self.dataDict = race;
         hasLoadedDetails = YES;
-        [rli fadeOut];
         if(attemptedToSignUpWithoutDetails)
             [self signUp: nil];
         
@@ -152,11 +156,17 @@
             });
         }
         
+        eventsToCheckForResults = [[dataDict objectForKey: @"events"] count];
         // Check if any events in race have results, if so enable view results button
         for(NSDictionary *event in [dataDict objectForKey: @"events"]){
             void (^response)(NSArray *) = ^(NSArray *resultSets){
                 if([resultSets count] > 0){
                     [viewResultsButton setEnabled: YES];
+                    hasLoadedResultsDetails = YES;
+                }else{
+                    eventsToCheckForResults--;
+                    if(eventsToCheckForResults == 0)
+                        hasLoadedResultsDetails = YES;
                 }
             };
             
@@ -164,12 +174,17 @@
         }
         
         [registrationTable reloadData];
-        
-        if(hasLoadedDescription) // description loaded first
-            [self layoutContent];
     };
     
     [[RSUModel sharedModel] retrieveRaceDetailsWithRaceID:[dataDict objectForKey: @"race_id"] response:response];
+    [self layoutContentIfFullyLoaded];
+}
+
+- (void)layoutContentIfFullyLoaded{
+    if(hasLoadedDescription && hasLoadedDetails && hasLoadedResultsDetails)
+        [self layoutContent];
+    else
+        [self performSelector:@selector(layoutContentIfFullyLoaded) withObject:nil afterDelay:0.1f];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -183,9 +198,6 @@
     CGSize fittingSize = [webView sizeThatFits:CGSizeZero];
     f.size = fittingSize;
     webView.frame = f;
-    
-    if(hasLoadedDetails) // details loaded first
-        [self layoutContent];
 }
 
 - (IBAction)viewResults:(id)sender{
@@ -218,12 +230,19 @@
 }
 
 - (void)layoutContent{
-    if(YES){ // if results exist for race, show view results button
+    [rli fadeOut];
+
+    if([viewResultsButton isEnabled]){
         [viewResultsButton setHidden: NO];
         [viewResultsButton setFrame: CGRectMake(4, viewResultsButton.frame.origin.y, 312, viewResultsButton.frame.size.height)];
-        [signUpButton1 setFrame: CGRectMake(4, viewResultsButton.frame.origin.y + viewResultsButton.frame.size.height + 8, 312, signUpButton1.frame.size.height)];
+        [signUpButton1 setFrame: CGRectMake(4, viewResultsButton.frame.origin.y + viewResultsButton.frame.size.height + 4, signUpButton1.frame.size.width, signUpButton1.frame.size.height)];
+    }else{
+        [viewResultsButton setHidden: YES];
+        [signUpButton1 setFrame: CGRectMake(4, viewResultsButton.frame.origin.y, signUpButton1.frame.size.width, signUpButton1.frame.size.height)];
     }
     
+    [remindMeButton setFrame: CGRectMake(remindMeButton.frame.origin.x, signUpButton1.frame.origin.y, remindMeButton.frame.size.width, remindMeButton.frame.size.height)];
+
     if([[dataDict objectForKey: @"is_registration_open"] boolValue] && [self tableView:registrationTable numberOfRowsInSection:0] > 0){
         [registrationTable setFrame: CGRectMake(4, signUpButton1.frame.origin.y + signUpButton1.frame.size.height + 8, 312, [registrationTable numberOfRowsInSection: 0] * 116)];
     }else{
@@ -285,8 +304,13 @@
 }
 
 - (IBAction)viewMap:(id)sender{
-    NSString *string = [NSString stringWithFormat:@"http://maps.google.com/maps?ll=%g,%g", addressLocation.latitude, addressLocation.longitude];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:string]];
+    MKPlacemark *endLocation = [[MKPlacemark alloc] initWithCoordinate:addressLocation addressDictionary:@{(NSString *)kABPersonAddressStreetKey: [[dataDict objectForKey: @"address"] objectForKey:@"street"],
+                                                                                                           (NSString *)kABPersonAddressCityKey: [[dataDict objectForKey: @"address"] objectForKey:@"city"],
+                                                                                                           (NSString *)kABPersonAddressStateKey: [[dataDict objectForKey: @"address"] objectForKey: @"state"],
+                                                                                                           (NSString *)kABPersonAddressZIPKey: [[dataDict objectForKey: @"address"] objectForKey: @"zipcode"]}];
+    
+    MKMapItem *endingItem = [[MKMapItem alloc] initWithPlacemark: endLocation];
+    [endingItem openInMapsWithLaunchOptions: nil];
 
     /*float ver = [[[UIDevice currentDevice] systemVersion] floatValue];
     if(ver >= 6.0){
@@ -414,7 +438,7 @@
             [eventDateFormatter setDateFormat: @"MMMM dd, yyyy @ h:mma"];
             
             [[cell periodLabel] setText: [NSString stringWithFormat: @"%@ ET - %@ ET", [eventDateFormatter stringFromDate: openDate], [eventDateFormatter stringFromDate: closeDate]]];
-            [[cell titleLabel] setText: [NSString stringWithFormat: @"Registration: %@", [actualEvent objectForKey: @"name"]]];
+            [[cell titleLabel] setText: [NSString stringWithFormat: @"%@", [actualEvent objectForKey: @"name"]]];
             
             [eventDateFormatter setDateFormat:@"MM/dd/yyyy HH:mm"];
             NSString *eventStartTime = [actualEvent objectForKey:@"start_time"];

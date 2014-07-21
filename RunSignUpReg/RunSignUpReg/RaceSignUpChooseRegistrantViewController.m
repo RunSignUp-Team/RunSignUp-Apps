@@ -59,7 +59,11 @@
             SignUpViewController *suvc = [[SignUpViewController alloc] initWithNibName:@"SignUpViewController" bundle:nil];
             [suvc setSignUpMode: RSUSignUpSomeoneElse];
             [suvc setDelegate: self];
-            [self presentViewController:suvc animated:YES completion:nil];
+            
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController: suvc];
+            [self presentViewController:navController animated:YES completion:nil];
+            
+            [navController release];
             [suvc release];
         }else if(indexPath.row == [tableView numberOfRowsInSection: 0] - 1){
             [[RSUModel sharedModel] logout];
@@ -80,7 +84,11 @@
             SignUpViewController *suvc = [[SignUpViewController alloc] initWithNibName:@"SignUpViewController" bundle:nil];
             [suvc setSignUpMode: RSUSignUpNewUser];
             [suvc setDelegate: self];
-            [self presentViewController:suvc animated:YES completion:nil];
+            
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController: suvc];
+            [self presentViewController:navController animated:YES completion:nil];
+            
+            [navController release];
             [suvc release];
         }
     }
@@ -94,6 +102,8 @@
     if(cell == nil){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
+    
+    [[cell textLabel] setFont: [UIFont fontWithName:@"OpenSans" size:18]];
     
     if([[RSUModel sharedModel] signedIn]){
         if(indexPath.row == 0){

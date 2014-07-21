@@ -54,7 +54,6 @@
 @property (nonatomic, retain) IBOutlet UILabel *raceNameLabel;
 @property (nonatomic, retain) IBOutlet UILabel *registeredLabel;
 @property (nonatomic, retain) IBOutlet UITableView *eventsTable;
-
 @property (nonatomic, retain) IBOutlet UIView *registrantView;
 @property (nonatomic, retain) IBOutlet UILabel *nameLabel;
 @property (nonatomic, retain) IBOutlet UILabel *emailLabel;

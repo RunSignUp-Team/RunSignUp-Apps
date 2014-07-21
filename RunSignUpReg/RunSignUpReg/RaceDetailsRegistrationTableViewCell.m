@@ -28,31 +28,34 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.titleLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, 312, 20)];
-        [titleLabel setFont: [UIFont boldSystemFontOfSize: 18.0f]];
+        self.titleLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, 312, 26)];
+        [titleLabel setFont: [UIFont fontWithName:@"OpenSans-Semibold" size:18]];
         [titleLabel setTextColor: [UIColor colorWithRed:0.0f green: 148/255.0f blue:204/255.0f alpha:1.0f]];
         [titleLabel setAdjustsFontSizeToFitWidth: YES];
         [self.contentView addSubview: titleLabel];
         
-        self.periodLabel = [[UILabel alloc] initWithFrame: CGRectMake(4, 24, 304, 40)];
+        self.periodLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 26, 312, 44)];
         [periodLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [periodLabel setNumberOfLines: 0];
-        [periodLabel setFont: [UIFont systemFontOfSize: 16.0f]];
+        [periodLabel setFont: [UIFont fontWithName:@"OpenSans" size:16]];
+        [periodLabel setTextColor: [UIColor colorWithRed:64/255.0f green:114/255.0f blue:145/255.0f alpha:1.0f]];
         [self.contentView addSubview: periodLabel];
         
-        self.startTimeLabel = [[UILabel alloc] initWithFrame: CGRectMake(4, 64, 304, 18)];
-        [startTimeLabel setFont: [UIFont systemFontOfSize: 16.0f]];
+        self.startTimeLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 70, 312, 20)];
+        [startTimeLabel setFont: [UIFont fontWithName:@"OpenSans" size:16]];
+        [startTimeLabel setTextColor: [UIColor colorWithRed:64/255.0f green:114/255.0f blue:145/255.0f alpha:1.0f]];
         [self.contentView addSubview: startTimeLabel];
         
-        self.priceLabel = [[UILabel alloc] initWithFrame: CGRectMake(4, 86, 312, 18)];
-        [priceLabel setFont: [UIFont systemFontOfSize: 16.0f]];
+        self.priceLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 90, 312, 22)];
+        [priceLabel setFont: [UIFont fontWithName:@"OpenSans" size:16]];
         [priceLabel setTextColor: [UIColor colorWithRed:222/255.0f green:171/255.0f blue:76/255.0f alpha:1.0f]];
         [self.contentView addSubview: priceLabel];
         
-        self.priceLabel2 = [[UILabel alloc] initWithFrame: CGRectMake(4, 86, 304, 18)];
-        [priceLabel2 setFont: [UIFont systemFontOfSize: 16.0f]];
+        self.priceLabel2 = [[UILabel alloc] initWithFrame: CGRectMake(0, 90, 312, 22)];
+        [priceLabel2 setFont: [UIFont fontWithName:@"OpenSans" size:16]];
         [priceLabel2 setTextColor: [UIColor colorWithRed:59/255.0f green:184/255.0f blue:224/255.0f alpha:1.0f]];
         [self.contentView addSubview: priceLabel2];
+        
     }
     return self;
 }
@@ -62,7 +65,7 @@
     if(![price2 isEqualToString:@"$0.00"]){
         CGSize size = [[priceLabel text] sizeWithFont: [priceLabel font]];
         [priceLabel2 setText: [NSString stringWithFormat:@"+ %@ SignUp Fee", price2]];
-        [priceLabel2 setFrame: CGRectMake([priceLabel frame].origin.x + size.width + 4, 86, 320 - [priceLabel frame].origin.x + size.width, 18)];
+        [priceLabel2 setFrame: CGRectMake(priceLabel.frame.origin.x + size.width + 4, priceLabel.frame.origin.y, 312 - [priceLabel frame].origin.x + size.width, 22)];
     }
 }
 

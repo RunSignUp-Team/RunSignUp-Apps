@@ -41,20 +41,36 @@
         [[UISegmentedControl appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], UITextAttributeTextColor, nil] forState:UIControlStateSelected];
     }
     
+    [[UILabel appearanceWhenContainedIn:[UITableViewHeaderFooterView class], nil] setFont:[UIFont fontWithName:@"OpenSans" size:16]];
+    [[UILabel appearanceWhenContainedIn:[UIPickerView class], nil] setFont:[UIFont fontWithName:@"OpenSans" size:20]];
+
+    //[[UINavigationBar appearance] setBarTintColor: [UIColor colorWithRed:64/255.0f green:114/255.0f blue:145/255.0f alpha:1.0f]];
+    [[UINavigationBar appearance] setTitleTextAttributes: [NSDictionary dictionaryWithObjectsAndKeys:[UIColor colorWithRed:64/255.0f green:114/255.0f blue:145/255.0f alpha:1.0f], NSForegroundColorAttributeName, [UIFont fontWithName:@"OpenSans" size:18], NSFontAttributeName, nil]];
+    [[UINavigationBar appearance] setTintColor: [UIColor colorWithRed:64/255.0f green:114/255.0f blue:145/255.0f alpha:1.0f]];
+    
+    //[[UILabel appearance] setFont: [UIFont fontWithName:@"OpenSans" size:18.0f]];
+    //[[UILabel appearanceWhenContainedIn: [UIButton class], nil] setFont: [UIFont fontWithName:@"Sanchez-Regular" size:20.0f]];
+    
+    NSDictionary *navigationBarButtonAttributes = @{NSForegroundColorAttributeName: [UIColor colorWithRed:64/255.0f green:114/255.0f blue:145/255.0f alpha:1.0f],
+                                                    NSFontAttributeName: [UIFont fontWithName:@"OpenSans" size:18]
+                                                    };
+    
+    [[UIBarButtonItem appearance] setTitleTextAttributes:navigationBarButtonAttributes forState:UIControlStateNormal];
+    
+    
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     MainMenuViewController *mmvc = [[MainMenuViewController alloc] initWithNibName:@"MainMenuViewController" bundle:nil];
     self.navController = [[UINavigationController alloc] initWithRootViewController: mmvc];
-    [[navController navigationBar] setTintColor: [UIColor colorWithRed:0.0f green:0.5686f blue:0.7843f alpha:1.0f]];
+    [[navController navigationBar] setTranslucent: NO];
+    //[[navController navigationBar] setBackgroundColor: [UIColor colorWithRed:64/255.0f green:114/255.0f blue:145/255.0f alpha:1.0f]];
+    //[[navController navigationBar] setTintColor: [UIColor whiteColor]];
+    //[[navController navigationBar] setTitleTextAttributes: [NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, [UIFont fontWithName:@"OpenSans" size:0.0], NSFontAttributeName, nil]];
     [self.window setRootViewController: navController];
     [mmvc release];
     [navController release];
     [self.window makeKeyAndVisible];
     //[self initVTClient];
     return YES;
-}
-
-- (void)initVTClient{
-    [VTClient startWithMerchantID: @"bm5c2r6249hyq3h5" braintreeClientSideEncryptionKey: @"MIIBCgKCAQEA1HctGOXz5/3OgQuktOtkFbeUQLCU0KvS3gI2zb34JUCFuLtdVjagkgqLMmgqhiuKrMWJdWhJ7kO3mdBO45xQnD4b9/WjgwOMHb4IY6sBlItGKP1t3VnatQSaHULxLFRRrxR1kLB15QVwQD1GibzkiXbhOXqOonqvd4lobqc1t4tQqKEX8smxXegowMtDurnAFGoD15h1FdeTf/4J4d6Jop58Oj7rKaCny6XPV4gS8ygRgqCUfze4R8rMLk4780k42+DGQZh6/2DkrsOUm4et3L9+3e1uaUkvBtoBYFXoOdZuB9o/N+gS6TRbYb328HClbdly/yywlZEbVi5ubhao+wIDAQAB" environment: VTEnvironmentSandbox];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application{

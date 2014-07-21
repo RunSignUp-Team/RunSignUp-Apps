@@ -27,17 +27,17 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.nameLabel = [[UILabel alloc] initWithFrame: CGRectMake(4, 0, 300, 20)];
-        [nameLabel setFont: [UIFont boldSystemFontOfSize: 18.0f]];
+        [nameLabel setFont: [UIFont fontWithName:@"OpenSans" size:18]];
         [nameLabel setAdjustsFontSizeToFitWidth: YES];
         [self.contentView addSubview: nameLabel];
         
         self.priceLabel = [[UILabel alloc] initWithFrame: CGRectMake(4, 24, 312, 18)];
-        [priceLabel setFont: [UIFont systemFontOfSize: 16.0f]];
+        [priceLabel setFont: [UIFont fontWithName:@"OpenSans" size:16]];
         [priceLabel setTextColor: [UIColor colorWithRed:222/255.0f green:171/255.0f blue:76/255.0f alpha:1.0f]];
         [self.contentView addSubview: priceLabel];
         
         self.priceLabel2 = [[UILabel alloc] initWithFrame: CGRectMake(4, 24, 312, 18)];
-        [priceLabel2 setFont: [UIFont systemFontOfSize: 16.0f]];
+        [priceLabel2 setFont: [UIFont fontWithName:@"OpenSans" size:16]];
         [priceLabel2 setTextColor: [UIColor colorWithRed:59/255.0f green:184/255.0f blue:224/255.0f alpha:1.0f]];
         [self.contentView addSubview: priceLabel2];
     }

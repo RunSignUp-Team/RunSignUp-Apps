@@ -298,9 +298,9 @@
             [answerButton addTarget:self action:@selector(answerQuestions:) forControlEvents:UIControlEventTouchUpInside];
             [answerButton setFrame: CGRectMake(4, 4, 312, [self tableView:tableView heightForRowAtIndexPath:indexPath] - 8)];
             [answerButton setBackgroundImage:stretchedGreenButton forState:UIControlStateNormal];
-            [answerButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
+            //[answerButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
             [answerButton setTitle:@"Continue" forState:UIControlStateNormal];
-            [[answerButton titleLabel] setFont: [UIFont boldSystemFontOfSize: 18.0f]];
+            [[answerButton titleLabel] setFont: [UIFont fontWithName:@"Sanchez-Regular" size:18]];
             
             [[cell contentView] addSubview: answerButton];
         }
@@ -362,7 +362,7 @@
         
         NSString *typeCode = [actualQuestion objectForKey:@"question_type_code"];
         
-        CGSize reqSize = [[actualQuestion objectForKey:@"question_text"] sizeWithFont:[UIFont systemFontOfSize: 18.0f] constrainedToSize: CGSizeMake(312, 300) lineBreakMode: NSLineBreakByWordWrapping];
+        CGSize reqSize = [[actualQuestion objectForKey:@"question_text"] sizeWithFont:[UIFont fontWithName:@"OpenSans" size:18] constrainedToSize: CGSizeMake(312, 300) lineBreakMode: NSLineBreakByWordWrapping];
         
         if([typeCode isEqualToString:@"F"])
             return 62 + reqSize.height;
@@ -513,6 +513,23 @@
                         [alert show];
                         [alert release];
                         return;
+                    }
+                }else if([[response objectForKey:@"question_validation_type"] isEqualToString: @"char_limit"]){
+                    NSDictionary *question = [self questionForQuestionID: [response objectForKey: @"question_id"]];
+                    if([question objectForKey: @"max_response_length"] && [question objectForKey: @"min_response_length"]){
+                        int min = [[question objectForKey: @"min_response_length"] intValue];
+                        int max = [[question objectForKey: @"max_response_length"] intValue];
+                        if([[response objectForKey: @"response"] length] > max){
+                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Please enter a response in the freeform field that is less than %i characters", max] delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                            [alert show];
+                            [alert release];
+                            return;
+                        }else if([[response objectForKey: @"response"] length] < min){
+                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Please enter a response in the freeform field that is more than %i characters", min] delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                            [alert show];
+                            [alert release];
+                            return;
+                        }
                     }
                 }
             }

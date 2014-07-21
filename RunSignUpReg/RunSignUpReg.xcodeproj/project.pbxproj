@@ -31,8 +31,6 @@
 		774F665B15FE95B1008A1112 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 774F665A15FE95B1008A1112 /* libxml2.dylib */; };
 		774F665F15FEA5A0008A1112 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 774F665D15FEA5A0008A1112 /* ProfileViewController.m */; };
 		774F666015FEA5A0008A1112 /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 774F665E15FEA5A0008A1112 /* ProfileViewController.xib */; };
-		774F666B1604E2F1008A1112 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 774F66691604E2F0008A1112 /* AboutViewController.m */; };
-		774F666C1604E2F1008A1112 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 774F666A1604E2F0008A1112 /* AboutViewController.xib */; };
 		7757C2C8163C3F5200B8780A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7757C2C6163C3F5200B8780A /* Default-568h@2x.png */; };
 		7757C2C9163C3F5200B8780A /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7757C2C7163C3F5200B8780A /* Default@2x.png */; };
 		7757C2CE163F68A300B8780A /* UserRaceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7757C2CC163F68A000B8780A /* UserRaceListViewController.m */; };
@@ -44,8 +42,6 @@
 		776817891604F2B200C5F29A /* PropicDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = 776817881604F2B200C5F29A /* PropicDefault.png */; };
 		7768178D1604F3FB00C5F29A /* RaceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7768178B1604F3FB00C5F29A /* RaceListViewController.m */; };
 		7768178E1604F3FB00C5F29A /* RaceListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7768178C1604F3FB00C5F29A /* RaceListViewController.xib */; };
-		77681792160539E500C5F29A /* RaceSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77681790160539E500C5F29A /* RaceSearchViewController.m */; };
-		77681793160539E500C5F29A /* RaceSearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77681791160539E500C5F29A /* RaceSearchViewController.xib */; };
 		777AA930195E2CDC00C45970 /* IconSpotlight7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 777AA92F195E2CDC00C45970 /* IconSpotlight7@2x.png */; };
 		777AA933195E36BF00C45970 /* GrayButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 777AA931195E36BF00C45970 /* GrayButton.png */; };
 		777AA934195E36BF00C45970 /* GrayButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 777AA932195E36BF00C45970 /* GrayButton@2x.png */; };
@@ -166,7 +162,7 @@
 		77AE5B08196AE9EA002F1362 /* RaceSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77AE5B07196AE9EA002F1362 /* RaceSearchTableViewCell.m */; };
 		77AE5B0B196AEFFE002F1362 /* SearchMagnifyingGlass.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AE5B09196AEFFE002F1362 /* SearchMagnifyingGlass.png */; };
 		77AE5B0C196AEFFE002F1362 /* SearchMagnifyingGlass@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AE5B0A196AEFFE002F1362 /* SearchMagnifyingGlass@2x.png */; };
-		77AE5B0F196B05F9002F1362 /* RaceSearchRoundedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77AE5B0E196B05F9002F1362 /* RaceSearchRoundedTableViewCell.m */; };
+		77AE5B0F196B05F9002F1362 /* RoundedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 77AE5B0E196B05F9002F1362 /* RoundedTableViewCell.m */; };
 		77AE5B14196B0A88002F1362 /* RaceSearchRoundBottom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AE5B11196B0A88002F1362 /* RaceSearchRoundBottom@2x.png */; };
 		77AE5B15196B0A88002F1362 /* RaceSearchRoundMiddle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AE5B12196B0A88002F1362 /* RaceSearchRoundMiddle@2x.png */; };
 		77AE5B16196B0A88002F1362 /* RaceSearchRoundTop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AE5B13196B0A88002F1362 /* RaceSearchRoundTop@2x.png */; };
@@ -178,6 +174,17 @@
 		77AEC5B0196F4F3A002C9471 /* DropDownTriangle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AEC5AE196F4F3A002C9471 /* DropDownTriangle@2x.png */; };
 		77AEC5B3196F4FF6002C9471 /* DropDownTriangleTap.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AEC5B1196F4FF6002C9471 /* DropDownTriangleTap.png */; };
 		77AEC5B4196F4FF6002C9471 /* DropDownTriangleTap@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AEC5B2196F4FF6002C9471 /* DropDownTriangleTap@2x.png */; };
+		77AEC5B7197424D4002C9471 /* OrangeButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AEC5B5197424D4002C9471 /* OrangeButton.png */; };
+		77AEC5B8197424D4002C9471 /* OrangeButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AEC5B6197424D4002C9471 /* OrangeButton@2x.png */; };
+		77AEC5BB197425B3002C9471 /* OrangeButtonFilled.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AEC5B9197425B3002C9471 /* OrangeButtonFilled.png */; };
+		77AEC5BC197425B3002C9471 /* OrangeButtonFilled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AEC5BA197425B3002C9471 /* OrangeButtonFilled@2x.png */; };
+		77AEC5BF19742645002C9471 /* WhiteButtonFilled.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AEC5BD19742645002C9471 /* WhiteButtonFilled.png */; };
+		77AEC5C019742645002C9471 /* WhiteButtonFilled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AEC5BE19742645002C9471 /* WhiteButtonFilled@2x.png */; };
+		77AEC5C2197437C0002C9471 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 77AEC5C1197437C0002C9471 /* OpenSans-Bold.ttf */; };
+		77AEC5C419743874002C9471 /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 77AEC5C319743874002C9471 /* OpenSans-Semibold.ttf */; };
+		77AEC5C719746234002C9471 /* GenderControlDivider.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AEC5C519746234002C9471 /* GenderControlDivider.png */; };
+		77AEC5C819746234002C9471 /* GenderControlDivider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AEC5C619746234002C9471 /* GenderControlDivider@2x.png */; };
+		77AEC5CA19747609002C9471 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77AEC5C919747609002C9471 /* AddressBook.framework */; };
 		77B04377194F831B001FF6B5 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B04375194F831B001FF6B5 /* SettingsViewController.m */; };
 		77B04378194F831B001FF6B5 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77B04376194F831B001FF6B5 /* SettingsViewController.xib */; };
 		77B0E5F7177A569C00C00E5B /* CancelSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B0E5F3177A537600C00E5B /* CancelSearch.png */; };
@@ -236,9 +243,6 @@
 		774F665D15FEA5A0008A1112 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		774F665E15FEA5A0008A1112 /* ProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileViewController.xib; sourceTree = "<group>"; };
 		774F666115FEAA26008A1112 /* Coustard.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Coustard.ttf; sourceTree = "<group>"; };
-		774F66681604E2F0008A1112 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
-		774F66691604E2F0008A1112 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
-		774F666A1604E2F0008A1112 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
 		7757C2C6163C3F5200B8780A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		7757C2C7163C3F5200B8780A /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		7757C2CB163F68A000B8780A /* UserRaceListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserRaceListViewController.h; sourceTree = "<group>"; };
@@ -253,9 +257,6 @@
 		7768178A1604F3FB00C5F29A /* RaceListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RaceListViewController.h; sourceTree = "<group>"; };
 		7768178B1604F3FB00C5F29A /* RaceListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RaceListViewController.m; sourceTree = "<group>"; };
 		7768178C1604F3FB00C5F29A /* RaceListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RaceListViewController.xib; sourceTree = "<group>"; };
-		7768178F160539E500C5F29A /* RaceSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RaceSearchViewController.h; sourceTree = "<group>"; };
-		77681790160539E500C5F29A /* RaceSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RaceSearchViewController.m; sourceTree = "<group>"; };
-		77681791160539E500C5F29A /* RaceSearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RaceSearchViewController.xib; sourceTree = "<group>"; };
 		777AA92F195E2CDC00C45970 /* IconSpotlight7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IconSpotlight7@2x.png"; sourceTree = "<group>"; };
 		777AA931195E36BF00C45970 /* GrayButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GrayButton.png; sourceTree = "<group>"; };
 		777AA932195E36BF00C45970 /* GrayButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GrayButton@2x.png"; sourceTree = "<group>"; };
@@ -395,8 +396,8 @@
 		77AE5B07196AE9EA002F1362 /* RaceSearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RaceSearchTableViewCell.m; sourceTree = "<group>"; };
 		77AE5B09196AEFFE002F1362 /* SearchMagnifyingGlass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SearchMagnifyingGlass.png; sourceTree = "<group>"; };
 		77AE5B0A196AEFFE002F1362 /* SearchMagnifyingGlass@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SearchMagnifyingGlass@2x.png"; sourceTree = "<group>"; };
-		77AE5B0D196B05F9002F1362 /* RaceSearchRoundedTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RaceSearchRoundedTableViewCell.h; sourceTree = "<group>"; };
-		77AE5B0E196B05F9002F1362 /* RaceSearchRoundedTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RaceSearchRoundedTableViewCell.m; sourceTree = "<group>"; };
+		77AE5B0D196B05F9002F1362 /* RoundedTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoundedTableViewCell.h; sourceTree = "<group>"; };
+		77AE5B0E196B05F9002F1362 /* RoundedTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoundedTableViewCell.m; sourceTree = "<group>"; };
 		77AE5B11196B0A88002F1362 /* RaceSearchRoundBottom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RaceSearchRoundBottom@2x.png"; sourceTree = "<group>"; };
 		77AE5B12196B0A88002F1362 /* RaceSearchRoundMiddle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RaceSearchRoundMiddle@2x.png"; sourceTree = "<group>"; };
 		77AE5B13196B0A88002F1362 /* RaceSearchRoundTop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RaceSearchRoundTop@2x.png"; sourceTree = "<group>"; };
@@ -408,6 +409,17 @@
 		77AEC5AE196F4F3A002C9471 /* DropDownTriangle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DropDownTriangle@2x.png"; sourceTree = "<group>"; };
 		77AEC5B1196F4FF6002C9471 /* DropDownTriangleTap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DropDownTriangleTap.png; sourceTree = "<group>"; };
 		77AEC5B2196F4FF6002C9471 /* DropDownTriangleTap@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DropDownTriangleTap@2x.png"; sourceTree = "<group>"; };
+		77AEC5B5197424D4002C9471 /* OrangeButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OrangeButton.png; sourceTree = "<group>"; };
+		77AEC5B6197424D4002C9471 /* OrangeButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "OrangeButton@2x.png"; sourceTree = "<group>"; };
+		77AEC5B9197425B3002C9471 /* OrangeButtonFilled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OrangeButtonFilled.png; sourceTree = "<group>"; };
+		77AEC5BA197425B3002C9471 /* OrangeButtonFilled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "OrangeButtonFilled@2x.png"; sourceTree = "<group>"; };
+		77AEC5BD19742645002C9471 /* WhiteButtonFilled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WhiteButtonFilled.png; sourceTree = "<group>"; };
+		77AEC5BE19742645002C9471 /* WhiteButtonFilled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WhiteButtonFilled@2x.png"; sourceTree = "<group>"; };
+		77AEC5C1197437C0002C9471 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
+		77AEC5C319743874002C9471 /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
+		77AEC5C519746234002C9471 /* GenderControlDivider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GenderControlDivider.png; sourceTree = "<group>"; };
+		77AEC5C619746234002C9471 /* GenderControlDivider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GenderControlDivider@2x.png"; sourceTree = "<group>"; };
+		77AEC5C919747609002C9471 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		77B04374194F831B001FF6B5 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		77B04375194F831B001FF6B5 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		77B04376194F831B001FF6B5 /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
@@ -447,6 +459,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77AEC5CA19747609002C9471 /* AddressBook.framework in Frameworks */,
 				772BC8641934E91900759FA7 /* JavaScriptCore.framework in Frameworks */,
 				77188A33177E45C1000A8D2F /* EventKitUI.framework in Frameworks */,
 				77188A31177E4467000A8D2F /* EventKit.framework in Frameworks */,
@@ -504,6 +517,7 @@
 		77A8626015FBA45A004BAED8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				77AEC5C919747609002C9471 /* AddressBook.framework */,
 				772BC8631934E91900759FA7 /* JavaScriptCore.framework */,
 				77188A32177E45C1000A8D2F /* EventKitUI.framework */,
 				774F665A15FE95B1008A1112 /* libxml2.dylib */,
@@ -530,6 +544,8 @@
 				7757C2D516403B9300B8780A /* EGORefreshTableHeaderView.m */,
 				774F665215FE9424008A1112 /* RoundedLoadingIndicator.h */,
 				774F665315FE9424008A1112 /* RoundedLoadingIndicator.m */,
+				77AE5B0D196B05F9002F1362 /* RoundedTableViewCell.h */,
+				77AE5B0E196B05F9002F1362 /* RoundedTableViewCell.m */,
 				774F664F15FE93A5008A1112 /* RXMLElement.h */,
 				774F665015FE93AC008A1112 /* RXMLElement.m */,
 				77A8628215FBAA72004BAED8 /* Resources */,
@@ -559,6 +575,14 @@
 		77A8628215FBAA72004BAED8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				77AEC5C519746234002C9471 /* GenderControlDivider.png */,
+				77AEC5C619746234002C9471 /* GenderControlDivider@2x.png */,
+				77AEC5BD19742645002C9471 /* WhiteButtonFilled.png */,
+				77AEC5BE19742645002C9471 /* WhiteButtonFilled@2x.png */,
+				77AEC5B9197425B3002C9471 /* OrangeButtonFilled.png */,
+				77AEC5BA197425B3002C9471 /* OrangeButtonFilled@2x.png */,
+				77AEC5B5197424D4002C9471 /* OrangeButton.png */,
+				77AEC5B6197424D4002C9471 /* OrangeButton@2x.png */,
 				77AEC5B1196F4FF6002C9471 /* DropDownTriangleTap.png */,
 				77AEC5B2196F4FF6002C9471 /* DropDownTriangleTap@2x.png */,
 				77AEC5AD196F4F3A002C9471 /* DropDownTriangle.png */,
@@ -575,6 +599,8 @@
 				77AE5B02196A1592002F1362 /* RaceListDisclosure.png */,
 				77AE5B03196A1592002F1362 /* RaceListDisclosure@2x.png */,
 				77AE5B00196A1140002F1362 /* OpenSans-Regular.ttf */,
+				77AEC5C1197437C0002C9471 /* OpenSans-Bold.ttf */,
+				77AEC5C319743874002C9471 /* OpenSans-Semibold.ttf */,
 				77AE5AFE196A0E7E002F1362 /* Sanchez-Regular.ttf */,
 				777AA931195E36BF00C45970 /* GrayButton.png */,
 				777AA932195E36BF00C45970 /* GrayButton@2x.png */,
@@ -690,20 +716,6 @@
 			path = Loading;
 			sourceTree = "<group>";
 		};
-		77AE5B10196B0606002F1362 /* Search */ = {
-			isa = PBXGroup;
-			children = (
-				77AE5B06196AE9EA002F1362 /* RaceSearchTableViewCell.h */,
-				77AE5B07196AE9EA002F1362 /* RaceSearchTableViewCell.m */,
-				7768178F160539E500C5F29A /* RaceSearchViewController.h */,
-				77681790160539E500C5F29A /* RaceSearchViewController.m */,
-				77681791160539E500C5F29A /* RaceSearchViewController.xib */,
-				77AE5B0D196B05F9002F1362 /* RaceSearchRoundedTableViewCell.h */,
-				77AE5B0E196B05F9002F1362 /* RaceSearchRoundedTableViewCell.m */,
-			);
-			name = Search;
-			sourceTree = "<group>";
-		};
 		77B6E51B1609FC75009E1AA9 /* SignUp */ = {
 			isa = PBXGroup;
 			children = (
@@ -748,7 +760,6 @@
 		77CE5C8A1607C6F50049AF36 /* Races */ = {
 			isa = PBXGroup;
 			children = (
-				77AE5B10196B0606002F1362 /* Search */,
 				778BB487193BB8AF0098F9B6 /* Results */,
 				7781644C168687FD0033B6FE /* RaceDetailsEventTableViewCell.h */,
 				7781644D168687FD0033B6FE /* RaceDetailsEventTableViewCell.m */,
@@ -757,6 +768,8 @@
 				7768178A1604F3FB00C5F29A /* RaceListViewController.h */,
 				7768178B1604F3FB00C5F29A /* RaceListViewController.m */,
 				7768178C1604F3FB00C5F29A /* RaceListViewController.xib */,
+				77AE5B06196AE9EA002F1362 /* RaceSearchTableViewCell.h */,
+				77AE5B07196AE9EA002F1362 /* RaceSearchTableViewCell.m */,
 				77012F111606D9AA00E1627C /* RaceTableViewCell.h */,
 				77012F121606D9AA00E1627C /* RaceTableViewCell.m */,
 				77CE5C841607C6ED0049AF36 /* RaceDetailsViewController.h */,
@@ -781,9 +794,6 @@
 				774F665515FE9451008A1112 /* SignInViewController.h */,
 				774F665615FE9451008A1112 /* SignInViewController.m */,
 				774F665715FE9451008A1112 /* SignInViewController.xib */,
-				774F66681604E2F0008A1112 /* AboutViewController.h */,
-				774F66691604E2F0008A1112 /* AboutViewController.m */,
-				774F666A1604E2F0008A1112 /* AboutViewController.xib */,
 				774F665C15FEA5A0008A1112 /* ProfileViewController.h */,
 				774F665D15FEA5A0008A1112 /* ProfileViewController.m */,
 				774F665E15FEA5A0008A1112 /* ProfileViewController.xib */,
@@ -879,6 +889,7 @@
 				774F4749195891980003469F /* iTunesArtwork@2x in Resources */,
 				77A862D215FBAA72004BAED8 /* Icon.png in Resources */,
 				77A7120117C3EF63008E1509 /* MainMenuBackground.png in Resources */,
+				77AEC5B7197424D4002C9471 /* OrangeButton.png in Resources */,
 				77A862D315FBAA72004BAED8 /* Icon@2x.png in Resources */,
 				77A862D415FBAA72004BAED8 /* loading1.png in Resources */,
 				77A862D515FBAA72004BAED8 /* loading10.png in Resources */,
@@ -889,6 +900,7 @@
 				77AEC5A5196DCB05002C9471 /* WhiteButton@2x.png in Resources */,
 				774F47411958918F0003469F /* Icon-114.png in Resources */,
 				77A862D815FBAA72004BAED8 /* loading11@2x.png in Resources */,
+				77AEC5BC197425B3002C9471 /* OrangeButtonFilled@2x.png in Resources */,
 				77A862D915FBAA72004BAED8 /* loading12.png in Resources */,
 				77AE5B16196B0A88002F1362 /* RaceSearchRoundTop@2x.png in Resources */,
 				774F4747195891980003469F /* IconSpotlight@2x.png in Resources */,
@@ -897,6 +909,8 @@
 				77971E2317B93114005809F8 /* RaceSignUpGiveawayViewController.xib in Resources */,
 				77A862DC15FBAA72004BAED8 /* loading13@2x.png in Resources */,
 				77AEC5AF196F4F3A002C9471 /* DropDownTriangle.png in Resources */,
+				77AEC5C019742645002C9471 /* WhiteButtonFilled@2x.png in Resources */,
+				77AEC5C719746234002C9471 /* GenderControlDivider.png in Resources */,
 				77A7121517C40ADD008E1509 /* Default-568h.png in Resources */,
 				77A862DD15FBAA72004BAED8 /* loading14.png in Resources */,
 				77A862DE15FBAA72004BAED8 /* loading14@2x.png in Resources */,
@@ -908,6 +922,7 @@
 				77A862E115FBAA72004BAED8 /* loading16.png in Resources */,
 				77AD37271946296F00A267C5 /* QuestionsRadio.png in Resources */,
 				77A862E215FBAA72004BAED8 /* loading16@2x.png in Resources */,
+				77AEC5C819746234002C9471 /* GenderControlDivider@2x.png in Resources */,
 				77A862E315FBAA72004BAED8 /* loading17.png in Resources */,
 				77A862E415FBAA72004BAED8 /* loading17@2x.png in Resources */,
 				77A862E515FBAA72004BAED8 /* loading18.png in Resources */,
@@ -917,7 +932,9 @@
 				77A862E815FBAA72004BAED8 /* loading19@2x.png in Resources */,
 				77A862E915FBAA72004BAED8 /* loading1@2x.png in Resources */,
 				77AEC5B3196F4FF6002C9471 /* DropDownTriangleTap.png in Resources */,
+				77AEC5BF19742645002C9471 /* WhiteButtonFilled.png in Resources */,
 				77AE5AFF196A0E7E002F1362 /* Sanchez-Regular.ttf in Resources */,
+				77AEC5BB197425B3002C9471 /* OrangeButtonFilled.png in Resources */,
 				77A862EA15FBAA72004BAED8 /* loading2.png in Resources */,
 				77A862EB15FBAA72004BAED8 /* loading20.png in Resources */,
 				77A862EC15FBAA72004BAED8 /* loading20@2x.png in Resources */,
@@ -927,11 +944,14 @@
 				77A862EE15FBAA72004BAED8 /* loading21@2x.png in Resources */,
 				77A862EF15FBAA72004BAED8 /* loading22.png in Resources */,
 				77A862F015FBAA72004BAED8 /* loading22@2x.png in Resources */,
+				77AEC5C2197437C0002C9471 /* OpenSans-Bold.ttf in Resources */,
 				77A862F115FBAA72004BAED8 /* loading23.png in Resources */,
 				77AE5B01196A1140002F1362 /* OpenSans-Regular.ttf in Resources */,
 				77A862F215FBAA72004BAED8 /* loading23@2x.png in Resources */,
 				77A862F315FBAA72004BAED8 /* loading24.png in Resources */,
+				77AEC5C419743874002C9471 /* OpenSans-Semibold.ttf in Resources */,
 				77A862F415FBAA72004BAED8 /* loading24@2x.png in Resources */,
+				77AEC5B8197424D4002C9471 /* OrangeButton@2x.png in Resources */,
 				77A862F515FBAA72004BAED8 /* loading25.png in Resources */,
 				77A862F615FBAA72004BAED8 /* loading25@2x.png in Resources */,
 				77A862F715FBAA72004BAED8 /* loading26.png in Resources */,
@@ -978,10 +998,8 @@
 				774F665915FE9451008A1112 /* SignInViewController.xib in Resources */,
 				77AEC5B4196F4FF6002C9471 /* DropDownTriangleTap@2x.png in Resources */,
 				774F666015FEA5A0008A1112 /* ProfileViewController.xib in Resources */,
-				774F666C1604E2F1008A1112 /* AboutViewController.xib in Resources */,
 				776817891604F2B200C5F29A /* PropicDefault.png in Resources */,
 				7768178E1604F3FB00C5F29A /* RaceListViewController.xib in Resources */,
-				77681793160539E500C5F29A /* RaceSearchViewController.xib in Resources */,
 				77CE5C881607C6ED0049AF36 /* RaceDetailsViewController.xib in Resources */,
 				77AEC5A4196DCB05002C9471 /* WhiteButton.png in Resources */,
 				77AEC5AC196F49A6002C9471 /* DarkBlueButton@2x.png in Resources */,
@@ -1058,11 +1076,9 @@
 				774F665415FE9424008A1112 /* RoundedLoadingIndicator.m in Sources */,
 				774F665815FE9451008A1112 /* SignInViewController.m in Sources */,
 				774F665F15FEA5A0008A1112 /* ProfileViewController.m in Sources */,
-				774F666B1604E2F1008A1112 /* AboutViewController.m in Sources */,
 				7768178D1604F3FB00C5F29A /* RaceListViewController.m in Sources */,
-				77681792160539E500C5F29A /* RaceSearchViewController.m in Sources */,
 				77012F131606D9AA00E1627C /* RaceTableViewCell.m in Sources */,
-				77AE5B0F196B05F9002F1362 /* RaceSearchRoundedTableViewCell.m in Sources */,
+				77AE5B0F196B05F9002F1362 /* RoundedTableViewCell.m in Sources */,
 				77CE5C871607C6ED0049AF36 /* RaceDetailsViewController.m in Sources */,
 				77AD105517B13E7A00723395 /* RaceSignUpConfirmationViewController.m in Sources */,
 				77AD37301946560F00A267C5 /* RaceSignUpMembershipsTableViewCell.m in Sources */,

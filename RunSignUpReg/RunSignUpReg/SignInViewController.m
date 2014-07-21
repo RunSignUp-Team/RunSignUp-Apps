@@ -59,11 +59,17 @@
     // Images created for stretching to variably sized UIButtons (see buttons in resources)
     UIImage *blueButtonImage = [UIImage imageNamed:@"BlueButton.png"];
     UIImage *stretchedBlueButton = [blueButtonImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
-    UIImage *blueButtonTapImage = [UIImage imageNamed:@"BlueButtonTap.png"];
-    UIImage *stretchedBlueButtonTap = [blueButtonTapImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     
     [signInButton setBackgroundImage:stretchedBlueButton forState:UIControlStateNormal];
-    [signInButton setBackgroundImage:stretchedBlueButtonTap forState:UIControlStateHighlighted];
+    [emailField setFont: [UIFont fontWithName:@"OpenSans" size:14]];
+    [passField setFont: [UIFont fontWithName:@"OpenSans" size:14]];
+
+    [[signInButton titleLabel] setFont: [UIFont fontWithName:@"Sanchez-Regular" size:18]];
+    
+    for(UIView *view in self.view.subviews){
+        if([view isKindOfClass: [UILabel class]])
+            [(UILabel *)view setFont: [UIFont fontWithName:@"OpenSans" size:18]];
+    }
     
     // Set email field to have keyboard open on load
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"RememberMe"] != nil){

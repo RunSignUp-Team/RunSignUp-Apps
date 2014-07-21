@@ -35,6 +35,8 @@
     UILabel *phoneLabel;
     UILabel *genderLabel;
     UILabel *dobLabel;
+    UIButton *viewMoreButton;
+    
     UIImageView *profileImageView;
 }
 
@@ -55,9 +57,11 @@
 @property (nonatomic, retain) IBOutlet UILabel *genderLabel;
 @property (nonatomic, retain) IBOutlet UILabel *dobLabel;
 @property (nonatomic, retain) IBOutlet UIImageView *profileImageView;
+@property (nonatomic, retain) IBOutlet UIButton *viewMoreButton;
 
 - (void)editProfile;
 - (void)refresh;
 - (void)updateDataWithUserDictionary;
+- (IBAction)viewMore:(id)sender;
 
 @end

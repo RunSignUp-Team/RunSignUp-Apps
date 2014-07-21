@@ -29,7 +29,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.questionLabel = [[UILabel alloc] initWithFrame: CGRectMake(4, 8, 312, 20)];
-        [questionLabel setFont: [UIFont systemFontOfSize: 18.0f]];
+        [questionLabel setFont: [UIFont fontWithName:@"OpenSans" size:18]];
         [questionLabel setLineBreakMode: NSLineBreakByWordWrapping];
         [questionLabel setNumberOfLines: 0];
         
@@ -240,8 +240,18 @@
     return 1;
 }
 
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
-    return [NSString stringWithFormat: @"%i", row];
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view{
+    if(view == nil){
+        UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, 312, 22)];
+        [label setTextAlignment: NSTextAlignmentCenter];
+        [label setFont: [UIFont fontWithName:@"OpenSans" size:18]];
+        [label setText: [NSString stringWithFormat: @"%i", row]];
+        return label;
+    }else{
+        UILabel *label = (UILabel *)view;
+        [label setText: [NSString stringWithFormat: @"%i", row]];
+        return label;
+    }
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{

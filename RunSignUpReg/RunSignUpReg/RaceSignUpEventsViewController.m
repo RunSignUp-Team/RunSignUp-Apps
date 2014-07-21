@@ -56,7 +56,9 @@
     UIImage *stretchedGreenButtonTap = [greenButtonTapImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     
     [selectButton setBackgroundImage:stretchedGreenButton forState:UIControlStateNormal];
-    [selectButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
+    //[selectButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
+    
+    [[selectButton titleLabel] setFont: [UIFont fontWithName:@"Sanchez-Regular" size:18]];
     
     if([eventsTable numberOfRowsInSection: 0] == 1){
         [[eventsTable cellForRowAtIndexPath: [NSIndexPath indexPathForRow:0 inSection:0]] setAccessoryType:UITableViewCellAccessoryCheckmark];
@@ -130,7 +132,7 @@
     if(cell == nil){
         cell = [[RaceSignUpEventTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    
+        
     NSDictionary *actualEvent = nil;
     NSDictionary *actualRegPeriod = nil;
     int index = indexPath.row;

@@ -47,6 +47,7 @@
 @synthesize countryPicker;
 @synthesize statePicker;
 @synthesize datePicker;
+@synthesize currentSearch;
 @synthesize searchParams;
 @synthesize raceList;
 @synthesize rli;
@@ -60,18 +61,9 @@
         else
             self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:432 YLocation:140];
         [[rli label] setText: @"Fetching List..."];
-
         
-        distanceArray = [[NSArray alloc] initWithObjects:@"Distance Units", @"K", @"Miles", @"Yards", @"Meters", nil];
-        countryArray = [[NSArray alloc] initWithObjects:@"Country", @"United States", @"Canada", @"France", @"Germany", nil];
-        stateArrayUS = [[NSArray alloc] initWithObjects:@"State", @"AK", @"AL", @"AR", @"AZ", @"CA", @"CO", @"CT", @"DE",
-                        @"FL", @"GA", @"HA", @"IA", @"ID", @"IL", @"IN", @"KS", @"KY", @"LA", @"MA", @"MD", @"ME",
-                        @"MI", @"MN", @"MO", @"MS", @"MT", @"NC", @"ND", @"NE", @"NH", @"NJ", @"NM", @"NV", @"NY",
-                        @"OH", @"OK", @"OR", @"PA", @"RI", @"SC", @"SD", @"TN", @"TX", @"UT", @"VA", @"VT", @"WA",
-                        @"WI", @"WV", @"WY", nil];
-        stateArrayCA = [[NSArray alloc] initWithObjects:@"State", @"AB", @"BC", @"MB", @"NB", @"NL", @"NS", @"ON", @"PE", @"QC", @"SK", nil];
-        stateArrayGE = [[NSArray alloc] initWithObjects:@"State", @"BB", @"BE", @"BW", @"BY", @"HB", @"HE", @"HH", @"MV", @"NI", @"NW", @"RP", @"SH",
-                        @"SL", @"SN", @"ST", @"TH", nil];
+        [self.view addSubview: rli];
+        [rli release];
         
         currentPicker = 0;
         currentSelectedDistance = 0;
@@ -80,13 +72,23 @@
         
         showingBackground = NO;
         showingAdvancedSearch = NO;
-        advancedSearchHeight = 464;
+        
+        if([[UIScreen mainScreen] applicationFrame].size.height > 500)
+            advancedSearchHeight = 460;
+        else
+            advancedSearchHeight = 374;
+        
+        searchActive = NO;
+        self.currentSearch = nil;
         
         self.searchParams = nil;
         moreResultsToRetrieve = YES;
         
         refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame: CGRectMake(0, 0 - self.table.bounds.size.height, self.view.frame.size.width, self.table.bounds.size.height)];
         [refreshHeaderView setDelegate: self];
+        
+        [self.table addSubview: refreshHeaderView];
+        [refreshHeaderView release];
     }
     return self;
 }
@@ -94,19 +96,30 @@
 - (void)viewDidLoad{
     [super viewDidLoad];
     
-    if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
+    if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0){
         [self setEdgesForExtendedLayout: UIRectEdgeNone];
+        [prevNextControl setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"OpenSans" size:16]} forState:UIControlStateNormal];
+    }else{
+        [prevNextControl setTitleTextAttributes:@{UITextAttributeFont: [UIFont fontWithName:@"OpenSans" size:16]} forState:UIControlStateNormal];
+    }
     
-    [self.view addSubview: rli];
-    [rli release];
-    
-    [self.table addSubview: refreshHeaderView];
-    [refreshHeaderView release];
+    distanceArray = [[NSArray alloc] initWithObjects:@"Distance Units", @"Kilometers", @"Miles", @"Yards", @"Meters", nil];
+    countryArray = [[NSArray alloc] initWithObjects:@"Country", @"United States", @"Canada", @"France", @"Germany", nil];
+    stateArrayUS = [[NSArray alloc] initWithObjects:@"State", @"AK", @"AL", @"AR", @"AZ", @"CA", @"CO", @"CT", @"DE",
+                    @"FL", @"GA", @"HA", @"IA", @"ID", @"IL", @"IN", @"KS", @"KY", @"LA", @"MA", @"MD", @"ME",
+                    @"MI", @"MN", @"MO", @"MS", @"MT", @"NC", @"ND", @"NE", @"NH", @"NJ", @"NM", @"NV", @"NY",
+                    @"OH", @"OK", @"OR", @"PA", @"RI", @"SC", @"SD", @"TN", @"TX", @"UT", @"VA", @"VT", @"WA",
+                    @"WI", @"WV", @"WY", nil];
+    stateArrayCA = [[NSArray alloc] initWithObjects:@"State", @"AB", @"BC", @"MB", @"NB", @"NL", @"NS", @"ON", @"PE", @"QC", @"SK", nil];
+    stateArrayGE = [[NSArray alloc] initWithObjects:@"State", @"BB", @"BE", @"BW", @"BY", @"HB", @"HE", @"HH", @"MV", @"NI", @"NW", @"RP", @"SH",
+                    @"SL", @"SN", @"ST", @"TH", nil];
     
     UIImage *darkBlueButtonImage = [UIImage imageNamed:@"DarkBlueButton.png"];
     UIImage *stretchedDarkBlueButton = [darkBlueButtonImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
+    UIImage *orangeButtonImage = [UIImage imageNamed:@"OrangeButtonFilled.png"];
+    UIImage *stretchedOrangeButton = [orangeButtonImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
 
-    [searchButton setBackgroundImage:stretchedDarkBlueButton forState:UIControlStateNormal];
+    [searchButton setBackgroundImage:stretchedOrangeButton forState:UIControlStateNormal];
     [[searchButton titleLabel] setFont: [UIFont fontWithName:@"Sanchez-Regular" size:24]];
     
     for(UITextField *field in @[raceNameField,distanceField,cityField,fromDateField,toDateField]){
@@ -293,10 +306,16 @@
     if(statePick)[newSearchParams setObject:statePick forKey:@"state"];
     
     NSLog(@"%@", newSearchParams);
+    
     if(showingAdvancedSearch)
         [self toggleAdvancedSearch: nil];
+    [self hideBackground];
     [self setSearchParams: newSearchParams];
-    [self retrieveRaceList];    
+    
+    searchActive = NO;
+    self.currentSearch = nil;
+    
+    [self retrieveRaceList];
 }
 
 - (void)retrieveRaceList{
@@ -306,8 +325,11 @@
         if(list == nil || [list count] < 10)
             moreResultsToRetrieve = NO;
         
+        NSLog(@"Search active: %@", @(searchActive));
+        
         self.raceList = list;
         [rli fadeOut];
+        
         [table reloadData];
         //[table setContentOffset: CGPointMake(0, 44) animated:YES];
         [self doneLoadingTableViewData:YES];
@@ -331,6 +353,8 @@
         [newRaceList addObjectsFromArray: list];
         self.raceList = newRaceList;
         [rli fadeOut];
+        searchActive = NO;
+        self.currentSearch = nil;
         [table reloadData];
         //[table setContentOffset: CGPointMake(0, 44) animated:YES];
         
@@ -351,14 +375,29 @@
 - (void)searchFieldDidBeginEdit{
     if(showingAdvancedSearch)
         [self toggleAdvancedSearch: nil];
+    
+    searchActive = YES;
+    self.currentSearch = nil;
+    NSLog(@"Search active: YES");
+}
+
+- (void)searchFieldDidEditText:(NSString *)text{
+    searchActive = YES;
+    self.currentSearch = [NSString stringWithString: text];
+    
+    NSLog(@"Current search: %@", currentSearch);
 }
 
 - (void)searchFieldDidCancel{
-    NSLog(@"NoSearch");
+    searchActive = NO;
+    self.currentSearch = nil;
+    NSLog(@"Search active: NO");
 }
 
 - (void)searchButtonTappedWithSearch:(NSString *)search{
     self.searchParams = [[NSMutableDictionary alloc] initWithObjectsAndKeys:search, @"name", nil];
+    searchActive = NO;
+    self.currentSearch = nil;
     [self retrieveRaceList];
     if(showingAdvancedSearch)
         [self toggleAdvancedSearch: nil];
@@ -414,6 +453,9 @@
     [dateFormatter setDateFormat:@"MM/dd/yyyy"];
     
     [self showBackground];
+    
+    [self scrollTableToSearchTableRow: [NSIndexPath indexPathForRow:7 inSection:0]];
+
     [dateClearButton setEnabled: YES];
     [dateClearButton setWidth: 0.0f];
     
@@ -457,10 +499,16 @@
 }
 
 - (void)scrollTableToSearchTableRow:(NSIndexPath *)row{
-    CGRect searchTableRect = [searchTable rectForRowAtIndexPath: row];
-    float offset = MAX(searchTableRect.origin.y - 64, 0);
-    
-    [table setContentOffset:CGPointMake(0, offset) animated:YES];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        CGRect searchTableRect = [searchTable rectForRowAtIndexPath: row];
+        float offset = 0;
+        if([[UIScreen mainScreen] applicationFrame].size.height > 500)
+            offset = MAX(searchTableRect.origin.y - 64, 0);
+        else
+            offset = MAX(searchTableRect.origin.y - 24, 0);
+
+        [table setContentOffset:CGPointMake(0, offset) animated:YES];
+    });
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
@@ -514,22 +562,32 @@
     [dateFormatter release];
 }
 
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view{
+    NSString *rowText = nil;
     if(pickerView == distancePicker){
-        return [distanceArray objectAtIndex: row];
+        rowText = [distanceArray objectAtIndex: row];
     }else if(pickerView == countryPicker){
-        return [countryArray objectAtIndex: row];
+        rowText = [countryArray objectAtIndex: row];
     }else{
         if(currentSelectedCountry == 1)
-            return [stateArrayUS objectAtIndex: row];
+            rowText = [stateArrayUS objectAtIndex: row];
         else if(currentSelectedCountry == 2)
-            return [stateArrayCA objectAtIndex: row];
+            rowText = [stateArrayCA objectAtIndex: row];
         else if(currentSelectedCountry == 4)
-            return [stateArrayGE objectAtIndex: row];
-        else
-            return nil;
+            rowText = [stateArrayGE objectAtIndex: row];
     }
-    return nil;
+    
+    if(view == nil){
+        UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, 312, 22)];
+        [label setTextAlignment: NSTextAlignmentCenter];
+        [label setFont: [UIFont fontWithName:@"OpenSans" size:18]];
+        [label setText: rowText];
+        return label;
+    }else{
+        UILabel *label = (UILabel *)view;
+        [label setText: rowText];
+        return label;
+    }
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
@@ -661,8 +719,10 @@
         [toggleSearchButton setTitle:@"Hide Advanced Search" forState:UIControlStateNormal];
         [searchTable removeFromSuperview];
         [searchTable reloadData];
-    }else
+    }else{
         [toggleSearchButton setTitle:@"Show Advanced Search" forState:UIControlStateNormal];
+        [self hidePicker: nil];
+    }
     
     [table reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
     //[table reloadSections:[NSIndexSet indexSetWithIndex: 0] withRowAnimation:UITableViewRowAnimationFade];
@@ -797,10 +857,10 @@
     if(tableView == searchTable){
         static NSString *SearchControlCellIdentifier = @"SearchControlCellIdentifier";
         
-        RaceSearchRoundedTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SearchControlCellIdentifier];
+        RoundedTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SearchControlCellIdentifier];
         float cellHeight = [self tableView:tableView heightForRowAtIndexPath:indexPath];
         if(cell == nil){
-            cell = [[RaceSearchRoundedTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SearchControlCellIdentifier height:cellHeight];
+            cell = [[RoundedTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SearchControlCellIdentifier];
         }
         
         [cell setTop: NO];
@@ -808,12 +868,12 @@
         [cell setExtra: NO];
         [cell setMiddleDivider: NO];
         [cell reset];
+        [cell setCellHeight: cellHeight];
         
         if(indexPath.row == 0){
             if(toggleSearchButton.superview != nil)
                 [toggleSearchButton removeFromSuperview];
             [toggleSearchButton setFrame: CGRectMake(20, 0, 280, cellHeight)];
-            NSLog(@"Toggle search frame: %@", NSStringFromCGRect([toggleSearchButton frame]));
             [cell.contentView addSubview: toggleSearchButton];
             [cell setExtra: YES];
         }else if(indexPath.row == 1){
@@ -899,6 +959,20 @@
                 
                 [cell setDelegate: self];
                 
+                if(searchActive){
+                    NSLog(@"Loading search active");
+                    [cell layoutActive: YES];
+                    
+                    // Delay becomeFirstResponder because otherwise the message gets lost
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                        [[cell searchField] setText: currentSearch];
+                        [[cell searchField] becomeFirstResponder];
+                    });
+                }else{
+                    NSLog(@"Loading search inactive");
+                    [cell layoutActive: NO];
+                }
+                    
                 return cell;
             }else{
                 static NSString *SearchTableCellIdentifier = @"SearchTableCellIdentifier";
@@ -1089,20 +1163,29 @@
 
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if(tableView == searchTable){
-        if(indexPath.row == 8)
-            return 64;
-        else if(indexPath.row != 0)
-            return 52;
-        
-        return 32;
+        if([[UIScreen mainScreen] applicationFrame].size.height > 500){
+            if(indexPath.row == 8)
+                return 64;
+            else if(indexPath.row != 0)
+                return 52;
+            return 32;
+        }else{
+            if(indexPath.row == 8)
+                return 64;
+            else if(indexPath.row != 0)
+                return 40;
+            return 30;
+        }
     }else{
         if(indexPath.section == 0){
             if(indexPath.row == 0)
                 return 44;
             else if(showingAdvancedSearch)
                 return advancedSearchHeight;
-            else
+            else if([[UIScreen mainScreen] applicationFrame].size.height > 500)
                 return 32;
+            else
+                return 30;
         }else if(indexPath.section == 1){
             NSDictionary *data = [raceList objectAtIndex: indexPath.row];
             CGSize reqSize = [[data objectForKey:@"name"] sizeWithFont:[UIFont fontWithName:@"Sanchez-Regular" size:20] constrainedToSize:CGSizeMake(296, 100)];

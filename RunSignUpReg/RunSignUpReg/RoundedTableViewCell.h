@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RaceSearchRoundedTableViewCell : UITableViewCell{
+@interface RoundedTableViewCell : UITableViewCell{
     UIImageView *roundedImage;
+    float cellHeight;
 }
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier height:(float)height;
-
 @property(nonatomic,assign) BOOL top,bottom,extra,middleDivider;
+@property float cellHeight;
 
 - (void)reset;
 

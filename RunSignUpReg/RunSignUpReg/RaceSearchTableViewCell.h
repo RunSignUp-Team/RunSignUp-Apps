@@ -12,6 +12,7 @@
 
 - (void)searchFieldDidBeginEdit;
 - (void)searchFieldDidCancel;
+- (void)searchFieldDidEditText:(NSString *)text;
 - (void)searchButtonTappedWithSearch:(NSString *)search;
 
 @end
@@ -28,7 +29,9 @@
 }
 
 @property (nonatomic, retain) NSObject<RaceSearchTableViewCellDelegate> *delegate;
+@property (nonatomic, retain) UITextField *searchField;
 
-- (void)setActiveSearch;
+- (void)layoutActive:(BOOL)active;
+- (void)makeTextFieldFirstResponder;
 
 @end

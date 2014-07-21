@@ -33,26 +33,11 @@
                     <rect key="frame" x="-12" y="-12" width="344" height="592"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="4">
-                    <rect key="frame" x="20" y="147" width="280" height="60"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                    <state key="normal" title="Find a Race">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <state key="highlighted">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="findRace:" destination="-1" eventType="touchUpInside" id="18"/>
-                    </connections>
-                </button>
                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Dqa-LB-TgP">
-                    <rect key="frame" x="20" y="215" width="280" height="60"/>
+                    <rect key="frame" x="20" y="205" width="280" height="60"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                    <state key="normal" title="View Profile">
+                    <state key="normal" title="VIEW PROFILE">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -64,10 +49,10 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="5">
-                    <rect key="frame" x="20" y="201" width="140" height="54"/>
+                    <rect key="frame" x="20" y="205" width="136" height="60"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                    <state key="normal" title="Sign In" backgroundImage="MenuClusterBottom.png">
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                    <state key="normal" title="SIGN IN">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -79,10 +64,10 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="27i-ZP-7p2">
-                    <rect key="frame" x="160" y="201" width="140" height="54"/>
+                    <rect key="frame" x="164" y="205" width="136" height="60"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                    <state key="normal" title="Sign Up" backgroundImage="MenuClusterBottom.png">
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                    <state key="normal" title="SIGN UP">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -91,6 +76,21 @@
                     </state>
                     <connections>
                         <action selector="signUp:" destination="-1" eventType="touchUpInside" id="a2K-uA-NeH"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="4">
+                    <rect key="frame" x="20" y="137" width="280" height="60"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                    <state key="normal" title="FIND A RACE">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="highlighted">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="findRace:" destination="-1" eventType="touchUpInside" id="18"/>
                     </connections>
                 </button>
                 <label opaque="NO" clipsSubviews="YES" contentMode="left" text="About" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="25">
@@ -136,7 +136,7 @@
                     <rect key="frame" x="20" y="377" width="280" height="54"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                    <state key="normal" title="Sign Out">
+                    <state key="normal" title="SIGN OUT">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -185,6 +185,7 @@
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     <connections>
                         <outletCollection property="gestureRecognizers" destination="kUI-TN-tOt" appends="YES" id="dWc-20-S07"/>
+                        <outletCollection property="gestureRecognizers" destination="j3Y-EK-ulw" appends="YES" id="251-eD-wZE"/>
                     </connections>
                 </textView>
             </subviews>
@@ -209,10 +210,15 @@
                 <action selector="hideAbout:" destination="-1" id="X9G-90-ZJh"/>
             </connections>
         </swipeGestureRecognizer>
+        <tapGestureRecognizer id="j3Y-EK-ulw">
+            <connections>
+                <action selector="hideAbout:" destination="-1" id="k2s-Ng-vyD"/>
+                <outlet property="delegate" destination="-1" id="x2P-xc-nj4"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="MainMenuBackground.png" width="320" height="568"/>
-        <image name="MenuClusterBottom.png" width="140" height="54"/>
         <image name="Title.png" width="265" height="60"/>
     </resources>
 </document>

@@ -24,16 +24,16 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         infoLabel = [[UILabel alloc] initWithFrame: CGRectMake(4, 4, 250, 20)];
-        [infoLabel setFont: [UIFont systemFontOfSize: 16.0f]];
+        [infoLabel setFont: [UIFont fontWithName:@"OpenSans" size:16]];
         [self.contentView addSubview: infoLabel];
         
         totalCostLabel = [[UILabel alloc] initWithFrame: CGRectMake(252, 4, 64, 20)];
-        [totalCostLabel setFont: [UIFont systemFontOfSize: 16.0f]];
+        [totalCostLabel setFont: [UIFont fontWithName:@"OpenSans" size:16]];
         [totalCostLabel setTextColor: [UIColor colorWithRed:222/255.0f green:171/255.0f blue:76/255.0f alpha:1.0f]];
         [self.contentView addSubview: totalCostLabel];
         
         subitemsLabel = [[UILabel alloc] initWithFrame: CGRectMake(4, 28, 312, 20)];
-        [subitemsLabel setFont: [UIFont systemFontOfSize: 16.0f]];
+        [subitemsLabel setFont: [UIFont fontWithName:@"OpenSans" size:16]];
         [self.contentView addSubview: subitemsLabel];
     }
     return self;

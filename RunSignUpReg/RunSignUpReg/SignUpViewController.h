@@ -20,21 +20,37 @@
 #import "RoundedLoadingIndicator.h"
 
 typedef enum{
-    RSUSignUpDefault = 30,
-    RSUSignUpEditingUser,
+    RSUSignUpEditingUser = 30,
     RSUSignUpSomeoneElse,
     RSUSignUpNewUser,
-    RSUSignUpCreditCardInfo
 }RSUSignUpMode;
 
 @protocol SignUpViewControllerDelegate <NSObject>
+
 - (void)didSignUpWithDictionary:(NSDictionary *)dict;
+
 @end
 
 @class ProfileViewController;
 
-@interface SignUpViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate>{
-    UIScrollView *scrollView;
+typedef enum{
+    SignUpCellFirstName = 1,
+    SignUpCellLastName,
+    SignUpCellEmail,
+    SignUpCellPass,
+    SignUpCellConfirmPass,
+    SignUpCellAddress,
+    SignUpCellCity,
+    SignUpCellCountry,
+    SignUpCellState,
+    SignUpCellZip,
+    SignUpCellDob,
+    SignUpCellPhone,
+    SignUpCellGender
+}SignUpCellControl;
+
+@interface SignUpViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate>{
+    UITableView *table;
     
     UITextField *firstNameField;
     UITextField *lastNameField;
@@ -55,8 +71,6 @@ typedef enum{
     UIButton *chooseExistingButton;
     UIImageView *profileImageView;
     
-    UIToolbar *donePickerBar;
-    
     UIView *pickerBackgroundView;
     
     UIPickerView *countryPicker;
@@ -69,6 +83,9 @@ typedef enum{
     
     RSUSignUpMode signUpMode;
     NSDictionary *userDictionary;
+    
+    BOOL showingBackground;
+    id currentInput;
     
     int currentPicker;
     NSInteger currentSelectedCountry;
@@ -84,7 +101,7 @@ typedef enum{
 
 @property (nonatomic, retain) UIViewController<SignUpViewControllerDelegate> *delegate;
 
-@property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, retain) IBOutlet UITableView *table;
 @property (nonatomic, retain) IBOutlet UITextField *firstNameField;
 @property (nonatomic, retain) IBOutlet UITextField *lastNameField;
 @property (nonatomic, retain) IBOutlet UITextField *emailField;
@@ -98,11 +115,11 @@ typedef enum{
 @property (nonatomic, retain) IBOutlet UITextField *dobField;
 @property (nonatomic, retain) IBOutlet UITextField *phoneField;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *genderControl;
+@property (nonatomic, retain) IBOutlet UIView *genderUnderline;
 @property (nonatomic, retain) IBOutlet UIButton *registerButton;
 @property (nonatomic, retain) IBOutlet UIButton *takePhotoButton;
 @property (nonatomic, retain) IBOutlet UIButton *chooseExistingButton;
 @property (nonatomic, retain) IBOutlet UIImageView *profileImageView;
-@property (nonatomic, retain) IBOutlet UIToolbar *donePickerBar;
 @property (nonatomic, retain) IBOutlet UIView *pickerBackgroundView;
 @property (nonatomic, retain) IBOutlet UIPickerView *countryPicker;
 @property (nonatomic, retain) IBOutlet UIPickerView *statePicker;
@@ -120,6 +137,9 @@ typedef enum{
 
 - (IBAction)saveProfile:(id)sender;
 - (IBAction)cancel:(id)sender;
+
+- (IBAction)prevNextControlDidChange:(id)sender;
+- (IBAction)genderControlDidChange:(id)sender;
 
 - (IBAction)showCountryPicker:(id)sender;
 - (IBAction)showStatePicker:(id)sender;

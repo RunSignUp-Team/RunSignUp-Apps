@@ -62,9 +62,9 @@
             [chooseButton addTarget:self action:@selector(chooseGiveaways:) forControlEvents:UIControlEventTouchUpInside];
             [chooseButton setFrame: CGRectMake(4, 4, 312, [self tableView:tableView heightForRowAtIndexPath:indexPath] - 8)];
             [chooseButton setBackgroundImage:stretchedGreenButton forState:UIControlStateNormal];
-            [chooseButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
+            //[chooseButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
             [chooseButton setTitle:@"Choose Giveaways" forState:UIControlStateNormal];
-            [[chooseButton titleLabel] setFont: [UIFont boldSystemFontOfSize: 18.0f]];
+            [[chooseButton titleLabel] setFont: [UIFont fontWithName:@"Sanchez-Regular" size:18]];
             
             [[cell contentView] addSubview: chooseButton];
             [chooseButton release];

@@ -846,8 +846,18 @@ static RSUModel *model = nil;
                         [questionDict setObject:[ele text] forKey:[ele tag]];
                 }
                 
-                if(questionValidationType)
+                if(questionValidationType){
                     [questionDict setObject:[questionValidationType text] forKey:[questionValidationType tag]];
+                    if([[questionValidationType text] isEqualToString:@"char_limit"]){
+                        RXMLElement *minResponseLength = [question child: @"min_response_length"];
+                        RXMLElement *maxResponseLength = [question child: @"max_response_length"];
+                        
+                        if(minResponseLength)
+                            [questionDict setObject:[minResponseLength text] forKey:[minResponseLength tag]];
+                        if(maxResponseLength)
+                            [questionDict setObject:[maxResponseLength text] forKey:[maxResponseLength tag]];
+                    }
+                }
                 
                 if(questionSkipForEventIDs && [questionSkipForEventIDs children: @"event_id"] != nil){
                     NSMutableArray *skipEvents = [[NSMutableArray alloc] init];

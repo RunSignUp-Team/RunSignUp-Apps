@@ -35,6 +35,7 @@
 @synthesize genderLabel;
 @synthesize dobLabel;
 @synthesize profileImageView;
+@synthesize viewMoreButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isUserProfile:(BOOL)iup{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -60,11 +61,44 @@
     if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
         [self setEdgesForExtendedLayout: UIRectEdgeNone];
     
+    for(UIView *view in self.view.subviews){
+        if([view isKindOfClass: [UILabel class]]){
+            UILabel *label = (UILabel *)view;
+            [label setFont: [UIFont fontWithName:@"OpenSans" size:[[label font] pointSize]]];
+        }
+    }
+    
+    [self changeFontOfSubviews: self.view];
+    
+    [nameLabel setFont: [UIFont fontWithName:@"Sanchez-Regular" size:[[nameLabel font] pointSize]]];
+    [propicLabel setFont: [UIFont fontWithName:@"Sanchez-Regular" size:[[propicLabel font] pointSize]]];
+    
+    UIImage *darkBlueButtonImage = [UIImage imageNamed:@"DarkBlueButton.png"];
+    UIImage *stretchedDarkBlueButton = [darkBlueButtonImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
+
+    [viewMoreButton setBackgroundImage:stretchedDarkBlueButton forState:UIControlStateNormal];
+    [[viewMoreButton titleLabel] setFont: [UIFont fontWithName:@"Sanchez-Regular" size:20]];
+    
     if(isUserProfile){
         UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editProfile)];
         UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh)];
         [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:editButton, refreshButton, nil]];
     }
+}
+
+- (void)changeFontOfSubviews:(UIView *)view{
+    for(UIView *subview in [view subviews]){
+        if([subview isKindOfClass: [UILabel class]]){
+            UILabel *label = (UILabel *)subview;
+            [label setFont: [UIFont fontWithName:@"OpenSans" size:[[label font] pointSize]]];
+        }else if([subview isKindOfClass: [UIView class]]){
+            [self changeFontOfSubviews: subview];
+        }
+    }
+}
+
+- (IBAction)viewMore:(id)sender{
+    [[UIApplication sharedApplication] openURL: [NSURL URLWithString:@"https://runsignup.com/Profile"]];
 }
 
 - (void)didSignUpWithDictionary:(NSDictionary *)dict{

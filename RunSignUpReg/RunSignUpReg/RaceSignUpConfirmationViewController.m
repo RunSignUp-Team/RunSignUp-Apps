@@ -26,7 +26,6 @@
 @synthesize raceNameLabel;
 @synthesize registeredLabel;
 @synthesize eventsTable;
-
 @synthesize registrantView;
 @synthesize nameLabel;
 @synthesize emailLabel;
@@ -77,9 +76,14 @@
     UIImage *stretchedGreenButtonTap = [greenButtonTapImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     
     [mistakeButton setBackgroundImage:stretchedGreenButton forState:UIControlStateNormal];
-    [mistakeButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
+    //[mistakeButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
     [mainMenuButton setBackgroundImage:stretchedGreenButton forState:UIControlStateNormal];
-    [mainMenuButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
+    //[mainMenuButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
+    
+    [self changeFontOfSubviews: self.view];
+    
+    [[mistakeButton titleLabel] setFont: [UIFont fontWithName:@"Sanchez-Regular" size:18]];
+    [[mainMenuButton titleLabel] setFont: [UIFont fontWithName:@"Sanchez-Regular" size:18]];
     
     [raceNameLabel setText: [dataDict objectForKey: @"name"]];
     
@@ -127,6 +131,17 @@
     [self layoutContent];
 }
 
+- (void)changeFontOfSubviews:(UIView *)view{
+    for(UIView *subview in [view subviews]){
+        if([subview isKindOfClass: [UILabel class]]){
+            UILabel *label = (UILabel *)subview;
+            [label setFont: [UIFont fontWithName:@"OpenSans" size:[[label font] pointSize]]];
+        }else if([subview isKindOfClass: [UIView class]]){
+            [self changeFontOfSubviews: subview];
+        }
+    }
+}
+
 - (void)printConfirmation{
     UIPrintInteractionController *printInteractionController = [UIPrintInteractionController sharedPrintController];
     NSString *markupText = [NSString stringWithFormat:@"<html><head><style>body{font-family: \"Helvetica\", \"Arial\", sans-serif;}h3{color: #0094CC;}.title{}.subheading{color: #DEAB4C;}ul{padding-left: 15px;list-style-type: none;}li{padding: 5px 0 5px 0;}</style></head><body><h3>Race Information</h3><span class=\"subheading\">Race:&nbsp;</span>%@<br /><span class=\"subheading\">Date:&nbsp;</span>%@<br /><span class=\"subheading\">Location:&nbsp;</span>%@<br /><span class=\"subheading\">Registered:&nbsp;</span>%@<br /><h3>Event(s)</h3><ul>",
@@ -160,7 +175,7 @@
     [registrantView setFrame: CGRectMake(4, eventsTable.frame.origin.y + eventsTable.frame.size.height + 8, registrantView.frame.size.width, registrantView.frame.size.height)];
     [totalView setFrame: CGRectMake(4, registrantView.frame.origin.y + registrantView.frame.size.height + 8, totalView.frame.size.width, totalView.frame.size.height)];
     [otherView setFrame: CGRectMake(4, totalView.frame.origin.y + totalView.frame.size.height + 8, otherView.frame.size.width, otherView.frame.size.height)];
-    [scrollView setContentSize: CGSizeMake(scrollView.frame.size.width, otherView.frame.origin.y + otherView.frame.size.height + 8)];
+    [scrollView setContentSize: CGSizeMake(scrollView.frame.size.width, otherView.frame.origin.y + otherView.frame.size.height + 70)];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

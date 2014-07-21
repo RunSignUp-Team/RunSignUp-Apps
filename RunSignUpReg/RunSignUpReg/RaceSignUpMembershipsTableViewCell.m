@@ -30,13 +30,13 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.nameLabel = [[UILabel alloc] initWithFrame: CGRectMake(4, 17, 312, 20)];
-        [nameLabel setFont: [UIFont systemFontOfSize: 18]];
+        [nameLabel setFont: [UIFont fontWithName:@"OpenSans" size:18]];
         [nameLabel setAdjustsFontSizeToFitWidth: YES];
         [nameLabel setTextColor: [UIColor colorWithRed:222/255.0f green:171/255.0f blue:76/255.0f alpha:1.0f]];
         [self.contentView addSubview: nameLabel];
         
         self.additionalFieldHint = [[UILabel alloc] initWithFrame: CGRectMake(4, 40, 312, 20)];
-        [additionalFieldHint setFont: [UIFont systemFontOfSize: 18]];
+        [additionalFieldHint setFont: [UIFont fontWithName:@"OpenSans" size:18]];
         [additionalFieldHint setAlpha: 0.0f];
         [self.contentView addSubview: additionalFieldHint];
         
@@ -48,7 +48,7 @@
         self.optionalNoticeLabel = [[UILabel alloc] initWithFrame: CGRectMake(4, 100, 312, 30)];
         [optionalNoticeLabel setNumberOfLines: 0];
         [optionalNoticeLabel setLineBreakMode: NSLineBreakByWordWrapping];
-        [optionalNoticeLabel setFont: [UIFont systemFontOfSize: 18.0f]];
+        [optionalNoticeLabel setFont: [UIFont fontWithName:@"OpenSans" size:18]];
         [self.contentView addSubview: optionalNoticeLabel];
         
         active = NO;
@@ -72,7 +72,7 @@
 }
 
 - (void)setOptionalNoticeText:(NSString *)text{
-    CGSize requiredSize = [text sizeWithFont:[UIFont systemFontOfSize:18.0f] constrainedToSize:CGSizeMake(312, INFINITY)];
+    CGSize requiredSize = [text sizeWithFont:[UIFont fontWithName:@"OpenSans" size:18] constrainedToSize:CGSizeMake(312, INFINITY)];
     [optionalNoticeLabel setFrame: CGRectMake(4, 100, 312, requiredSize.height)];
     [optionalNoticeLabel setText: text];
 }

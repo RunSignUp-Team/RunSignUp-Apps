@@ -20,7 +20,7 @@
 #import "RoundedLoadingIndicator.h"
 #import "EGORefreshTableHeaderView.h"
 #import "RaceSearchTableViewCell.h"
-#import "RaceSearchRoundedTableViewCell.h"
+#import "RoundedTableViewCell.h"
 
 @interface RaceListViewController : UIViewController <EGORefreshTableHeaderDelegate, UITableViewDelegate, UITableViewDataSource, RaceSearchTableViewCellDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource>{
     UITableView *table;
@@ -28,6 +28,9 @@
     
     BOOL showingAdvancedSearch;
     BOOL showingBackground;
+    
+    BOOL searchActive;
+    NSString *currentSearch;
     
     // Search UI elements
     float advancedSearchHeight;
@@ -110,6 +113,7 @@
 @property (nonatomic, retain) IBOutlet UIDatePicker *datePicker;
 
 @property (nonatomic, retain) NSMutableDictionary *searchParams;
+@property (nonatomic, retain) NSString *currentSearch;
 @property (nonatomic, retain) NSArray *raceList;
 @property (nonatomic, retain) RoundedLoadingIndicator *rli;
 

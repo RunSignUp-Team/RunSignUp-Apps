@@ -30,7 +30,6 @@
     BOOL signedIn;
     BOOL firstLoad;
     
-    UILabel *aboutLabel;
     UILabel *settingsLabel;
     
     UILabel *signedInAsLabel;
@@ -66,8 +65,6 @@
 @property (nonatomic, retain) IBOutlet UIImageView *titleView;
 
 - (IBAction)viewProfile:(id)sender;
-- (IBAction)hideAbout:(id)sender;
-- (IBAction)about:(id)sender;
 - (IBAction)settings:(id)sender;
 - (IBAction)findRace:(id)sender;
 - (IBAction)signIn:(id)sender;

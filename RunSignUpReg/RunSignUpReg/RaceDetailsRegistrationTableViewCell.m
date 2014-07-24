@@ -20,10 +20,10 @@
 
 @implementation RaceDetailsRegistrationTableViewCell
 @synthesize titleLabel;
-@synthesize periodLabel;
 @synthesize startTimeLabel;
 @synthesize priceLabel;
 @synthesize priceLabel2;
+@synthesize increaseLabel;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -34,28 +34,27 @@
         [titleLabel setAdjustsFontSizeToFitWidth: YES];
         [self.contentView addSubview: titleLabel];
         
-        self.periodLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 26, 312, 44)];
-        [periodLabel setLineBreakMode:NSLineBreakByWordWrapping];
-        [periodLabel setNumberOfLines: 0];
-        [periodLabel setFont: [UIFont fontWithName:@"OpenSans" size:16]];
-        [periodLabel setTextColor: [UIColor colorWithRed:64/255.0f green:114/255.0f blue:145/255.0f alpha:1.0f]];
-        [self.contentView addSubview: periodLabel];
-        
-        self.startTimeLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 70, 312, 20)];
+        self.startTimeLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 26, 312, 20)];
         [startTimeLabel setFont: [UIFont fontWithName:@"OpenSans" size:16]];
         [startTimeLabel setTextColor: [UIColor colorWithRed:64/255.0f green:114/255.0f blue:145/255.0f alpha:1.0f]];
         [self.contentView addSubview: startTimeLabel];
         
-        self.priceLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 90, 312, 22)];
+        self.priceLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 46, 312, 22)];
         [priceLabel setFont: [UIFont fontWithName:@"OpenSans" size:16]];
         [priceLabel setTextColor: [UIColor colorWithRed:222/255.0f green:171/255.0f blue:76/255.0f alpha:1.0f]];
         [self.contentView addSubview: priceLabel];
         
-        self.priceLabel2 = [[UILabel alloc] initWithFrame: CGRectMake(0, 90, 312, 22)];
+        self.priceLabel2 = [[UILabel alloc] initWithFrame: CGRectMake(0, 46, 312, 22)];
         [priceLabel2 setFont: [UIFont fontWithName:@"OpenSans" size:16]];
         [priceLabel2 setTextColor: [UIColor colorWithRed:59/255.0f green:184/255.0f blue:224/255.0f alpha:1.0f]];
         [self.contentView addSubview: priceLabel2];
         
+        self.increaseLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 68, 312, 44)];
+        [increaseLabel setFont: [UIFont fontWithName:@"OpenSans" size:16]];
+        [increaseLabel setNumberOfLines: 0];
+        [increaseLabel setLineBreakMode: NSLineBreakByWordWrapping];
+        [increaseLabel setTextColor: [UIColor colorWithRed:64/255.0f green:114/255.0f blue:145/255.0f alpha:1.0f]];
+        [self.contentView addSubview: increaseLabel];
     }
     return self;
 }

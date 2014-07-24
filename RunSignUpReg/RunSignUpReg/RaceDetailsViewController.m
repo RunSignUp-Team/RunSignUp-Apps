@@ -198,6 +198,8 @@
     CGSize fittingSize = [webView sizeThatFits:CGSizeZero];
     f.size = fittingSize;
     webView.frame = f;
+    
+    hasLoadedDescription = YES;
 }
 
 - (IBAction)viewResults:(id)sender{
@@ -220,7 +222,6 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
     if(!hasLoadedDescription){
-        hasLoadedDescription = YES;
         return YES;
     }else{
         // Intercept link clicks and send them to safari
@@ -437,8 +438,8 @@
             NSDate *closeDate = [eventDateFormatter dateFromString: [actualRegPeriod objectForKey: @"registration_closes"]];
             [eventDateFormatter setDateFormat: @"MMMM dd, yyyy @ h:mma"];
             
-            [[cell periodLabel] setText: [NSString stringWithFormat: @"%@ ET - %@ ET", [eventDateFormatter stringFromDate: openDate], [eventDateFormatter stringFromDate: closeDate]]];
             [[cell titleLabel] setText: [NSString stringWithFormat: @"%@", [actualEvent objectForKey: @"name"]]];
+            [[cell increaseLabel] setText: [NSString stringWithFormat: @"Price increases after %@ ET", [eventDateFormatter stringFromDate: closeDate]]];
             
             [eventDateFormatter setDateFormat:@"MM/dd/yyyy HH:mm"];
             NSString *eventStartTime = [actualEvent objectForKey:@"start_time"];

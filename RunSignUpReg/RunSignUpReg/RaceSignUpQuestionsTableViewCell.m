@@ -134,7 +134,6 @@
         [booleanControl addTarget:self action:@selector(valueDidChange) forControlEvents:UIControlEventValueChanged];
         [self.contentView addSubview: booleanControl];
     }else if(t == RSUQuestionTypeSelection || t == RSUQuestionTypeRadio || t == RSUQuestionTypeCheck){
-        NSLog(@"Table frame: %@", NSStringFromCGRect(CGRectMake(0, 14 + [questionLabel frame].size.height, 320, 30)));
         selectionTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 14 + [questionLabel frame].size.height, 320, 30) style:UITableViewStylePlain];
         [selectionTable setDelegate: self];
         [selectionTable setDataSource: self];
@@ -213,6 +212,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
+    [[cell textLabel] setFont: [UIFont fontWithName:@"OpenSans" size:18]];
     [[cell textLabel] setText: [[responses objectAtIndex: indexPath.row] objectForKey: @"response"]];
     if(type == RSUQuestionTypeSelection || type == RSUQuestionTypeRadio){
         UIImageView *radioImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"QuestionsRadio.png"]];

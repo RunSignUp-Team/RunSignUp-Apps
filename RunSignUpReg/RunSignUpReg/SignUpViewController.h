@@ -65,6 +65,8 @@ typedef enum{
     UITextField *dobField;
     UITextField *phoneField;
     UISegmentedControl *genderControl;
+    UIImageView *countryDropTriangle;
+    UIImageView *stateDropTriangle;
     
     UIButton *registerButton;
     UIButton *takePhotoButton;
@@ -111,6 +113,8 @@ typedef enum{
 @property (nonatomic, retain) IBOutlet UITextField *cityField;
 @property (nonatomic, retain) IBOutlet UIButton *countryDrop;
 @property (nonatomic, retain) IBOutlet UIButton *stateDrop;
+@property (nonatomic, retain) IBOutlet UIImageView *countryDropTriangle;
+@property (nonatomic, retain) IBOutlet UIImageView *stateDropTriangle;
 @property (nonatomic, retain) IBOutlet UITextField *zipcodeField;
 @property (nonatomic, retain) IBOutlet UITextField *dobField;
 @property (nonatomic, retain) IBOutlet UITextField *phoneField;

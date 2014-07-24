@@ -53,21 +53,21 @@
         
         self.placeLabel = [[UILabel alloc] initWithFrame: CGRectMake(8, labelHeight, 35, fontSize + 2)];
         self.bibLabel = [[UILabel alloc] initWithFrame: CGRectMake(48, labelHeight, 35, fontSize + 2)];
-        self.firstNameLabel = [[UILabel alloc] initWithFrame: CGRectMake(88, labelHeight - (fontSize + 2.0f) / 2.0f - 2, 80, fontSize + 2)];
-        self.lastNameLabel = [[UILabel alloc] initWithFrame: CGRectMake(88, labelHeight + (fontSize + 2.0f) / 2.0f + 2, 80, fontSize + 2)];
+        self.firstNameLabel = [[UILabel alloc] initWithFrame: CGRectMake(88, labelHeight - (fontSize + 4.0f) / 2.0f - 2, 80, fontSize + 4)];
+        self.lastNameLabel = [[UILabel alloc] initWithFrame: CGRectMake(88, labelHeight + (fontSize + 4.0f) / 2.0f + 2, 80, fontSize + 4)];
         self.genderLabel = [[UILabel alloc] initWithFrame: CGRectMake(173, labelHeight, 33, fontSize + 2)];
         self.timeLabel = [[UILabel alloc] initWithFrame: CGRectMake(211, labelHeight, 35, fontSize + 2)];
         self.paceLabel = [[UILabel alloc] initWithFrame: CGRectMake(251, labelHeight, 32, fontSize + 2)];
         self.ageLabel = [[UILabel alloc] initWithFrame: CGRectMake(288, labelHeight, 27, fontSize + 2)];
         
-        [placeLabel setFont: [UIFont systemFontOfSize: fontSize]];
-        [bibLabel setFont: [UIFont systemFontOfSize: fontSize]];
-        [firstNameLabel setFont: [UIFont systemFontOfSize: fontSize]];
-        [lastNameLabel setFont: [UIFont systemFontOfSize: fontSize]];
-        [genderLabel setFont: [UIFont systemFontOfSize: fontSize]];
-        [timeLabel setFont: [UIFont systemFontOfSize: fontSize]];
-        [paceLabel setFont: [UIFont systemFontOfSize: fontSize]];
-        [ageLabel setFont: [UIFont systemFontOfSize: fontSize]];
+        [placeLabel setFont: [UIFont fontWithName:@"OpenSans" size:fontSize]];
+        [bibLabel setFont: [UIFont fontWithName:@"OpenSans" size:fontSize]];
+        [firstNameLabel setFont: [UIFont fontWithName:@"OpenSans" size:fontSize]];
+        [lastNameLabel setFont: [UIFont fontWithName:@"OpenSans" size:fontSize]];
+        [genderLabel setFont: [UIFont fontWithName:@"OpenSans" size:fontSize]];
+        [timeLabel setFont: [UIFont fontWithName:@"OpenSans" size:fontSize]];
+        [paceLabel setFont: [UIFont fontWithName:@"OpenSans" size:fontSize]];
+        [ageLabel setFont: [UIFont fontWithName:@"OpenSans" size:fontSize]];
         
         [timeLabel setAdjustsFontSizeToFitWidth: YES];
         [paceLabel setAdjustsFontSizeToFitWidth: YES];

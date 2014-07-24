@@ -89,6 +89,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
+    [[cell textLabel] setFont: [UIFont fontWithName:@"OpenSans" size:18]];
     [[cell textLabel] setText: [[[[events objectAtIndex: [indexPath section]] objectForKey:@"result_sets"] objectAtIndex: [indexPath row]] objectForKey:@"individual_result_set_name"]];
     return cell;
 }

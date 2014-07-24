@@ -63,7 +63,7 @@
             [chooseButton setFrame: CGRectMake(4, 4, 312, [self tableView:tableView heightForRowAtIndexPath:indexPath] - 8)];
             [chooseButton setBackgroundImage:stretchedGreenButton forState:UIControlStateNormal];
             //[chooseButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
-            [chooseButton setTitle:@"Choose Giveaways" forState:UIControlStateNormal];
+            [chooseButton setTitle:@"CHOOSE GIVEAWAYS" forState:UIControlStateNormal];
             [[chooseButton titleLabel] setFont: [UIFont fontWithName:@"Sanchez-Regular" size:18]];
             
             [[cell contentView] addSubview: chooseButton];

@@ -78,9 +78,9 @@
         [rememberSwitch setOn:YES];
         [passField becomeFirstResponder];
         
-        if([[NSUserDefaults standardUserDefaults] boolForKey:@"AutoSignIn"]){
+        /*if([[NSUserDefaults standardUserDefaults] boolForKey:@"AutoSignIn"]){
             [self performSelector:@selector(signIn:) withObject:nil afterDelay:0.1f];
-        }
+        }*/
     }else{
         [emailField becomeFirstResponder];
     }
@@ -106,14 +106,16 @@
             [rli fadeIn];
             void (^response)(RSUConnectionResponse) = ^(RSUConnectionResponse didSucceed){
                 if(didSucceed == RSUSuccess){
-                    if([[NSUserDefaults standardUserDefaults] objectForKey:@"RememberEmail"] == nil){
+                    if([[NSUserDefaults standardUserDefaults] objectForKey:@"RememberMe"] == nil){
                         if([rememberSwitch isOn]){
-                            [[NSUserDefaults standardUserDefaults] setObject:[emailField text] forKey:@"RememberEmail"];
+                            [keychain setObject:[emailField text] forKey:kSecAttrAccount];
+                            [keychain setObject:[passField text] forKey:kSecValueData];
+                            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool: YES] forKey:@"RememberMe"];
                             [[NSUserDefaults standardUserDefaults] synchronize];
                         }
                     }else{
                         if(![rememberSwitch isOn]){
-                            [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"RememberEmail"];
+                            [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"RememberMe"];
                             [[NSUserDefaults standardUserDefaults] synchronize];
                         }
                     }

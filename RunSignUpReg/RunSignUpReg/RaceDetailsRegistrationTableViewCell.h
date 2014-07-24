@@ -20,17 +20,17 @@
 
 @interface RaceDetailsRegistrationTableViewCell : UITableViewCell{
     UILabel *titleLabel;
-    UILabel *periodLabel;
     UILabel *startTimeLabel;
     UILabel *priceLabel;
     UILabel *priceLabel2;
+    UILabel *increaseLabel;
 }
 
 @property (nonatomic, retain) UILabel *titleLabel;
-@property (nonatomic, retain) UILabel *periodLabel;
 @property (nonatomic, retain) UILabel *startTimeLabel;
 @property (nonatomic, retain) UILabel *priceLabel;
 @property (nonatomic, retain) UILabel *priceLabel2;
+@property (nonatomic, retain) UILabel *increaseLabel;
 
 - (void)setPrice:(NSString *)price1 price2:(NSString *)price2;
 

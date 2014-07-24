@@ -24,6 +24,7 @@
 #import "UserRaceListViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SettingsViewController.h"
+#import "KeychainItemWrapper.h"
 
 #import "RaceResultsViewController.h"
 
@@ -34,7 +35,6 @@
 @synthesize signOutButton;
 @synthesize viewProfileButton;
 
-@synthesize aboutLabel;
 @synthesize settingsLabel;
 
 @synthesize signedInAsLabel;
@@ -92,6 +92,22 @@
         }
     }
     
+    if([[NSUserDefaults standardUserDefaults] boolForKey:@"AutoSignIn"] && [[NSUserDefaults standardUserDefaults] objectForKey:@"RememberMe"] != nil){
+        KeychainItemWrapper *keychain = [[KeychainItemWrapper alloc] initWithIdentifier:@"RSURegLogin" accessGroup:nil];
+        NSString *email = [keychain objectForKey: kSecAttrAccount];
+        NSString *pass = [keychain objectForKey: kSecValueData];
+        
+        if(email && pass && [email length] > 0 && [pass length] > 0){
+            void (^response)(RSUConnectionResponse) = ^(RSUConnectionResponse didSucceed){
+                if(didSucceed == RSUSuccess){
+                    [self didSignInEmail: email];
+                }
+            };
+            [[RSUModel sharedModel] loginWithEmail:email pass:pass response:response];
+        }
+    }
+    
+    
     // Reverse signup button's image
     /*UIImage *originalImage = [signUpButton backgroundImageForState: UIControlStateNormal];
     [signUpButton setBackgroundImage:[UIImage imageWithCGImage:originalImage.CGImage scale:1.0 orientation:UIImageOrientationUpMirrored] forState:UIControlStateNormal];*/
@@ -146,7 +162,6 @@
                           @"You can print the race registration confirmation if you have an AirPrint enabled printer nearby.",
                           @"You can pan and zoom the map preview on the race details page.",
                           @"RunSignUp also offers \"RunSignUp Mobile Timer\" for race directors.",
-                          @"View search parameters by tapping \"Search Races\" on the race list page.",
                           @"Pull down from the top of the page to refresh the race list.", nil];
     
     srand(time(NULL)); // seed random
@@ -312,38 +327,6 @@
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://runsignup.com/CreateAccount"]];
     }
 }*/
-
-- (IBAction)about:(id)sender{
-    [UIView beginAnimations:@"AboutSlide" context:nil];
-    [UIView setAnimationDuration: 0.25f];
-    for(UIView *subview in [self.view subviews]){
-        if(subview != backgroundView){
-            CGRect oldFrame = [subview frame];
-            oldFrame.origin.x += [self.view frame].size.width;
-            [subview setFrame: oldFrame];
-        }
-    }
-    [UIView commitAnimations];
-    
-    /*
-    AboutViewController *avc = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
-    [self presentViewController:avc animated:YES completion:nil];
-    [avc release];*/
-    
-}
-
-- (IBAction)hideAbout:(id)sender{
-    [UIView beginAnimations:@"AboutSlide" context:nil];
-    [UIView setAnimationDuration: 0.25f];
-    for(UIView *subview in [self.view subviews]){
-        if(subview != backgroundView){
-            CGRect oldFrame = [subview frame];
-            oldFrame.origin.x -= [self.view frame].size.width;
-            [subview setFrame: oldFrame];
-        }
-    }
-    [UIView commitAnimations];
-}
 
 - (IBAction)settings:(id)sender{
     //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"mailto:billy_connolly@comcast.net?cc=info@runsignup.com&subject=Bug%20Report"]];

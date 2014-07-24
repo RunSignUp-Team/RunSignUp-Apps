@@ -761,10 +761,6 @@
 			isa = PBXGroup;
 			children = (
 				778BB487193BB8AF0098F9B6 /* Results */,
-				7781644C168687FD0033B6FE /* RaceDetailsEventTableViewCell.h */,
-				7781644D168687FD0033B6FE /* RaceDetailsEventTableViewCell.m */,
-				77BB0C481796F12900ADDBF7 /* RaceDetailsRegistrationTableViewCell.h */,
-				77BB0C491796F12900ADDBF7 /* RaceDetailsRegistrationTableViewCell.m */,
 				7768178A1604F3FB00C5F29A /* RaceListViewController.h */,
 				7768178B1604F3FB00C5F29A /* RaceListViewController.m */,
 				7768178C1604F3FB00C5F29A /* RaceListViewController.xib */,
@@ -775,6 +771,10 @@
 				77CE5C841607C6ED0049AF36 /* RaceDetailsViewController.h */,
 				77CE5C851607C6ED0049AF36 /* RaceDetailsViewController.m */,
 				77CE5C861607C6ED0049AF36 /* RaceDetailsViewController.xib */,
+				7781644C168687FD0033B6FE /* RaceDetailsEventTableViewCell.h */,
+				7781644D168687FD0033B6FE /* RaceDetailsEventTableViewCell.m */,
+				77BB0C481796F12900ADDBF7 /* RaceDetailsRegistrationTableViewCell.h */,
+				77BB0C491796F12900ADDBF7 /* RaceDetailsRegistrationTableViewCell.m */,
 				77B35447192D2BAC007CE8D4 /* AddressAnnotation.h */,
 				77B35448192D2BAC007CE8D4 /* AddressAnnotation.m */,
 				77B6E51B1609FC75009E1AA9 /* SignUp */,

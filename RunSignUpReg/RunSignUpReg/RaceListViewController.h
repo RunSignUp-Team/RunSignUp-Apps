@@ -54,6 +54,7 @@
     
     UIColor *dateFieldOriginalTextColor;
     
+    UIToolbar *toolbar;
     UISegmentedControl *prevNextControl;
     UIBarButtonItem *dateClearButton;
     
@@ -103,6 +104,7 @@
 @property (nonatomic, retain) IBOutlet UITextField *fromDateField;
 @property (nonatomic, retain) IBOutlet UITextField *toDateField;
 
+@property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *prevNextControl;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *dateClearButton;
 @property (nonatomic, retain) IBOutlet UIView *pickerBackgroundView;

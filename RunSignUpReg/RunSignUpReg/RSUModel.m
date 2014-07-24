@@ -537,7 +537,7 @@ static RSUModel *model = nil;
 
 - (void)retrieveRaceListWithParams:(NSDictionary *)params response:(void (^)(NSArray *))responseBlock{
     NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
-    NSString *urlString = [NSString stringWithFormat: @"%@/rest/races?events=T&sort=date+ASC,name+ASC", RUNSIGNUP_BASE_URL];
+    NSString *urlString = [NSString stringWithFormat: @"%@/rest/races?events=T&sort=end_date+ASC,name+ASC", RUNSIGNUP_BASE_URL];
     if([params objectForKey:@"page"])
         urlString = [urlString stringByAppendingFormat:@"&page=%i", [[params objectForKey:@"page"] intValue]];
     if([params objectForKey:@"name"]){
@@ -550,6 +550,8 @@ static RSUModel *model = nil;
         urlString = [urlString stringByAppendingFormat:@"&distance_units=%@", [params objectForKey:@"distance_units"]];
     if([params objectForKey:@"start_date"])
         urlString = [urlString stringByAppendingFormat:@"&start_date=%@", [RSUModel convertSlashDateToDashDate: [params objectForKey:@"start_date"]]];
+    else
+        urlString = [urlString stringByAppendingString:@"&start_date=today"];
     if([params objectForKey:@"end_date"])
         urlString = [urlString stringByAppendingFormat:@"&end_date=%@", [RSUModel convertSlashDateToDashDate: [params objectForKey:@"end_date"]]];
     if([params objectForKey:@"country"])
@@ -563,6 +565,8 @@ static RSUModel *model = nil;
     
     [request setURL:[NSURL URLWithString:urlString]];//[NSString stringWithFormat:@"%@&api_key=%@&api_secret=%@", urlString, apiKey, apiSecret]]];
     [request setHTTPMethod:@"GET"];
+    
+    NSLog(@"URL: %@", urlString);
     
     void (^completion)(NSURLResponse *,NSData *,NSError *) = ^(NSURLResponse *response,NSData *urlData,NSError *error){
         if(!urlData){

@@ -29,6 +29,7 @@
                 <outlet property="table" destination="8" id="11"/>
                 <outlet property="toDateField" destination="9fZ-IG-7AJ" id="erx-JT-ccE"/>
                 <outlet property="toggleSearchButton" destination="UW7-py-A5H" id="vcW-Cq-bmv"/>
+                <outlet property="toolbar" destination="Znk-1h-Itu" id="4sq-8t-1uf"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>

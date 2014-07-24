@@ -80,10 +80,10 @@
     }
     
     float fontSize = 11.0f;
-    UILabel *headerLabel = [[UILabel alloc] initWithFrame: CGRectMake(4, headerHeight / 2 - (fontSize + 2.0f) / 2.0f, [[UIScreen mainScreen] bounds].size.width - 8, fontSize + 2.0f)];
-    [headerLabel setFont: [UIFont systemFontOfSize: fontSize]];
+    UILabel *headerLabel = [[UILabel alloc] initWithFrame: CGRectMake(4, headerHeight / 2 - (fontSize + 2.0f) / 2.0f, [[UIScreen mainScreen] bounds].size.width - 8, fontSize + 4.0f)];
+    [headerLabel setFont: [UIFont fontWithName:@"OpenSans" size:fontSize]];
     [headerLabel setTextColor: [UIColor colorWithRed:47/255.0f green:132/255.0f blue:165/255.0f alpha:1.0f]];
-    [headerLabel setText:@"  Place     Bib            Name            Sex     Time   Pace    Age"];
+    [headerLabel setText:@"  Place       Bib              Name             Sex      Time     Pace    Age"];
     // I'm lazy and did not feel like laying out labels individually ^
     [header addSubview: headerLabel];
     
@@ -113,6 +113,7 @@
         [[cell textLabel] setText: @""];
         [cell showDividers];
     }else{
+        [[cell textLabel] setFont: [UIFont fontWithName:@"OpenSans" size:18]];
         [[cell textLabel] setText: @"No Results Found"];
         [cell hideDividers];
     }

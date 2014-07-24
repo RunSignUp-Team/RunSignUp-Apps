@@ -69,7 +69,7 @@
             [answerButton setFrame: CGRectMake(4, 4, 312, [self tableView:tableView heightForRowAtIndexPath:indexPath] - 8)];
             [answerButton setBackgroundImage:stretchedGreenButton forState:UIControlStateNormal];
             //[answerButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
-            [answerButton setTitle:@"Continue" forState:UIControlStateNormal];
+            [answerButton setTitle:@"CONTINUE" forState:UIControlStateNormal];
             [[answerButton titleLabel] setFont: [UIFont fontWithName:@"Sanchez-Regular" size:18]];
             
             [[cell contentView] addSubview: answerButton];

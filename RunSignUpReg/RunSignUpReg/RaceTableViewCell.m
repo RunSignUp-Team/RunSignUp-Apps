@@ -53,7 +53,7 @@
         [descriptionLabel setNumberOfLines: 0];
         [descriptionLabel setFont: [UIFont systemFontOfSize: 14.0f]];
         [descriptionLabel setTextColor: [UIColor colorWithWhite:0.3686f alpha:1.0f]];
-        [self.contentView addSubview: descriptionLabel];*/
+        [self.contentView addSubview: descriptionLabel];*/        
     }
     return self;
 }

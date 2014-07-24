@@ -13,6 +13,7 @@
                 <outlet property="cityField" destination="11" id="49"/>
                 <outlet property="confirmPasswordField" destination="9" id="47"/>
                 <outlet property="countryDrop" destination="14" id="19"/>
+                <outlet property="countryDropTriangle" destination="1W0-rw-7Uo" id="SDh-cv-3JB"/>
                 <outlet property="countryPicker" destination="13" id="21"/>
                 <outlet property="dobField" destination="30" id="51"/>
                 <outlet property="emailField" destination="7" id="45"/>
@@ -26,6 +27,7 @@
                 <outlet property="profileImageView" destination="70" id="71"/>
                 <outlet property="registerButton" destination="34" id="35"/>
                 <outlet property="stateDrop" destination="15" id="20"/>
+                <outlet property="stateDropTriangle" destination="0Ml-X6-PQe" id="i0B-pM-vUm"/>
                 <outlet property="statePicker" destination="38" id="41"/>
                 <outlet property="table" destination="Vq8-gs-wpx" id="4yg-1b-uGd"/>
                 <outlet property="takePhotoButton" destination="66" id="68"/>
@@ -128,6 +130,14 @@
                         <outlet property="delegate" destination="-1" id="63"/>
                     </connections>
                 </textField>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DropDownTriangle.png" highlightedImage="DropDownTriangleTap.png" id="1W0-rw-7Uo">
+                    <rect key="frame" x="150" y="235" width="20" height="10"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DropDownTriangle.png" highlightedImage="DropDownTriangleTap.png" id="0Ml-X6-PQe">
+                    <rect key="frame" x="150" y="235" width="20" height="10"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="14">
                     <rect key="frame" x="20" y="224" width="280" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -317,6 +327,8 @@
         </view>
     </objects>
     <resources>
+        <image name="DropDownTriangle.png" width="20" height="10"/>
+        <image name="DropDownTriangleTap.png" width="20" height="10"/>
         <image name="PropicDefault.png" width="150" height="150"/>
     </resources>
 </document>

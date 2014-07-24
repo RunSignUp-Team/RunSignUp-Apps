@@ -17,7 +17,6 @@
 // limitations under the License.
 
 #import "RaceListViewController.h"
-#import "RaceSearchViewController.h"
 #import "RaceDetailsViewController.h"
 #import "RaceTableViewCell.h"
 #import "RSUModel.h"
@@ -39,6 +38,7 @@
 @synthesize distanceField;
 @synthesize fromDateField;
 @synthesize toDateField;
+@synthesize toolbar;
 @synthesize dateClearButton;
 @synthesize prevNextControl;
 @synthesize pickerBackgroundView;
@@ -62,9 +62,6 @@
             self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:432 YLocation:140];
         [[rli label] setText: @"Fetching List..."];
         
-        [self.view addSubview: rli];
-        [rli release];
-        
         currentPicker = 0;
         currentSelectedDistance = 0;
         currentSelectedCountry = 1;
@@ -84,17 +81,20 @@
         self.searchParams = nil;
         moreResultsToRetrieve = YES;
         
-        refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame: CGRectMake(0, 0 - self.table.bounds.size.height, self.view.frame.size.width, self.table.bounds.size.height)];
-        [refreshHeaderView setDelegate: self];
+        //refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame: CGRectMake(0, 0 - self.table.bounds.size.height, self.view.frame.size.width, self.table.bounds.size.height)];
+        //[refreshHeaderView setDelegate: self];
         
-        [self.table addSubview: refreshHeaderView];
-        [refreshHeaderView release];
+        //[self.table addSubview: refreshHeaderView];
+        //[refreshHeaderView release];
     }
     return self;
 }
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+    
+    [self.view addSubview: rli];
+    [rli release];
     
     if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0){
         [self setEdgesForExtendedLayout: UIRectEdgeNone];
@@ -133,8 +133,10 @@
     [[toggleSearchButton titleLabel] setFont: [UIFont fontWithName:@"OpenSans" size:16]];
     
     dateFieldOriginalTextColor = [[fromDateField textColor] retain];
-    [dateClearButton setEnabled: NO];
-    [dateClearButton setWidth: 0.01f]; // dirty way of hiding the button
+    
+    NSMutableArray *items = [[toolbar items] mutableCopy];
+    [items removeObject: dateClearButton];
+    [toolbar setItems: items];
     
     NSString *countryTitle = [NSString stringWithFormat:@"  %@", [countryArray objectAtIndex: currentSelectedCountry]];
     [countryDrop setTitle:countryTitle forState:UIControlStateNormal];
@@ -456,8 +458,10 @@
     
     [self scrollTableToSearchTableRow: [NSIndexPath indexPathForRow:7 inSection:0]];
 
-    [dateClearButton setEnabled: YES];
-    [dateClearButton setWidth: 0.0f];
+    NSMutableArray *items = [[toolbar items] mutableCopy];
+    if(![items containsObject: dateClearButton])
+        [items insertObject:dateClearButton atIndex:1];
+    [toolbar setItems: items];
     
     NSDate *currentDate = [NSDate date];
     if(from){
@@ -842,8 +846,10 @@
     [fromDateField setTextColor: dateFieldOriginalTextColor];
     [toDateField setTextColor: dateFieldOriginalTextColor];
     
-    [dateClearButton setEnabled: NO];
-    [dateClearButton setWidth: 0.01f];
+    NSMutableArray *items = [[toolbar items] mutableCopy];
+    if([items containsObject: dateClearButton])
+        [items removeObject: dateClearButton];
+    [toolbar setItems: items];
     
     if(!showingBackground){
         [UIView beginAnimations:@"BackgroundSlide" context:nil];
@@ -960,7 +966,6 @@
                 [cell setDelegate: self];
                 
                 if(searchActive){
-                    NSLog(@"Loading search active");
                     [cell layoutActive: YES];
                     
                     // Delay becomeFirstResponder because otherwise the message gets lost
@@ -969,7 +974,6 @@
                         [[cell searchField] becomeFirstResponder];
                     });
                 }else{
-                    NSLog(@"Loading search inactive");
                     [cell layoutActive: NO];
                 }
                     
@@ -982,10 +986,16 @@
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SearchTableCellIdentifier];
                 }
                 
+                float ver = [[[UIDevice currentDevice] systemVersion] floatValue];
+                if([[[UIDevice currentDevice] systemVersion] floatValue] > 7.0){
+                    // Workaround to prevent awful tableview corruption when searchtable is embedded
+                    [cell.contentView.superview setClipsToBounds: YES];
+                }
+                
                 if(searchTable.superview != nil)
                     [searchTable removeFromSuperview];
                 
-                [cell.contentView addSubview: searchTable];
+                [cell.contentView addSubview:searchTable];
                 
                 return cell;
             }

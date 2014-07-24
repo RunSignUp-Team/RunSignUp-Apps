@@ -31,6 +31,8 @@
 @synthesize cityField;
 @synthesize countryDrop;
 @synthesize stateDrop;
+@synthesize countryDropTriangle;
+@synthesize stateDropTriangle;
 @synthesize zipcodeField;
 @synthesize dobField;
 @synthesize phoneField;
@@ -588,6 +590,9 @@
 }
 
 - (void)jumpToNextInputFrom:(id)input{
+    [countryDropTriangle setHighlighted: NO];
+    [stateDropTriangle setHighlighted: NO];
+
     if(input == nil){
         [firstNameField becomeFirstResponder];
     }else if(input == firstNameField){
@@ -626,6 +631,9 @@
 }
 
 - (void)jumpToLastInputFrom:(id)input{
+    [countryDropTriangle setHighlighted: NO];
+    [stateDropTriangle setHighlighted: NO];
+
     if(input == nil){
         [firstNameField becomeFirstResponder];
     }else if(input == genderControl){
@@ -757,13 +765,21 @@
         }else if(control == SignUpCellCountry){
             if(countryDrop.superview != nil)
                 [countryDrop removeFromSuperview];
+            if(countryDropTriangle.superview != nil)
+                [countryDropTriangle removeFromSuperview];
             [countryDrop setFrame: CGRectMake(28, 0, 264, cellHeight)];
+            [countryDropTriangle setFrame: CGRectMake(255, cellHeight / 2 - countryDropTriangle.frame.size.height / 2, countryDropTriangle.frame.size.width, countryDropTriangle.frame.size.height)];
             [cell.contentView addSubview: countryDrop];
+            [cell.contentView addSubview: countryDropTriangle];
         }else if(control == SignUpCellState){
             if(stateDrop.superview != nil)
                 [stateDrop removeFromSuperview];
+            if(stateDropTriangle.superview != nil)
+                [stateDropTriangle removeFromSuperview];
             [stateDrop setFrame: CGRectMake(28, 0, 264, cellHeight)];
+            [stateDropTriangle setFrame: CGRectMake(255, cellHeight / 2 - stateDropTriangle.frame.size.height / 2, stateDropTriangle.frame.size.width, stateDropTriangle.frame.size.height)];
             [cell.contentView addSubview: stateDrop];
+            [cell.contentView addSubview: stateDropTriangle];
         }else if(control == SignUpCellZip){
             if(zipcodeField.superview != nil)
                 [zipcodeField removeFromSuperview];
@@ -833,6 +849,9 @@
     [self.view endEditing: YES];
     [countryDrop setSelected: YES];
     [stateDrop setSelected: NO];
+    [countryDropTriangle setHighlighted: YES];
+    [stateDropTriangle setHighlighted: NO];
+    
     if(currentPicker == 0){
         [UIView beginAnimations:@"PickerSlide" context:nil];
         [UIView setAnimationDuration: 0.25f];
@@ -857,7 +876,9 @@
 - (IBAction)showStatePicker:(id)sender{
     [self.view endEditing: YES];
     [countryDrop setSelected: NO];
-    [stateDrop setSelected: YES];    
+    [stateDrop setSelected: YES];
+    [countryDropTriangle setHighlighted: NO];
+    [stateDropTriangle setHighlighted: YES];
     if(currentPicker == 0){
         [UIView beginAnimations:@"PickerSlide" context:nil];
         [UIView setAnimationDuration: 0.25f];
@@ -882,11 +903,13 @@
 - (IBAction)hideCurrentInput:(id)sender{
     if(currentPicker == 1){
         [countryDrop setSelected: NO];
+        [countryDropTriangle setHighlighted: NO];
         [UIView beginAnimations:@"PickerSlide" context:nil];
         [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
         [UIView commitAnimations];
     }else if(currentPicker == 2){
         [stateDrop setSelected: NO];
+        [stateDropTriangle setHighlighted: NO];
         [UIView beginAnimations:@"PickerSlide" context:nil];
         [statePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
         [UIView commitAnimations];

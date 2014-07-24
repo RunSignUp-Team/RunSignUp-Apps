@@ -132,7 +132,7 @@
     if(cell == nil){
         cell = [[RaceSignUpEventTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-        
+    
     NSDictionary *actualEvent = nil;
     NSDictionary *actualRegPeriod = nil;
     int index = indexPath.row;
@@ -153,8 +153,10 @@
                 
                 actualRegPeriod = nil;
                 
-                if([openDate compare: [NSDate date]] == NSOrderedAscending && [closeDate compare: [NSDate date]] == NSOrderedDescending)
+                if([openDate compare: [NSDate date]] == NSOrderedAscending && [closeDate compare: [NSDate date]] == NSOrderedDescending){
                     actualRegPeriod = regPeriod;
+                    break;
+                }
             }
             
             if(actualRegPeriod){

@@ -7,7 +7,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MainMenuViewController">
             <connections>
-                <outlet property="aboutLabel" destination="25" id="30"/>
                 <outlet property="backgroundView" destination="dEA-XQ-bqf" id="p6h-Tf-cfW"/>
                 <outlet property="copyrightLabel" destination="24" id="46"/>
                 <outlet property="emailLabel" destination="19" id="21"/>
@@ -93,22 +92,6 @@
                         <action selector="findRace:" destination="-1" eventType="touchUpInside" id="18"/>
                     </connections>
                 </button>
-                <label opaque="NO" clipsSubviews="YES" contentMode="left" text="About" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="25">
-                    <rect key="frame" x="-9" y="439" width="81" height="31"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <gestureRecognizers/>
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                    <connections>
-                        <outletCollection property="gestureRecognizers" destination="37" appends="YES" id="38"/>
-                    </connections>
-                </label>
-                <view contentMode="scaleToFill" id="26">
-                    <rect key="frame" x="11" y="465" width="40" height="1"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                </view>
                 <label opaque="NO" clipsSubviews="YES" contentMode="left" text="Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="27">
                     <rect key="frame" x="232" y="439" width="88" height="31"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>

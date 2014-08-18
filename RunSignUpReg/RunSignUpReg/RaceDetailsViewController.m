@@ -88,6 +88,8 @@
     UIImage *stretchedGrayButton = [grayButtonImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     UIImage *darkBlueButtonImage = [UIImage imageNamed:@"DarkBlueButton.png"];
     UIImage *stretchedDarkBlueButton = [darkBlueButtonImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
+    UIImage *darkBlueButtonTapImage = [UIImage imageNamed:@"DarkBlueButtonTap.png"];
+    UIImage *stretchedDarkBlueButtonTap = [darkBlueButtonTapImage stretchableImageWithLeftCapWidth:8 topCapHeight:8];
     
     [viewResultsButton setBackgroundImage:stretchedBlueButton forState:UIControlStateNormal];
     [viewResultsButton setBackgroundImage:stretchedGrayButton forState:UIControlStateDisabled];
@@ -97,6 +99,8 @@
     [signUpButton2 setBackgroundImage:stretchedGrayButton forState:UIControlStateDisabled];
     [viewMapButton setBackgroundImage:stretchedDarkBlueButton forState:UIControlStateNormal];
     [viewMapOtherButton setBackgroundImage:stretchedDarkBlueButton forState:UIControlStateNormal];
+    [viewMapButton setBackgroundImage:stretchedDarkBlueButtonTap forState:UIControlStateHighlighted];
+    [viewMapOtherButton setBackgroundImage:stretchedDarkBlueButtonTap forState:UIControlStateHighlighted];
     [remindMeButton setBackgroundImage:stretchedBlueButton forState:UIControlStateNormal];
     
     for(UILabel *label in @[dateLabel, placeLabel, addressLine1, addressLine2, descriptionHintLabel]){
@@ -123,6 +127,8 @@
     htmlString = [htmlString stringByReplacingOccurrencesOfString:@"&gt;"  withString:@">"];
     htmlString = [htmlString stringByReplacingOccurrencesOfString:@"&quot;" withString:@""""];
     htmlString = [htmlString stringByReplacingOccurrencesOfString:@"&#039;"  withString:@"'"];
+    
+    htmlString = [NSString stringWithFormat: @"<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'><span style=\"font-family: 'Open Sans'; color: #007291 \">%@</span>", htmlString];
     
     [descriptionView loadHTMLString:htmlString baseURL:[NSURL URLWithString:@"http://www.runsignup.com/"]];
     
@@ -321,15 +327,9 @@
 }
 
 - (void)viewMapOther:(id)sender{
-    if([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0){
-        UIActionSheet *action = [[UIActionSheet alloc] initWithTitle:@"Other" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Copy to Clipboard", @"Create New Calendar Event", nil];
-        [action showFromRect:[viewMapOtherButton frame] inView:scrollView animated:YES];
-        [action release];
-    }else{
-        UIActionSheet *action = [[UIActionSheet alloc] initWithTitle:@"Other" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Copy to Clipboard", nil];
-        [action showFromRect:[viewMapOtherButton frame] inView:scrollView animated:YES];
-        [action release];
-    }
+    UIActionSheet *action = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Copy Address to Clipboard", @"Create New Calendar Event", @"Email Link", @"Copy Race URL", nil];
+    [action showFromRect:[viewMapOtherButton frame] inView:scrollView animated:YES];
+    [action release];
 }
 
 - (IBAction)createCalendarEvent:(id)sender{
@@ -340,7 +340,7 @@
     EKEvent *event = [EKEvent eventWithEventStore: store];
     [event setTitle: [dataDict objectForKey: @"name"]];
     [event setLocation: [NSString stringWithFormat:@"%@, %@", [[dataDict objectForKey:@"address"] objectForKey:@"street"], [RSUModel addressLine2FromAddress: [dataDict objectForKey:@"address"]]]];
-    [event setURL: [NSURL URLWithString: [dataDict objectForKey: @"URL"]]];
+    [event setURL: [NSURL URLWithString: [dataDict objectForKey: @"url"]]];
     [event setCalendar: [store defaultCalendarForNewEvents]];
     
     if([dataDict objectForKey: @"events"] != nil && [[dataDict objectForKey:@"events"] count] >= 1){
@@ -367,7 +367,21 @@
         [pb setString: [NSString stringWithFormat:@"%@, %@", [[dataDict objectForKey:@"address"] objectForKey:@"street"], [RSUModel addressLine2FromAddress: [dataDict objectForKey:@"address"]]]];
     }else if(buttonIndex == 1){
         [self createCalendarEvent: nil];
+    }else if(buttonIndex == 2){
+        MFMailComposeViewController *mfmcvc = [[MFMailComposeViewController alloc] init];
+        [mfmcvc setMailComposeDelegate: self];
+        [mfmcvc setSubject: [dataDict objectForKey: @"name"]];
+        [mfmcvc setMessageBody: [dataDict objectForKey: @"url"] isHTML: NO];
+        [self presentViewController:mfmcvc animated:YES completion:nil];
+        [mfmcvc release];
+    }else if(buttonIndex == 3){
+        UIPasteboard *pb = [UIPasteboard generalPasteboard];
+        [pb setString: [dataDict objectForKey: @"url"]];
     }
+}
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)showEventEditViewWithEvent:(EKEvent *)event{

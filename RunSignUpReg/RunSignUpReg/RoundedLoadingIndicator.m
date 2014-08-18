@@ -74,6 +74,8 @@
     [UIView setAnimationDuration:0.25f];
     [self setAlpha: 1.0f];
     [UIView commitAnimations];
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible: YES];
 }
 
 - (void)fadeOut{
@@ -84,6 +86,9 @@
     [self setAlpha: 0.0f];
     [UIView commitAnimations];
     [self performSelector:@selector(setHidden:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.5f];
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible: NO];
+
 }
 
 /*

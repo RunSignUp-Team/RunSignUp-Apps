@@ -31,6 +31,7 @@
         //[dateLabel setBackgroundColor: [UIColor redColor]];
         [dateLabel setTextColor: [UIColor colorWithRed:64/255.0f green:114/255.0f blue:145/255.0f alpha:1.0f]];
         [dateLabel setFont: [UIFont fontWithName:@"OpenSans" size:18]];
+        [dateLabel setBackgroundColor: [UIColor clearColor]];
         [self.contentView addSubview: dateLabel];
         
         self.nameLabel = [[UILabel alloc] initWithFrame: CGRectMake(12, 42, 296, 26)];
@@ -39,6 +40,7 @@
         [nameLabel setLineBreakMode: NSLineBreakByWordWrapping];
         [nameLabel setTextColor: [UIColor colorWithRed:53/255.0f green:165/255.0f blue:219/255.0f alpha:1.0f]];
         [nameLabel setUserInteractionEnabled: NO];
+        [nameLabel setBackgroundColor: [UIColor clearColor]];
         [self.contentView addSubview: nameLabel];
         
         self.locationLabel = [[UILabel alloc] initWithFrame: CGRectMake(12, 74, 296, 24)];
@@ -46,6 +48,7 @@
         [locationLabel setTextColor: [UIColor colorWithRed:64/255.0f green:114/255.0f blue:145/255.0f alpha:1.0f]];
         [locationLabel setFont: [UIFont fontWithName:@"OpenSans" size:18]];
         [locationLabel setAdjustsFontSizeToFitWidth: YES];
+        [locationLabel setBackgroundColor: [UIColor clearColor]];
         [self.contentView addSubview: locationLabel];
         
         /*self.descriptionLabel = [[UILabel alloc] initWithFrame: CGRectMake(4, 100, 312, 96)];
@@ -63,13 +66,24 @@
     CGSize reqSize = [[nameLabel text] sizeWithFont:[UIFont fontWithName:@"Sanchez-Regular" size:20] constrainedToSize:CGSizeMake(296, 100)];
     [nameLabel setFrame: CGRectMake(12, 42, 296, reqSize.height)];
     [locationLabel setFrame: CGRectMake(12, 48 + reqSize.height, 296, 24)];
-    
+        
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat: @"MM/dd/yyyy"];
-    NSDate *nextDate = [dateFormatter dateFromString: [data objectForKey: @"next_date"]];
+    NSDate *date = nil;
+    if([data objectForKey: @"next_date"])
+        date = [dateFormatter dateFromString: [data objectForKey: @"next_date"]];
+    else if([data objectForKey: @"last_date"])
+        date = [dateFormatter dateFromString: [data objectForKey: @"last_date"]];
+    
     [dateFormatter setDateFormat: @"EEEE MM/dd/yyyy"];
-    [dateLabel setText: [dateFormatter stringFromDate: nextDate]];
+    [dateLabel setText: [dateFormatter stringFromDate: date]];
     [locationLabel setText: [RSUModel addressLine2FromAddress: [data objectForKey: @"address"]]];
+    
+    if([data objectForKey: @"active_race"]){
+        [nameLabel setTextColor: [UIColor redColor]];
+    }else{
+        [nameLabel setTextColor: [UIColor colorWithRed:53/255.0f green:165/255.0f blue:219/255.0f alpha:1.0f]];
+    }
      
     [dateFormatter release];
 }

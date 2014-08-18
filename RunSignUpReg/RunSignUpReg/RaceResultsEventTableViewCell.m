@@ -31,7 +31,7 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        int widths[] = {40, 40, 86, 38, 40, 37, 32};
+        int widths[] = {40, 40, 86, 38, 40, 37, 31};
         int cumWidth = 4;
         for(int x = 0; x <= 7; x++){
             UIView *divider = [[UIView alloc] initWithFrame: CGRectMake(cumWidth, 0, 1, [self frame].size.height)];
@@ -120,6 +120,26 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated{
     [super setSelected:selected animated:animated];
+    [self setHighlighted:selected animated:animated];
+}
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated{
+    [super setHighlighted:highlighted animated:animated];
+    [UIView beginAnimations:@"Highlight" context:nil];
+    if(highlighted){
+        for(UIView *view in self.contentView.subviews){
+            if([view isKindOfClass: [UILabel class]]){
+                [(UILabel *)view setTextColor: [UIColor whiteColor]];
+            }
+        }
+    }else{
+        for(UIView *view in self.contentView.subviews){
+            if([view isKindOfClass: [UILabel class]]){
+                [(UILabel *)view setTextColor: [UIColor colorWithRed:47/255.0f green:132/255.0f blue:165/255.0f alpha:1.0f]];
+            }
+        }
+    }
+    [UIView commitAnimations];
 }
 
 @end

@@ -21,8 +21,9 @@
 #import "RoundedLoadingIndicator.h"
 #import <EventKitUI/EventKitUI.h>
 #import "SignInViewController.h"
+#import <MessageUI/MessageUI.h>
 
-@interface RaceDetailsViewController : UIViewController <EKEventEditViewDelegate, UIActionSheetDelegate, UIWebViewDelegate, UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate, SignInViewControllerDelegate>{
+@interface RaceDetailsViewController : UIViewController <EKEventEditViewDelegate, UIActionSheetDelegate, UIWebViewDelegate, UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate, SignInViewControllerDelegate, MFMailComposeViewControllerDelegate>{
     NSDictionary *dataDict;
     NSDateFormatter *eventDateFormatter;
         

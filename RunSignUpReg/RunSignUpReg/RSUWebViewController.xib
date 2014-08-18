@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+    <dependencies>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RSUWebViewController">
+            <connections>
+                <outlet property="bottomToolbar" destination="Xu8-cC-Sqb" id="E08-Pt-ISf"/>
+                <outlet property="historyBackButton" destination="z2C-GZ-BuF" id="19N-EV-nGt"/>
+                <outlet property="historyForwardButton" destination="R10-30-RFx" id="TFV-pd-c7h"/>
+                <outlet property="titleLabel" destination="dmM-Ze-5MP" id="oOP-tz-gA5"/>
+                <outlet property="topToolbar" destination="zeL-uc-3S3" id="y1K-7D-beL"/>
+                <outlet property="urlLabel" destination="wj4-eD-P7I" id="t1d-BM-Y2A"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="webView" destination="YwU-4I-fw2" id="4g1-wY-Qso"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <webView contentMode="scaleToFill" id="YwU-4I-fw2">
+                    <rect key="frame" x="0.0" y="44" width="320" height="480"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="QMx-3y-u3f"/>
+                    </connections>
+                </webView>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="Xu8-cC-Sqb">
+                    <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <items>
+                        <barButtonItem image="WebViewBackIcon.png" id="z2C-GZ-BuF">
+                            <connections>
+                                <action selector="historyBack:" destination="-1" id="nmX-Xu-oCX"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem width="30" style="plain" systemItem="fixedSpace" id="Jlu-1A-f3L"/>
+                        <barButtonItem image="WebViewForwardIcon.png" id="R10-30-RFx">
+                            <connections>
+                                <action selector="historyForward:" destination="-1" id="rLU-f5-1gA"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="M7a-6Y-IRT"/>
+                        <barButtonItem systemItem="refresh" id="IUN-ni-8sq">
+                            <connections>
+                                <action selector="refresh:" destination="-1" id="OzI-qZ-g3s"/>
+                            </connections>
+                        </barButtonItem>
+                    </items>
+                    <color key="tintColor" red="0.25098039220000001" green="0.44705882349999998" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="GSV-hA-50t"/>
+                    </connections>
+                </toolbar>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" id="zeL-uc-3S3">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                    <items>
+                        <barButtonItem systemItem="stop" id="lzj-7O-N83">
+                            <color key="tintColor" red="0.25098039220000001" green="0.44705882349999998" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="goBack:" destination="-1" id="UgW-LX-jfn"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="aqS-SY-2y5"/>
+                        <barButtonItem systemItem="action" id="A8S-m7-VOX">
+                            <color key="tintColor" red="0.25098039220000001" green="0.44705882349999998" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="showActions:" destination="-1" id="f6x-cZ-pn4"/>
+                            </connections>
+                        </barButtonItem>
+                    </items>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="tP9-fh-ElZ"/>
+                    </connections>
+                </toolbar>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dmM-Ze-5MP">
+                    <rect key="frame" x="44" y="3" width="232" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                    <color key="textColor" red="0.25098039220000001" green="0.44705882349999998" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wj4-eD-P7I">
+                    <rect key="frame" x="44" y="23" width="232" height="20"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="WebViewBackIcon.png" width="20" height="20"/>
+        <image name="WebViewForwardIcon.png" width="20" height="20"/>
+    </resources>
+</document>

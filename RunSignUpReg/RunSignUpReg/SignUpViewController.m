@@ -45,6 +45,7 @@
 @synthesize pickerBackgroundView;
 @synthesize countryPicker;
 @synthesize statePicker;
+@synthesize datePicker;
 @synthesize signUpMode;
 @synthesize ageHintLabel;
 @synthesize navigationBar;
@@ -289,6 +290,7 @@
         UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, 312, 22)];
         [label setTextAlignment: NSTextAlignmentCenter];
         [label setFont: [UIFont fontWithName:@"OpenSans" size:18]];
+        [label setBackgroundColor: [UIColor clearColor]];
         [label setText: rowText];
         return label;
     }else{
@@ -381,7 +383,8 @@
     [dict setObject:[dobField text] forKey:@"dob"];
     [dict setObject:genderString forKey:@"gender"];
     [dict setObject:[phoneField text] forKey:@"phone"];
-    [dict setObject:[passwordField text] forKey:@"password"];
+    if([passwordField text] != nil)
+        [dict setObject:[passwordField text] forKey:@"password"];
     
     NSMutableDictionary *address = [[NSMutableDictionary alloc] init];
     [address setObject:[addressField text] forKey:@"street"];
@@ -533,12 +536,6 @@
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
-    if(currentPicker != 0)
-        [self hideCurrentInput: nil];
-
-    currentInput = textField;
-    [self showBackground];
-
     if(textField == firstNameField){
         [self scrollToTableRow: SignUpCellFirstName];
     }else if(textField == lastNameField){
@@ -571,12 +568,8 @@
         else
             [self scrollToTableRow: SignUpCellZip - 2];
     }else if(textField == dobField){
-        if(signUpMode == RSUSignUpEditingUser)
-            [self scrollToTableRow: SignUpCellDob - 3];
-        else if(signUpMode == RSUSignUpNewUser)
-            [self scrollToTableRow: SignUpCellDob];
-        else
-            [self scrollToTableRow: SignUpCellDob - 2];
+        [self showDatePicker];
+        return NO;
     }else if(textField == phoneField){
         if(signUpMode == RSUSignUpEditingUser)
             [self scrollToTableRow: SignUpCellPhone - 3];
@@ -585,6 +578,12 @@
         else
             [self scrollToTableRow: SignUpCellPhone - 2];
     }
+    
+    if(currentPicker != 0)
+        [self hideCurrentInput: nil];
+    
+    currentInput = textField;
+    [self showBackground];
     
     return YES;
 }
@@ -622,7 +621,7 @@
     }else if(input == stateDrop){
         [zipcodeField becomeFirstResponder];
     }else if(input == zipcodeField){
-        [dobField becomeFirstResponder];
+        [self showDatePicker];
     }else if(input == dobField){
         [phoneField becomeFirstResponder];
     }else if(input == phoneField){
@@ -639,7 +638,7 @@
     }else if(input == genderControl){
         [phoneField becomeFirstResponder];
     }else if(input == phoneField){
-        [dobField becomeFirstResponder];
+        [self showDatePicker];
     }else if(input == dobField){
         [zipcodeField becomeFirstResponder];
     }else if(input == zipcodeField){
@@ -845,12 +844,70 @@
     [UIView commitAnimations];
 }
 
+- (IBAction)datePickerDidChange:(id)sender{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"MM/dd/yyyy"];
+    
+    [dobField setText: [dateFormatter stringFromDate: [datePicker date]]];
+    
+    [dateFormatter release];
+}
+
+- (void)showDatePicker{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"MM/dd/yyyy"];
+    
+    if(signUpMode == RSUSignUpEditingUser)
+        [self scrollToTableRow: SignUpCellDob - 3];
+    else if(signUpMode == RSUSignUpNewUser)
+        [self scrollToTableRow: SignUpCellDob];
+    else
+        [self scrollToTableRow: SignUpCellDob - 2];
+    
+    /*NSMutableArray *items = [[toolbar items] mutableCopy];
+     if(![items containsObject: dateClearButton])
+     [items insertObject:dateClearButton atIndex:1];
+     [toolbar setItems: items];*/
+    
+    NSDate *currentDate = [NSDate date];
+    
+    if([[dobField text] length] > 0){
+        currentDate = [dateFormatter dateFromString: [dobField text]];
+    }
+    
+    [dobField setTextColor: [UIColor blackColor]];
+    
+    [datePicker setDate: currentDate animated: NO];
+    
+    if(currentPicker != 4 && currentPicker != 5){
+        [countryDrop setSelected: NO];
+        [stateDrop setSelected: NO];
+        
+        if(currentPicker != 0){
+            [self hideCurrentInput: nil];
+            [datePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
+        }else{
+            [self.view endEditing: YES];
+            [self showBackground];
+            [UIView beginAnimations:@"DatePickerSlide" context:nil];
+            [datePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
+            [UIView commitAnimations];
+        }
+    }
+    
+    currentPicker = 3;
+    currentInput = dobField;
+    
+    [self datePickerDidChange: nil];
+}
+
 - (IBAction)showCountryPicker:(id)sender{
     [self.view endEditing: YES];
     [countryDrop setSelected: YES];
     [stateDrop setSelected: NO];
     [countryDropTriangle setHighlighted: YES];
     [stateDropTriangle setHighlighted: NO];
+    [dobField setTextColor: [UIColor colorWithRed:64/255.0f green:114/255.0f blue:145/255.0f alpha:1.0f]];
     
     if(currentPicker == 0){
         [UIView beginAnimations:@"PickerSlide" context:nil];
@@ -861,6 +918,7 @@
     }else{
         [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
         [statePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
+        [datePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
     }
     currentPicker = 1;
     currentInput = countryDrop;
@@ -879,6 +937,8 @@
     [stateDrop setSelected: YES];
     [countryDropTriangle setHighlighted: NO];
     [stateDropTriangle setHighlighted: YES];
+    [dobField setTextColor: [UIColor colorWithRed:64/255.0f green:114/255.0f blue:145/255.0f alpha:1.0f]];
+
     if(currentPicker == 0){
         [UIView beginAnimations:@"PickerSlide" context:nil];
         [UIView setAnimationDuration: 0.25f];
@@ -888,6 +948,7 @@
     }else{
         [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
         [statePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
+        [datePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
     }
     currentPicker = 2;
     currentInput = stateDrop;
@@ -901,6 +962,7 @@
 }
 
 - (IBAction)hideCurrentInput:(id)sender{
+    NSLog(@"Hiding current input");
     if(currentPicker == 1){
         [countryDrop setSelected: NO];
         [countryDropTriangle setHighlighted: NO];
@@ -912,6 +974,11 @@
         [stateDropTriangle setHighlighted: NO];
         [UIView beginAnimations:@"PickerSlide" context:nil];
         [statePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
+        [UIView commitAnimations];
+    }else if(currentPicker == 3){
+        [dobField setTextColor: [UIColor colorWithRed:64/255.0f green:114/255.0f blue:145/255.0f alpha:1.0f]];
+        [UIView beginAnimations:@"PickerSlide" context:nil];
+        [datePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
         [UIView commitAnimations];
     }else{
         [self.view endEditing: YES];

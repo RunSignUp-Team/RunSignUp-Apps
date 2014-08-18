@@ -49,6 +49,7 @@
         UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, 312, 22)];
         [label setTextAlignment: NSTextAlignmentCenter];
         [label setFont: [UIFont fontWithName:@"OpenSans" size:18]];
+        [label setBackgroundColor: [UIColor clearColor]];
         [label setText: rowText];
         return label;
     }else{

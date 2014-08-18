@@ -25,6 +25,9 @@
     NSDictionary *dataDict;
     NSArray *results;
     
+    BOOL moreResultsToRetrieve;
+    int page;
+    
     RoundedLoadingIndicator *rli;
 }
 
@@ -32,5 +35,6 @@
 
 @property (nonatomic, retain) IBOutlet UITableView *table;
 @property (nonatomic, retain) RoundedLoadingIndicator *rli;
+@property (nonatomic, retain) NSArray *results;
 
 @end

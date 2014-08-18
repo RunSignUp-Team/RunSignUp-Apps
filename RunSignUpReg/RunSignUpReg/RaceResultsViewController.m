@@ -79,7 +79,14 @@
         [[RSUModel sharedModel] retrieveEventResultSetsWithRaceID:[dataDict objectForKey:@"race_id"] eventID:[event objectForKey:@"event_id"] response:response];
         index++;
     }
-    
+}
+
+- (NSDictionary *)eventDictFromEventID:(NSString *)eventID{
+    for(NSDictionary *event in [dataDict objectForKey: @"events"]){
+        if([[event objectForKey: @"event_id"] isEqualToString: eventID])
+            return event;
+    }
+    return nil;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -108,7 +115,15 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    return [[events objectAtIndex: section] objectForKey:@"name"];
+    NSDictionary *event = [self eventDictFromEventID: [[events objectAtIndex: section] objectForKey: @"event_id"]];
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat: @"MM/dd/yyyy hh:mm"];
+    NSDate *startTimeDate = [formatter dateFromString: [event objectForKey: @"start_time"]];
+    [formatter setDateFormat: @"yyyy"];
+    NSString *yearString = [formatter stringFromDate: startTimeDate];
+    
+    return [NSString stringWithFormat: @"%@ %@", [[events objectAtIndex: section] objectForKey:@"name"], yearString];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{

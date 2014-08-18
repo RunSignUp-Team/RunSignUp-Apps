@@ -31,6 +31,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         keychain = [[KeychainItemWrapper alloc] initWithIdentifier:@"RSURegLogin" accessGroup:nil];
+        NSLog(@"Ac: %@ Data: %@", [keychain objectForKey: kSecAttrAccount], [keychain objectForKey: kSecValueData]);
 
         if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
             self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:100];
@@ -72,15 +73,18 @@
     }
     
     // Set email field to have keyboard open on load
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"RememberMe"] != nil){
-        [emailField setText: [keychain objectForKey: kSecAttrAccount]];
-        [passField setText: [keychain objectForKey: kSecValueData]];
-        [rememberSwitch setOn:YES];
-        [passField becomeFirstResponder];
-        
-        /*if([[NSUserDefaults standardUserDefaults] boolForKey:@"AutoSignIn"]){
-            [self performSelector:@selector(signIn:) withObject:nil afterDelay:0.1f];
-        }*/
+    if([[[NSUserDefaults standardUserDefaults] objectForKey:@"RememberMe"] boolValue]){
+        NSString *email = [keychain objectForKey: kSecAttrAccount];
+        NSString *pass = [keychain objectForKey: kSecValueData];
+
+        if(email && pass && [email length] && [pass length]){
+            [emailField setText: [keychain objectForKey: kSecAttrAccount]];
+            [passField setText: [keychain objectForKey: kSecValueData]];
+            [rememberSwitch setOn: YES];
+            [passField becomeFirstResponder];
+        }else{
+            [emailField becomeFirstResponder];
+        }
     }else{
         [emailField becomeFirstResponder];
     }
@@ -106,18 +110,15 @@
             [rli fadeIn];
             void (^response)(RSUConnectionResponse) = ^(RSUConnectionResponse didSucceed){
                 if(didSucceed == RSUSuccess){
-                    if([[NSUserDefaults standardUserDefaults] objectForKey:@"RememberMe"] == nil){
-                        if([rememberSwitch isOn]){
-                            [keychain setObject:[emailField text] forKey:kSecAttrAccount];
-                            [keychain setObject:[passField text] forKey:kSecValueData];
-                            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool: YES] forKey:@"RememberMe"];
-                            [[NSUserDefaults standardUserDefaults] synchronize];
-                        }
+                    if([rememberSwitch isOn]){
+                        [keychain setObject:[emailField text] forKey:kSecAttrAccount];
+                        [keychain setObject:[passField text] forKey:kSecValueData];
+                        
+                        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool: YES] forKey:@"RememberMe"];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
                     }else{
-                        if(![rememberSwitch isOn]){
-                            [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"RememberMe"];
-                            [[NSUserDefaults standardUserDefaults] synchronize];
-                        }
+                        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"RememberMe"];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
                     }
                     
                     void (^response)(RSUConnectionResponse) = ^(RSUConnectionResponse didSucceed){

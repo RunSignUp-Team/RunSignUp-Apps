@@ -21,10 +21,18 @@
 @interface RaceResultsEventDetailsViewController : UIViewController{
     UIScrollView *scrollView;
     NSDictionary *dataDict;
+    
+    UIButton *backButton;
+    
+    UILabel *nameLabel;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil data:(NSDictionary *)data;
 
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, retain) IBOutlet UILabel *nameLabel;
+@property (nonatomic, retain) IBOutlet UIButton *backButton;
+
+- (IBAction)goBack:(id)sender;
 
 @end

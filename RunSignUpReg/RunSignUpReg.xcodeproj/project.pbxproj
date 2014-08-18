@@ -16,7 +16,6 @@
 		77238609179732C80095D1EF /* RaceSignUpEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77238607179732C80095D1EF /* RaceSignUpEventsViewController.m */; };
 		7723860A179732C80095D1EF /* RaceSignUpEventsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77238608179732C80095D1EF /* RaceSignUpEventsViewController.xib */; };
 		7723860D17973B0F0095D1EF /* RaceSignUpEventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7723860C179739C70095D1EF /* RaceSignUpEventTableViewCell.m */; };
-		772BC8641934E91900759FA7 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 772BC8631934E91900759FA7 /* JavaScriptCore.framework */; };
 		774F473F19588F7C0003469F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 774F473E19588F7C0003469F /* Images.xcassets */; };
 		774F47411958918F0003469F /* Icon-114.png in Resources */ = {isa = PBXBuildFile; fileRef = 774F47401958918F0003469F /* Icon-114.png */; };
 		774F4746195891980003469F /* IconSpotlight.png in Resources */ = {isa = PBXBuildFile; fileRef = 774F4742195891980003469F /* IconSpotlight.png */; };
@@ -194,6 +193,20 @@
 		77B35449192D2BAC007CE8D4 /* AddressAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B35448192D2BAC007CE8D4 /* AddressAnnotation.m */; };
 		77B6E51F1609FE21009E1AA9 /* RaceSignUpPaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B6E51D1609FE21009E1AA9 /* RaceSignUpPaymentViewController.m */; };
 		77B6E5201609FE21009E1AA9 /* RaceSignUpPaymentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77B6E51E1609FE21009E1AA9 /* RaceSignUpPaymentViewController.xib */; };
+		77BB910F19869FFD00EE200E /* CurrentLocationIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 77BB910D19869FFD00EE200E /* CurrentLocationIcon.png */; };
+		77BB911019869FFD00EE200E /* CurrentLocationIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77BB910E19869FFD00EE200E /* CurrentLocationIcon@2x.png */; };
+		77BB91131986AB3500EE200E /* DarkBlueButtonTap.png in Resources */ = {isa = PBXBuildFile; fileRef = 77BB91111986AB3500EE200E /* DarkBlueButtonTap.png */; };
+		77BB91141986AB3500EE200E /* DarkBlueButtonTap@2x in Resources */ = {isa = PBXBuildFile; fileRef = 77BB91121986AB3500EE200E /* DarkBlueButtonTap@2x */; };
+		77BB91171986ABB700EE200E /* OtherIconTap.png in Resources */ = {isa = PBXBuildFile; fileRef = 77BB91151986ABB700EE200E /* OtherIconTap.png */; };
+		77BB91181986ABB700EE200E /* OtherIconTap@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77BB91161986ABB700EE200E /* OtherIconTap@2x.png */; };
+		77BB911C1986D14000EE200E /* RaceShallowDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77BB911A1986D14000EE200E /* RaceShallowDetailsViewController.m */; };
+		77BB911D1986D14000EE200E /* RaceShallowDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77BB911B1986D14000EE200E /* RaceShallowDetailsViewController.xib */; };
+		77BB91211986D91B00EE200E /* RSUWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77BB911F1986D91B00EE200E /* RSUWebViewController.m */; };
+		77BB91221986D91B00EE200E /* RSUWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77BB91201986D91B00EE200E /* RSUWebViewController.xib */; };
+		77BB91251986DB4E00EE200E /* WebViewForwardIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 77BB91231986DB4E00EE200E /* WebViewForwardIcon.png */; };
+		77BB91261986DB4E00EE200E /* WebViewForwardIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77BB91241986DB4E00EE200E /* WebViewForwardIcon@2x.png */; };
+		77BB91291986E26600EE200E /* WebViewBackIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 77BB91271986E26600EE200E /* WebViewBackIcon.png */; };
+		77BB912A1986E26600EE200E /* WebViewBackIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77BB91281986E26600EE200E /* WebViewBackIcon@2x.png */; };
 		77CAD417178B0BCE00DEB73C /* RaceResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77CAD415178B091600DEB73C /* RaceResultsViewController.m */; };
 		77CAD41B178B0CBB00DEB73C /* RaceResultsEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77CAD419178B0CBB00DEB73C /* RaceResultsEventViewController.m */; };
 		77CAD41C178B0CBB00DEB73C /* RaceResultsEventViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77CAD41A178B0CBB00DEB73C /* RaceResultsEventViewController.xib */; };
@@ -204,6 +217,7 @@
 		77CE5C8F160804150049AF36 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77CE5C8E160804150049AF36 /* CoreLocation.framework */; };
 		77CE5C981608DD710049AF36 /* RaceSignUpWaiverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77CE5C961608DD700049AF36 /* RaceSignUpWaiverViewController.m */; };
 		77CE5C991608DD710049AF36 /* RaceSignUpWaiverViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77CE5C971608DD700049AF36 /* RaceSignUpWaiverViewController.xib */; };
+		77D6CECC198FD13500052FD7 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77D6CECB198FD13500052FD7 /* MessageUI.framework */; };
 		77F0894C179DC74A00DAC692 /* RaceResultsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77CAD416178B091600DEB73C /* RaceResultsViewController.xib */; };
 		BBA28565BD824D6BB6F193CA /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2FDEA0CF074A01A613C2A0 /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -222,7 +236,6 @@
 		77238608179732C80095D1EF /* RaceSignUpEventsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RaceSignUpEventsViewController.xib; sourceTree = "<group>"; };
 		7723860B179739C70095D1EF /* RaceSignUpEventTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RaceSignUpEventTableViewCell.h; sourceTree = "<group>"; };
 		7723860C179739C70095D1EF /* RaceSignUpEventTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RaceSignUpEventTableViewCell.m; sourceTree = "<group>"; };
-		772BC8631934E91900759FA7 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		774F473E19588F7C0003469F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		774F47401958918F0003469F /* Icon-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-114.png"; sourceTree = "<group>"; };
 		774F4742195891980003469F /* IconSpotlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IconSpotlight.png; sourceTree = "<group>"; };
@@ -434,6 +447,22 @@
 		77B6E51E1609FE21009E1AA9 /* RaceSignUpPaymentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RaceSignUpPaymentViewController.xib; sourceTree = "<group>"; };
 		77BB0C481796F12900ADDBF7 /* RaceDetailsRegistrationTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RaceDetailsRegistrationTableViewCell.h; sourceTree = "<group>"; };
 		77BB0C491796F12900ADDBF7 /* RaceDetailsRegistrationTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RaceDetailsRegistrationTableViewCell.m; sourceTree = "<group>"; };
+		77BB910D19869FFD00EE200E /* CurrentLocationIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CurrentLocationIcon.png; sourceTree = "<group>"; };
+		77BB910E19869FFD00EE200E /* CurrentLocationIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CurrentLocationIcon@2x.png"; sourceTree = "<group>"; };
+		77BB91111986AB3500EE200E /* DarkBlueButtonTap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DarkBlueButtonTap.png; sourceTree = "<group>"; };
+		77BB91121986AB3500EE200E /* DarkBlueButtonTap@2x */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DarkBlueButtonTap@2x"; sourceTree = "<group>"; };
+		77BB91151986ABB700EE200E /* OtherIconTap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OtherIconTap.png; sourceTree = "<group>"; };
+		77BB91161986ABB700EE200E /* OtherIconTap@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "OtherIconTap@2x.png"; sourceTree = "<group>"; };
+		77BB91191986D14000EE200E /* RaceShallowDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RaceShallowDetailsViewController.h; sourceTree = "<group>"; };
+		77BB911A1986D14000EE200E /* RaceShallowDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RaceShallowDetailsViewController.m; sourceTree = "<group>"; };
+		77BB911B1986D14000EE200E /* RaceShallowDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RaceShallowDetailsViewController.xib; sourceTree = "<group>"; };
+		77BB911E1986D91B00EE200E /* RSUWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSUWebViewController.h; sourceTree = "<group>"; };
+		77BB911F1986D91B00EE200E /* RSUWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSUWebViewController.m; sourceTree = "<group>"; };
+		77BB91201986D91B00EE200E /* RSUWebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RSUWebViewController.xib; sourceTree = "<group>"; };
+		77BB91231986DB4E00EE200E /* WebViewForwardIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WebViewForwardIcon.png; sourceTree = "<group>"; };
+		77BB91241986DB4E00EE200E /* WebViewForwardIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WebViewForwardIcon@2x.png"; sourceTree = "<group>"; };
+		77BB91271986E26600EE200E /* WebViewBackIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WebViewBackIcon.png; sourceTree = "<group>"; };
+		77BB91281986E26600EE200E /* WebViewBackIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WebViewBackIcon@2x.png"; sourceTree = "<group>"; };
 		77CAD414178B091600DEB73C /* RaceResultsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RaceResultsViewController.h; sourceTree = "<group>"; };
 		77CAD415178B091600DEB73C /* RaceResultsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RaceResultsViewController.m; sourceTree = "<group>"; };
 		77CAD416178B091600DEB73C /* RaceResultsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RaceResultsViewController.xib; sourceTree = "<group>"; };
@@ -450,6 +479,7 @@
 		77CE5C951608DD700049AF36 /* RaceSignUpWaiverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RaceSignUpWaiverViewController.h; sourceTree = "<group>"; };
 		77CE5C961608DD700049AF36 /* RaceSignUpWaiverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RaceSignUpWaiverViewController.m; sourceTree = "<group>"; };
 		77CE5C971608DD700049AF36 /* RaceSignUpWaiverViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RaceSignUpWaiverViewController.xib; sourceTree = "<group>"; };
+		77D6CECB198FD13500052FD7 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		7A2FDEA0CF074A01A613C2A0 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA6D4898218C41479B2FCB92 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -459,8 +489,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77D6CECC198FD13500052FD7 /* MessageUI.framework in Frameworks */,
 				77AEC5CA19747609002C9471 /* AddressBook.framework in Frameworks */,
-				772BC8641934E91900759FA7 /* JavaScriptCore.framework in Frameworks */,
 				77188A33177E45C1000A8D2F /* EventKitUI.framework in Frameworks */,
 				77188A31177E4467000A8D2F /* EventKit.framework in Frameworks */,
 				7757C2E816403E5C00B8780A /* QuartzCore.framework in Frameworks */,
@@ -517,8 +547,8 @@
 		77A8626015FBA45A004BAED8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				77D6CECB198FD13500052FD7 /* MessageUI.framework */,
 				77AEC5C919747609002C9471 /* AddressBook.framework */,
-				772BC8631934E91900759FA7 /* JavaScriptCore.framework */,
 				77188A32177E45C1000A8D2F /* EventKitUI.framework */,
 				774F665A15FE95B1008A1112 /* libxml2.dylib */,
 				77188A30177E4467000A8D2F /* EventKit.framework */,
@@ -548,6 +578,9 @@
 				77AE5B0E196B05F9002F1362 /* RoundedTableViewCell.m */,
 				774F664F15FE93A5008A1112 /* RXMLElement.h */,
 				774F665015FE93AC008A1112 /* RXMLElement.m */,
+				77BB911E1986D91B00EE200E /* RSUWebViewController.h */,
+				77BB911F1986D91B00EE200E /* RSUWebViewController.m */,
+				77BB91201986D91B00EE200E /* RSUWebViewController.xib */,
 				77A8628215FBAA72004BAED8 /* Resources */,
 				774F664B15FE92ED008A1112 /* RSUModel.h */,
 				774F664C15FE92ED008A1112 /* RSUModel.m */,
@@ -575,6 +608,12 @@
 		77A8628215FBAA72004BAED8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				77BB91271986E26600EE200E /* WebViewBackIcon.png */,
+				77BB91281986E26600EE200E /* WebViewBackIcon@2x.png */,
+				77BB91231986DB4E00EE200E /* WebViewForwardIcon.png */,
+				77BB91241986DB4E00EE200E /* WebViewForwardIcon@2x.png */,
+				77BB910D19869FFD00EE200E /* CurrentLocationIcon.png */,
+				77BB910E19869FFD00EE200E /* CurrentLocationIcon@2x.png */,
 				77AEC5C519746234002C9471 /* GenderControlDivider.png */,
 				77AEC5C619746234002C9471 /* GenderControlDivider@2x.png */,
 				77AEC5BD19742645002C9471 /* WhiteButtonFilled.png */,
@@ -589,6 +628,8 @@
 				77AEC5AE196F4F3A002C9471 /* DropDownTriangle@2x.png */,
 				77AEC5A9196F49A6002C9471 /* DarkBlueButton.png */,
 				77AEC5AA196F49A6002C9471 /* DarkBlueButton@2x.png */,
+				77BB91111986AB3500EE200E /* DarkBlueButtonTap.png */,
+				77BB91121986AB3500EE200E /* DarkBlueButtonTap@2x */,
 				77AEC5A2196DCB05002C9471 /* WhiteButton.png */,
 				77AEC5A3196DCB05002C9471 /* WhiteButton@2x.png */,
 				77AE5B11196B0A88002F1362 /* RaceSearchRoundBottom@2x.png */,
@@ -614,6 +655,8 @@
 				77A711FF17C3EF16008E1509 /* MainMenuBackground@2x.png */,
 				77188A2C177E3E4A000A8D2F /* OtherIcon.png */,
 				77188A2D177E3E4A000A8D2F /* OtherIcon@2x.png */,
+				77BB91151986ABB700EE200E /* OtherIconTap.png */,
+				77BB91161986ABB700EE200E /* OtherIconTap@2x.png */,
 				77B0E5F3177A537600C00E5B /* CancelSearch.png */,
 				77B0E5F4177A537600C00E5B /* CancelSearch@2x.png */,
 				77B0E5F5177A537600C00E5B /* Search.png */,
@@ -768,6 +811,9 @@
 				77AE5B07196AE9EA002F1362 /* RaceSearchTableViewCell.m */,
 				77012F111606D9AA00E1627C /* RaceTableViewCell.h */,
 				77012F121606D9AA00E1627C /* RaceTableViewCell.m */,
+				77BB91191986D14000EE200E /* RaceShallowDetailsViewController.h */,
+				77BB911A1986D14000EE200E /* RaceShallowDetailsViewController.m */,
+				77BB911B1986D14000EE200E /* RaceShallowDetailsViewController.xib */,
 				77CE5C841607C6ED0049AF36 /* RaceDetailsViewController.h */,
 				77CE5C851607C6ED0049AF36 /* RaceDetailsViewController.m */,
 				77CE5C861607C6ED0049AF36 /* RaceDetailsViewController.xib */,
@@ -870,6 +916,7 @@
 				77F0894C179DC74A00DAC692 /* RaceResultsViewController.xib in Resources */,
 				77188A2E177E3E60000A8D2F /* OtherIcon.png in Resources */,
 				77188A2F177E3E60000A8D2F /* OtherIcon@2x.png in Resources */,
+				77BB91141986AB3500EE200E /* DarkBlueButtonTap@2x in Resources */,
 				77B0E5F7177A569C00C00E5B /* CancelSearch.png in Resources */,
 				77B0E5F8177A569C00C00E5B /* CancelSearch@2x.png in Resources */,
 				77B0E5F9177A569C00C00E5B /* Search.png in Resources */,
@@ -881,6 +928,7 @@
 				77AD37281946296F00A267C5 /* QuestionsRadio@2x.png in Resources */,
 				77A862CA15FBAA72004BAED8 /* BlueButton@2x.png in Resources */,
 				774F473F19588F7C0003469F /* Images.xcassets in Resources */,
+				77BB91181986ABB700EE200E /* OtherIconTap@2x.png in Resources */,
 				77A862CB15FBAA72004BAED8 /* BlueButtonTap.png in Resources */,
 				77AE5B05196A1592002F1362 /* RaceListDisclosure@2x.png in Resources */,
 				77A862CC15FBAA72004BAED8 /* BlueButtonTap@2x.png in Resources */,
@@ -915,10 +963,13 @@
 				77A862DD15FBAA72004BAED8 /* loading14.png in Resources */,
 				77A862DE15FBAA72004BAED8 /* loading14@2x.png in Resources */,
 				77AEC5B0196F4F3A002C9471 /* DropDownTriangle@2x.png in Resources */,
+				77BB91131986AB3500EE200E /* DarkBlueButtonTap.png in Resources */,
 				77A862DF15FBAA72004BAED8 /* loading15.png in Resources */,
 				77A862E015FBAA72004BAED8 /* loading15@2x.png in Resources */,
 				774F4746195891980003469F /* IconSpotlight.png in Resources */,
+				77BB91291986E26600EE200E /* WebViewBackIcon.png in Resources */,
 				77A711FE17C263A6008E1509 /* RaceSignUpChooseRegistrantViewController.xib in Resources */,
+				77BB91261986DB4E00EE200E /* WebViewForwardIcon@2x.png in Resources */,
 				77A862E115FBAA72004BAED8 /* loading16.png in Resources */,
 				77AD37271946296F00A267C5 /* QuestionsRadio.png in Resources */,
 				77A862E215FBAA72004BAED8 /* loading16@2x.png in Resources */,
@@ -935,6 +986,7 @@
 				77AEC5BF19742645002C9471 /* WhiteButtonFilled.png in Resources */,
 				77AE5AFF196A0E7E002F1362 /* Sanchez-Regular.ttf in Resources */,
 				77AEC5BB197425B3002C9471 /* OrangeButtonFilled.png in Resources */,
+				77BB91221986D91B00EE200E /* RSUWebViewController.xib in Resources */,
 				77A862EA15FBAA72004BAED8 /* loading2.png in Resources */,
 				77A862EB15FBAA72004BAED8 /* loading20.png in Resources */,
 				77A862EC15FBAA72004BAED8 /* loading20@2x.png in Resources */,
@@ -950,7 +1002,9 @@
 				77A862F215FBAA72004BAED8 /* loading23@2x.png in Resources */,
 				77A862F315FBAA72004BAED8 /* loading24.png in Resources */,
 				77AEC5C419743874002C9471 /* OpenSans-Semibold.ttf in Resources */,
+				77BB91251986DB4E00EE200E /* WebViewForwardIcon.png in Resources */,
 				77A862F415FBAA72004BAED8 /* loading24@2x.png in Resources */,
+				77BB91171986ABB700EE200E /* OtherIconTap.png in Resources */,
 				77AEC5B8197424D4002C9471 /* OrangeButton@2x.png in Resources */,
 				77A862F515FBAA72004BAED8 /* loading25.png in Resources */,
 				77A862F615FBAA72004BAED8 /* loading25@2x.png in Resources */,
@@ -985,6 +1039,7 @@
 				77A8631715FBACB8004BAED8 /* GreenButton@2x.png in Resources */,
 				77AD105617B13E7A00723395 /* RaceSignUpConfirmationViewController.xib in Resources */,
 				77B04378194F831B001FF6B5 /* SettingsViewController.xib in Resources */,
+				77BB912A1986E26600EE200E /* WebViewBackIcon@2x.png in Resources */,
 				777AA930195E2CDC00C45970 /* IconSpotlight7@2x.png in Resources */,
 				77A8631815FBACB8004BAED8 /* GreenButtonTap.png in Resources */,
 				77A8631915FBACB8004BAED8 /* GreenButtonTap@2x.png in Resources */,
@@ -994,6 +1049,8 @@
 				77A8632715FC0EBE004BAED8 /* DropDown.png in Resources */,
 				77A8632815FC0EBE004BAED8 /* DropDown@2x.png in Resources */,
 				77A8632915FC0EBE004BAED8 /* DropDownTap.png in Resources */,
+				77BB911019869FFD00EE200E /* CurrentLocationIcon@2x.png in Resources */,
+				77BB911D1986D14000EE200E /* RaceShallowDetailsViewController.xib in Resources */,
 				77A8632A15FC0EBE004BAED8 /* DropDownTap@2x.png in Resources */,
 				774F665915FE9451008A1112 /* SignInViewController.xib in Resources */,
 				77AEC5B4196F4FF6002C9471 /* DropDownTriangleTap@2x.png in Resources */,
@@ -1005,6 +1062,7 @@
 				77AEC5AC196F49A6002C9471 /* DarkBlueButton@2x.png in Resources */,
 				77AE5B0C196AEFFE002F1362 /* SearchMagnifyingGlass@2x.png in Resources */,
 				77CE5C991608DD710049AF36 /* RaceSignUpWaiverViewController.xib in Resources */,
+				77BB910F19869FFD00EE200E /* CurrentLocationIcon.png in Resources */,
 				77B6E5201609FE21009E1AA9 /* RaceSignUpPaymentViewController.xib in Resources */,
 				7757C2C8163C3F5200B8780A /* Default-568h@2x.png in Resources */,
 				77AD372D194654C500A267C5 /* RaceSignUpMembershipsViewController.xib in Resources */,
@@ -1056,6 +1114,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77BB91211986D91B00EE200E /* RSUWebViewController.m in Sources */,
 				7723860D17973B0F0095D1EF /* RaceSignUpEventTableViewCell.m in Sources */,
 				772385FF1796FB7D0095D1EF /* RaceDetailsRegistrationTableViewCell.m in Sources */,
 				77CAD41F178B18CB00DEB73C /* RaceResultsEventTableViewCell.m in Sources */,
@@ -1090,6 +1149,7 @@
 				7757C2D616403B9700B8780A /* EGORefreshTableHeaderView.m in Sources */,
 				77971E2617B931C0005809F8 /* RaceSignUpGiveawayTableViewCell.m in Sources */,
 				77A711FD17C263A6008E1509 /* RaceSignUpChooseRegistrantViewController.m in Sources */,
+				77BB911C1986D14000EE200E /* RaceShallowDetailsViewController.m in Sources */,
 				77971E2217B93114005809F8 /* RaceSignUpGiveawayViewController.m in Sources */,
 				7781644E168687FD0033B6FE /* RaceDetailsEventTableViewCell.m in Sources */,
 				77B35449192D2BAC007CE8D4 /* AddressAnnotation.m in Sources */,
@@ -1140,11 +1200,11 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "\"$(SDK_DIR)\"/usr/include/libxml2";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = "\"$(SDK_DIR)\"/usr/lib";
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Debug;
@@ -1171,11 +1231,11 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "\"$(SDK_DIR)\"/usr/include/libxml2";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = "\"$(SDK_DIR)\"/usr/lib";
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "armv7 armv7s";
 			};
@@ -1197,7 +1257,7 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = "RunSignUpReg/RunSignUpReg-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-framework",
@@ -1238,7 +1298,7 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = "RunSignUpReg/RunSignUpReg-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-framework",

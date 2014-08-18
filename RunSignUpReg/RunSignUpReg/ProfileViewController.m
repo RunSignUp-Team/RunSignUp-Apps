@@ -18,6 +18,7 @@
 
 #import "ProfileViewController.h"
 #import "RSUModel.h"
+#import "RSUWebViewController.h"
 
 @implementation ProfileViewController
 @synthesize nameLabel;
@@ -98,7 +99,8 @@
 }
 
 - (IBAction)viewMore:(id)sender{
-    [[UIApplication sharedApplication] openURL: [NSURL URLWithString:@"https://runsignup.com/Profile"]];
+    RSUWebViewController *rsuwvc = [[RSUWebViewController alloc] initWithURL: [NSURL URLWithString: @"https://runsignup.com/Profile"]];
+    [self presentViewController:rsuwvc animated:YES completion:nil];
 }
 
 - (void)didSignUpWithDictionary:(NSDictionary *)dict{

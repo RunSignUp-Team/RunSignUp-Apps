@@ -537,7 +537,7 @@ static RSUModel *model = nil;
 
 - (void)retrieveRaceListWithParams:(NSDictionary *)params response:(void (^)(NSArray *))responseBlock{
     NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
-    NSString *urlString = [NSString stringWithFormat: @"%@/rest/races?events=T&sort=end_date+ASC,name+ASC", RUNSIGNUP_BASE_URL];
+    NSString *urlString = [NSString stringWithFormat: @"%@/rest/races?events=T&results_per_page=25&sort=end_date+ASC,name+ASC", RUNSIGNUP_BASE_URL];
     if([params objectForKey:@"page"])
         urlString = [urlString stringByAppendingFormat:@"&page=%i", [[params objectForKey:@"page"] intValue]];
     if([params objectForKey:@"name"]){
@@ -576,7 +576,7 @@ static RSUModel *model = nil;
         }
         
         NSString *string = [[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding];
-        NSLog(@"%@", string);
+        //NSLog(@"%@", string);
         
         RXMLElement *rootXML = [[RXMLElement alloc] initFromXMLData:urlData];
         if([[rootXML tag] isEqualToString:@"races"]){
@@ -603,19 +603,6 @@ static RSUModel *model = nil;
                     if([ele text])
                         [race setObject:[ele text] forKey:[ele tag]];
                 }
-                
-                if(raceID)
-                    [race setObject:[raceID text] forKey:@"race_id"];
-                if(raceName)
-                    [race setObject:[raceName text] forKey:@"name"];
-                if(raceDescription)
-                    [race setObject:[raceDescription text] forKey:@"description"];
-                if(raceURL)
-                    [race setObject:[raceURL text] forKey:@"url"];
-                if(raceNextDate && [[raceNextDate text] length])
-                    [race setObject:[raceNextDate text] forKey:@"next_date"];
-                else if(raceLastDate)
-                    [race setObject:[raceLastDate text] forKey:@"next_date"];
                 
                 if(raceAddress){
                     RXMLElement *street = [raceAddress child: @"street"];
@@ -681,6 +668,150 @@ static RSUModel *model = nil;
                 return;
             }
 
+        }
+        dispatch_async(dispatch_get_main_queue(),^(){responseBlock(nil);});
+    };
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:completion];
+}
+
+- (void)retrieveActiveRaceListWithParams:(NSDictionary *)params response:(void (^)(NSArray *))responseBlock{
+    NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
+    NSString *urlString = [NSString stringWithFormat: @"%@/rest/active-races?results_per_page=25", RUNSIGNUP_BASE_URL];
+    if([params objectForKey:@"page"])
+        urlString = [urlString stringByAppendingFormat:@"&page=%i", [[params objectForKey:@"page"] intValue]];
+    if([params objectForKey:@"name"]){
+        NSString *nameString = [[params objectForKey:@"name"] stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        urlString = [urlString stringByAppendingFormat:@"&keywords=%@", nameString];
+    }
+    
+    float number = [[params objectForKey: @"distance"] floatValue];
+    NSString *unit = [params objectForKey: @"distance_units"];
+    NSArray *activeDistances = @[@"Marathon", @"Half Marathon", @"5k", @"10k", @"1 mile", @"5 mile", @"15k", @"10 mile", @"Ultra"];
+    NSString *activeDistance = nil;
+    
+    float distanceInKilometers = -1;
+    float marginOfError = 0.2;
+    
+    if(unit != nil && number != 0){
+        if([unit isEqualToString: @"M"]){
+            distanceInKilometers = number * 1.60934;
+        }else if([unit isEqualToString: @"K"]){
+            distanceInKilometers = number;
+        }else if([unit isEqualToString: @"Y"]){
+            distanceInKilometers = number * 0.0009144;
+        }else if([unit isEqualToString: @"m"]){
+            distanceInKilometers = number * 1000;
+        }
+        
+        if(distanceInKilometers != -1){
+            if(fabsf(distanceInKilometers - 42.16) < marginOfError)
+                activeDistance = activeDistances[0];
+            else if(fabsf(distanceInKilometers - 21.08) < marginOfError)
+                activeDistance = activeDistances[1];
+            else if(fabsf(distanceInKilometers - 5) < marginOfError)
+                activeDistance = activeDistances[2];
+            else if(fabsf(distanceInKilometers - 10) < marginOfError)
+                activeDistance = activeDistances[3];
+            else if(fabsf(distanceInKilometers - 1.609) < marginOfError)
+                activeDistance = activeDistances[4];
+            else if(fabsf(distanceInKilometers - 8.047) < marginOfError)
+                activeDistance = activeDistances[5];
+            else if(fabsf(distanceInKilometers - 15) < marginOfError)
+                activeDistance = activeDistances[6];
+            else if(fabsf(distanceInKilometers - 16.09) < marginOfError)
+                activeDistance = activeDistances[7];
+            else if(fabsf(distanceInKilometers - 42.195) < marginOfError)
+                activeDistance = activeDistances[8];
+        }
+
+        if(activeDistance != nil)
+            urlString = [urlString stringByAppendingFormat:@"&distance=%@", activeDistance];
+    }
+    
+    if([params objectForKey:@"start_date"])
+        urlString = [urlString stringByAppendingFormat:@"&start_date=%@", [RSUModel convertSlashDateToDashDate: [params objectForKey:@"start_date"]]];
+    
+    if([params objectForKey:@"end_date"])
+        urlString = [urlString stringByAppendingFormat:@"&end_date=%@", [RSUModel convertSlashDateToDashDate: [params objectForKey:@"end_date"]]];
+    if([params objectForKey:@"country"])
+        urlString = [urlString stringByAppendingFormat:@"&country=%@", [params objectForKey:@"country"]];
+    if([params objectForKey:@"state"])
+        urlString = [urlString stringByAppendingFormat:@"&state=%@", [params objectForKey:@"state"]];
+    if([params objectForKey:@"city"]){
+        NSString *cityString = [[params objectForKey:@"city"] stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        urlString = [urlString stringByAppendingFormat:@"&city=%@", cityString];
+    }
+    
+    [request setURL:[NSURL URLWithString:urlString]];//[NSString stringWithFormat:@"%@&api_key=%@&api_secret=%@", urlString, apiKey, apiSecret]]];
+    [request setHTTPMethod:@"GET"];
+    
+    NSLog(@"URL: %@", urlString);
+    
+    void (^completion)(NSURLResponse *,NSData *,NSError *) = ^(NSURLResponse *response,NSData *urlData,NSError *error){
+        if(!urlData){
+            NSLog(@"URLData is nil");
+            dispatch_async(dispatch_get_main_queue(),^(){responseBlock(nil);});
+            return;
+        }
+        
+        NSString *string = [[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding];
+        NSLog(@"%@", string);
+        
+        RXMLElement *rootXML = [[RXMLElement alloc] initFromXMLData:urlData];
+        if([[rootXML tag] isEqualToString:@"races"]){
+            NSMutableArray *raceList = [[NSMutableArray alloc] init];
+            NSArray *raceArray = [rootXML children:@"race"];
+            for(int x = 0; x < [raceArray count]; x++){
+                NSMutableDictionary *race = [[NSMutableDictionary alloc] init];
+                [race setObject:@(YES) forKey:@"active_race"];
+                RXMLElement *raceID = [[raceArray objectAtIndex: x] child: @"race_id"];
+                RXMLElement *raceName = [[raceArray objectAtIndex: x] child: @"name"];
+                RXMLElement *raceDescription = [[raceArray objectAtIndex: x] child: @"description"];
+                RXMLElement *raceURL = [[raceArray objectAtIndex: x] child: @"url"];
+                RXMLElement *raceNextDate = [[raceArray objectAtIndex: x] child: @"next_date"];
+                RXMLElement *raceLastDate = [[raceArray objectAtIndex: x] child: @"last_date"];
+                RXMLElement *raceAddress = [[raceArray objectAtIndex: x] child: @"address"];
+                
+                for(RXMLElement *ele in @[raceID,raceName,raceDescription,raceURL]){
+                    if([ele text])
+                        [race setObject:[ele text] forKey:[ele tag]];
+                }
+                
+                if(raceNextDate && [[raceNextDate text] length] > 0){
+                    NSString *nextDate = [raceNextDate text];
+                    nextDate = [RSUModel convertDashDateToSlashDate: nextDate];
+                    [race setObject:nextDate forKey:[raceNextDate tag]];
+                }
+                if(raceLastDate && [[raceLastDate text] length] > 0){
+                    NSString *lastDate = [raceLastDate text];
+                    lastDate = [RSUModel convertDashDateToSlashDate: lastDate];
+                    [race setObject:lastDate forKey:[raceLastDate tag]];
+                }
+                
+                if(raceAddress){
+                    RXMLElement *street = [raceAddress child: @"street"];
+                    RXMLElement *city = [raceAddress child: @"city"];
+                    RXMLElement *state = [raceAddress child: @"state"];
+                    RXMLElement *zipcode = [raceAddress child: @"zipcode"];
+                    RXMLElement *country = [raceAddress child: @"country"];
+                    
+                    NSMutableDictionary *address = [[NSMutableDictionary alloc] init];
+                    for(RXMLElement *ele in @[street,city,state,zipcode,country]){
+                        if([ele text])
+                            [address setObject:[ele text] forKey:[ele tag]];
+                    }
+                    
+                    [race setObject:address forKey:@"address"];
+                }
+                                
+                [raceList addObject: race];
+            }
+            if([raceList count] > 0){
+                dispatch_async(dispatch_get_main_queue(),^(){responseBlock(raceList);});
+                return;
+            }
+            
         }
         dispatch_async(dispatch_get_main_queue(),^(){responseBlock(nil);});
     };
@@ -1007,8 +1138,8 @@ static RSUModel *model = nil;
 
 }
 
-- (void)retrieveEventResultsWithRaceID:(NSString *)raceID eventID:(NSString *)eventID resultSetID:(NSString *)resultSetID response:(void (^)(NSArray *))responseBlock{
-    NSString *url = [NSString stringWithFormat:@"%@/rest/race/%@/results?event_id=%@&request_type=get-results&individual_result_set_id=%@&tmp_key=%@&tmp_secret=%@&format=xml", RUNSIGNUP_BASE_URL, raceID, eventID, resultSetID, key, secret];
+- (void)retrieveEventResultsWithRaceID:(NSString *)raceID eventID:(NSString *)eventID resultSetID:(NSString *)resultSetID page:(int)page response:(void (^)(NSArray *))responseBlock{
+    NSString *url = [NSString stringWithFormat:@"%@/rest/race/%@/results?event_id=%@&request_type=get-results&individual_result_set_id=%@&page=%i&tmp_key=%@&tmp_secret=%@&format=xml", RUNSIGNUP_BASE_URL, raceID, eventID, resultSetID, page, key, secret];
     NSLog(@"%@", url);
     NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
     [request setURL:[NSURL URLWithString:url]];
@@ -1053,7 +1184,6 @@ static RSUModel *model = nil;
     };
     
     [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:completion];
-
 }
 
 - (void)retrieveUserInfo:(void (^)(RSUConnectionResponse))responseBlock{
@@ -1232,8 +1362,22 @@ static RSUModel *model = nil;
     return @"Error";
 }
 
++ (NSString *)convertDashDateToSlashDate:(NSString *)dashDate{
+    if([dashDate length] == 10){
+        return [NSString stringWithFormat:@"%@/%@/%@", [dashDate substringWithRange:NSRangeFromString(@"5-2")], [dashDate substringWithRange:NSRangeFromString(@"8-2")], [dashDate substringWithRange:NSRangeFromString(@"0-4")]];
+    }
+    return @"Error";
+}
+
 + (NSString *)addressLine2FromAddress:(NSDictionary *)address{
-    return [NSString stringWithFormat:@"%@ %@ %@, %@", [address objectForKey:@"city"], [address objectForKey:@"state"], [address objectForKey:@"country_code"], [address objectForKey:@"zipcode"]];
+    NSString *country = [address objectForKey: @"country_code"];
+    if(country == nil)
+        country = [address objectForKey: @"country"];
+    
+    if(country == nil)
+        country = @"US"; // default
+    
+    return [NSString stringWithFormat:@"%@ %@ %@, %@", [address objectForKey:@"city"], [address objectForKey:@"state"], country, [address objectForKey:@"zipcode"]];
 }
 
 + (id)sharedModel{

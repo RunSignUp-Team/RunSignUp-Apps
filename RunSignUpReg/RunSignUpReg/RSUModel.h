@@ -99,6 +99,8 @@ typedef enum{
 */
 - (void)retrieveRaceListWithParams:(NSDictionary *)params response:(void (^)(NSArray *))responseBlock;
 
+- (void)retrieveActiveRaceListWithParams:(NSDictionary *)params response:(void (^)(NSArray *))responseBlock;
+
 
 // Retrieve specific race details for a given race with a raceID. Returns a mutable dictionary with race information, or nil if theres no connection.
 - (void)retrieveRaceDetailsWithRaceID:(NSString *)raceID response:(void (^)(NSMutableDictionary *))responseBlock;
@@ -109,7 +111,7 @@ typedef enum{
 
 
 // Retrieve results for a given event and result set id
-- (void)retrieveEventResultsWithRaceID:(NSString *)raceID eventID:(NSString *)eventID resultSetID:(NSString *)resultSetID response:(void (^)(NSArray *))responseBlock;
+- (void)retrieveEventResultsWithRaceID:(NSString *)raceID eventID:(NSString *)eventID resultSetID:(NSString *)resultSetID page:(int)page response:(void (^)(NSArray *))responseBlock;
 
 
 // Retrieve a race director's race list. Unfinished, do not use.
@@ -148,6 +150,7 @@ typedef enum{
 - (NSMutableDictionary *)parseUser:(RXMLElement *)user;
 + (NSString *)standardizeDate:(NSString *)dateString;
 + (NSString *)convertSlashDateToDashDate:(NSString *)slashDate;
++ (NSString *)convertDashDateToSlashDate:(NSString *)dashDate;
 + (NSString *)addressLine2FromAddress:(NSDictionary *)address;
 
 @end

@@ -77,6 +77,7 @@ typedef enum{
     
     UIPickerView *countryPicker;
     UIPickerView *statePicker;
+    UIDatePicker *datePicker;
     
     NSArray *countryArray;
     NSArray *stateArrayUS;
@@ -127,6 +128,7 @@ typedef enum{
 @property (nonatomic, retain) IBOutlet UIView *pickerBackgroundView;
 @property (nonatomic, retain) IBOutlet UIPickerView *countryPicker;
 @property (nonatomic, retain) IBOutlet UIPickerView *statePicker;
+@property (nonatomic, retain) IBOutlet UIDatePicker *datePicker;
 
 @property RSUSignUpMode signUpMode;
 @property (nonatomic, retain) IBOutlet UILabel *ageHintLabel;
@@ -144,6 +146,7 @@ typedef enum{
 
 - (IBAction)prevNextControlDidChange:(id)sender;
 - (IBAction)genderControlDidChange:(id)sender;
+- (IBAction)datePickerDidChange:(id)sender;
 
 - (IBAction)showCountryPicker:(id)sender;
 - (IBAction)showStatePicker:(id)sender;

@@ -24,6 +24,7 @@
 @implementation RaceResultsEventViewController
 @synthesize table;
 @synthesize rli;
+@synthesize results;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil data:(NSDictionary *)data{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -49,59 +50,97 @@
 
     [rli fadeIn];
     
+    page = 1;
+    
+    [self retrieveResults];
+}
+
+- (void)retrieveResults{
     void (^response)(NSArray *) = ^(NSArray *resultsArray){
-        NSLog(@"%@", resultsArray);
-        results = resultsArray;
+        self.results = resultsArray;
+        
+        if([resultsArray count] == 50)
+            moreResultsToRetrieve = YES;
+        else
+            moreResultsToRetrieve = NO;
         
         [rli fadeOut];
         [table reloadData];
     };
     
-    [[RSUModel sharedModel] retrieveEventResultsWithRaceID:[dataDict objectForKey:@"race_id"] eventID:[dataDict objectForKey:@"event_id"] resultSetID:[dataDict objectForKey:@"individual_result_set_id"] response:response];
+    [[RSUModel sharedModel] retrieveEventResultsWithRaceID:[dataDict objectForKey:@"race_id"] eventID:[dataDict objectForKey:@"event_id"] resultSetID:[dataDict objectForKey:@"individual_result_set_id"] page:page response:response];
+}
+
+- (void)retrieveResultsAndAppend{
+    void (^response)(NSArray *) = ^(NSArray *resultsArray){
+        if([resultsArray count] == 0){
+            moreResultsToRetrieve = NO;
+        }else{
+            if([resultsArray count] == 50)
+                moreResultsToRetrieve = YES;
+            else
+                moreResultsToRetrieve = NO;
+            
+            NSMutableArray *newResults = [[NSMutableArray alloc] initWithArray:results];
+            [newResults addObjectsFromArray: resultsArray];
+            self.results = newResults;
+            
+            [rli fadeOut];
+            [table reloadData];
+        }
+    };
+    
+    [[RSUModel sharedModel] retrieveEventResultsWithRaceID:[dataDict objectForKey:@"race_id"] eventID:[dataDict objectForKey:@"event_id"] resultSetID:[dataDict objectForKey:@"individual_result_set_id"] page:page response:response];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    float headerHeight = 44.0f;
-    
-    UIView *header = [[UIView alloc] initWithFrame: CGRectMake(0, 0, [table frame].size.width, headerHeight)];
-    [header setBackgroundColor: [UIColor colorWithRed:215/255.0f green:235/255.0f blue:241/255.0f alpha:1.0f]];
-    [header.layer setBorderColor: [UIColor colorWithRed:189/255.0f green:219/255.0f blue:229/255.0f alpha:1.0f].CGColor];
-    [header.layer setBorderWidth: 1.0f];
-    
-    int widths[] = {40, 40, 86, 38, 40, 37, 32};
-    int cumWidth = 4;
-    for(int x = 0; x <= 7; x++){
-        UIView *divider = [[UIView alloc] initWithFrame: CGRectMake(cumWidth, 0, 1, headerHeight)];
-        [divider setBackgroundColor: [UIColor colorWithRed:189/255.0f green:219/255.0f blue:229/255.0f alpha:1.0f]];
-        [header addSubview: divider];
-        [divider release];
+    if(section == 0){
+        float headerHeight = [self tableView:tableView heightForHeaderInSection:section];
         
-        cumWidth += widths[x];
+        UIView *header = [[UIView alloc] initWithFrame: CGRectMake(0, 0, [table frame].size.width, headerHeight)];
+        [header setBackgroundColor: [UIColor colorWithRed:215/255.0f green:235/255.0f blue:241/255.0f alpha:1.0f]];
+        [header.layer setBorderColor: [UIColor colorWithRed:189/255.0f green:219/255.0f blue:229/255.0f alpha:1.0f].CGColor];
+        [header.layer setBorderWidth: 1.0f];
+        
+        int widths[] = {40, 40, 86, 38, 40, 37, 31};
+        int cumWidth = 4;
+        for(int x = 0; x <= 7; x++){
+            UIView *divider = [[UIView alloc] initWithFrame: CGRectMake(cumWidth, 0, 1, headerHeight)];
+            [divider setBackgroundColor: [UIColor colorWithRed:189/255.0f green:219/255.0f blue:229/255.0f alpha:1.0f]];
+            [header addSubview: divider];
+            [divider release];
+            
+            cumWidth += widths[x];
+        }
+        
+        float fontSize = 11.0f;
+        UILabel *headerLabel = [[UILabel alloc] initWithFrame: CGRectMake(4, headerHeight / 2 - (fontSize + 2.0f) / 2.0f, [[UIScreen mainScreen] bounds].size.width - 8, fontSize + 4.0f)];
+        [headerLabel setFont: [UIFont fontWithName:@"OpenSans" size:fontSize]];
+        [headerLabel setTextColor: [UIColor colorWithRed:47/255.0f green:132/255.0f blue:165/255.0f alpha:1.0f]];
+        [headerLabel setText:@"  Place       Bib              Name             Sex      Time     Pace    Age"];
+        // I'm lazy and did not feel like laying out labels individually ^
+        [header addSubview: headerLabel];
+        
+        return header;
     }
-    
-    float fontSize = 11.0f;
-    UILabel *headerLabel = [[UILabel alloc] initWithFrame: CGRectMake(4, headerHeight / 2 - (fontSize + 2.0f) / 2.0f, [[UIScreen mainScreen] bounds].size.width - 8, fontSize + 4.0f)];
-    [headerLabel setFont: [UIFont fontWithName:@"OpenSans" size:fontSize]];
-    [headerLabel setTextColor: [UIColor colorWithRed:47/255.0f green:132/255.0f blue:165/255.0f alpha:1.0f]];
-    [headerLabel setText:@"  Place       Bib              Name             Sex      Time     Pace    Age"];
-    // I'm lazy and did not feel like laying out labels individually ^
-    [header addSubview: headerLabel];
-    
-    return header;
+    return nil;
 }
 
 - (float)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 44;
+    if(section == 0)
+        return 44;
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *CellIdentifier = @"ResultsCellIdentifier";
-    RaceResultsEventTableViewCell *cell = (RaceResultsEventTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if(cell == nil){
-        cell = [[RaceResultsEventTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-    
-    if([results count] > 0){
+    if(indexPath.section == 0){
+        static NSString *CellIdentifier = @"ResultsCellIdentifier";
+
+        RaceResultsEventTableViewCell *cell = (RaceResultsEventTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if(cell == nil){
+            cell = [[RaceResultsEventTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        }
+        
         [[cell placeLabel] setText: [[results objectAtIndex: [indexPath row]] objectForKey: @"place"]];
         [[cell bibLabel] setText: [[results objectAtIndex: [indexPath row]] objectForKey: @"bib"]];
         [[cell firstNameLabel] setText: [[results objectAtIndex: [indexPath row]] objectForKey: @"first_name"]];
@@ -112,31 +151,65 @@
         [[cell ageLabel] setText: [[results objectAtIndex: [indexPath row]] objectForKey: @"age"]];
         [[cell textLabel] setText: @""];
         [cell showDividers];
+        
+        return cell;
     }else{
-        [[cell textLabel] setFont: [UIFont fontWithName:@"OpenSans" size:18]];
-        [[cell textLabel] setText: @"No Results Found"];
-        [cell hideDividers];
+        static NSString *CellIdentifier = @"CellIdentifier";
+        
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if(cell == nil){
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        }
+        
+        [[cell textLabel] setTextAlignment: NSTextAlignmentCenter];
+        [[cell textLabel] setTextColor: [UIColor colorWithRed:64/255.0 green:114/255.0 blue:145/255.0 alpha:1.0]];
+        
+        if(moreResultsToRetrieve){
+            [[cell textLabel] setFont: [UIFont fontWithName:@"OpenSans" size:16]];
+            [[cell textLabel] setText: @"Load More Results..."];
+        }else if([results count]){
+            [[cell textLabel] setFont: [UIFont fontWithName:@"OpenSans" size:16]];
+            [[cell textLabel] setText: @"All Results Loaded"];
+        }else{
+            [[cell textLabel] setFont: [UIFont fontWithName:@"OpenSans" size:16]];
+            [[cell textLabel] setText: @"No Results Found"];
+        }
+        return cell;
     }
-    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    RaceResultsEventDetailsViewController *rredvc = [[RaceResultsEventDetailsViewController alloc] initWithNibName:@"RaceResultsEventDetailsViewController" bundle:nil data:[results objectAtIndex: [indexPath row]]];
-    [self.navigationController pushViewController:rredvc animated:YES];
-    [rredvc release];
+    if(indexPath.section == 0){
+        RaceResultsEventDetailsViewController *rredvc = [[RaceResultsEventDetailsViewController alloc] initWithNibName:@"RaceResultsEventDetailsViewController" bundle:nil data:[results objectAtIndex: [indexPath row]]];
+        [self.navigationController pushViewController:rredvc animated:YES];
+        [rredvc release];
+    }else{
+        if(moreResultsToRetrieve){
+            page++;
+            [self retrieveResultsAndAppend];
+        }
+    }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(indexPath.section == 0)
+        return 44;
+    else
+        return 64;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    if([results count] > 0)
+    if(section == 0){
         return [results count];
-    else
+    }else{
         return 1;
+    }
 }
 
 - (void)didReceiveMemoryWarning{

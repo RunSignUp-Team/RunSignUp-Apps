@@ -83,7 +83,7 @@
     if([[question objectForKey:@"question_type_code"] isEqualToString:@"F"])
         return @"";
     else if([[question objectForKey:@"question_type_code"] isEqualToString:@"B"])
-        return @"none";
+        return @"F";
     else if([[question objectForKey:@"question_type_code"] isEqualToString:@"S"])
         return [NSArray array];
     else if([[question objectForKey:@"question_type_code"] isEqualToString:@"R"]){

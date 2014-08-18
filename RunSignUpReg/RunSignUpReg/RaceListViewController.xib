@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
+        <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RaceListViewController">
             <connections>
+                <outlet property="activeLabel" destination="W8H-Ty-X0o" id="a2a-Y1-ZAs"/>
+                <outlet property="activeSwitch" destination="9L7-n4-oOM" id="6nx-nl-xcw"/>
                 <outlet property="cityField" destination="ChH-9L-sH2" id="ICh-zQ-b3M"/>
                 <outlet property="countryDrop" destination="kPz-Zx-PNT" id="QWe-fC-R1i"/>
                 <outlet property="countryDropTriangle" destination="XWM-s2-AF7" id="36E-iE-SbK"/>
                 <outlet property="countryPicker" destination="Zbu-QB-J4c" id="39C-s9-8k0"/>
+                <outlet property="currentLocationButton" destination="Im0-jq-ba5" id="x6J-5h-dPC"/>
                 <outlet property="dateClearButton" destination="LH0-Lr-nNs" id="EeT-jK-TL5"/>
                 <outlet property="datePicker" destination="Zl3-8h-bvt" id="UMw-Q7-AmP"/>
                 <outlet property="distanceDrop" destination="7ak-Sm-pqz" id="Tib-u3-0e0"/>
@@ -63,7 +66,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="textColor" red="0.25098039220000001" green="0.44705882349999998" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation" returnKeyType="next"/>
+                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="mgb-ON-cj9"/>
                     </connections>
@@ -142,6 +145,16 @@
                         <action selector="showCountryPicker:" destination="-1" eventType="touchUpInside" id="gL4-Mb-vem"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Im0-jq-ba5">
+                    <rect key="frame" x="150" y="181" width="22" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" image="CurrentLocationIcon.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="useCurrentLocation:" destination="-1" eventType="touchUpInside" id="y0E-Dc-bPx"/>
+                    </connections>
+                </button>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DropDownTriangle.png" highlightedImage="DropDownTriangleTap.png" id="HMg-ge-hNo">
                     <rect key="frame" x="270" y="201" width="20" height="10"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -154,6 +167,21 @@
                     <rect key="frame" x="270" y="254" width="20" height="10"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Include Active.com Races:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="W8H-Ty-X0o">
+                    <rect key="frame" x="48" y="231" width="214" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.25098039220000001" green="0.44705882349999998" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="9L7-n4-oOM">
+                    <rect key="frame" x="183" y="238" width="51" height="31"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="onTintColor" red="0.25098039220000001" green="0.44705882349999998" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <connections>
+                        <action selector="toggleActiveSearch:" destination="-1" eventType="valueChanged" id="S86-QH-SBc"/>
+                    </connections>
+                </switch>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="0vl-7t-aY0">
                     <rect key="frame" x="11" y="187" width="298" height="43"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -188,6 +216,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="sectionIndexColor" red="0.90588235289999997" green="0.93725490199999995" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="9"/>
                         <outlet property="delegate" destination="-1" id="10"/>
@@ -243,7 +272,7 @@
                             </connections>
                         </segmentedControl>
                     </subviews>
-                    <color key="backgroundColor" red="0.86274509799999999" green="0.87450980389999999" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.792156862745098" green="0.81176470588235294" blue="0.83137254901960778" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
                 <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" id="Zl3-8h-bvt">
                     <rect key="frame" x="0.0" y="560" width="320" height="162"/>
@@ -301,12 +330,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </connections>
                 </pickerView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.90588235294117647" green="0.93725490196078431" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
         </view>
     </objects>
     <resources>
+        <image name="CurrentLocationIcon.png" width="22" height="22"/>
         <image name="DropDownTriangle.png" width="20" height="10"/>
         <image name="DropDownTriangleTap.png" width="20" height="10"/>
     </resources>

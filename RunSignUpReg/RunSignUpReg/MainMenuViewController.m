@@ -25,6 +25,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SettingsViewController.h"
 #import "KeychainItemWrapper.h"
+#import "RSUWebViewController.h"
 
 #import "RaceResultsViewController.h"
 
@@ -314,19 +315,10 @@
 }
 
 - (IBAction)signUp:(id)sender{
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://runsignup.com/CreateAccount"]];
-    
-    /*SignUpViewController *svc = [[SignUpViewController alloc] initWithNibName:@"SignUpViewController" bundle:nil];
-    [svc setSignUpMode: RSUSignUpDefault];
-    [self.navigationController pushViewController:svc animated:YES];
-    [svc release];*/
+    RSUWebViewController *rsuwvc = [[RSUWebViewController alloc] initWithURL: [NSURL URLWithString:@"https://runsignup.com/CreateAccount"]];
+    [self presentViewController:rsuwvc animated:YES completion:nil];
+    [rsuwvc release];
 }
-
-/*- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
-    if(buttonIndex == 1){
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://runsignup.com/CreateAccount"]];
-    }
-}*/
 
 - (IBAction)settings:(id)sender{
     //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"mailto:billy_connolly@comcast.net?cc=info@runsignup.com&subject=Bug%20Report"]];

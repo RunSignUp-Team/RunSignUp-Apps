@@ -678,8 +678,8 @@ static RSUModel *model = nil;
 - (void)retrieveActiveRaceListWithParams:(NSDictionary *)params response:(void (^)(NSArray *))responseBlock{
     NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
     NSString *urlString = [NSString stringWithFormat: @"%@/rest/active-races?results_per_page=25", RUNSIGNUP_BASE_URL];
-    if([params objectForKey:@"page"])
-        urlString = [urlString stringByAppendingFormat:@"&page=%i", [[params objectForKey:@"page"] intValue]];
+    if([params objectForKey:@"active_page"])
+        urlString = [urlString stringByAppendingFormat:@"&page=%i", [[params objectForKey:@"active_page"] intValue]];
     if([params objectForKey:@"name"]){
         NSString *nameString = [[params objectForKey:@"name"] stringByReplacingOccurrencesOfString:@" " withString:@"+"];
         urlString = [urlString stringByAppendingFormat:@"&keywords=%@", nameString];
@@ -756,7 +756,7 @@ static RSUModel *model = nil;
         }
         
         NSString *string = [[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding];
-        NSLog(@"%@", string);
+        //NSLog(@"%@", string);
         
         RXMLElement *rootXML = [[RXMLElement alloc] initFromXMLData:urlData];
         if([[rootXML tag] isEqualToString:@"races"]){

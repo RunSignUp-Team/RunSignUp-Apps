@@ -34,7 +34,7 @@
         dataDict = data;
         
         if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-            self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:100];
+            self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:[[UIScreen mainScreen] bounds].size.width / 2 - 80 YLocation:100];
         else
             self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:432 YLocation:140];
         [[rli label] setText: @"Fetching Results..."];
@@ -102,24 +102,31 @@
         [header.layer setBorderColor: [UIColor colorWithRed:189/255.0f green:219/255.0f blue:229/255.0f alpha:1.0f].CGColor];
         [header.layer setBorderWidth: 1.0f];
         
-        int widths[] = {40, 40, 86, 38, 40, 37, 31};
+        int screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        // int widths[] = {40, 40, 86, 38, 40, 37, 31};   // integer widths, changed to floats to accept larger screen sizes
+        float widths[] = {0.125f, 0.125f, 0.26875f, 0.11875f, 0.125f, 0.1125f, 0.1125f}; // floats derived from above divided by 320 (old iphone screen width)
+        NSArray *headers = @[@"Place",@"Bib",@"Name",@"Sex",@"Time",@"Pace",@"Age"];
         int cumWidth = 4;
+        float fontSize = 11.0f;
+        
         for(int x = 0; x <= 7; x++){
             UIView *divider = [[UIView alloc] initWithFrame: CGRectMake(cumWidth, 0, 1, headerHeight)];
             [divider setBackgroundColor: [UIColor colorWithRed:189/255.0f green:219/255.0f blue:229/255.0f alpha:1.0f]];
             [header addSubview: divider];
             [divider release];
             
-            cumWidth += widths[x];
+            if(x < 7){
+                UILabel *headerLabel = [[UILabel alloc] initWithFrame: CGRectMake(cumWidth, 0, widths[x] * (float)screenWidth, headerHeight)];
+                [headerLabel setFont: [UIFont fontWithName:@"OpenSans" size:fontSize]];
+                [headerLabel setTextColor: [UIColor colorWithRed:47/255.0f green:132/255.0f blue:165/255.0f alpha:1.0f]];
+                [headerLabel setText: [headers objectAtIndex:x]];
+                [headerLabel setTextAlignment: NSTextAlignmentCenter];
+                [header addSubview: headerLabel];
+                [headerLabel release];
+            }
+                
+            cumWidth += widths[x] * screenWidth;
         }
-        
-        float fontSize = 11.0f;
-        UILabel *headerLabel = [[UILabel alloc] initWithFrame: CGRectMake(4, headerHeight / 2 - (fontSize + 2.0f) / 2.0f, [[UIScreen mainScreen] bounds].size.width - 8, fontSize + 4.0f)];
-        [headerLabel setFont: [UIFont fontWithName:@"OpenSans" size:fontSize]];
-        [headerLabel setTextColor: [UIColor colorWithRed:47/255.0f green:132/255.0f blue:165/255.0f alpha:1.0f]];
-        [headerLabel setText:@"  Place       Bib              Name             Sex      Time     Pace    Age"];
-        // I'm lazy and did not feel like laying out labels individually ^
-        [header addSubview: headerLabel];
         
         return header;
     }

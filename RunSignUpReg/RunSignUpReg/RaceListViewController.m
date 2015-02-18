@@ -33,8 +33,6 @@
 @synthesize distanceDropTriangle;
 @synthesize countryDropTriangle;
 @synthesize stateDropTriangle;
-@synthesize activeLabel;
-@synthesize activeSwitch;
 @synthesize searchButton;
 @synthesize cancelButton;
 @synthesize currentLocationButton;
@@ -54,7 +52,6 @@
 @synthesize currentSearch;
 @synthesize searchParams;
 @synthesize raceList;
-@synthesize activeList;
 @synthesize rli;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
@@ -62,7 +59,7 @@
     if(self){
         self.title = @"Race Calendar";
         if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-            self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:80];
+            self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:[[UIScreen mainScreen] bounds].size.width / 2 - 80 YLocation:80];
         else
             self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:432 YLocation:140];
         [[rli label] setText: @"Fetching List..."];
@@ -78,6 +75,7 @@
         showingAdvancedSearch = NO;
         firstLoad = YES;
         
+        // If screen is iphone 4 or below sized, make advanced search fit into screen. Otherwise take up more room
         if([[UIScreen mainScreen] applicationFrame].size.height > 500)
             advancedSearchHeight = 460;
         else
@@ -86,21 +84,10 @@
         searchOpen = NO;
         self.currentSearch = nil;
         
-        self.searchParams = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@(YES), @"include_active", nil];
+        self.searchParams = [[NSMutableDictionary alloc] init];
         moreResultsToRetrieve = YES;
-        
-        /*refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame: CGRectMake(0, 0 - self.table.bounds.size.height, self.view.frame.size.width, self.table.bounds.size.height)];
-        [refreshHeaderView setDelegate: self];*/
-        
-        [self performSelector:@selector(printPage) withObject:nil afterDelay:0.5];
     }
     return self;
-}
-
-- (void)printPage{
-    NSLog(@"Page: %i, RSU: %i, Active: %i", page, [[searchParams objectForKey: @"page"] intValue], [[searchParams objectForKey: @"active_page"] intValue]);
-    [self performSelector:@selector(printPage) withObject:nil afterDelay:0.5];
-
 }
 
 - (void)viewDidLoad{
@@ -159,7 +146,6 @@
     }
     
     [[toggleSearchButton titleLabel] setFont: [UIFont fontWithName:@"OpenSans" size:16]];
-    [activeLabel setFont: [UIFont fontWithName:@"Sanchez-Regular" size:16]];
     
     dateFieldOriginalTextColor = [[fromDateField textColor] retain];
     
@@ -179,14 +165,12 @@
     //[table setContentOffset: CGPointMake(0, 44) animated:YES];
     
     [self retrieveRaceList];
-    [self retrieveActiveList];
 }
 
 - (void)updateRaceListsIfNecessary{
     int numberResults = RESULTS_PER_PAGE * page;
     
     int raceIndex = 0;
-    int activeIndex = 0;
     
     NSDictionary *raceData = nil;
     
@@ -194,7 +178,6 @@
     [formatter setDateFormat: @"MM/dd/yyyy"];
     
     BOOL needMoreResults = NO;
-    BOOL needMoreActiveResults = NO;
     
     for(int i = 0; i < numberResults; i++){
         raceData = nil;
@@ -202,59 +185,19 @@
         
         if(raceIndex < [raceList count]){
             raceData = [raceList objectAtIndex: raceIndex];
-            raceDate = [formatter dateFromString: [raceData objectForKey: @"next_date"]];
+            
+            if([raceData objectForKey: @"next_date"] != nil)
+                raceDate = [formatter dateFromString: [raceData objectForKey: @"next_date"]];
+            else
+                raceDate = [formatter dateFromString: [raceData objectForKey: @"last_date"]];
+            
+            raceIndex++;
         }else{
             needMoreResults = YES;
         }
-        
-        if(activeIndex < [activeList count]){
-            NSDictionary *activeRaceData = [activeList objectAtIndex: activeIndex];
-            NSDate *activeRaceDate = [formatter dateFromString: [activeRaceData objectForKey: @"next_date"]];
-            
-            if(raceData && raceDate){
-                NSTimeInterval raceInterval = [raceDate timeIntervalSince1970] - [[NSDate date] timeIntervalSince1970];
-                NSTimeInterval activeInterval = [activeRaceDate timeIntervalSince1970] - [[NSDate date] timeIntervalSince1970];
-                
-                if(activeInterval > 0){
-                    if(raceInterval < activeInterval){
-                        // Runsignup happens first
-                        raceIndex++;
-                    }else{
-                        // Active happens first
-                        activeIndex++;
-                        raceData = activeRaceData;
-                    }
-                }else{
-                    // Active race is in the past
-                    if(raceInterval > 0)
-                        raceIndex++;
-                    else{
-                        if(raceInterval > activeInterval){
-                            // Runsignup closer to today
-                            raceIndex++;
-                        }else{
-                            // Active closer to today
-                            activeIndex++;
-                            raceData = activeRaceData;
-                        }
-                    }
-                }
-            }else{
-                activeIndex++;
-                raceData = activeRaceData;
-                // No runsignup race found for this index
-            }
-        }else if(raceData && raceDate){
-            needMoreActiveResults = YES;
-            // No active race found for this index
-            raceIndex++;
-        }else{
-            needMoreActiveResults = YES;
-        }
     }
     
-    NSLog(@"NumResults: %i tempRaceIndex: %i tempActiveIndex: %i", numberResults, raceIndex, activeIndex);
-            
+    
     if(needMoreResults && moreResultsToRetrieve){
         NSLog(@"\n\nRetrieving 25 more runsignup");
         int currentPage = [[searchParams objectForKey: @"page"] intValue];
@@ -264,17 +207,6 @@
             [self retrieveRaceListAndAppend];
         }
     }
-    
-    if(needMoreActiveResults && moreActiveResultsToRetrieve){
-        NSLog(@"\n\nRetrieving 25 more active");
-        int currentPage = [[searchParams objectForKey: @"active_page"] intValue];
-        if(moreActiveResultsToRetrieve){
-            currentPage++;
-            [searchParams setObject:@(currentPage) forKey:@"active_page"];
-            [self retrieveActiveListAndAppend];
-        }
-    }
-    
 }
 
 - (void)readSearchParamsIntoControls{
@@ -287,10 +219,6 @@
             [fromDateField setText: [searchParams objectForKey:@"start_date"]];
         if([searchParams objectForKey:@"end_date"])
             [toDateField setText: [searchParams objectForKey:@"end_date"]];
-        if([[searchParams objectForKey:@"include_active"] boolValue])
-            [activeSwitch setOn: YES];
-        else
-            [activeSwitch setOn: NO];
         if([searchParams objectForKey:@"distance_units"]){
             NSString *distanceUnits = [searchParams objectForKey:@"distance_units"];
             if([distanceUnits isEqualToString: @"K"])
@@ -443,7 +371,6 @@
     if(toDate)[newSearchParams setObject:toDate forKey:@"end_date"];
     if(countryPick)[newSearchParams setObject:countryPick forKey:@"country_code"];
     if(statePick)[newSearchParams setObject:statePick forKey:@"state"];
-    [newSearchParams setObject:@([activeSwitch isOn]) forKey:@"include_active"];
     
     NSLog(@"%@", newSearchParams);
     
@@ -470,11 +397,9 @@
     }
     
     raceList = nil;
-    activeList = nil;
     loadedRaces = NO;
     
-    if([[searchParams objectForKey: @"include_active"] boolValue])
-        [self retrieveActiveList];
+    page = 1;
     
     void (^response)(NSArray *) = ^(NSArray *list){
         loadedRaces = YES;
@@ -483,18 +408,11 @@
             moreResultsToRetrieve = NO;
         
         self.raceList = list;
+    
+        NSLog(@"#Races: %i", [raceList count]);
+        [rli fadeOut];
+        [self doneLoadingRaces];
         
-        if([[searchParams objectForKey: @"include_active"] boolValue]){
-            if(loadedActiveRaces){
-                NSLog(@"#Races: %i #Active: %i", [raceList count], [activeList count]);
-                [rli fadeOut];
-                [self doneLoadingRaces];
-            }
-        }else{
-            NSLog(@"#Races: %i #Active: %i", [raceList count], [activeList count]);
-            [rli fadeOut];
-            [self doneLoadingRaces];
-        }
     };
     
     [[RSUModel sharedModel] retrieveRaceListWithParams:searchParams response:response];
@@ -541,68 +459,6 @@
     };
     
     [[RSUModel sharedModel] retrieveRaceListWithParams:searchParams response:response];
-}
-
-- (void)retrieveActiveList{
-    loadedActiveRaces = NO;
-    
-    void (^response)(NSArray *) = ^(NSArray *list){
-        loadedActiveRaces = YES;
-        moreActiveResultsToRetrieve = YES;
-        if(list == nil || [list count] < 25)
-            moreActiveResultsToRetrieve = NO;
-        
-        self.activeList = list;
-        
-        for(NSDictionary *dict in activeList){
-            NSLog(@"Active next date, last date: %@ %@", [dict objectForKey: @"next_date"], [dict objectForKey: @"last_date"]);
-        }
-        
-        if(loadedRaces){
-            [rli fadeOut];
-            [self doneLoadingRaces];
-            
-            NSLog(@"#Races: %i #Active: %i", [raceList count], [activeList count]);
-        }
-    };
-    
-    [[RSUModel sharedModel] retrieveActiveRaceListWithParams:searchParams response:response];
-}
-
-- (void)retrieveActiveListAndAppend{
-    loadedActiveRaces = NO;
-    
-    void (^response)(NSArray *) = ^(NSArray *list){
-        loadedActiveRaces = YES;
-        if(list == nil || [list count] == 0){
-            // Page retrieval returned empty - reset page number
-            moreActiveResultsToRetrieve = NO;
-            int currentPage = [[searchParams objectForKey:@"page"] intValue];
-            [searchParams setObject:[NSString stringWithFormat:@"%i", MAX(currentPage - 1, 0)] forKey:@"page"];
-        }else if([list count] < 25)
-            moreActiveResultsToRetrieve = NO;
-        
-        int oldCount = [activeList count];
-        NSMutableArray *newRaceList = [[NSMutableArray alloc] initWithArray:activeList];
-        [newRaceList addObjectsFromArray: list];
-        self.activeList = newRaceList;
-        [rli fadeOut];
-        searchOpen = NO;
-        self.currentSearch = nil;
-        
-        if([activeList count] != oldCount){
-            UITableViewCell *cell = [table cellForRowAtIndexPath:[NSIndexPath indexPathForRow:oldCount inSection:0]];
-            [cell setAlpha: 0.0f];
-            [UIView beginAnimations:@"Cell Fade" context:nil];
-            [UIView setAnimationDuration: 0.75f];
-            [cell setAlpha: 1.0f];
-            [UIView commitAnimations];
-        }
-        
-        [self doneLoadingRaces];
-    };
-    
-    [[RSUModel sharedModel] retrieveActiveRaceListWithParams:searchParams response:response];
 }
 
 - (IBAction)useCurrentLocation:(id)sender{
@@ -705,11 +561,6 @@
     }];
 }
 
-- (IBAction)toggleActiveSearch:(id)sender{
-    NSLog(@"On: %@", @([activeSwitch isOn]));
-    [searchParams setObject:@([activeSwitch isOn]) forKey:@"include_active"];
-}
-
 - (void)searchFieldDidBeginEdit{
     searchOpen = YES;
     self.currentSearch = nil;
@@ -732,7 +583,7 @@
 }
 
 - (void)searchButtonTappedWithSearch:(NSString *)search{
-    self.searchParams = [[NSMutableDictionary alloc] initWithObjectsAndKeys:search, @"name", @([activeSwitch isOn]), @"include_active", nil];
+    self.searchParams = [[NSMutableDictionary alloc] initWithObjectsAndKeys:search, @"name", nil];
     searchOpen = NO;
     self.currentSearch = nil;
 
@@ -766,7 +617,7 @@
             currentDropTriangle = countryDropTriangle;
         }else if(currentPicker == 4 || currentPicker == 5){
             [UIView beginAnimations:@"DatePickerSlide" context:nil];
-            [datePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
+            [datePicker setFrame: CGRectMake(0, [self.view frame].size.height, [self.view frame].size.width, 216)];
             [UIView commitAnimations];
             
             currentPicker = 0;
@@ -778,7 +629,7 @@
         
         if(animated)
             [UIView beginAnimations:@"PickerSlide" context:nil];
-        [pickerToAnimate setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
+        [pickerToAnimate setFrame: CGRectMake(0, [self.view frame].size.height, [self.view frame].size.width, 216)];
         if(animated)
             [UIView commitAnimations];
         
@@ -826,11 +677,11 @@
         
         if(currentPicker != 0){
             [self hideCurrentPicker: NO];
-            [datePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
+            [datePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, [self.view frame].size.width, 216)];
         }else{
             [self.view endEditing: YES];
             [UIView beginAnimations:@"DatePickerSlide" context:nil];
-            [datePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
+            [datePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, [self.view frame].size.width, 216)];
             [UIView commitAnimations];
         }
     }
@@ -928,7 +779,7 @@
     }
     
     if(view == nil){
-        UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, 312, 22)];
+        UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, [self.view frame].size.width - 8, 22)];
         [label setTextAlignment: NSTextAlignmentCenter];
         [label setFont: [UIFont fontWithName:@"OpenSans" size:18]];
         [label setBackgroundColor: [UIColor clearColor]];
@@ -1133,15 +984,15 @@
     if(currentPicker == 0){
         [UIView beginAnimations:@"PickerSlide" context:nil];
         [UIView setAnimationDuration: 0.25f];
-        [distancePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
+        [distancePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, [self.view frame].size.width, 216)];
         [UIView commitAnimations];
         
     }else{
-        [distancePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
+        [distancePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, [self.view frame].size.width, 216)];
     }
-    [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
-    [statePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
-    [datePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
+    [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height, [self.view frame].size.width, 216)];
+    [statePicker setFrame: CGRectMake(0, [self.view frame].size.height, [self.view frame].size.width, 216)];
+    [datePicker setFrame: CGRectMake(0, [self.view frame].size.height, [self.view frame].size.width, 216)];
     
     currentPicker = 1;
 }
@@ -1168,15 +1019,15 @@
     if(currentPicker == 0){
         [UIView beginAnimations:@"PickerSlide" context:nil];
         [UIView setAnimationDuration: 0.25f];
-        [statePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
+        [statePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, [self.view frame].size.width, 216)];
         [UIView commitAnimations];
         
     }else{
-        [statePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
+        [statePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, [self.view frame].size.width, 216)];
     }
-    [distancePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
-    [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
-    [datePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
+    [distancePicker setFrame: CGRectMake(0, [self.view frame].size.height, [self.view frame].size.width, 216)];
+    [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height, [self.view frame].size.width, 216)];
+    [datePicker setFrame: CGRectMake(0, [self.view frame].size.height, [self.view frame].size.width, 216)];
     
     currentPicker = 2;
 }
@@ -1203,16 +1054,16 @@
     if(currentPicker == 0){
         [UIView beginAnimations:@"PickerSlide" context:nil];
         [UIView setAnimationDuration: 0.25f];
-        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height - 260, 320, 260)];
-        [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
+        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height - 260, [self.view frame].size.width, 260)];
+        [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, [self.view frame].size.width, 216)];
         [UIView commitAnimations];
         
     }else{
-        [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
+        [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, [self.view frame].size.width, 216)];
     }
-    [distancePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
-    [statePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
-    [datePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
+    [distancePicker setFrame: CGRectMake(0, [self.view frame].size.height, [self.view frame].size.width, 216)];
+    [statePicker setFrame: CGRectMake(0, [self.view frame].size.height, [self.view frame].size.width, 216)];
+    [datePicker setFrame: CGRectMake(0, [self.view frame].size.height, [self.view frame].size.width, 216)];
     
     currentPicker = 3;
 }
@@ -1220,7 +1071,7 @@
 - (void)hideBackground{
     if(showingBackground){
         [UIView beginAnimations:@"BackgroundSlide" context:nil];
-        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height, 320, 260)];
+        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height, [self.view frame].size.width, 260)];
         [UIView commitAnimations];
         showingBackground = NO;
     }
@@ -1237,149 +1088,10 @@
     
     if(!showingBackground){
         [UIView beginAnimations:@"BackgroundSlide" context:nil];
-        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height - 260, 320, 260)];
+        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height - 260, [self.view frame].size.width, 260)];
         [UIView commitAnimations];
         showingBackground = YES;
     }
-}
-
-- (void)buildInterleavedList{
-    int raceIndex = 0;
-    int activeIndex = 0;
-    
-    NSMutableArray *interleaved = [[NSMutableArray alloc] init];
-    
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat: @"MM/dd/yyyy"];
-    
-    for(int i = 0; i < page * RESULTS_PER_PAGE; i++){
-        NSDictionary *raceData = nil;
-        NSDate *raceDate = nil;
-        
-        if(raceIndex < [raceList count]){
-            raceData = [raceList objectAtIndex: raceIndex];
-            
-            if([raceData objectForKey: @"next_date"] != nil)
-                raceDate = [formatter dateFromString: [raceData objectForKey: @"next_date"]];
-            else
-                raceDate = [formatter dateFromString: [raceData objectForKey: @"last_date"]];
-        }
-        
-        if(activeIndex < [activeList count]){
-            NSDictionary *activeRaceData = [activeList objectAtIndex: activeIndex];
-            NSDate *activeRaceDate = [formatter dateFromString: [activeRaceData objectForKey: @"next_date"]];
-            
-            if([activeRaceData objectForKey: @"next_date"] != nil)
-                activeRaceDate = [formatter dateFromString: [raceData objectForKey: @"next_date"]];
-            else
-                activeRaceDate = [formatter dateFromString: [raceData objectForKey: @"last_date"]];
-            
-            if(raceData && raceDate){
-                NSTimeInterval raceInterval = [raceDate timeIntervalSince1970] - [[NSDate date] timeIntervalSince1970];
-                NSTimeInterval activeInterval = [activeRaceDate timeIntervalSince1970] - [[NSDate date] timeIntervalSince1970];
-                
-                if(activeInterval > 0){
-                    if(raceInterval < activeInterval){
-                        // Runsignup happens first
-                        raceIndex++;
-                    }else{
-                        // Active happens first
-                        activeIndex++;
-                        raceData = activeRaceData;
-                    }
-                }else{
-                    // Active race is in the past
-                    if(raceInterval > 0)
-                        raceIndex++;
-                    else{
-                        if(raceInterval > activeInterval){
-                            // Runsignup closer to today
-                            raceIndex++;
-                        }else{
-                            // Active closer to today
-                            activeIndex++;
-                            raceData = activeRaceData;
-                        }
-                    }
-                }
-            }else{
-                activeIndex++;
-                raceData = activeRaceData;
-                // No runsignup race found for this index
-            }
-        }else if(raceData && raceDate){
-            // No active race found for this index
-            raceIndex++;
-        }
-        
-        [interleaved addObject: raceData];
-    }
-    
-    interleavedList = interleaved;
-}
-
-- (NSDictionary *)raceDataForRow:(int)row{
-    int tempRaceIndex = 0;
-    int tempActiveIndex = 0;
-    
-    NSDictionary *raceData = nil;
-    
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat: @"MM/dd/yyyy"];
-    
-    for(int i = 0; i <= row; i++){
-        raceData = nil;
-        NSDate *raceDate = nil;
-        
-        if(tempRaceIndex < [raceList count]){
-            raceData = [raceList objectAtIndex: tempRaceIndex];
-            raceDate = [formatter dateFromString: [raceData objectForKey: @"next_date"]];
-        }
-        
-        if(tempActiveIndex < [activeList count]){
-            NSDictionary *activeRaceData = [activeList objectAtIndex: tempActiveIndex];
-            NSDate *activeRaceDate = [formatter dateFromString: [activeRaceData objectForKey: @"next_date"]];
-            
-            if(raceData && raceDate){
-                NSTimeInterval raceInterval = [raceDate timeIntervalSince1970] - [[NSDate date] timeIntervalSince1970];
-                NSTimeInterval activeInterval = [activeRaceDate timeIntervalSince1970] - [[NSDate date] timeIntervalSince1970];
-                
-                if(activeInterval > 0){
-                    if(raceInterval < activeInterval){
-                        // Runsignup happens first
-                        tempRaceIndex++;
-                    }else{
-                        // Active happens first
-                        tempActiveIndex++;
-                        raceData = activeRaceData;
-                    }
-                }else{
-                    // Active race is in the past
-                    if(raceInterval > 0)
-                        tempRaceIndex++;
-                    else{
-                        if(raceInterval > activeInterval){
-                            // Runsignup closer to today
-                            tempRaceIndex++;
-                        }else{
-                            // Active closer to today
-                            tempActiveIndex++;
-                            raceData = activeRaceData;
-                        }
-                    }
-                }
-            }else{
-                tempActiveIndex++;
-                raceData = activeRaceData;
-                // No runsignup race found for this index
-            }
-        }else if(raceData && raceDate){
-            // No active race found for this index
-            tempRaceIndex++;
-        }
-    }
-    
-    return raceData;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -1392,6 +1104,8 @@
             cell = [[RoundedTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SearchControlCellIdentifier];
         }
         
+        int screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        
         [cell setTop: NO];
         [cell setBottom: NO];
         [cell setExtra: NO];
@@ -1402,19 +1116,19 @@
         if(indexPath.row == 0){
             if(toggleSearchButton.superview != nil)
                 [toggleSearchButton removeFromSuperview];
-            [toggleSearchButton setFrame: CGRectMake(20, 0, 280, cellHeight)];
+            [toggleSearchButton setFrame: CGRectMake(20, 0, screenWidth - 40, cellHeight)];
             [cell.contentView addSubview: toggleSearchButton];
             [cell setExtra: YES];
         }else if(indexPath.row == 1){
             if(raceNameField.superview != nil)
                 [raceNameField removeFromSuperview];
-            [raceNameField setFrame: CGRectMake(36, 0, 248, cellHeight)];
+            [raceNameField setFrame: CGRectMake(36, 0, screenWidth - 72, cellHeight)];
             [cell.contentView addSubview: raceNameField];
             [cell setTop: YES];
         }else if(indexPath.row == 2){
             if(distanceField.superview != nil)
                 [distanceField removeFromSuperview];
-            [distanceField setFrame: CGRectMake(36, 0, 248, cellHeight)];
+            [distanceField setFrame: CGRectMake(36, 0, screenWidth - 72, cellHeight)];
             [cell.contentView addSubview: distanceField];
         }else if(indexPath.row == 3){
             if(distanceDrop.superview != nil)
@@ -1422,8 +1136,8 @@
             if(distanceDropTriangle.superview != nil)
                 [distanceDropTriangle removeFromSuperview];
             
-            [distanceDrop setFrame: CGRectMake(28, 0, 260, cellHeight)];
-            [distanceDropTriangle setFrame: CGRectMake(255, cellHeight / 2 - distanceDropTriangle.frame.size.height / 2, distanceDropTriangle.frame.size.width, distanceDropTriangle.frame.size.height)];
+            [distanceDrop setFrame: CGRectMake(28, 0, screenWidth - 60, cellHeight)];
+            [distanceDropTriangle setFrame: CGRectMake(screenWidth - 65, cellHeight / 2 - distanceDropTriangle.frame.size.height / 2, distanceDropTriangle.frame.size.width, distanceDropTriangle.frame.size.height)];
             [cell.contentView addSubview: distanceDrop];
             [cell.contentView addSubview: distanceDropTriangle];
         }else if(indexPath.row == 4){
@@ -1432,8 +1146,8 @@
             if(currentLocationButton.superview != nil)
                 [currentLocationButton removeFromSuperview];
             
-            [cityField setFrame: CGRectMake(36, 0, 190, cellHeight)];
-            [currentLocationButton setFrame: CGRectMake(230, 0, 70, cellHeight)];
+            [cityField setFrame: CGRectMake(36, 0, screenWidth - 130, cellHeight)];
+            [currentLocationButton setFrame: CGRectMake(screenWidth - 90, 0, 70, cellHeight)];
             [cell.contentView addSubview: cityField];
             [cell.contentView addSubview: currentLocationButton];
         }else if(indexPath.row == 5){
@@ -1442,8 +1156,8 @@
             if(stateDropTriangle.superview != nil)
                 [stateDropTriangle removeFromSuperview];
             
-            [stateDrop setFrame: CGRectMake(28, 0, 260, cellHeight)];
-            [stateDropTriangle setFrame: CGRectMake(255, cellHeight / 2 - stateDropTriangle.frame.size.height / 2, stateDropTriangle.frame.size.width, stateDropTriangle.frame.size.height)];
+            [stateDrop setFrame: CGRectMake(28, 0, screenWidth - 60, cellHeight)];
+            [stateDropTriangle setFrame: CGRectMake(screenWidth - 65, cellHeight / 2 - stateDropTriangle.frame.size.height / 2, stateDropTriangle.frame.size.width, stateDropTriangle.frame.size.height)];
             [cell.contentView addSubview: stateDrop];
             [cell.contentView addSubview: stateDropTriangle];
         }else if(indexPath.row == 6){
@@ -1452,8 +1166,8 @@
             if(countryDropTriangle.superview != nil)
                 [countryDropTriangle removeFromSuperview];
             
-            [countryDrop setFrame: CGRectMake(28, 0, 260, cellHeight)];
-            [countryDropTriangle setFrame: CGRectMake(255, cellHeight / 2 - countryDropTriangle.frame.size.height / 2, countryDropTriangle.frame.size.width, countryDropTriangle.frame.size.height)];
+            [countryDrop setFrame: CGRectMake(28, 0, screenWidth - 60, cellHeight)];
+            [countryDropTriangle setFrame: CGRectMake(screenWidth - 65, cellHeight / 2 - countryDropTriangle.frame.size.height / 2, countryDropTriangle.frame.size.width, countryDropTriangle.frame.size.height)];
 
             [cell.contentView addSubview: countryDrop];
             [cell.contentView addSubview: countryDropTriangle];
@@ -1463,31 +1177,18 @@
             if(toDateField.superview != nil)
                 [toDateField removeFromSuperview];
             
-            [fromDateField setFrame: CGRectMake(20, 0, 140, cellHeight)];
-            [toDateField setFrame: CGRectMake(160, 0, 140, cellHeight)];
+            [fromDateField setFrame: CGRectMake(20, 0, screenWidth / 2 - 20, cellHeight)];
+            [toDateField setFrame: CGRectMake(screenWidth / 2, 0, screenWidth / 2 - 20, cellHeight)];
             
             [cell.contentView addSubview: fromDateField];
             [cell.contentView addSubview: toDateField];
             
             [cell setMiddleDivider: YES];
         }else if(indexPath.row == 8){
-            if(activeLabel.superview != nil)
-                [activeLabel removeFromSuperview];
-            if(activeSwitch.superview != nil)
-                [activeSwitch removeFromSuperview];
-            
-            [activeLabel setFrame: CGRectMake(38, 0, activeLabel.frame.size.width, cellHeight)];
-            [activeSwitch setFrame: CGRectMake(240, cellHeight / 2 - activeSwitch.frame.size.height / 2, activeSwitch.frame.size.width, activeSwitch.frame.size.height)];
-            
-            [cell.contentView addSubview: activeLabel];
-            [cell.contentView addSubview: activeSwitch];
-            
-            [cell setBottom: YES];
-        }else if(indexPath.row == 9){
             if(searchButton.superview != nil)
                 [searchButton removeFromSuperview];
             
-            [searchButton setFrame: CGRectMake(20, cellHeight / 2 - 22, 280, 44)];
+            [searchButton setFrame: CGRectMake(20, cellHeight / 2 - 22, screenWidth - 40, 44)];
             [cell.contentView addSubview: searchButton];
             [cell setExtra: YES];
         }
@@ -1548,7 +1249,7 @@
             else
                 [[cell contentView] setBackgroundColor: [UIColor whiteColor]];
             
-            NSDictionary *raceData = [interleavedList objectAtIndex: indexPath.row];
+            NSDictionary *raceData = [raceList objectAtIndex: indexPath.row];
             
             if(raceData != nil){
                 [cell setData: raceData];
@@ -1605,10 +1306,10 @@
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             }
             
-            if(moreResultsToRetrieve || moreActiveResultsToRetrieve || page * RESULTS_PER_PAGE < ([raceList count] + [activeList count])){
+            if(moreResultsToRetrieve || page * RESULTS_PER_PAGE < ([raceList count])){
                 [[cell textLabel] setText:@"Show More..."];
                 [cell setSelectionStyle: UITableViewCellSelectionStyleBlue];
-            }else if([interleavedList count]){
+            }else if([raceList count]){
                 [[cell textLabel] setText:@"All Results Loaded"];
                 [cell setSelectionStyle: UITableViewCellSelectionStyleNone];
             }else{
@@ -1620,7 +1321,7 @@
             [[cell textLabel] setFont: [UIFont fontWithName:@"OpenSans" size:18]];
             [[cell textLabel] setTextAlignment: NSTextAlignmentCenter];
             
-            if([interleavedList count] % 2 || [interleavedList count] == 0){// || [self tableView:tableView numberOfRowsInSection: indexPath.section] == 1){
+            if([raceList count] % 2 || [raceList count] == 0){// || [self tableView:tableView numberOfRowsInSection: indexPath.section] == 1){
                 [[cell contentView] setBackgroundColor: [UIColor colorWithRed:231/255.0f green:239/255.0f blue:248/255.0f alpha:1.0f]];
             }else{
                 [[cell contentView] setBackgroundColor: [UIColor whiteColor]];
@@ -1633,17 +1334,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.section == 1){
-        NSDictionary *raceData = [interleavedList objectAtIndex: indexPath.row];
+        NSDictionary *raceData = [raceList objectAtIndex: indexPath.row];
         
-        if([[raceData objectForKey: @"active_race"] boolValue]){
-            RaceShallowDetailsViewController *rsdvc = [[RaceShallowDetailsViewController alloc] initWithNibName:@"RaceShallowDetailsViewController" bundle:nil data:raceData];
-            [self.navigationController pushViewController:rsdvc animated:YES];
-            [rsdvc release];
-        }else{
-            RaceDetailsViewController *rdvc = [[RaceDetailsViewController alloc] initWithNibName:@"RaceDetailsViewController" bundle:nil data:raceData];
-            [self.navigationController pushViewController:rdvc animated:YES];
-            [rdvc release];
-        }
+        RaceDetailsViewController *rdvc = [[RaceDetailsViewController alloc] initWithNibName:@"RaceDetailsViewController" bundle:nil data:raceData];
+        [self.navigationController pushViewController:rdvc animated:YES];
+        [rdvc release];
+        
     }else if(indexPath.section == 2){        
         page++;
         [self updateRaceListsIfNecessary];
@@ -1739,7 +1435,7 @@
             else
                 return 30;
         }else if(indexPath.section == 1){
-            NSDictionary *raceData = [interleavedList objectAtIndex: indexPath.row];
+            NSDictionary *raceData = [raceList objectAtIndex: indexPath.row];
             
             CGSize reqSize = [[raceData objectForKey:@"name"] sizeWithFont:[UIFont fontWithName:@"Sanchez-Regular" size:20] constrainedToSize:CGSizeMake(296, 100)];
             
@@ -1757,7 +1453,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if(tableView == searchTable)
         if(showingAdvancedSearch){
-            return 10;
+            return 9;
         }else{
             return 1;
         }
@@ -1765,8 +1461,8 @@
         if(section == 0)
             return 2;
         else if(section == 1){
-            if(interleavedList != nil){
-                return [interleavedList count];
+            if(raceList != nil){
+                return [raceList count];
             }
             return 0;
         }else
@@ -1790,39 +1486,8 @@
     reloading = NO;
     [refreshControl endRefreshing];
     
-    [self buildInterleavedList];
     [table reloadData];
 }
-
-/*- (void)doneLoadingTableViewData:(BOOL)scroll{
-    reloading = NO;
-    [refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.table];
-    if(scroll)
-        [table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-	[refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-	[refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
-}
-
-#pragma mark -
-#pragma mark EGORefreshTableHeaderDelegate Methods
-
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
-	[self reloadTableViewDataSource];    
-}
-
-- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
-	return reloading; // should return if data source model is reloading
-}
-
-- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
-	return [NSDate date]; // should return date data source was last changed
-}*/
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)

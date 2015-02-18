@@ -60,7 +60,7 @@
             
             UIButton *chooseButton = [UIButton buttonWithType: UIButtonTypeCustom];
             [chooseButton addTarget:self action:@selector(chooseGiveaways:) forControlEvents:UIControlEventTouchUpInside];
-            [chooseButton setFrame: CGRectMake(4, 4, 312, [self tableView:tableView heightForRowAtIndexPath:indexPath] - 8)];
+            [chooseButton setFrame: CGRectMake(4, 4, [self.view frame].size.width - 8, [self tableView:tableView heightForRowAtIndexPath:indexPath] - 8)];
             [chooseButton setBackgroundImage:stretchedGreenButton forState:UIControlStateNormal];
             //[chooseButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
             [chooseButton setTitle:@"CHOOSE GIVEAWAYS" forState:UIControlStateNormal];

@@ -25,7 +25,7 @@
     if (self) {
         giveawayOptions = nil;
         
-        pickerView = [[UIPickerView alloc] initWithFrame: CGRectMake(4, 4, 312, 216)];
+        pickerView = [[UIPickerView alloc] initWithFrame: CGRectMake(4, 4, [self frame].size.width - 8, 216)];
         [pickerView setDelegate: self];
         [pickerView setDataSource: self];
         [pickerView setShowsSelectionIndicator: YES];
@@ -46,7 +46,7 @@
     NSString *rowText = [NSString stringWithFormat: @"%@ - %@", [[giveawayOptions objectAtIndex: row] objectForKey:@"giveaway_option_text"], [[giveawayOptions objectAtIndex: row] objectForKey:@"additional_cost"]];
     
     if(view == nil){
-        UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, 312, 22)];
+        UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, [self frame].size.width - 8, 22)];
         [label setTextAlignment: NSTextAlignmentCenter];
         [label setFont: [UIFont fontWithName:@"OpenSans" size:18]];
         [label setBackgroundColor: [UIColor clearColor]];

@@ -28,7 +28,7 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.questionLabel = [[UILabel alloc] initWithFrame: CGRectMake(4, 8, 312, 20)];
+        self.questionLabel = [[UILabel alloc] initWithFrame: CGRectMake(4, 8, [self frame].size.width - 8, 20)];
         [questionLabel setFont: [UIFont fontWithName:@"OpenSans" size:18]];
         [questionLabel setLineBreakMode: NSLineBreakByWordWrapping];
         [questionLabel setNumberOfLines: 0];
@@ -122,7 +122,7 @@
     }
     
     if(t == RSUQuestionTypeFreeform){
-        freeformField = [[UITextField alloc] initWithFrame: CGRectMake(8, 14 + [questionLabel frame].size.height, 304, 30)];
+        freeformField = [[UITextField alloc] initWithFrame: CGRectMake(8, 14 + [questionLabel frame].size.height, [[UIScreen mainScreen] bounds].size.width - 16, 30)];
         [freeformField setBorderStyle: UITextBorderStyleRoundedRect];
         [freeformField setReturnKeyType: UIReturnKeyNext];
         [freeformField setDelegate: delegate];
@@ -130,22 +130,22 @@
         [self.contentView addSubview: freeformField];
     }else if(t == RSUQuestionTypeBoolean){
         booleanControl = [[UISegmentedControl alloc] initWithItems:@[@"Yes", @"No"]];
-        [booleanControl setFrame: CGRectMake(8, 14 + [questionLabel frame].size.height, 304, 30)];
+        [booleanControl setFrame: CGRectMake(8, 14 + [questionLabel frame].size.height, [[UIScreen mainScreen] bounds].size.width - 16, 30)];
         [booleanControl addTarget:self action:@selector(valueDidChange) forControlEvents:UIControlEventValueChanged];
         [self.contentView addSubview: booleanControl];
     }else if(t == RSUQuestionTypeSelection || t == RSUQuestionTypeRadio || t == RSUQuestionTypeCheck){
-        selectionTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 14 + [questionLabel frame].size.height, 320, 30) style:UITableViewStylePlain];
+        selectionTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 14 + [questionLabel frame].size.height, [[UIScreen mainScreen] bounds].size.width, 30) style:UITableViewStylePlain];
         [selectionTable setDelegate: self];
         [selectionTable setDataSource: self];
         [selectionTable setScrollEnabled: NO];
         [self.contentView addSubview: selectionTable];
     }else if(t == RSUQuestionTypeTime){
-        timePicker = [[UIPickerView alloc] initWithFrame: CGRectMake(0, 14 + [questionLabel frame].size.height, 320, 216)];
+        timePicker = [[UIPickerView alloc] initWithFrame: CGRectMake(0, 14 + [questionLabel frame].size.height, [[UIScreen mainScreen] bounds].size.width, 216)];
         [timePicker setDelegate: self];
         [timePicker setDataSource: self];
         [self.contentView addSubview: timePicker];
         
-        UILabel *headerLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 98, 320, 20)];
+        UILabel *headerLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 98, [[UIScreen mainScreen] bounds].size.width, 20)];
         [headerLabel setFont: [UIFont systemFontOfSize: 18.0f]];
         [headerLabel setText: @"  Hrs:             Min:              Sec:"];
         [timePicker addSubview: headerLabel];
@@ -165,7 +165,7 @@
     }
     
     if(type == RSUQuestionTypeSelection || type == RSUQuestionTypeRadio || type == RSUQuestionTypeCheck){
-        [selectionTable setFrame: CGRectMake(0, 14 + [questionLabel frame].size.height, 320, 30 * [responses count])];
+        [selectionTable setFrame: CGRectMake(0, 14 + [questionLabel frame].size.height, [[UIScreen mainScreen] bounds].size.width, 30 * [responses count])];
     }
     
     [selectionTable reloadData];
@@ -242,7 +242,7 @@
 
 - (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view{
     if(view == nil){
-        UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, 312, 22)];
+        UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, [self frame].size.width - 8, 22)];
         [label setTextAlignment: NSTextAlignmentCenter];
         [label setFont: [UIFont fontWithName:@"OpenSans" size:18]];
         [label setBackgroundColor: [UIColor clearColor]];
@@ -287,7 +287,7 @@
 }
 
 - (void)setQuestionLabelText:(NSString *)text{
-    CGSize requiredSize = [text sizeWithFont:[questionLabel font] constrainedToSize:CGSizeMake(312, 300) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize requiredSize = [text sizeWithFont:[questionLabel font] constrainedToSize:CGSizeMake([self frame].size.width - 8, 300) lineBreakMode:NSLineBreakByWordWrapping];
     [questionLabel setFrame: CGRectMake(4, 8, requiredSize.width, requiredSize.height)];
     [questionLabel setText: text];
 }

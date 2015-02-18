@@ -295,7 +295,7 @@
             
             UIButton *answerButton = [UIButton buttonWithType: UIButtonTypeCustom];
             [answerButton addTarget:self action:@selector(answerQuestions:) forControlEvents:UIControlEventTouchUpInside];
-            [answerButton setFrame: CGRectMake(4, 4, 312, [self tableView:tableView heightForRowAtIndexPath:indexPath] - 8)];
+            [answerButton setFrame: CGRectMake(4, 4, [self.view frame].size.width - 8, [self tableView:tableView heightForRowAtIndexPath:indexPath] - 8)];
             [answerButton setBackgroundImage:stretchedGreenButton forState:UIControlStateNormal];
             //[answerButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
             [answerButton setTitle:@"CONTINUE" forState:UIControlStateNormal];
@@ -361,7 +361,7 @@
         
         NSString *typeCode = [actualQuestion objectForKey:@"question_type_code"];
         
-        CGSize reqSize = [[actualQuestion objectForKey:@"question_text"] sizeWithFont:[UIFont fontWithName:@"OpenSans" size:18] constrainedToSize: CGSizeMake(312, 300) lineBreakMode: NSLineBreakByWordWrapping];
+        CGSize reqSize = [[actualQuestion objectForKey:@"question_text"] sizeWithFont:[UIFont fontWithName:@"OpenSans" size:18] constrainedToSize: CGSizeMake([self.view frame].size.width - 8, 300) lineBreakMode: NSLineBreakByWordWrapping];
         
         if([typeCode isEqualToString:@"F"])
             return 62 + reqSize.height;

@@ -172,8 +172,10 @@
     [hintScrollView setCanCancelContentTouches: NO];
     [hintScrollView setClipsToBounds: YES];
     
+    int screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    
     for (int x = 0; x < [hintArray count]; x++){
-		UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake(x * 320 + 20, 10, 280, hintScrollView.frame.size.height - 20)];
+		UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake(x * screenWidth + 20, 10, screenWidth - 40, hintScrollView.frame.size.height - 20)];
         [label setLineBreakMode: NSLineBreakByWordWrapping];
         [label setNumberOfLines: 0];
         [label setFont: [UIFont fontWithName:@"OpenSans" size:22]];
@@ -203,7 +205,7 @@
     }
     
     [hintPageControl setNumberOfPages: [hintArray count]];
-    [hintScrollView setContentSize: CGSizeMake(320 * [hintArray count], hintScrollView.frame.size.height)];
+    [hintScrollView setContentSize: CGSizeMake(screenWidth * [hintArray count], hintScrollView.frame.size.height)];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{

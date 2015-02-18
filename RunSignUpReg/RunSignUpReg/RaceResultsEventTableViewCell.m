@@ -31,8 +31,13 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        int widths[] = {40, 40, 86, 38, 40, 37, 31};
+        int screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        float widths[] = {0.125f, 0.125f, 0.26875f, 0.11875f, 0.125f, 0.1125f, 0.1125f}; // floats derived from above divided by 320 (old iphone screen width)
         int cumWidth = 4;
+        
+        float fontSize = 11.0f;
+        float labelHeight = self.frame.size.height / 2.0f - (fontSize + 2.0f) / 2.0f;
+        
         for(int x = 0; x <= 7; x++){
             UIView *divider = [[UIView alloc] initWithFrame: CGRectMake(cumWidth, 0, 1, [self frame].size.height)];
             [divider setBackgroundColor: [UIColor colorWithRed:189/255.0f green:219/255.0f blue:229/255.0f alpha:1.0f]];
@@ -40,25 +45,42 @@
             [self.contentView addSubview: divider];
             [divider release];
             
-            cumWidth += widths[x];
+            if(x < 7 && x != 2){
+                UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake(cumWidth + 4, labelHeight, widths[x] * screenWidth - 8, fontSize + 2)];
+                if(x == 0)
+                    self.placeLabel = label;
+                else if(x == 1)
+                    self.bibLabel = label;
+                else if(x == 3)
+                    self.genderLabel = label;
+                else if(x == 4)
+                    self.timeLabel = label;
+                else if(x == 5)
+                    self.paceLabel = label;
+                else if(x == 6)
+                    self.ageLabel = label;
+            }else if(x == 2){
+                self.firstNameLabel = [[UILabel alloc] initWithFrame: CGRectMake(cumWidth + 4, labelHeight - (fontSize + 4.0f) / 2.0f - 2, widths[x] * screenWidth - 8, fontSize + 4)];
+                self.lastNameLabel = [[UILabel alloc] initWithFrame: CGRectMake(cumWidth + 4, labelHeight + (fontSize + 4.0f) / 2.0f + 2, widths[x] * screenWidth - 8, fontSize + 4)];
+            }
+            
+            cumWidth += widths[x] * screenWidth;
         }
         
-        float fontSize = 11.0f;
-        float labelHeight = self.frame.size.height / 2.0f - (fontSize + 2.0f) / 2.0f;
         
-        UIView *separator = [[UIView alloc] initWithFrame: CGRectMake(4, [self frame].size.height - 1, [self frame].size.width - 8, 1)];
+        UIView *separator = [[UIView alloc] initWithFrame: CGRectMake(4, [self frame].size.height - 1, screenWidth - 8, 1)];
         [separator setBackgroundColor: [UIColor colorWithRed:189/255.0f green:219/255.0f blue:229/255.0f alpha:1.0f]];
         [self.contentView addSubview: separator];
         [separator release];
         
-        self.placeLabel = [[UILabel alloc] initWithFrame: CGRectMake(8, labelHeight, 35, fontSize + 2)];
+        /*self.placeLabel = [[UILabel alloc] initWithFrame: CGRectMake(8, labelHeight, 35, fontSize + 2)];
         self.bibLabel = [[UILabel alloc] initWithFrame: CGRectMake(48, labelHeight, 35, fontSize + 2)];
         self.firstNameLabel = [[UILabel alloc] initWithFrame: CGRectMake(88, labelHeight - (fontSize + 4.0f) / 2.0f - 2, 80, fontSize + 4)];
         self.lastNameLabel = [[UILabel alloc] initWithFrame: CGRectMake(88, labelHeight + (fontSize + 4.0f) / 2.0f + 2, 80, fontSize + 4)];
         self.genderLabel = [[UILabel alloc] initWithFrame: CGRectMake(173, labelHeight, 33, fontSize + 2)];
         self.timeLabel = [[UILabel alloc] initWithFrame: CGRectMake(211, labelHeight, 35, fontSize + 2)];
         self.paceLabel = [[UILabel alloc] initWithFrame: CGRectMake(251, labelHeight, 32, fontSize + 2)];
-        self.ageLabel = [[UILabel alloc] initWithFrame: CGRectMake(288, labelHeight, 27, fontSize + 2)];
+        self.ageLabel = [[UILabel alloc] initWithFrame: CGRectMake(288, labelHeight, 27, fontSize + 2)];*/
         
         [placeLabel setFont: [UIFont fontWithName:@"OpenSans" size:fontSize]];
         [bibLabel setFont: [UIFont fontWithName:@"OpenSans" size:fontSize]];
@@ -71,6 +93,11 @@
         
         [timeLabel setAdjustsFontSizeToFitWidth: YES];
         [paceLabel setAdjustsFontSizeToFitWidth: YES];
+        
+        [placeLabel setTextAlignment: NSTextAlignmentCenter];
+        [genderLabel setTextAlignment: NSTextAlignmentCenter];
+        [ageLabel setTextAlignment: NSTextAlignmentCenter];
+        [bibLabel setTextAlignment: NSTextAlignmentCenter];
         
         [placeLabel setTextColor: [UIColor colorWithRed:47/255.0f green:132/255.0f blue:165/255.0f alpha:1.0f]];
         [bibLabel setTextColor: [UIColor colorWithRed:47/255.0f green:132/255.0f blue:165/255.0f alpha:1.0f]];

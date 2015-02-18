@@ -53,7 +53,7 @@
         self.dataDict = data;
         
         if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-            self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:100];
+            self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:[[UIScreen mainScreen] bounds].size.width / 2 - 80 YLocation:100];
         else
             self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:432 YLocation:140];
         [[rli label] setText: @"Fetching Details..."];
@@ -238,10 +238,12 @@
 
 - (void)layoutContent{
     [rli fadeOut];
-
+    
+    int screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    
     if([viewResultsButton isEnabled]){
         [viewResultsButton setHidden: NO];
-        [viewResultsButton setFrame: CGRectMake(4, viewResultsButton.frame.origin.y, 312, viewResultsButton.frame.size.height)];
+        [viewResultsButton setFrame: CGRectMake(4, viewResultsButton.frame.origin.y, [self.view frame].size.width - 8, viewResultsButton.frame.size.height)];
         [signUpButton1 setFrame: CGRectMake(4, viewResultsButton.frame.origin.y + viewResultsButton.frame.size.height + 4, signUpButton1.frame.size.width, signUpButton1.frame.size.height)];
     }else{
         [viewResultsButton setHidden: YES];
@@ -251,27 +253,28 @@
     [remindMeButton setFrame: CGRectMake(remindMeButton.frame.origin.x, signUpButton1.frame.origin.y, remindMeButton.frame.size.width, remindMeButton.frame.size.height)];
 
     if([[dataDict objectForKey: @"is_registration_open"] boolValue] && [self tableView:registrationTable numberOfRowsInSection:0] > 0){
-        [registrationTable setFrame: CGRectMake(4, signUpButton1.frame.origin.y + signUpButton1.frame.size.height + 8, 312, [registrationTable numberOfRowsInSection: 0] * 116)];
+        [registrationTable setFrame: CGRectMake(4, signUpButton1.frame.origin.y + signUpButton1.frame.size.height + 8, [self.view frame].size.width - 8, [registrationTable numberOfRowsInSection: 0] * 116)];
     }else{
-        [registrationTable setFrame: CGRectMake(4, signUpButton1.frame.origin.y + signUpButton1.frame.size.height + 8, 312, 0)];
+        [registrationTable setFrame: CGRectMake(4, signUpButton1.frame.origin.y + signUpButton1.frame.size.height + 8, [self.view frame].size.width - 8, 0)];
         [signUpButton1 setBackgroundImage:[signUpButton1 backgroundImageForState: UIControlStateDisabled] forState:UIControlStateNormal];
         [signUpButton1 setBackgroundImage:[signUpButton1 backgroundImageForState: UIControlStateDisabled] forState:UIControlStateHighlighted];
         [signUpButton2 setBackgroundImage:[signUpButton2 backgroundImageForState: UIControlStateDisabled] forState:UIControlStateNormal];
         [signUpButton2 setBackgroundImage:[signUpButton2 backgroundImageForState: UIControlStateDisabled] forState:UIControlStateHighlighted];
     }
     
-    [placeHintLabel setFrame: CGRectMake(4, registrationTable.frame.origin.y + registrationTable.frame.size.height + 8, 312, placeHintLabel.frame.size.height)];
-    [addressLine1 setFrame: CGRectMake(4, placeHintLabel.frame.origin.y + placeHintLabel.frame.size.height + 4, 312, addressLine1.frame.size.height)];
-    [addressLine2 setFrame: CGRectMake(4, addressLine1.frame.origin.y + addressLine1.frame.size.height, 312, addressLine2.frame.size.height)];
-    [mapView setFrame: CGRectMake(4, addressLine2.frame.origin.y + addressLine2.frame.size.height + 8, 312, mapView.frame.size.height)];
-    [viewMapButton setFrame: CGRectMake(4, mapView.frame.origin.y + mapView.frame.size.height + 8, 242, 46)];
-    [viewMapOtherButton setFrame: CGRectMake(250, mapView.frame.origin.y + mapView.frame.size.height + 8, 66, 46)];
-    [descriptionHintLabel setFrame: CGRectMake(4, viewMapButton.frame.origin.y + viewMapButton.frame.size.height + 8, 312, descriptionHintLabel.frame.size.height)];
-    //CGSize size = [[dataDict objectForKey: @"Description"] sizeWithFont:[UIFont systemFontOfSize:16.0f] constrainedToSize:CGSizeMake(312, 1000) lineBreakMode:UILineBreakModeWordWrap];
-    //[descriptionLabel setFrame: CGRectMake(4, descriptionHintLabel.frame.origin.y + descriptionHintLabel.frame.size.height + 8, 312, size.height)];
-    [descriptionView setFrame: CGRectMake(4, descriptionHintLabel.frame.origin.y + descriptionHintLabel.frame.size.height + 8, 312, descriptionView.frame.size.height)];
-    [signUpButton2 setFrame: CGRectMake(4, descriptionView.frame.origin.y + descriptionView.frame.size.height + 8, 312, 46)];
-    [scrollView setContentSize: CGSizeMake(320.0f, signUpButton2.frame.origin.y + signUpButton2.frame.size.height + 4)];
+    
+    [placeHintLabel setFrame: CGRectMake(4, registrationTable.frame.origin.y + registrationTable.frame.size.height + 8, [self.view frame].size.width - 8, placeHintLabel.frame.size.height)];
+    [addressLine1 setFrame: CGRectMake(4, placeHintLabel.frame.origin.y + placeHintLabel.frame.size.height + 4, [self.view frame].size.width - 8, addressLine1.frame.size.height)];
+    [addressLine2 setFrame: CGRectMake(4, addressLine1.frame.origin.y + addressLine1.frame.size.height, [self.view frame].size.width - 8, addressLine2.frame.size.height)];
+    [mapView setFrame: CGRectMake(4, addressLine2.frame.origin.y + addressLine2.frame.size.height + 8, [self.view frame].size.width - 8, mapView.frame.size.height)];
+    [viewMapButton setFrame: CGRectMake(4, mapView.frame.origin.y + mapView.frame.size.height + 8, viewMapButton.frame.size.width, 46)];
+    [viewMapOtherButton setFrame: CGRectMake(viewMapOtherButton.frame.origin.x, mapView.frame.origin.y + mapView.frame.size.height + 8, viewMapOtherButton.frame.size.width, 46)];
+    [descriptionHintLabel setFrame: CGRectMake(4, viewMapButton.frame.origin.y + viewMapButton.frame.size.height + 8, [self.view frame].size.width - 8, descriptionHintLabel.frame.size.height)];
+    //CGSize size = [[dataDict objectForKey: @"Description"] sizeWithFont:[UIFont systemFontOfSize:16.0f] constrainedToSize:CGSizeMake([self.view frame].size.width - 8, 1000) lineBreakMode:UILineBreakModeWordWrap];
+    //[descriptionLabel setFrame: CGRectMake(4, descriptionHintLabel.frame.origin.y + descriptionHintLabel.frame.size.height + 8, [self.view frame].size.width - 8, size.height)];
+    [descriptionView setFrame: CGRectMake(4, descriptionHintLabel.frame.origin.y + descriptionHintLabel.frame.size.height + 8, [self.view frame].size.width - 8, descriptionView.frame.size.height)];
+    [signUpButton2 setFrame: CGRectMake(4, descriptionView.frame.origin.y + descriptionView.frame.size.height + 8, [self.view frame].size.width - 8, 46)];
+    [scrollView setContentSize: CGSizeMake(screenWidth, signUpButton2.frame.origin.y + signUpButton2.frame.size.height + 4)];
 }
 
 - (IBAction)signUp:(id)sender{

@@ -34,7 +34,7 @@
         NSLog(@"Ac: %@ Data: %@", [keychain objectForKey: kSecAttrAccount], [keychain objectForKey: kSecValueData]);
 
         if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-            self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:100];
+            self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:[[UIScreen mainScreen] bounds].size.width / 2 - 80 YLocation:100];
         else
             self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:432 YLocation:140];
         

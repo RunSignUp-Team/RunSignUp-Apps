@@ -218,6 +218,7 @@
 		77CE5C981608DD710049AF36 /* RaceSignUpWaiverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77CE5C961608DD700049AF36 /* RaceSignUpWaiverViewController.m */; };
 		77CE5C991608DD710049AF36 /* RaceSignUpWaiverViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77CE5C971608DD700049AF36 /* RaceSignUpWaiverViewController.xib */; };
 		77D6CECC198FD13500052FD7 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77D6CECB198FD13500052FD7 /* MessageUI.framework */; };
+		77E716AF1A64C3E6007FED6C /* Default-iPhone6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77E716AE1A64C3E6007FED6C /* Default-iPhone6@2x.png */; };
 		77F0894C179DC74A00DAC692 /* RaceResultsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77CAD416178B091600DEB73C /* RaceResultsViewController.xib */; };
 		BBA28565BD824D6BB6F193CA /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2FDEA0CF074A01A613C2A0 /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -480,6 +481,7 @@
 		77CE5C961608DD700049AF36 /* RaceSignUpWaiverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RaceSignUpWaiverViewController.m; sourceTree = "<group>"; };
 		77CE5C971608DD700049AF36 /* RaceSignUpWaiverViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RaceSignUpWaiverViewController.xib; sourceTree = "<group>"; };
 		77D6CECB198FD13500052FD7 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		77E716AE1A64C3E6007FED6C /* Default-iPhone6@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-iPhone6@2x.png"; sourceTree = "<group>"; };
 		7A2FDEA0CF074A01A613C2A0 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA6D4898218C41479B2FCB92 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -666,6 +668,7 @@
 				7757C2C6163C3F5200B8780A /* Default-568h@2x.png */,
 				7757C2C7163C3F5200B8780A /* Default@2x.png */,
 				77A7121317C40ADD008E1509 /* Default-568h.png */,
+				77E716AE1A64C3E6007FED6C /* Default-iPhone6@2x.png */,
 				77A7121417C40ADD008E1509 /* Default.png */,
 				776817881604F2B200C5F29A /* PropicDefault.png */,
 				774F666115FEAA26008A1112 /* Coustard.ttf */,
@@ -1002,6 +1005,7 @@
 				77A862F215FBAA72004BAED8 /* loading23@2x.png in Resources */,
 				77A862F315FBAA72004BAED8 /* loading24.png in Resources */,
 				77AEC5C419743874002C9471 /* OpenSans-Semibold.ttf in Resources */,
+				77E716AF1A64C3E6007FED6C /* Default-iPhone6@2x.png in Resources */,
 				77BB91251986DB4E00EE200E /* WebViewForwardIcon.png in Resources */,
 				77A862F415FBAA72004BAED8 /* loading24@2x.png in Resources */,
 				77BB91171986ABB700EE200E /* OtherIconTap.png in Resources */,

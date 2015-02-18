@@ -58,7 +58,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-            self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:100];
+            self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:[[UIScreen mainScreen] bounds].size.width / 2 - 80 YLocation:100];
         else
             self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:432 YLocation:140];
         
@@ -287,7 +287,7 @@
             rowText = [stateArrayGE objectAtIndex: row];
     
     if(view == nil){
-        UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, 312, 22)];
+        UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, [self.view frame].size.width - 8, 22)];
         [label setTextAlignment: NSTextAlignmentCenter];
         [label setFont: [UIFont fontWithName:@"OpenSans" size:18]];
         [label setBackgroundColor: [UIColor clearColor]];
@@ -510,11 +510,11 @@
 - (void)hideBackground{
     if(showingBackground){
         [UIView beginAnimations:@"BackgroundSlide" context:nil];
-        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height, 320, 260)];
+        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height, [self.view frame].size.width, 260)];
         [UIView commitAnimations];
         
         [UIView beginAnimations:@"TableSize" context:nil];
-        [table setFrame: CGRectMake(0, 0, 320, [self.view frame].size.height)];
+        [table setFrame: CGRectMake(0, 0, [self.view frame].size.width, [self.view frame].size.height)];
         [UIView commitAnimations];
         
         showingBackground = NO;
@@ -524,11 +524,11 @@
 - (void)showBackground{
     if(!showingBackground){
         [UIView beginAnimations:@"BackgroundSlide" context:nil];
-        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height - 260, 320, 260)];
+        [pickerBackgroundView setFrame: CGRectMake(0, [self.view frame].size.height - 260, [self.view frame].size.width, 260)];
         [UIView commitAnimations];
         
         [UIView beginAnimations:@"TableSize" context:nil];
-        [table setFrame: CGRectMake(0, 0, 320, [self.view frame].size.height - 260)];
+        [table setFrame: CGRectMake(0, 0, [self.view frame].size.width, [self.view frame].size.height - 260)];
         [UIView commitAnimations];
         
         showingBackground = YES;
@@ -885,12 +885,12 @@
         
         if(currentPicker != 0){
             [self hideCurrentInput: nil];
-            [datePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
+            [datePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, [self.view frame].size.width, 216)];
         }else{
             [self.view endEditing: YES];
             [self showBackground];
             [UIView beginAnimations:@"DatePickerSlide" context:nil];
-            [datePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
+            [datePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, [self.view frame].size.width, 216)];
             [UIView commitAnimations];
         }
     }
@@ -912,13 +912,13 @@
     if(currentPicker == 0){
         [UIView beginAnimations:@"PickerSlide" context:nil];
         [UIView setAnimationDuration: 0.25f];
-        [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
+        [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, [self.view frame].size.width, 216)];
         [UIView commitAnimations];
         [self showBackground];
     }else{
-        [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
-        [statePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
-        [datePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
+        [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, [self.view frame].size.width, 216)];
+        [statePicker setFrame: CGRectMake(0, [self.view frame].size.height, [self.view frame].size.width, 216)];
+        [datePicker setFrame: CGRectMake(0, [self.view frame].size.height, [self.view frame].size.width, 216)];
     }
     currentPicker = 1;
     currentInput = countryDrop;
@@ -942,13 +942,13 @@
     if(currentPicker == 0){
         [UIView beginAnimations:@"PickerSlide" context:nil];
         [UIView setAnimationDuration: 0.25f];
-        [statePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
+        [statePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, [self.view frame].size.width, 216)];
         [UIView commitAnimations];
         [self showBackground];
     }else{
-        [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
-        [statePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, 320, 216)];
-        [datePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
+        [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height, [self.view frame].size.width, 216)];
+        [statePicker setFrame: CGRectMake(0, [self.view frame].size.height - 216, [self.view frame].size.width, 216)];
+        [datePicker setFrame: CGRectMake(0, [self.view frame].size.height, [self.view frame].size.width, 216)];
     }
     currentPicker = 2;
     currentInput = stateDrop;
@@ -967,18 +967,18 @@
         [countryDrop setSelected: NO];
         [countryDropTriangle setHighlighted: NO];
         [UIView beginAnimations:@"PickerSlide" context:nil];
-        [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
+        [countryPicker setFrame: CGRectMake(0, [self.view frame].size.height, [self.view frame].size.width, 216)];
         [UIView commitAnimations];
     }else if(currentPicker == 2){
         [stateDrop setSelected: NO];
         [stateDropTriangle setHighlighted: NO];
         [UIView beginAnimations:@"PickerSlide" context:nil];
-        [statePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
+        [statePicker setFrame: CGRectMake(0, [self.view frame].size.height, [self.view frame].size.width, 216)];
         [UIView commitAnimations];
     }else if(currentPicker == 3){
         [dobField setTextColor: [UIColor colorWithRed:64/255.0f green:114/255.0f blue:145/255.0f alpha:1.0f]];
         [UIView beginAnimations:@"PickerSlide" context:nil];
-        [datePicker setFrame: CGRectMake(0, [self.view frame].size.height, 320, 216)];
+        [datePicker setFrame: CGRectMake(0, [self.view frame].size.height, [self.view frame].size.width, 216)];
         [UIView commitAnimations];
     }else{
         [self.view endEditing: YES];

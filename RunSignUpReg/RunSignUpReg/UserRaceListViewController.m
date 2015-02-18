@@ -29,7 +29,7 @@
     if (self) {
         self.title = @"My Race List";
         
-        self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:80 YLocation:100];
+        self.rli = [[RoundedLoadingIndicator alloc] initWithXLocation:[[UIScreen mainScreen] bounds].size.width / 2 - 80 YLocation:100];
         [[rli label] setText:@"Fetching list..."];
     }
     return self;

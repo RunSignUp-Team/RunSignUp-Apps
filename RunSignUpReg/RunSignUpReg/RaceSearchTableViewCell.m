@@ -15,14 +15,16 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self){
-        self.searchField = [[UITextField alloc] initWithFrame: CGRectMake(8, 8, 304, 28)];
+        int screenWidth = [[UIScreen mainScreen] bounds].size.width;
+
+        self.searchField = [[UITextField alloc] initWithFrame: CGRectMake(8, 8, screenWidth - 16, 28)];
         [searchField setBorderStyle: UITextBorderStyleRoundedRect];
         [searchField setClearButtonMode: UITextFieldViewModeWhileEditing];
         [searchField setReturnKeyType: UIReturnKeySearch];
         [searchField setDelegate: self];
         [searchField setTextColor: [UIColor colorWithRed:64/255.0f green:114/255.0f blue:145/255.0f alpha:1.0f]];
         
-        paddingView = [[UIView alloc] initWithFrame: CGRectMake(0, 0, [self frame].size.width / 2, 44)];
+        paddingView = [[UIView alloc] initWithFrame: CGRectMake(0, 0, screenWidth / 2, 44)];
         [searchField setLeftView: paddingView];
         [searchField setLeftViewMode: UITextFieldViewModeAlways];        
         [self.contentView addSubview: searchField];
@@ -39,14 +41,14 @@
         //[advancedButton setBackgroundColor: [UIColor redColor]];
         [self.contentView addSubview: advancedButton];*/
         
-        cancelButton = [[UIButton alloc] initWithFrame: CGRectMake(350, 0, 80, 44)];
+        cancelButton = [[UIButton alloc] initWithFrame: CGRectMake(screenWidth + 30, 0, 80, 44)];
         [cancelButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
         [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
         [cancelButton setTitleColor:[UIColor colorWithRed:64/255.0f green:114/255.0f blue:145/255.0f alpha:1.0f] forState:UIControlStateNormal];
         //[cancelButton setBackgroundColor: [UIColor redColor]];
         [self.contentView addSubview: cancelButton];
         
-        startEditButton = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 320, 44)];
+        startEditButton = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, screenWidth, 44)];
         [startEditButton addTarget:self action:@selector(startEdit) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview: startEditButton];
         
@@ -60,17 +62,19 @@
 }
 
 - (void)layoutActive:(BOOL)active{
+    int screenWidth = [[UIScreen mainScreen] bounds].size.width;
+
     if(active){
-        [searchField setFrame: CGRectMake(8, 8, 230, 28)];
-        [cancelButton setFrame: CGRectMake(240, 0, 80, 44)];
+        [searchField setFrame: CGRectMake(8, 8, screenWidth - 90, 28)];
+        [cancelButton setFrame: CGRectMake(screenWidth - 80, 0, 80, 44)];
         [searchGlass setFrame: CGRectMake(10, 0, 20, 44)];
         [paddingView setFrame: CGRectMake(0, 0, 18, 44)];
         [startEditButton setHidden: YES];
     }else{
-        [searchField setFrame: CGRectMake(8, 8, 304, 28)];
-        [cancelButton setFrame: CGRectMake(350, 0, 80, 44)];
-        [searchGlass setFrame: CGRectMake([self frame].size.width / 2 - 10, 0, 20, 44)];
-        [paddingView setFrame: CGRectMake(0, 0, [self frame].size.width / 2, 44)];
+        [searchField setFrame: CGRectMake(8, 8, screenWidth - 16, 28)];
+        [cancelButton setFrame: CGRectMake(screenWidth + 30, 0, 80, 44)];
+        [searchGlass setFrame: CGRectMake(screenWidth / 2 - 10, 0, 20, 44)];
+        [paddingView setFrame: CGRectMake(0, 0, screenWidth / 2, 44)];
         [searchField setText: @""];
         [startEditButton setHidden: NO];
     }

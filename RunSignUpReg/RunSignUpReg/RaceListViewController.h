@@ -50,9 +50,6 @@
     UIImageView *countryDropTriangle;
     UIImageView *stateDropTriangle;
     
-    UILabel *activeLabel;
-    UISwitch *activeSwitch;
-    
     UITextField *raceNameField;
     UITextField *distanceField;
     UITextField *cityField;
@@ -88,19 +85,15 @@
     
     UIRefreshControl *refreshControl;
     BOOL reloading;
-    BOOL loadedActiveRaces;
     BOOL loadedRaces;
     BOOL firstLoad;
     
     int page;
     
     NSArray *raceList;
-    NSArray *activeList;
-    NSArray *interleavedList;
     
     BOOL moreResultsToShow;
     BOOL moreResultsToRetrieve;
-    BOOL moreActiveResultsToRetrieve;
     
     RoundedLoadingIndicator *rli;
 }
@@ -118,9 +111,6 @@
 @property (nonatomic, retain) IBOutlet UIImageView *distanceDropTriangle;
 @property (nonatomic, retain) IBOutlet UIImageView *countryDropTriangle;
 @property (nonatomic, retain) IBOutlet UIImageView *stateDropTriangle;
-
-@property (nonatomic, retain) IBOutlet UILabel *activeLabel;
-@property (nonatomic, retain) IBOutlet UISwitch *activeSwitch;
 
 @property (nonatomic, retain) IBOutlet UITextField *raceNameField;
 @property (nonatomic, retain) IBOutlet UITextField *distanceField;
@@ -141,13 +131,11 @@
 @property (nonatomic, retain) NSMutableDictionary *searchParams;
 @property (nonatomic, retain) NSString *currentSearch;
 @property (nonatomic, retain) NSArray *raceList;
-@property (nonatomic, retain) NSArray *activeList;
 @property (nonatomic, retain) RoundedLoadingIndicator *rli;
 
 - (void)updateRaceListsIfNecessary;
 - (void)retrieveRaceList;
 - (void)retrieveRaceListAndAppend;
-- (void)retrieveActiveListAndAppend;
 
 - (void)reloadRaces;
 - (void)doneLoadingRaces;
@@ -156,7 +144,6 @@
 
 - (IBAction)search:(id)sender;
 - (IBAction)useCurrentLocation:(id)sender;
-- (IBAction)toggleActiveSearch:(id)sender;
 
 - (IBAction)hidePicker:(id)sender;
 - (IBAction)showCountryPicker:(id)sender;

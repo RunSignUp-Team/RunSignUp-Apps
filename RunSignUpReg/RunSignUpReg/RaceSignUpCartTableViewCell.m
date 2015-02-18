@@ -32,7 +32,7 @@
         [totalCostLabel setTextColor: [UIColor colorWithRed:222/255.0f green:171/255.0f blue:76/255.0f alpha:1.0f]];
         [self.contentView addSubview: totalCostLabel];
         
-        subitemsLabel = [[UILabel alloc] initWithFrame: CGRectMake(4, 28, 312, 20)];
+        subitemsLabel = [[UILabel alloc] initWithFrame: CGRectMake(4, 28, [self frame].size.width - 8, 20)];
         [subitemsLabel setFont: [UIFont fontWithName:@"OpenSans" size:16]];
         [self.contentView addSubview: subitemsLabel];
     }
@@ -42,7 +42,11 @@
 - (void)setInfo:(NSString *)info total:(NSString *)total subitems:(NSString *)subitems{
     [infoLabel setText: info];
     [totalCostLabel setText: total];
-    [subitemsLabel setText: [NSString stringWithFormat:@"  • %@", subitems]];
+    
+    if([subitems length] > 0)
+        [subitemsLabel setText: [NSString stringWithFormat:@"  • %@", subitems]];
+    else
+        [subitemsLabel setText: @""];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated{

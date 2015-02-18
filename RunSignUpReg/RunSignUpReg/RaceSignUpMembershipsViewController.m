@@ -66,7 +66,7 @@
             
             UIButton *answerButton = [UIButton buttonWithType: UIButtonTypeCustom];
             [answerButton addTarget:self action:@selector(chooseMemberships:) forControlEvents:UIControlEventTouchUpInside];
-            [answerButton setFrame: CGRectMake(4, 4, 312, [self tableView:tableView heightForRowAtIndexPath:indexPath] - 8)];
+            [answerButton setFrame: CGRectMake(4, 4, [self.view frame].size.width - 8, [self tableView:tableView heightForRowAtIndexPath:indexPath] - 8)];
             [answerButton setBackgroundImage:stretchedGreenButton forState:UIControlStateNormal];
             //[answerButton setBackgroundImage:stretchedGreenButtonTap forState:UIControlStateHighlighted];
             [answerButton setTitle:@"CONTINUE" forState:UIControlStateNormal];
@@ -100,7 +100,7 @@
         if([[[[dataDict objectForKey: @"membership_settings"] objectAtIndex: indexPath.row] objectForKey: @"active"] boolValue]){
             NSString *userNotice = [[[dataDict objectForKey: @"membership_settings"] objectAtIndex: indexPath.row] objectForKey: @"user_notice"];
             if(userNotice){
-                CGSize reqSize = [userNotice sizeWithFont:[UIFont fontWithName:@"OpenSans" size:18] constrainedToSize:CGSizeMake(312, INFINITY)];
+                CGSize reqSize = [userNotice sizeWithFont:[UIFont fontWithName:@"OpenSans" size:18] constrainedToSize:CGSizeMake([self.view frame].size.width - 8, INFINITY)];
                 return reqSize.height + 104;
             }else{
                 return 100;
@@ -215,7 +215,6 @@
     [UIView beginAnimations:@"TableSize" context:nil];
     [UIView setAnimationDuration: 0.3f];
     [table setFrame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    //[table setContentSize: CGSizeMake(320, totalHeight)];
     [UIView commitAnimations];
 }
 

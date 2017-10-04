@@ -72,7 +72,6 @@
 		C4F3FDD11F845760007E4D65 /* runsignup_mobile */ = {
 			isa = PBXGroup;
 			children = (
-				C4F3FDF31F845CFF007E4D65 /* images */,
 				C4F3FDEB1F845798007E4D65 /* runsignup_mobile.entitlements */,
 				C4F3FDD21F845760007E4D65 /* AppDelegate.h */,
 				C4F3FDD31F845760007E4D65 /* AppDelegate.m */,
@@ -91,13 +90,6 @@
 				C4F3FDE41F845760007E4D65 /* main.m */,
 			);
 			path = runsignup_mobile;
-			sourceTree = "<group>";
-		};
-		C4F3FDF31F845CFF007E4D65 /* images */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = images;
 			sourceTree = "<group>";
 		};
 		C4F3FDF41F845FA9007E4D65 /* Frameworks */ = {

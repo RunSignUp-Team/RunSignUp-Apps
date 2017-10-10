@@ -48,22 +48,7 @@
 
 
 - (void)applicationDidFinishLaunchingWithOptions:(UIApplication *)application {
-    UIColor *backgroundColor = [UIColor greenColor];
-    // set the bar background color
-    [[UITabBar appearance] setBackgroundImage:[AppDelegate imageFromColor:backgroundColor forSize:CGSizeMake(320, 49) withCornerRadius:0]];
-    // set the text color for selected state
-    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil] forState:UIControlStateSelected];
-    // set the text color for unselected state
-    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
-    // set the selected icon color
-    [[UITabBar appearance] setTintColor:[UIColor whiteColor]];
-    [[UITabBar appearance] setSelectedImageTintColor:[UIColor whiteColor]];
-    [[UITabBar appearance] setUnselectedItemTintColor:[UIColor colorWithRed:1.00 green:1.00 blue:1.00 alpha:.5]];
-    // remove the shadow
-    [[UITabBar appearance] setShadowImage:nil];
-    // Set the dark color to selected tab (the dimmed background)
-    [[UITabBar appearance] setSelectionIndicatorImage:[AppDelegate imageFromColor:[UIColor colorWithRed:26/255.0 green:163/255.0 blue:133/255.0 alpha:1] forSize:CGSizeMake(64, 49) withCornerRadius:0]];
-
+    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
 + (UIImage *)imageFromColor:(UIColor *)color forSize:(CGSize)size withCornerRadius:(CGFloat)radius

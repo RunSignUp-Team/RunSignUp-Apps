@@ -22,6 +22,19 @@
     
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    UIColor *leftColor = [UIColor colorWithRed:0.12 green:0.65 blue:0.87 alpha:1.0];
+    UIColor *middleColor = [UIColor colorWithRed:0.29 green:0.78 blue:0.91 alpha:1.0];
+    UIColor *rightColor = [UIColor colorWithRed:0.29 green:0.93 blue:0.90 alpha:1.0];
+    
+    // Create the gradient
+    CAGradientLayer *theViewGradient = [CAGradientLayer layer];
+    theViewGradient.colors = [NSArray arrayWithObjects: (id)leftColor.CGColor, (id)middleColor.CGColor,(id)rightColor.CGColor, nil];
+    theViewGradient.startPoint = CGPointMake(0, 1);
+    theViewGradient.endPoint = CGPointMake(1, 0);
+    theViewGradient.frame = self.view.bounds;
+    //Add gradient to view
+    [self.view.layer insertSublayer:theViewGradient atIndex:0];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -40,7 +53,7 @@
 */
 
 -(void)viewWillAppear:(BOOL)animated {
-    [self setContent];
+//    [self setContent];
     [super viewWillAppear:animated];
 }
 
@@ -53,10 +66,10 @@
 }
 
 
--(void)setContent
-{
-    [mWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://runsignup.com/Races"]]];
-    mWebView.allowsBackForwardNavigationGestures = YES;
-}
+//-(void)setContent
+//{
+//    [mWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://runsignup.com/Races"]]];
+//    mWebView.allowsBackForwardNavigationGestures = YES;
+//}
 
 @end

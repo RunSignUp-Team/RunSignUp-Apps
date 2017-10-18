@@ -20,6 +20,7 @@
 - (void)viewDidLoad {
     
     mWebView.navigationDelegate = self;
+    mWebView.scrollView.bounces = NO;
     
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
@@ -40,7 +41,6 @@
     [super viewDidAppear:animated];
     [mWebView reload];
 }
-
 
 -(void)viewDidDisappear:(BOOL)animated {
     // insure we clear the timers from running

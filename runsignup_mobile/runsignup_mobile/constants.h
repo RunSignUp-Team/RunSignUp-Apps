@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 // RSU ENTRY POINT
-#define RSU_ENTRY_POINT_SERVER_URL  @"https://runsignup.com/Races"
+#define RSU_ENTRY_POINT_SERVER_URL  @"http://10.1.10.68/MobileRaces"
 
 
 // Custom Header Fields

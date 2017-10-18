@@ -36,6 +36,10 @@
     [super viewWillAppear:animated];
 }
 
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [mWebView reload];
+}
 
 
 -(void)viewDidDisappear:(BOOL)animated {

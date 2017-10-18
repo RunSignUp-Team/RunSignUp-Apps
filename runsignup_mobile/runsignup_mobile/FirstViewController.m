@@ -7,6 +7,7 @@
 //
 
 #import "FirstViewController.h"
+#import "constants.h"
 
 @interface FirstViewController ()
 
@@ -49,7 +50,9 @@
 
 -(void)setContent
 {
-    [mWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://runsignup.com/Races"]]];
+    NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:RSU_ENTRY_POINT_SERVER_URL]];
+    [request addValue:CUSTOM_HEADER_MOBILE_TYPE_FIELDVALUE forHTTPHeaderField:CUSTOM_HEADER_MOBILE_TYPE_FIELDNAME];
+    [mWebView loadRequest:request];
     mWebView.allowsBackForwardNavigationGestures = YES;
 }
 @end

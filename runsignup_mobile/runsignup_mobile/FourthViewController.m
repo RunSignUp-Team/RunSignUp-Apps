@@ -56,8 +56,7 @@
 
 -(void)setContent
 {
-    [mWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://runsignup.com/Races"]]];
-    mWebView.allowsBackForwardNavigationGestures = YES;
+
 }
 
 @end

@@ -53,7 +53,7 @@
 */
 
 -(void)viewWillAppear:(BOOL)animated {
-//    [self setContent];
+    [self setContent];
     [super viewWillAppear:animated];
 }
 
@@ -66,10 +66,8 @@
 }
 
 
-//-(void)setContent
-//{
-//    [mWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://runsignup.com/Races"]]];
-//    mWebView.allowsBackForwardNavigationGestures = YES;
-//}
-
+-(void)setContent
+{
+    
+}
 @end

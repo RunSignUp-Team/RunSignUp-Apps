@@ -20,7 +20,6 @@
 - (void)viewDidLoad {
     
     mWebView.navigationDelegate = self;
-    
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
 }
@@ -55,4 +54,35 @@
     [mWebView loadRequest:request];
     mWebView.allowsBackForwardNavigationGestures = YES;
 }
+
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
+    NSURL * actionURL = navigationAction.request.URL;
+    if( actionURL.host != nil ) {
+        NSRange theRange = [actionURL.host rangeOfString:RSU_DOMAIN options:NSBackwardsSearch];
+        if( theRange.location != NSNotFound ) {
+            NSString * headerField = CUSTOM_HEADER_MOBILE_TYPE_FIELDNAME;
+            NSString * headerValue = CUSTOM_HEADER_MOBILE_TYPE_FIELDVALUE;
+            if ([[navigationAction.request valueForHTTPHeaderField:headerField] isEqualToString:headerValue]) {
+                decisionHandler(WKNavigationActionPolicyAllow);
+            } else {
+                if( navigationAction.targetFrame != nil && [navigationAction.targetFrame isMainFrame] ) {
+                    NSMutableURLRequest * newRequest = [navigationAction.request mutableCopy];
+                    [newRequest addValue:headerValue forHTTPHeaderField:headerField];
+                    decisionHandler(WKNavigationActionPolicyCancel);
+                    [mWebView loadRequest:newRequest];
+                }
+                else {
+                    // sub frames.. we do NOT want to reload the WHOLE request NO matter if custom header is there or not
+                    decisionHandler(WKNavigationActionPolicyAllow);
+                }
+            }
+        } else {
+            decisionHandler(WKNavigationActionPolicyAllow);
+        }
+    }
+    else {
+        decisionHandler(WKNavigationActionPolicyAllow);
+    }
+}
+
 @end

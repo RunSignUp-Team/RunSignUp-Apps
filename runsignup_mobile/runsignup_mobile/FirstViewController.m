@@ -48,7 +48,10 @@
     [super viewDidDisappear:animated];
 }
 
-
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
 
 -(void)setContent
 {

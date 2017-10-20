@@ -12,9 +12,13 @@
 //#define RSU_DOMAIN  @"runsignup.com"
 //#define RSU_ENTRY_POINT_SERVER_URL  @"https://runsignup.com/Races"
 
-// LOCAL dev
-#define RSU_DOMAIN  @"10.1.10.68"
-#define RSU_ENTRY_POINT_SERVER_URL  @"http://10.1.10.68/MobileRaces"
+//// TESTING ENTRY POINT: local
+//#define RSU_DOMAIN  @"10.1.10.68"
+//#define RSU_ENTRY_POINT_SERVER_URL  @"http://10.1.10.68/MobileRaces"
+
+// TESTING ENTRY POINT: test4.runsignup.com
+#define RSU_DOMAIN  @"test4.runsignup.com"
+#define RSU_ENTRY_POINT_SERVER_URL  @"http://test4.runsignup.com/MobileRaces"
 
 // Custom Header Fields
 #define CUSTOM_HEADER_MOBILE_TYPE_FIELDNAME   @"rsu_mobile_type"

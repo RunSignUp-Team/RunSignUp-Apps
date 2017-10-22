@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C4A881161F97C6FA00D5DF1D /* constants.h in Sources */ = {isa = PBXBuildFile; fileRef = C4A881151F97C6FA00D5DF1D /* constants.h */; };
+		C4D02D8A1F9D099C00BCFC4C /* RSUURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D02D891F9D099C00BCFC4C /* RSUURLProtocol.m */; };
 		C4F3FDD41F845760007E4D65 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F3FDD31F845760007E4D65 /* AppDelegate.m */; };
 		C4F3FDD71F845760007E4D65 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F3FDD61F845760007E4D65 /* FirstViewController.m */; };
 		C4F3FDDA1F845760007E4D65 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F3FDD91F845760007E4D65 /* SecondViewController.m */; };
@@ -22,6 +23,8 @@
 
 /* Begin PBXFileReference section */
 		C4A881151F97C6FA00D5DF1D /* constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = constants.h; sourceTree = "<group>"; };
+		C4D02D881F9D099C00BCFC4C /* RSUURLProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RSUURLProtocol.h; sourceTree = "<group>"; };
+		C4D02D891F9D099C00BCFC4C /* RSUURLProtocol.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSUURLProtocol.m; sourceTree = "<group>"; };
 		C4F3FDCF1F845760007E4D65 /* runsignup_mobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = runsignup_mobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4F3FDD21F845760007E4D65 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C4F3FDD31F845760007E4D65 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -85,6 +88,8 @@
 				C4F3FDED1F845B0E007E4D65 /* ThirdViewController.m */,
 				C4F3FDEF1F845B23007E4D65 /* FourthViewController.h */,
 				C4F3FDF01F845B23007E4D65 /* FourthViewController.m */,
+				C4D02D881F9D099C00BCFC4C /* RSUURLProtocol.h */,
+				C4D02D891F9D099C00BCFC4C /* RSUURLProtocol.m */,
 				C4F3FDDB1F845760007E4D65 /* Main.storyboard */,
 				C4F3FDDE1F845760007E4D65 /* Assets.xcassets */,
 				C4F3FDE01F845760007E4D65 /* LaunchScreen.storyboard */,
@@ -134,7 +139,7 @@
 				TargetAttributes = {
 					C4F3FDCE1F845760007E4D65 = {
 						CreatedOnToolsVersion = 9.0;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -181,6 +186,7 @@
 			files = (
 				C4F3FDF11F845B23007E4D65 /* FourthViewController.m in Sources */,
 				C4F3FDDA1F845760007E4D65 /* SecondViewController.m in Sources */,
+				C4D02D8A1F9D099C00BCFC4C /* RSUURLProtocol.m in Sources */,
 				C4F3FDEE1F845B0E007E4D65 /* ThirdViewController.m in Sources */,
 				C4A881161F97C6FA00D5DF1D /* constants.h in Sources */,
 				C4F3FDD41F845760007E4D65 /* AppDelegate.m in Sources */,
@@ -320,13 +326,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = runsignup_mobile/runsignup_mobile.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 2675BLFJQG;
 				INFOPLIST_FILE = runsignup_mobile/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.runsignup.runsignup-mobile-go";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "10413885-a85a-4ac8-a1fd-9826d430c77c";
+				PROVISIONING_PROFILE_SPECIFIER = "AD HOC com.runsignup.runsignup-mobile-go";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -336,13 +345,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = runsignup_mobile/runsignup_mobile.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 2675BLFJQG;
 				INFOPLIST_FILE = runsignup_mobile/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.runsignup.runsignup-mobile-go";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "10413885-a85a-4ac8-a1fd-9826d430c77c";
+				PROVISIONING_PROFILE_SPECIFIER = "AD HOC com.runsignup.runsignup-mobile-go";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

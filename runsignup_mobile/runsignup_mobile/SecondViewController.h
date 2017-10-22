@@ -9,9 +9,14 @@
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
 
-@interface SecondViewController : UIViewController <WKNavigationDelegate>
+@interface SecondViewController : UIViewController <UIWebViewDelegate>
 
-@property (weak, nonatomic) IBOutlet WKWebView *mWebView;
+//@property (weak, nonatomic) IBOutlet WKWebView *mWebView;
+@property (weak, nonatomic) IBOutlet UIWebView *mWebView;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *backButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *forwardButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *refreshButton;
+
 
 @end
 

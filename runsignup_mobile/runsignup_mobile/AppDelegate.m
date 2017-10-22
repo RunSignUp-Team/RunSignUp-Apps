@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "RSUURLProtocol.h"
 
 @interface AppDelegate ()
 
@@ -16,6 +17,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    [NSURLProtocol registerClass:[RSUURLProtocol class]];
     return YES;
 }
 

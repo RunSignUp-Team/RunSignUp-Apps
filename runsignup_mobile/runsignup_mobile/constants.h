@@ -15,10 +15,14 @@
 //// TESTING ENTRY POINT: local
 //#define RSU_DOMAIN  @"10.1.10.68"
 //#define RSU_ENTRY_POINT_SERVER_URL  @"http://10.1.10.68/MobileRaces"
+//#define RSU_DOMAIN  @"192.168.0.9"
+//#define RSU_ENTRY_POINT_SERVER_URL  @"http://192.168.0.9:8082"
 
 // TESTING ENTRY POINT: test4.runsignup.com
 #define RSU_DOMAIN  @"test4.runsignup.com"
 #define RSU_ENTRY_POINT_SERVER_URL  @"http://test4.runsignup.com/MobileRaces"
+
+#define RSU_URL_PROTOCOL_KEY   @"RSUURLProtocolHandledKey"
 
 // Custom Header Fields
 #define CUSTOM_HEADER_MOBILE_TYPE_FIELDNAME   @"rsu_mobile_type"

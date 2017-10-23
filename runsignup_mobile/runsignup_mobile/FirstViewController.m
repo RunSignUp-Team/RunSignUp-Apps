@@ -23,8 +23,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    // set background color fo the view to a blue to match the splash screen. prevents the flash of white before the ui loads
-    [self.view setBackgroundColor:[UIColor colorWithRed:0.33 green:0.77 blue:0.91 alpha:1.0]];
 }
 
 

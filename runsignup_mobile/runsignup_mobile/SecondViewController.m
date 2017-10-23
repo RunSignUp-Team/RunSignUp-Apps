@@ -19,6 +19,8 @@
 
 - (void)viewDidLoad {
     
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    
     [mWebView setDelegate:self];
     UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
     UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
@@ -32,9 +34,28 @@
     [mWebView addGestureRecognizer:swipeRight];
     
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-}
+    
+    UIColor *ombreStart = [UIColor colorWithRed:0.12 green:0.65 blue:0.87 alpha:1.0];
+    UIColor *ombreMid = [UIColor colorWithRed:0.29 green:0.78 blue:0.91 alpha:1.0];
+    UIColor *ombreEnd = [UIColor colorWithRed:0.27 green:0.83 blue:0.98 alpha:1.0];
 
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    gradient.frame = self.navigationController.toolbar.bounds;
+    gradient.colors = [NSArray arrayWithObjects:(id)[ombreStart CGColor], (id)[ombreMid CGColor], (id)[ombreEnd CGColor], nil];
+    
+    CGFloat angle = 45.f;
+    CGFloat x = angle / 360.f;
+    
+    CGFloat a = pow(sin((2*M_PI*((x+0.75)/2))),2);
+    CGFloat b = pow(sin((2*M_PI*((x+0.0)/2))),2);
+    CGFloat c = pow(sin((2*M_PI*((x+0.25)/2))),2);
+    CGFloat d = pow(sin((2*M_PI*((x+0.5)/2))),2);
+    
+    gradient.startPoint = CGPointMake(a, d);
+    gradient.endPoint = CGPointMake(c, b);
+    [self.navigationController.toolbar.layer insertSublayer:gradient atIndex:0];
+    
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -54,6 +75,10 @@
     [super viewDidDisappear:animated];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
 
 -(void)setContent
 {

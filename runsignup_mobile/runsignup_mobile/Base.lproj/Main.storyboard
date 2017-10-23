@@ -4,7 +4,7 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -46,45 +46,50 @@
         <!--Second View Controller-->
         <scene sceneID="wg7-f3-ORb">
             <objects>
-                <viewController storyboardIdentifier="SecondViewController" id="8rJ-Kc-sve" customClass="SecondViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SecondViewController" automaticallyAdjustsScrollViewInsets="NO" id="8rJ-Kc-sve" customClass="SecondViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="QS5-Rx-YEW">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EpS-Rx-37v">
-                                <rect key="frame" x="0.0" y="64" width="375" height="559"/>
-                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <webView contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EpS-Rx-37v">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <viewLayoutGuide key="safeArea" id="TkJ-ml-50p"/>
                             </webView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="EpS-Rx-37v" firstAttribute="top" secondItem="QS5-Rx-YEW" secondAttribute="top" id="0kh-pN-aOU"/>
                             <constraint firstItem="O1u-W8-tvY" firstAttribute="trailing" secondItem="EpS-Rx-37v" secondAttribute="trailing" id="8a2-92-hgm"/>
                             <constraint firstItem="EpS-Rx-37v" firstAttribute="leading" secondItem="O1u-W8-tvY" secondAttribute="leading" id="REj-Tt-Lk3"/>
                             <constraint firstItem="O1u-W8-tvY" firstAttribute="bottom" secondItem="EpS-Rx-37v" secondAttribute="bottom" id="gVj-mL-mcu"/>
-                            <constraint firstItem="EpS-Rx-37v" firstAttribute="top" secondItem="O1u-W8-tvY" secondAttribute="top" id="sMb-Eu-2u9"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="O1u-W8-tvY"/>
                     </view>
                     <toolbarItems>
                         <barButtonItem systemItem="rewind" id="HnU-uZ-mjN">
+                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="goBack" destination="EpS-Rx-37v" id="OQ0-xQ-SHE"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="pr4-eu-gvI"/>
                         <barButtonItem systemItem="refresh" id="Y0b-9y-IvN">
+                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="reload" destination="EpS-Rx-37v" id="v0f-GM-W2z"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="DKV-T6-07K"/>
                         <barButtonItem systemItem="fastForward" id="1X5-oZ-DP9">
+                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="goForward" destination="EpS-Rx-37v" id="LOW-4u-yxf"/>
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="QGU-gV-co8"/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="backButton" destination="HnU-uZ-mjN" id="gRo-G9-ZuO"/>
@@ -95,7 +100,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1518" y="359"/>
+            <point key="canvasLocation" x="1517.5999999999999" y="358.4707646176912"/>
         </scene>
         <!--Third-->
         <scene sceneID="bCN-Kf-9bi">

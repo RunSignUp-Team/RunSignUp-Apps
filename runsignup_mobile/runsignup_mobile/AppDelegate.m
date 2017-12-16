@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "RSUURLProtocol.h"
+#import "constants.h"
 
 @interface AppDelegate ()
 
@@ -17,7 +17,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    [NSURLProtocol registerClass:[RSUURLProtocol class]];
+    [self setupUserAgent];
     return YES;
 }
 
@@ -51,6 +51,22 @@
 
 - (void)applicationDidFinishLaunchingWithOptions:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+-(void)setupUserAgent
+{
+    //get the original user-agent of webview
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectZero];
+    NSString *defaultAgent = [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+    NSLog(@"Default User-Agent:%@", defaultAgent);
+    
+    //add RSU to the agent
+    NSString *newAgent = [defaultAgent stringByAppendingString:CUSTOM_USER_AGENT];
+    NSLog(@"new agent :%@", newAgent);
+    
+    //register the new agent
+    NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:newAgent, @"UserAgent", nil];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
 }
 
 + (UIImage *)imageFromColor:(UIColor *)color forSize:(CGSize)size withCornerRadius:(CGFloat)radius

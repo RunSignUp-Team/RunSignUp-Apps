@@ -39,6 +39,7 @@
 #define RSU_URL_PROTOCOL_KEY   @"RSUURLProtocolHandledKey"
 
 // Custom Header Fields
+#define CUSTOM_USER_AGENT   @" iOS_RSU_MOBILE_TYPE"
 #define CUSTOM_HEADER_MOBILE_TYPE_FIELDNAME   @"x-rsu-mobile-type"
 #define CUSTOM_HEADER_MOBILE_TYPE_FIELDVALUE  @"ios"
 

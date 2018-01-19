@@ -19,6 +19,7 @@
 // Testing Entry Point: jk local: 10.1.10.68
 //#define RSU_DOMAIN  @"10.1.10.68"
 //#define RSU_ENTRY_POINT_SERVER_URL  @"http://10.1.10.68/MobileRaces"
+//#define RSU_ENTRY_POINT_SERVER_URL  @"http://172.20.20.20/MobileRaces"
 
 // Testing Entry Point: jk home local: 10.0.0.21
 //#define RSU_DOMAIN  @"10.0.0.21"

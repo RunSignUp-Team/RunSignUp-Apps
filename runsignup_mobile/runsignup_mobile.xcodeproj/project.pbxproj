@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B22676B2012371400A1B439 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B22676A2012371400A1B439 /* LaunchScreen.storyboard */; };
+		5BD98454201115150038C7B2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5BD98453201115150038C7B2 /* Images.xcassets */; };
 		C4A881161F97C6FA00D5DF1D /* constants.h in Sources */ = {isa = PBXBuildFile; fileRef = C4A881151F97C6FA00D5DF1D /* constants.h */; };
 		C4D02D8A1F9D099C00BCFC4C /* RSUURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D02D891F9D099C00BCFC4C /* RSUURLProtocol.m */; };
 		C4F3FDD41F845760007E4D65 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F3FDD31F845760007E4D65 /* AppDelegate.m */; };
@@ -14,7 +16,6 @@
 		C4F3FDDA1F845760007E4D65 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F3FDD91F845760007E4D65 /* SecondViewController.m */; };
 		C4F3FDDD1F845760007E4D65 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4F3FDDB1F845760007E4D65 /* Main.storyboard */; };
 		C4F3FDDF1F845760007E4D65 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4F3FDDE1F845760007E4D65 /* Assets.xcassets */; };
-		C4F3FDE21F845760007E4D65 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4F3FDE01F845760007E4D65 /* LaunchScreen.storyboard */; };
 		C4F3FDE51F845760007E4D65 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F3FDE41F845760007E4D65 /* main.m */; };
 		C4F3FDEE1F845B0E007E4D65 /* ThirdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F3FDED1F845B0E007E4D65 /* ThirdViewController.m */; };
 		C4F3FDF11F845B23007E4D65 /* FourthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F3FDF01F845B23007E4D65 /* FourthViewController.m */; };
@@ -22,6 +23,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5B22676A2012371400A1B439 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		5BD98453201115150038C7B2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		C4A881151F97C6FA00D5DF1D /* constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = constants.h; sourceTree = "<group>"; };
 		C4D02D881F9D099C00BCFC4C /* RSUURLProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RSUURLProtocol.h; sourceTree = "<group>"; };
 		C4D02D891F9D099C00BCFC4C /* RSUURLProtocol.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSUURLProtocol.m; sourceTree = "<group>"; };
@@ -34,7 +37,6 @@
 		C4F3FDD91F845760007E4D65 /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
 		C4F3FDDC1F845760007E4D65 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C4F3FDDE1F845760007E4D65 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C4F3FDE11F845760007E4D65 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C4F3FDE31F845760007E4D65 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C4F3FDE41F845760007E4D65 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C4F3FDEB1F845798007E4D65 /* runsignup_mobile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = runsignup_mobile.entitlements; sourceTree = "<group>"; };
@@ -92,10 +94,11 @@
 				C4D02D891F9D099C00BCFC4C /* RSUURLProtocol.m */,
 				C4F3FDDB1F845760007E4D65 /* Main.storyboard */,
 				C4F3FDDE1F845760007E4D65 /* Assets.xcassets */,
-				C4F3FDE01F845760007E4D65 /* LaunchScreen.storyboard */,
 				C4F3FDE31F845760007E4D65 /* Info.plist */,
 				C4F3FDE41F845760007E4D65 /* main.m */,
 				C4A881151F97C6FA00D5DF1D /* constants.h */,
+				5BD98453201115150038C7B2 /* Images.xcassets */,
+				5B22676A2012371400A1B439 /* LaunchScreen.storyboard */,
 			);
 			path = runsignup_mobile;
 			sourceTree = "<group>";
@@ -171,7 +174,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4F3FDE21F845760007E4D65 /* LaunchScreen.storyboard in Resources */,
+				5BD98454201115150038C7B2 /* Images.xcassets in Resources */,
+				5B22676B2012371400A1B439 /* LaunchScreen.storyboard in Resources */,
 				C4F3FDDF1F845760007E4D65 /* Assets.xcassets in Resources */,
 				C4F3FDDD1F845760007E4D65 /* Main.storyboard in Resources */,
 			);
@@ -204,14 +208,6 @@
 				C4F3FDDC1F845760007E4D65 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		C4F3FDE01F845760007E4D65 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C4F3FDE11F845760007E4D65 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -332,7 +328,7 @@
 				INFOPLIST_FILE = runsignup_mobile/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.runsignup.runsignup-mobile";
+				PRODUCT_BUNDLE_IDENTIFIER = com.runsignup.mobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -351,7 +347,7 @@
 				INFOPLIST_FILE = runsignup_mobile/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.runsignup.runsignup-mobile";
+				PRODUCT_BUNDLE_IDENTIFIER = com.runsignup.mobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";

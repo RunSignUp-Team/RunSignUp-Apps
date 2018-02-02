@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="5WA-Nq-yII">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="5WA-Nq-yII">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -67,7 +67,7 @@
                         <viewLayoutGuide key="safeArea" id="O1u-W8-tvY"/>
                     </view>
                     <toolbarItems>
-                        <barButtonItem systemItem="rewind" id="HnU-uZ-mjN">
+                        <barButtonItem title="Item" image="caret-left" id="HnU-uZ-mjN">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="goBack" destination="EpS-Rx-37v" id="OQ0-xQ-SHE"/>
@@ -81,7 +81,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="DKV-T6-07K"/>
-                        <barButtonItem systemItem="fastForward" id="1X5-oZ-DP9">
+                        <barButtonItem title="Item" image="caret-right" id="1X5-oZ-DP9">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="goForward" destination="EpS-Rx-37v" id="LOW-4u-yxf"/>
@@ -143,6 +143,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="caret-left" width="11" height="28"/>
+        <image name="caret-right" width="9" height="28"/>
         <image name="profile" width="32" height="32"/>
         <image name="search" width="32" height="32"/>
         <image name="stats-dots" width="32" height="32"/>

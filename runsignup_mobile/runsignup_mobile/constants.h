@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 
 // RSU ENTRY POINT PRODUCTION
-//#define RSU_DOMAIN  @"runsignup.com"
-//#define RSU_ENTRY_POINT_SERVER_URL  @"https://runsignup.com/Races"
+#define RSU_DOMAIN  @"runsignup.com"
+#define RSU_ENTRY_POINT_SERVER_URL  @"https://runsignup.com/Races"
 
 // Testing Entry Point: jk local: localhost
 //#define RSU_DOMAIN  @"http://localhost"
@@ -34,8 +34,8 @@
 //#define RSU_ENTRY_POINT_SERVER_URL  @"http://192.168.0.9:8082"
 
 // TESTING ENTRY POINT: test4.runsignup.com
-#define RSU_DOMAIN  @"test4.runsignup.com"
-#define RSU_ENTRY_POINT_SERVER_URL  @"http://test4.runsignup.com/Races"
+//#define RSU_DOMAIN  @"test4.runsignup.com"
+//#define RSU_ENTRY_POINT_SERVER_URL  @"http://test4.runsignup.com/Races"
 
 #define RSU_URL_PROTOCOL_KEY   @"RSUURLProtocolHandledKey"
 
